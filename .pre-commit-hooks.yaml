@@ -1,0 +1,5 @@
+- id: check-jsonschema
+  name: Validate files with jsonschema
+  entry: check-jsonschema
+  language: python
+  types_or: [json,yaml]
