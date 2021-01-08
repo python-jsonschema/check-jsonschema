@@ -5,17 +5,43 @@ The schema may be specified as a local or remote (HTTP or HTTPS) file.
 
 Remote files are automatically downloaded and cached if possible.
 
-## Example Usage: Validate GitHub Workflows with Schemastore
+## Validate GitHub Workflows with Schemastore
 
-Add this hook to your pre-commit config:
+You can use the schemastore github workflow schema to lint your GitHub workflow
+files. This hook is so useful, it's built in as a pre-set. All you need to add
+to your `.pre-commit-config.yaml` is this:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.1.1
+  rev: 0.2.0
   hooks:
-    - id: check-workflows
-      name: "Lint GitHub Workflows"
+    - id: check-github-workflows
+```
+
+## Applying an arbitrary schema to files
+
+There is a more general hook available for running any jsonschema against a
+file or set of files. For example, to implement the GitHub workflow check
+manually, you could do this:
+
+```yaml
+- repo: https://github.com/sirosen/check-jsonschema
+  rev: 0.2.0
+  hooks:
+    - id: check-jsonschema
+      name: "Check GitHub Workflows"
       language: python
-      files: ^\.github/workflows/.*\.yaml$
+      files: ^\.github/workflows/
+      types: [yaml]
       args: ["--schemafile", "https://json.schemastore.org/github-workflow"]
+```
+
+## Standalone Usage
+
+You can also `pip install check-jsonschema` to run the tool manually.
+
+For full usage info:
+
+```bash
+check-jsonschema --help
 ```

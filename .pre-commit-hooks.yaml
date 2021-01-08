@@ -5,3 +5,9 @@
   types_or: [json,yaml]
   # we need types_or support
   minimum_pre_commit_version: 2.9.0
+- id: check-github-workflows
+  name: Check GitHub Workflows
+  entry: check-jsonschema --schemafile "https://json.schemastore.org/github-workflow"
+  language: python
+  files: ^\.github/workflows/
+  types: [yaml]
