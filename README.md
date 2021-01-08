@@ -11,7 +11,7 @@ Add this hook to your pre-commit config:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.1.0
+  rev: 0.1.1
   hooks:
     - id: check-workflows
       name: "Lint GitHub Workflows"
