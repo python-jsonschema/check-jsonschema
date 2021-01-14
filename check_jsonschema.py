@@ -3,12 +3,13 @@ import contextlib
 import json
 import os
 import platform
+import sys
 import time
 import urllib.request
 
-from identify import identify
 import jsonschema
 import ruamel.yaml
+from identify import identify
 
 yaml = ruamel.yaml.YAML(typ="safe")
 
@@ -98,6 +99,7 @@ def main():
         with open(args.schemafile) as f:
             schema = json.load(f)
 
+    failures = {}
     for instancefile in args.instancefiles:
         tags = identify.tags_from_path(instancefile)
         if "yaml" in tags:
@@ -111,5 +113,20 @@ def main():
         with open(instancefile) as f:
             doc = loader(f)
 
-        jsonschema.validate(instance=doc, schema=schema)
+        try:
+            jsonschema.validate(instance=doc, schema=schema)
+        except jsonschema.ValidationError as err:
+            failures[instancefile] = err
+    if failures:
+        print("Schema validation errors were encountered.")
+        for filename in args.instancefiles:
+            if filename in failures:
+                err = failures[filename]
+                path = (
+                    ".".join(x if "." not in x else f'"{x}"' for x in err.path)
+                    or "<root>"
+                )
+                print(f'  \033[0;33m{filename}::{path}: \033[0m{err.message}')
+        sys.exit(1)
+
     print("ok -- validation done")
