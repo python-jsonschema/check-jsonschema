@@ -38,7 +38,7 @@ to your `.pre-commit-config.yaml` is this:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.2.0
+  rev: 0.3.0
   hooks:
     - id: check-github-workflows
 ```
@@ -51,7 +51,7 @@ manually, you could do this:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.2.0
+  rev: 0.3.0
   hooks:
     - id: check-jsonschema
       name: "Check GitHub Workflows"
