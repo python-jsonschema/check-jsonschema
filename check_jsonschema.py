@@ -123,7 +123,7 @@ def main():
             if filename in failures:
                 err = failures[filename]
                 path = (
-                    ".".join(x if "." not in x else f'"{x}"' for x in err.path)
+                    ".".join(str(x) if "." not in str(x) else f'"{str(x)}"' for x in err.path)
                     or "<root>"
                 )
                 print(f'  \033[0;33m{filename}::{path}: \033[0m{err.message}')
