@@ -122,11 +122,9 @@ def main():
         for filename in args.instancefiles:
             if filename in failures:
                 err = failures[filename]
-                path = (
-                    ".".join(x if "." not in x else f'"{x}"' for x in err.path)
-                    or "<root>"
-                )
-                print(f'  \033[0;33m{filename}::{path}: \033[0m{err.message}')
+                path = [str(x) for x in err.path] or ["<root>"]
+                path = ".".join(x if "." not in x else f'"{x}"' for x in path)
+                print(f"  \033[0;33m{filename}::{path}: \033[0m{err.message}")
         sys.exit(1)
 
     print("ok -- validation done")
