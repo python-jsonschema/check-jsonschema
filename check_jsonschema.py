@@ -14,22 +14,18 @@ from identify import identify
 yaml = ruamel.yaml.YAML(typ="safe")
 
 
-sysname = platform.system()
-# on windows, try to get the appdata env var
-# this *could* result in CACHE_DIR=None, which is fine, just skip caching in
-# that case
-if sysname == "Windows":
-    CACHE_DIR = os.getenv("LOCALAPPDATA", os.getenv("APPDATA"))
-# macOS -> app support dir
-elif sysname == "Darwin":
-    CACHE_DIR = os.path.expanduser("~/Library/Application Support")
-# default for unknown platforms, namely linux behavior
-# use XDG env var and default to ~/.cache/
-else:
-    CACHE_DIR = os.getenv("XDG_CACHE_HOME", os.path.expanduser("~/.cache/"))
+def cache_dir():
+    sysname = platform.system()
+    # on windows, try to get the appdata env var
+    # this *could* result in CACHE_DIR=None, which is fine, just skip caching in
+    # that case
+    if sysname == "Windows":
+        cache_dir = os.getenv("LOCALAPPDATA", os.getenv("APPDATA"))
+    else:
+        cache_dir = os.environ.get('XDG_CACHE_HOME') or os.path.expanduser('~/.cache')
+    return os.path.realpath(os.path.join(cache_dir, 'jsonschema_validate'))
 
-if CACHE_DIR:
-    CACHE_DIR = os.path.join(CACHE_DIR, "jsonschema_validate")
+CACHE_DIR = cache_dir()
 
 
 @contextlib.contextmanager
