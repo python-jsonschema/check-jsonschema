@@ -57,7 +57,7 @@ def cached_open(file_url, filename):
             # get both timestamps as epoch times
             local_mtime = os.path.getmtime(dest)
             remote_mtime = time.mktime(
-                time.strptime(conn.headers["last-modified"], "%a, %d %b %Y %H:%M:%S %Z")
+                time.strptime(conn.headers.get("last-modified", "Sun, 01 Jan 1970 00:00:01 GMT"), "%a, %d %b %Y %H:%M:%S %Z")
             )
             do_download = local_mtime < remote_mtime
         if do_download:
