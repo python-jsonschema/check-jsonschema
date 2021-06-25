@@ -13,20 +13,7 @@ from identify import identify
 
 yaml = ruamel.yaml.YAML(typ="safe")
 
-
-def cache_dir():
-    sysname = platform.system()
-    # on windows, try to get the appdata env var
-    # this *could* result in CACHE_DIR=None, which is fine, just skip caching in
-    # that case
-    if sysname == "Windows":
-        cache_dir = os.getenv("LOCALAPPDATA", os.getenv("APPDATA"))
-    else:
-        cache_dir = os.environ.get('XDG_CACHE_HOME') or os.path.expanduser('~/.cache')
-    return os.path.realpath(os.path.join(cache_dir, 'jsonschema_validate'))
-
-CACHE_DIR = cache_dir()
-
+CACHE_DIR = os.path.realpath(os.path.join(os.environ.get('XDG_CACHE_HOME') or os.path.expanduser('~/.cache'), 'jsonschema_validate'))
 
 @contextlib.contextmanager
 def cached_open(file_url, filename):
