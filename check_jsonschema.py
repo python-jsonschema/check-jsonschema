@@ -20,9 +20,6 @@ sysname = platform.system()
 # that case
 if sysname == "Windows":
     CACHE_DIR = os.getenv("LOCALAPPDATA", os.getenv("APPDATA"))
-# macOS -> app support dir
-elif sysname == "Darwin":
-    CACHE_DIR = os.path.expanduser("~/Library/Application Support")
 # default for unknown platforms, namely linux behavior
 # use XDG env var and default to ~/.cache/
 else:
