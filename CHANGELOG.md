@@ -3,7 +3,7 @@
 ## 0.3.2
 
 - Bugfix: handle last-modified header being un-set on schema request. Thanks to
-  @fooliooo for the fix!
+  @foolioo for the fix!
 
 ## 0.3.1
 
