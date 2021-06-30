@@ -1,14 +1,19 @@
 # CHANGELOG
 
+## Unreleased
+
+- Update the base cache directory on macOS to `~/Library/Caches/`.
+  Thanks to [@foolioo](https://github.com/foolioo)
+
 ## 0.3.2
 
 - Bugfix: handle last-modified header being un-set on schema request. Thanks to
-  @foolioo for the fix!
+  [@foolioo](https://github.com/foolioo) for the fix!
 
 ## 0.3.1
 
 - Bugfix: handle non-string elements in the json path. Thanks to
-  @Jean-MichelBenoit for the fix!
+  [@Jean-MichelBenoit](https://github.com/Jean-MichelBenoit) for the fix!
 
 ## 0.3.0
 
