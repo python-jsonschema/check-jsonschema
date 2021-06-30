@@ -3,7 +3,9 @@ import contextlib
 import json
 import os
 import platform
+import shutil
 import sys
+import tempfile
 import time
 import urllib.request
 
@@ -31,6 +33,9 @@ else:
 if CACHE_DIR:
     CACHE_DIR = os.path.join(CACHE_DIR, "jsonschema_validate")
 
+LASTMOD_FMT = "%a, %d %b %Y %H:%M:%S %Z"
+LASTMOD_DEFAULT = "Sun, 01 Jan 1970 00:00:01 GMT"
+
 
 @contextlib.contextmanager
 def cached_open(file_url, filename):
@@ -57,12 +62,20 @@ def cached_open(file_url, filename):
             # get both timestamps as epoch times
             local_mtime = os.path.getmtime(dest)
             remote_mtime = time.mktime(
-                time.strptime(conn.headers.get("last-modified", "Sun, 01 Jan 1970 00:00:01 GMT"), "%a, %d %b %Y %H:%M:%S %Z")
+                time.strptime(
+                    conn.headers.get("last-modified", LASTMOD_DEFAULT), LASTMOD_FMT
+                )
             )
             do_download = local_mtime < remote_mtime
         if do_download:
-            with open(dest, "wb") as fp:
-                fp.write(conn.read())
+            # download to a temp file and then move to the dest
+            # this makes the download safe if run in parallel (parallel runs
+            # won't create a new empty file for writing and cause failures)
+            fp = tempfile.NamedTemporaryFile(mode="wb", delete=False)
+            fp.write(conn.read())
+            fp.close()
+            shutil.copy(fp.name, dest)
+            os.remove(fp.name)
 
         conn.close()
 
