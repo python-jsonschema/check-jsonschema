@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased
+## 0.4.0
 
 - Fix a bug with parallel runs writing the same file in an unsafe way
 - Update the base cache directory on macOS to `~/Library/Caches/`.
