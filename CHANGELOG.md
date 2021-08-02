@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Unreleased
+
+## 0.4.1
+
+- Update the azure-pipelines schema version to latest.
+  Thanks to [@Borda](https://github.com/Borda)
+
 ## 0.4.0
 
 - Fix a bug with parallel runs writing the same file in an unsafe way
