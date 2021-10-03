@@ -1,0 +1,17 @@
+[run]
+parallel = True
+
+[report]
+show_missing = True
+
+exclude_lines =
+    # the pragma to disable coverage
+    pragma: no cover
+    # don't complain if tests don't hit unimplemented methods/modes
+    raise NotImplementedError
+    # don't check on executable components of importable modules
+    if __name__ == .__main__.:
+    # don't check coverage on type checking conditionals
+    if TYPE_CHECKING:
+    # skip overloads
+    @overload
