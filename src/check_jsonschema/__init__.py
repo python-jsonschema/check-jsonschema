@@ -1,14 +1,9 @@
 import argparse
-import json
 import sys
 
 import jsonschema
-import ruamel.yaml
-from identify import identify
 
-from .cachedownloader import CacheDownloader
-
-yaml = ruamel.yaml.YAML(typ="safe")
+from .loaders import InstanceLoader, SchemaLoader
 
 
 def main():
@@ -24,6 +19,12 @@ def main():
         ),
     )
     parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        default=False,
+        help="Disable schema caching. Always download remote schemas.",
+    )
+    parser.add_argument(
         "--cache-filename",
         help=(
             "The name to use for caching a remote schema. "
@@ -33,40 +34,23 @@ def main():
     parser.add_argument("instancefiles", nargs="+", help="JSON or YAML files to check.")
     args = parser.parse_args()
 
-    if args.schemafile.startswith("https://") or args.schemafile.startswith("http://"):
-        cache = CacheDownloader(args.schemafile, args.cache_filename)
-        with cache.open() as fp:
-            schema = json.load(fp)
-    else:
-        with open(args.schemafile) as f:
-            schema = json.load(f)
+    schema_loader = SchemaLoader(args.schemafile, args.cache_filename, args.no_cache)
+    validator = schema_loader.get_validator()
+
+    instances = InstanceLoader(args.instancefiles)
 
     failures = {}
-    for instancefile in args.instancefiles:
-        tags = identify.tags_from_path(instancefile)
-        if "yaml" in tags:
-            loader = yaml.load
-        elif "json" in tags:
-            loader = json.load
-        else:
-            raise ValueError(
-                f"cannot check {instancefile} as it is neither yaml nor json"
-            )
-        with open(instancefile) as f:
-            doc = loader(f)
-
+    for filename, doc in instances.iter_files():
         try:
-            jsonschema.validate(instance=doc, schema=schema)
+            validator.validate(instance=doc)
         except jsonschema.ValidationError as err:
-            failures[instancefile] = err
+            failures[filename] = err
     if failures:
         print("Schema validation errors were encountered.")
-        for filename in args.instancefiles:
-            if filename in failures:
-                err = failures[filename]
-                path = [str(x) for x in err.path] or ["<root>"]
-                path = ".".join(x if "." not in x else f'"{x}"' for x in path)
-                print(f"  \033[0;33m{filename}::{path}: \033[0m{err.message}")
+        for filename, err in failures.items():
+            path = [str(x) for x in err.path] or ["<root>"]
+            path = ".".join(x if "." not in x else f'"{x}"' for x in path)
+            print(f"  \033[0;33m{filename}::{path}: \033[0m{err.message}")
         sys.exit(1)
 
     print("ok -- validation done")

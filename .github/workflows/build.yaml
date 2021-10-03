@@ -3,20 +3,26 @@ on:
   push:
 
 jobs:
-  lint:
-    name: "Lint repo"
-    runs-on: ubuntu-latest
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        py: [3.6, 3.9]
+    name: "Run Tests on ${{ matrix.os }}, py${{ matrix.py }}"
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.9
-      - name: install precommit
-        run: |
-          python -m pip install -U pip setuptools
-          python -m pip install pre-commit
-      - name: run pre-commit
-        run: pre-commit run -a
+          python-version: ${{ matrix.py }}
+      - name: install requirements
+        run: python -m pip install tox
+      - name: lint
+        run: python -m tox -e lint
+      - name: test
+        run: python -m tox -e py
+      - name: twine-check
+        run: python -m tox -e twine-check
   self-check:
     name: "Self-Check"
     runs-on: ubuntu-latest

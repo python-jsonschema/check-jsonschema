@@ -33,7 +33,7 @@ def test_default_cache_dir(monkeypatch, sysname, fakeenv, expect_value):
     for k, v in fakeenv.items():
         monkeypatch.setenv(k, v)
     if expect_value is not None:
-        expect_value = os.path.join(expect_value, "check_jsonschema")
+        expect_value = os.path.join(expect_value, "check_jsonschema", "downloads")
 
     def fakesystem():
         return sysname

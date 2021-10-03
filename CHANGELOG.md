@@ -1,6 +1,21 @@
 # CHANGELOG
 
-## Unreleased
+## 0.5.0 (Unreleased)
+
+- Performance enhancement for testing many files: only load the schema once
+- Added `--no-cache` option to disable schema caching
+- Change the default schema download cache directory from
+  `jsonschema_validate` to `check_jsonschema/downloads`.
+  e.g. `~/.cache/jsonschema_validate` is now
+  `~/.cache/check_jsonschema/downloads`.
+  Caches will now be in the following locations for different platforms
+  and environments:
+
+  - `$XDG_CACHE_HOME/check_jsonschema/downloads` (Linux/other, XDG cache dir)
+  - `~/.cache/check_jsonschema/downloads` (Linux/other, no XDG cache dir set)
+  - `~/Library/Caches/check_jsonschema/downloads` (macOS)
+  - `%LOCALAPPDATA%\check_jsonschema\downloads` (Windows, local app data set)
+  - `%APPDATA%\check_jsonschema\downloads` (Windows, no local app data set, but appdata set)
 
 ## 0.4.1
 
