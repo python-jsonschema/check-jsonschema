@@ -17,10 +17,13 @@ class BadFileTypeError(ValueError):
 
 class SchemaLoader:
     def __init__(
-        self, schemafile: str, cache_filename: t.Optional[str], disable_cache: bool
+        self,
+        schemafile: str,
+        cache_filename: t.Optional[str] = None,
+        disable_cache: bool = False,
     ):
         self._filename = os.path.expanduser(schemafile)
-        if schemafile.startsiwth("https://") or schemafile.startswith("http://"):
+        if schemafile.startswith("https://") or schemafile.startswith("http://"):
             self._downloader = CacheDownloader(
                 schemafile, cache_filename, disable_cache=disable_cache
             )

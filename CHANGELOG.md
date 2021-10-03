@@ -2,6 +2,9 @@
 
 ## 0.5.0 (Unreleased)
 
+- Schemafiles are now passed through `os.path.expanduser`, meaning that a
+  schema path of `~/myschema.json` will be expanded by check-jsonschema
+  itself ([#9](https://github.com/sirosen/check-jsonschema/issues/9))
 - Performance enhancement for testing many files: only load the schema once
 - Added `--no-cache` option to disable schema caching
 - Change the default schema download cache directory from
