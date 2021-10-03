@@ -1,9 +1,26 @@
 import os
 import platform
+import time
 
 import pytest
 
 from check_jsonschema.cachedownloader import CacheDownloader
+
+
+class DummyConnHeaders:
+    def __init__(self):
+        self.lastmod = "Sun, 01 Jan 2000 00:00:01 GMT"
+
+    def get(self, name, default):
+        if name.lower() == "last-modified":
+            if self.lastmod:
+                return self.lastmod
+        return default
+
+
+class DummyConn:
+    def __init__(self):
+        self.headers = DummyConnHeaders()
 
 
 def test_default_filename_from_uri():
@@ -57,3 +74,17 @@ def test_default_cache_dir(monkeypatch, sysname, fakeenv, expect_value):
         assert expanduser_path == "~/.cache"
     else:
         assert expanduser_path is None
+
+
+def test_cache_hit_disabled_always_false(monkeypatch):
+    monkeypatch.setattr(os.path, "exists", lambda x: True)
+    # mtime = NOW
+    monkeypatch.setattr(os.path, "getmtime", lambda x: time.time())
+
+    # 1: with cache enabled, the default dummy connection looks like a cache hit
+    cd = CacheDownloader("https://foo.example.com/schema1.json")
+    assert cd._cache_hit("/tmp/schema1.json", DummyConn())
+
+    # 2: with cache disabled, the same call looks like a miss
+    cd = CacheDownloader("https://foo.example.com/schema1.json", disable_cache=True)
+    assert cd._cache_hit("/tmp/schema1.json", DummyConn()) is False

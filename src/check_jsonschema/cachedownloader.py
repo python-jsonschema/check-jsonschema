@@ -61,7 +61,7 @@ class CacheDownloader:
 
     def _cache_hit(self, cachefile, conn):
         # if caching is disabled, "turn off" any cache hits
-        if self.disable_cache:
+        if self._disable_cache:
             return False
 
         # no file? miss
@@ -69,9 +69,10 @@ class CacheDownloader:
             return False
 
         # compare mtime on any cached file against the remote last-modified time
+        # it is considered a hit if the local file is at least as new as the remote file
         local_mtime = os.path.getmtime(cachefile)
         remote_mtime = self._lastmod_from_conn(conn)
-        return local_mtime < remote_mtime
+        return local_mtime >= remote_mtime
 
     @contextlib.contextmanager
     def _urlopen(self):
