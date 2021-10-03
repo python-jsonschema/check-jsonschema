@@ -76,15 +76,29 @@ def test_default_cache_dir(monkeypatch, sysname, fakeenv, expect_value):
         assert expanduser_path is None
 
 
-def test_cache_hit_disabled_always_false(monkeypatch):
+def test_cache_hit_by_mtime(monkeypatch):
     monkeypatch.setattr(os.path, "exists", lambda x: True)
-    # mtime = NOW
-    monkeypatch.setattr(os.path, "getmtime", lambda x: time.time())
 
-    # 1: with cache enabled, the default dummy connection looks like a cache hit
+    # local mtime = NOW, cache hit
+    monkeypatch.setattr(os.path, "getmtime", lambda x: time.time())
     cd = CacheDownloader("https://foo.example.com/schema1.json")
     assert cd._cache_hit("/tmp/schema1.json", DummyConn())
 
-    # 2: with cache disabled, the same call looks like a miss
-    cd = CacheDownloader("https://foo.example.com/schema1.json", disable_cache=True)
+    # local mtime = 0, cache miss
+    monkeypatch.setattr(os.path, "getmtime", lambda x: 0)
+    cd = CacheDownloader("https://foo.example.com/schema1.json")
     assert cd._cache_hit("/tmp/schema1.json", DummyConn()) is False
+
+
+def test_cachedownloader_cached_file(tmp_path, monkeypatch):
+    # create a file
+    f = tmp_path / "foo.json"
+    f.write_text("{}")
+
+    # set the cache_dir to the tmp dir (so that cache_dir will always be set)
+    cd = CacheDownloader(str(f), cache_dir=tmp_path)
+    # patch the downloader to skip any download "work"
+    monkeypatch.setattr(cd, "_download", lambda: str(f))
+
+    with cd.open() as fp:
+        assert fp.read() == "{}"

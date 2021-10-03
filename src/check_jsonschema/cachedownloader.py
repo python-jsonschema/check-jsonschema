@@ -60,10 +60,6 @@ class CacheDownloader:
         )
 
     def _cache_hit(self, cachefile, conn):
-        # if caching is disabled, "turn off" any cache hits
-        if self._disable_cache:
-            return False
-
         # no file? miss
         if not os.path.exists(cachefile):
             return False
@@ -103,7 +99,7 @@ class CacheDownloader:
 
     @contextlib.contextmanager
     def open(self):
-        if not self._cache_dir:
+        if not self._cache_dir or self._disable_cache:
             with urllib.request.urlopen(self._file_url) as fp:
                 yield fp
         else:
