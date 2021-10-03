@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## 0.5.0 (Unreleased)
+## Unreleased
+
+## 0.5.0
 
 - Added the `--default-filetype` flag, which sets a default of JSON or YAML
   loading to use when `identify` does not detect the filetype of an instance

@@ -33,12 +33,11 @@ These hooks check known files against schemas provided by other sources:
 ### Validate GitHub Workflows with Schemastore
 
 You can use the schemastore github workflow schema to lint your GitHub workflow
-files. This hook is so useful, it's built in as a pre-set. All you need to add
-to your `.pre-commit-config.yaml` is this:
+files. All you need to add to your `.pre-commit-config.yaml` is this:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.3.0
+  rev: 0.5.0
   hooks:
     - id: check-github-workflows
 ```
@@ -51,7 +50,7 @@ manually, you could do this:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.3.0
+  rev: 0.5.0
   hooks:
     - id: check-jsonschema
       name: "Check GitHub Workflows"
