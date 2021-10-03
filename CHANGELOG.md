@@ -2,6 +2,9 @@
 
 ## 0.5.0 (Unreleased)
 
+- Added the `--default-filetype` flag, which sets a default of JSON or YAML
+  loading to use when `identify` does not detect the filetype of an instance
+  file. Defaults to failure on extensionless files.
 - Schemafiles are now passed through `os.path.expanduser`, meaning that a
   schema path of `~/myschema.json` will be expanded by check-jsonschema
   itself ([#9](https://github.com/sirosen/check-jsonschema/issues/9))

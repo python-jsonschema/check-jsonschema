@@ -27,6 +27,14 @@ def get_parser(cls=None):
             "Defaults to the last slash-delimited part of the URI."
         ),
     )
+    parser.add_argument(
+        "--default-filetype",
+        help=(
+            "A default filetype to assume when a file is not detected as JSON or YAML"
+        ),
+        type=str.lower,
+        choices=("json", "yaml"),
+    )
     parser.add_argument("instancefiles", nargs="+", help="JSON or YAML files to check.")
     return parser
 

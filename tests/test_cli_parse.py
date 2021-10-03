@@ -9,13 +9,13 @@ class CustomArgError(ValueError):
     pass
 
 
-class TestArgParser(argparse.ArgumentParser):
+class CustomArgParser(argparse.ArgumentParser):
     def error(self, message):
         raise CustomArgError(message)
 
 
 def _call_parse(args):
-    return parse_args(args, cls=TestArgParser)
+    return parse_args(args, cls=CustomArgParser)
 
 
 def test_requires_some_args():

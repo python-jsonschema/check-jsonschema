@@ -12,7 +12,9 @@ def main():
     schema_loader = SchemaLoader(args.schemafile, args.cache_filename, args.no_cache)
     validator = schema_loader.get_validator()
 
-    instances = InstanceLoader(args.instancefiles)
+    instances = InstanceLoader(
+        args.instancefiles, default_filetype=args.default_filetype
+    )
 
     failures = {}
     for filename, doc in instances.iter_files():
