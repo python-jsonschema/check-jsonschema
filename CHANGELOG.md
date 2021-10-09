@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Improved error output when the schema itself is invalid, either because it is
+  not JSON or because it does not validate under its relevant metaschema
+
 ## 0.5.0
 
 - Added the `--default-filetype` flag, which sets a default of JSON or YAML

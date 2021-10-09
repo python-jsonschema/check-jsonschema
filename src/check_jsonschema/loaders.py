@@ -11,6 +11,10 @@ from .cachedownloader import CacheDownloader
 yaml = ruamel.yaml.YAML(typ="safe")
 
 
+class SchemaParseError(ValueError):
+    pass
+
+
 class BadFileTypeError(ValueError):
     pass
 
@@ -30,15 +34,22 @@ class SchemaLoader:
         else:
             self._downloader = None
 
+    def _json_load(self, fp):
+        try:
+            return json.load(fp)
+        except ValueError:
+            raise SchemaParseError(self._filename)
+
     def get_validator(self):
         if self._downloader:
             with self._downloader.open() as fp:
-                schema = json.load(fp)
+                schema = self._json_load(fp)
         else:
             with open(self._filename) as f:
-                schema = json.load(f)
+                schema = self._json_load(f)
 
         validator_cls = jsonschema.validators.validator_for(schema)
+
         validator_cls.check_schema(schema)
         validator = validator_cls(schema)
         return validator
