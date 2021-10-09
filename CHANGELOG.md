@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.1
+
 - Improved error output when the schema itself is invalid, either because it is
   not JSON or because it does not validate under its relevant metaschema
 
