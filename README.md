@@ -1,6 +1,6 @@
 # check-jsonschema
 
-A pre-commit hook for checking files against a JSONSchema.
+A pre-commit hook for checking files against a [JSONSchema](https://json-schema.org/), built using the python [jsonschema](https://github.com/Julian/jsonschema/) package.
 The schema may be specified as a local or remote (HTTP or HTTPS) file.
 
 Remote files are automatically downloaded and cached if possible.
