@@ -1,6 +1,8 @@
+import enum
 import json
-import os
+import pathlib
 import typing as t
+import urllib.parse
 
 import jsonschema
 import ruamel.yaml
@@ -19,6 +21,15 @@ class BadFileTypeError(ValueError):
     pass
 
 
+class UnsupportedUrlScheme(ValueError):
+    pass
+
+
+class SchemaLoaderMode(enum.Enum):
+    cachedownloader = enum.auto()
+    localpath = enum.auto()
+
+
 class SchemaLoader:
     def __init__(
         self,
@@ -26,13 +37,39 @@ class SchemaLoader:
         cache_filename: t.Optional[str] = None,
         disable_cache: bool = False,
     ):
-        self._filename = os.path.expanduser(schemafile)
-        if schemafile.startswith("https://") or schemafile.startswith("http://"):
+        # record input parameters (these are not to be modified)
+        self._schemafile = schemafile
+        self._cache_filename = cache_filename
+        self._disable_cache = disable_cache
+
+        # parsed info (resolved paths, etc) gets initialized
+        self._filename = schemafile
+        self._url_info = urllib.parse.urlparse(schemafile)
+        self._mode = self._determine_mode(self._url_info)
+
+        # any complex construction (build a downloader object)
+        self._downloader: t.Optional[CacheDownloader] = None
+        if self._mode is SchemaLoaderMode.localpath:
+            as_path = pathlib.Path(self._schemafile)
+            self._filename = str(as_path.expanduser().resolve())
+        elif self._mode is SchemaLoaderMode.cachedownloader:
             self._downloader = CacheDownloader(
-                schemafile, cache_filename, disable_cache=disable_cache
+                self._filename, self._cache_filename, disable_cache=self._disable_cache
             )
-        else:
-            self._downloader = None
+
+    def _determine_mode(self, url_info) -> SchemaLoaderMode:
+        mode_map = {
+            "http": SchemaLoaderMode.cachedownloader,
+            "https": SchemaLoaderMode.cachedownloader,
+            "file": SchemaLoaderMode.localpath,
+            "": SchemaLoaderMode.localpath,
+        }
+        if url_info.scheme not in mode_map:
+            raise UnsupportedUrlScheme(
+                "check-jsonschema only supports http, https, and local files. "
+                f"detected parsed URL had an unrecognized scheme: {self._url_info}"
+            )
+        return mode_map[url_info.scheme]
 
     def _json_load(self, fp):
         try:
@@ -40,16 +77,19 @@ class SchemaLoader:
         except ValueError:
             raise SchemaParseError(self._filename)
 
-    def get_validator(self):
-        if self._downloader:
-            with self._downloader.open() as fp:
-                schema = self._json_load(fp)
-        else:
+    def _read_schema(self):
+        if self._mode is SchemaLoaderMode.localpath:
             with open(self._filename) as f:
-                schema = self._json_load(f)
+                return self._json_load(f)
+        elif self._mode is SchemaLoaderMode.cachedownloader:
+            with self._downloader.open() as fp:
+                return self._json_load(fp)
+        else:  # pragma: no cover
+            raise NotImplementedError  # unreachable
 
+    def get_validator(self):
+        schema = self._read_schema()
         validator_cls = jsonschema.validators.validator_for(schema)
-
         validator_cls.check_schema(schema)
         validator = validator_cls(schema)
         return validator

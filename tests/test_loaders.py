@@ -1,9 +1,26 @@
 import os
+import pathlib
 import platform
 
 import pytest
 
 from check_jsonschema.loaders import BadFileTypeError, InstanceLoader, SchemaLoader
+
+
+class FakePathlibPath:
+    def __init__(self, path):
+        self._path = path
+
+    def __str__(self):
+        return self._path
+
+    def expanduser(self):
+        if self._path.startswith("~/"):
+            return FakePathlibPath(os.path.join("/home/dummy-user", self._path[2:]))
+        return self
+
+    def resolve(self):
+        return self
 
 
 @pytest.mark.parametrize(
@@ -16,10 +33,11 @@ from check_jsonschema.loaders import BadFileTypeError, InstanceLoader, SchemaLoa
 )
 def test_schemaloader_expanduser_no_op(schemafile):
     sl = SchemaLoader(schemafile)
-    assert sl._filename == schemafile
     if schemafile.startswith("http"):
+        assert sl._filename == schemafile
         assert sl._downloader is not None
     else:
+        assert sl._filename == os.path.abspath(schemafile)
         assert sl._downloader is None
 
 
@@ -27,12 +45,7 @@ def test_schemaloader_expanduser(monkeypatch):
     if platform.system() == "Windows":
         pytest.skip("skip this test on windows for simplicity")
 
-    def fake_expanduser(path):
-        if path.startswith("~/"):
-            return os.path.join("/home/dummy-user", path[2:])
-        return path
-
-    monkeypatch.setattr(os.path, "expanduser", fake_expanduser)
+    monkeypatch.setattr(pathlib, "Path", FakePathlibPath)
 
     sl = SchemaLoader("~/schema1.json")
     assert sl._filename == "/home/dummy-user/schema1.json"
