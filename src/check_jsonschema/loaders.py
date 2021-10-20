@@ -95,6 +95,9 @@ class SchemaLoader:
         validator_cls = jsonschema.validators.validator_for(schema)
         validator_cls.check_schema(schema)
         validator = validator_cls(schema, format_checker=format_checker)
+        validator = validator_cls(schema,
+                                  format_checker=format_checker,
+                                  resolver=ref_resolver)
         return validator
 
 
