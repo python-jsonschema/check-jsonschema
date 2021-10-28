@@ -21,6 +21,15 @@ def get_parser(cls=None):
         help="Disable schema caching. Always download remote schemas.",
     )
     parser.add_argument(
+        "--disable-format",
+        action="store_true",
+        default=False,
+        help="Disable all format checks in the schema. "
+        "Because JSON Schema does not require that the format property do any "
+        "validation, files which validate with other tools may fail to validate "
+        "without this flag.",
+    )
+    parser.add_argument(
         "--cache-filename",
         help=(
             "The name to use for caching a remote schema. "

@@ -14,6 +14,7 @@ class SchemaChecker:
         *,
         cache_filename: t.Optional[str] = None,
         disable_cache: bool = False,
+        format_enabled: bool = True,
         default_instance_filetype: t.Optional[str] = None,
     ):
         self._schemafile = schemafile
@@ -21,6 +22,7 @@ class SchemaChecker:
 
         self._cache_filename = cache_filename
         self._disable_cache = disable_cache
+        self._format_enabled = format_enabled
         self._default_instance_filetype = default_instance_filetype
 
     def _fail(self, msg):
@@ -29,7 +31,10 @@ class SchemaChecker:
 
     def get_validator(self):
         schema_loader = SchemaLoader(
-            self._schemafile, self._cache_filename, self._disable_cache
+            self._schemafile,
+            self._cache_filename,
+            self._disable_cache,
+            self._format_enabled,
         )
         try:
             return schema_loader.get_validator()

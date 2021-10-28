@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add support for string format verification, by enabling use of the
+  `jsonschema.FormatChecker`. This is enabled by default, but can be disabled
+  with the `--disable-format` flag
+
 ## 0.5.1
 
 - Improved error output when the schema itself is invalid, either because it is

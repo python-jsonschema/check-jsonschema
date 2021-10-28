@@ -36,11 +36,13 @@ class SchemaLoader:
         schemafile: str,
         cache_filename: t.Optional[str] = None,
         disable_cache: bool = False,
+        format_enabled: bool = True,
     ):
         # record input parameters (these are not to be modified)
         self._schemafile = schemafile
         self._cache_filename = cache_filename
         self._disable_cache = disable_cache
+        self._format_enabled = format_enabled
 
         # parsed info (resolved paths, etc) gets initialized
         self._filename = schemafile
@@ -89,9 +91,10 @@ class SchemaLoader:
 
     def get_validator(self):
         schema = self._read_schema()
+        format_checker = jsonschema.FormatChecker() if self._format_enabled else None
         validator_cls = jsonschema.validators.validator_for(schema)
         validator_cls.check_schema(schema)
-        validator = validator_cls(schema)
+        validator = validator_cls(schema, format_checker=format_checker)
         return validator
 
 
