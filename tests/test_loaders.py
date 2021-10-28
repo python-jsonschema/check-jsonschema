@@ -37,7 +37,7 @@ def test_schemaloader_expanduser_no_op(schemafile):
         assert sl._filename == schemafile
         assert sl._downloader is not None
     else:
-        assert sl._filename == os.path.abspath(schemafile)
+        assert os.path.abspath(sl._filename) == os.path.abspath(schemafile)
         assert sl._downloader is None
 
 
