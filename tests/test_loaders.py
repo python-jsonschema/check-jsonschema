@@ -5,22 +5,14 @@ import platform
 import pytest
 
 from check_jsonschema.loaders import BadFileTypeError, InstanceLoader, SchemaLoader
+from check_jsonschema.loaders.schema import HttpSchemaReader, LocalSchemaReader
 
 
-class FakePathlibPath:
-    def __init__(self, path):
-        self._path = path
-
-    def __str__(self):
-        return self._path
-
-    def expanduser(self):
-        if self._path.startswith("~/"):
-            return FakePathlibPath(os.path.join("/home/dummy-user", self._path[2:]))
-        return self
-
-    def resolve(self):
-        return self
+def test_schemaloader_path_handling_relative_local_path():
+    path = "path/to/schema.json"
+    sl = SchemaLoader(path)
+    assert isinstance(sl._reader, LocalSchemaReader)
+    assert sl._reader._filename == os.path.abspath(path)
 
 
 @pytest.mark.parametrize(
@@ -28,32 +20,36 @@ class FakePathlibPath:
     [
         "https://foo.example.com/schema.json",
         "http://foo.example.com/schema.json",
-        "path/to/schema.json",
     ],
 )
-def test_schemaloader_expanduser_no_op(schemafile):
+def test_schemaloader_remote_path(schemafile):
     sl = SchemaLoader(schemafile)
-    if schemafile.startswith("http"):
-        assert sl._filename == schemafile
-        assert sl._downloader is not None
-    else:
-        assert os.path.abspath(sl._filename) == os.path.abspath(schemafile)
-        assert sl._downloader is None
+    assert isinstance(sl._reader, HttpSchemaReader)
+    assert sl._reader._url == schemafile
 
 
 def test_schemaloader_expanduser(monkeypatch):
     if platform.system() == "Windows":
         pytest.skip("skip this test on windows for simplicity")
 
-    monkeypatch.setattr(pathlib, "Path", FakePathlibPath)
+    def fake_resolve(path):
+        path = str(path)
+        if path.startswith("~/"):
+            path = os.path.join("/home/dummy-user/", path[2:])
+            return pathlib.Path(path)
+        else:
+            path = os.path.join("/dummy/abs/path/", path)
+            return pathlib.Path(path)
+
+    monkeypatch.setattr("check_jsonschema.loaders.schema._resolve_path", fake_resolve)
 
     sl = SchemaLoader("~/schema1.json")
-    assert sl._filename == "/home/dummy-user/schema1.json"
-    assert sl._downloader is None
+    assert isinstance(sl._reader, LocalSchemaReader)
+    assert sl._reader._filename == "/home/dummy-user/schema1.json"
 
     sl = SchemaLoader("somepath/schema1.json")
-    assert sl._filename == "somepath/schema1.json"
-    assert sl._downloader is None
+    assert isinstance(sl._reader, LocalSchemaReader)
+    assert sl._reader._filename == "/dummy/abs/path/somepath/schema1.json"
 
 
 @pytest.mark.parametrize(
