@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.6.0
+
 - Add support for string format verification, by enabling use of the
   `jsonschema.FormatChecker`. This is enabled by default, but can be disabled
   with the `--disable-format` flag

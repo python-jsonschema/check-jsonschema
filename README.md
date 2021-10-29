@@ -37,7 +37,7 @@ files. All you need to add to your `.pre-commit-config.yaml` is this:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.5.0
+  rev: 0.6.0
   hooks:
     - id: check-github-workflows
 ```
@@ -50,7 +50,7 @@ manually, you could do this:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.5.0
+  rev: 0.6.0
   hooks:
     - id: check-jsonschema
       name: "Check GitHub Workflows"
@@ -69,3 +69,47 @@ For full usage info:
 ```bash
 check-jsonschema --help
 ```
+
+## CLI Options
+
+These options apply both to standalone usage and pre-commit hook usage.
+
+### `--schemafile`
+
+The path or URL for a file containing a schema to use.
+
+This option is required.
+
+### `--no-cache`
+
+Do not cache HTTP(S) downloaded schemas.
+
+### `--disable-format`
+
+JSON Schema defines a `"format"` attribute for string fields but does not require
+that any validation for formats be applied.
+
+Starting in version 0.6.0, `check-jsonschema` will automatically check some
+formats by default.
+This flag disables these checks.
+
+Because `"format"` checking is not done by all JSON Schema tools, it is
+possible that a file may validate under a schema with a different tool, but
+fail with `check-jsonschema` if `--disable-format` is not set.
+
+### `--cache-filename`
+
+The name to use for caching a remote (HTTP or HTTPS) schema.
+
+Defaults to using the last slash-delimited part of the URI.
+
+### `--default-filetype`
+
+The default filetype to assume on instance files when they are detected neither
+as JSON nor as YAML.
+
+For example, pass `--default-filetype yaml` to instruct that files which have
+no extension should be treated as YAML.
+
+By default, this is not set and files without a detected type of JSON or YAML
+will fail.
