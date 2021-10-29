@@ -9,10 +9,11 @@ from check_jsonschema.loaders.schema import HttpSchemaReader, LocalSchemaReader
 
 
 def test_schemaloader_path_handling_relative_local_path():
-    path = "path/to/schema.json"
+    path = os.path.join("path", "to", "schema.json")
     sl = SchemaLoader(path)
-    assert isinstance(sl._reader, LocalSchemaReader)
-    assert sl._reader._filename == os.path.abspath(path)
+    assert isinstance(sl.reader, LocalSchemaReader)
+    assert sl.reader.filename == path
+    assert sl.reader.resolved_filename == os.path.abspath(path)
 
 
 @pytest.mark.parametrize(
@@ -24,8 +25,8 @@ def test_schemaloader_path_handling_relative_local_path():
 )
 def test_schemaloader_remote_path(schemafile):
     sl = SchemaLoader(schemafile)
-    assert isinstance(sl._reader, HttpSchemaReader)
-    assert sl._reader._url == schemafile
+    assert isinstance(sl.reader, HttpSchemaReader)
+    assert sl.reader.url == schemafile
 
 
 def test_schemaloader_expanduser(monkeypatch):
@@ -44,12 +45,12 @@ def test_schemaloader_expanduser(monkeypatch):
     monkeypatch.setattr("check_jsonschema.loaders.schema._resolve_path", fake_resolve)
 
     sl = SchemaLoader("~/schema1.json")
-    assert isinstance(sl._reader, LocalSchemaReader)
-    assert sl._reader._filename == "/home/dummy-user/schema1.json"
+    assert isinstance(sl.reader, LocalSchemaReader)
+    assert sl.reader.resolved_filename == "/home/dummy-user/schema1.json"
 
     sl = SchemaLoader("somepath/schema1.json")
-    assert isinstance(sl._reader, LocalSchemaReader)
-    assert sl._reader._filename == "/dummy/abs/path/somepath/schema1.json"
+    assert isinstance(sl.reader, LocalSchemaReader)
+    assert sl.reader.resolved_filename == "/dummy/abs/path/somepath/schema1.json"
 
 
 @pytest.mark.parametrize(

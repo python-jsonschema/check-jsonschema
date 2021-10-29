@@ -10,32 +10,11 @@ from ..utils import is_url_ish
 from .errors import SchemaParseError, UnsupportedUrlScheme
 
 
-def json_load_schema(schema_location, fp):
+def _json_load_schema(schema_location, fp):
     try:
         return json.load(fp)
     except ValueError:
         raise SchemaParseError(schema_location)
-
-
-class LocalSchemaReader:
-    def __init__(self, filename):
-        self._filename = filename
-
-    def read_schema(self):
-        with open(self._filename) as f:
-            return json_load_schema(self._filename, f)
-
-
-class HttpSchemaReader:
-    def __init__(self, url, cache_filename: t.Optional[str], disable_cache: bool):
-        self._url = url
-        self._downloader = CacheDownloader(
-            url, cache_filename, disable_cache=disable_cache
-        )
-
-    def read_schema(self):
-        with self._downloader.open() as fp:
-            return json_load_schema(self._url, fp)
 
 
 def _resolve_path(path):
@@ -52,6 +31,29 @@ def _resolve_path(path):
     return path.expanduser().resolve()
 
 
+class LocalSchemaReader:
+    def __init__(self, filename):
+        self.filename = filename
+        path = pathlib.Path(filename)
+        self.resolved_filename = str(_resolve_path(path))
+
+    def read_schema(self):
+        with open(self.resolved_filename) as f:
+            return _json_load_schema(self.filename, f)
+
+
+class HttpSchemaReader:
+    def __init__(self, url, cache_filename: t.Optional[str], disable_cache: bool):
+        self.url = url
+        self.downloader = CacheDownloader(
+            url, cache_filename, disable_cache=disable_cache
+        )
+
+    def read_schema(self):
+        with self.downloader.open() as fp:
+            return _json_load_schema(self.url, fp)
+
+
 class SchemaLoader:
     def __init__(
         self,
@@ -61,39 +63,38 @@ class SchemaLoader:
         format_enabled: bool = True,
     ):
         # record input parameters (these are not to be modified)
-        self._schemafile = schemafile
-        self._cache_filename = cache_filename
-        self._disable_cache = disable_cache
-        self._format_enabled = format_enabled
+        self.schemafile = schemafile
+        self.cache_filename = cache_filename
+        self.disable_cache = disable_cache
+        self.format_enabled = format_enabled
 
-        # convert input path to be a resolved local file path or a URL, and then
-        # parse that into parsed URL info
-        url = self._schemafile
-        if not is_url_ish(self._schemafile):
-            path = pathlib.Path(self._schemafile)
-            path = _resolve_path(path)
-            url = path.as_uri()
-        self._url_info = urllib.parse.urlparse(url)
+        # if the schema location is a URL, which may include a file:// URL, parse it
+        self.url_info = None
+        if is_url_ish(self.schemafile):
+            self.url_info = urllib.parse.urlparse(self.schemafile)
 
         # setup a schema reader
-        self._reader = self._get_schema_reader()
+        self.reader = self.get_schema_reader()
 
-    def _get_schema_reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
-        if self._url_info.scheme in ("http", "https"):
+    def get_schema_reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
+        if self.url_info is None:
+            return LocalSchemaReader(self.schemafile)
+
+        if self.url_info.scheme in ("http", "https"):
             return HttpSchemaReader(
-                self._schemafile, self._cache_filename, self._disable_cache
+                self.schemafile, self.cache_filename, self.disable_cache
             )
-        elif self._url_info.scheme in ("file", ""):
-            return LocalSchemaReader(self._url_info.path)
+        elif self.url_info.scheme in ("file", ""):
+            return LocalSchemaReader(self.url_info.path)
         else:
             raise UnsupportedUrlScheme(
                 "check-jsonschema only supports http, https, and local files. "
-                f"detected parsed URL had an unrecognized scheme: {self._url_info}"
+                f"detected parsed URL had an unrecognized scheme: {self.url_info}"
             )
 
     def get_validator(self):
-        schema = self._reader.read_schema()
-        format_checker = jsonschema.FormatChecker() if self._format_enabled else None
+        schema = self.reader.read_schema()
+        format_checker = jsonschema.FormatChecker() if self.format_enabled else None
         validator_cls = jsonschema.validators.validator_for(schema)
         validator_cls.check_schema(schema)
         validator = validator_cls(schema, format_checker=format_checker)
