@@ -8,12 +8,27 @@ from check_jsonschema.loaders import BadFileTypeError, InstanceLoader, SchemaLoa
 from check_jsonschema.loaders.schema import HttpSchemaReader, LocalSchemaReader
 
 
-def test_schemaloader_path_handling_relative_local_path():
-    path = os.path.join("path", "to", "schema.json")
-    sl = SchemaLoader(path)
+@pytest.fixture
+def in_tmp_dir(request, tmp_path):
+    os.chdir(str(tmp_path))
+    yield
+    os.chdir(request.config.invocation_dir)
+
+
+def test_schemaloader_path_handling_relative_local_path(in_tmp_dir):
+    filename = os.path.join("path", "to", "schema.json")
+
+    # ensure that the file exists so that the behavior of pathlib resolution will be
+    # correct on Windows with older python versions
+    # see: https://bugs.python.org/issue38671
+    path = pathlib.Path(filename)
+    path.parent.mkdir(parents=True)
+    path.touch()
+
+    sl = SchemaLoader(filename)
     assert isinstance(sl.reader, LocalSchemaReader)
-    assert sl.reader.filename == path
-    assert sl.reader.resolved_filename == os.path.abspath(path)
+    assert sl.reader.filename == filename
+    assert sl.reader.resolved_filename == os.path.abspath(filename)
 
 
 @pytest.mark.parametrize(
