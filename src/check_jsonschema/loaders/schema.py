@@ -10,24 +10,31 @@ from ..utils import is_url_ish
 from .errors import SchemaParseError, UnsupportedUrlScheme
 
 
-def _json_load_schema(schema_location, fp):
+def _json_load_schema(schema_location: str, fp) -> dict:
     try:
-        return json.load(fp)
+        schema = json.load(fp)
     except ValueError:
         raise SchemaParseError(schema_location)
+    if not isinstance(schema, dict):
+        raise SchemaParseError(schema_location)
+    return schema
+
+
+def _make_ref_resolver(schema, schema_uri) -> jsonschema.RefResolver:
+    base_uri = schema.get("$id", schema_uri)
+    return jsonschema.RefResolver(base_uri, schema)
 
 
 class LocalSchemaReader:
     def __init__(self, filename):
         self.filename = filename
-        self.path = pathlib.Path(filename)
-        self.abs_path = self.path.expanduser().resolve()
+        self.path = pathlib.Path(filename).expanduser().resolve()
 
     def get_ref_base(self) -> str:
-        return self.abs_path.as_uri()
+        return self.path.as_uri()
 
     def read_schema(self):
-        with self.abs_path.open() as f:
+        with self.path.open() as f:
             return _json_load_schema(self.filename, f)
 
 
@@ -90,10 +97,11 @@ class SchemaLoader:
         # format checker (which may be None)
         format_checker = jsonschema.FormatChecker() if self.format_enabled else None
 
-        # ref resolver which is built from the schema path
+        # ref resolver which may be built from the schema path
         # if the location is a URL, there's no change, but if it's a file path
         # it's made absolute and URI-ized
-        ref_resolver = jsonschema.RefResolver(self.reader.get_ref_base(), schema)
+        # the resolver should use `$id` if there is one present in the schema
+        ref_resolver = _make_ref_resolver(schema, self.reader.get_ref_base())
 
         # get the correct validator class and check the schema under its metaschema
         validator_cls = jsonschema.validators.validator_for(schema)

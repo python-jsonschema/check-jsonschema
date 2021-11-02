@@ -27,7 +27,7 @@ def test_schemaloader_path_handling_relative_local_path(in_tmp_dir):
     sl = SchemaLoader(filename)
     assert isinstance(sl.reader, LocalSchemaReader)
     assert sl.reader.filename == filename
-    assert str(sl.reader.abs_path) == os.path.abspath(filename)
+    assert str(sl.reader.path) == os.path.abspath(filename)
 
 
 @pytest.mark.parametrize(
