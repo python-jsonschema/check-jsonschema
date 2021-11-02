@@ -3,8 +3,6 @@ import pathlib
 import typing as t
 import urllib.parse
 
-import jsonschema
-
 from ..cachedownloader import CacheDownloader
 from ..utils import is_url_ish
 from .errors import SchemaParseError, UnsupportedUrlScheme
@@ -18,11 +16,6 @@ def _json_load_schema(schema_location: str, fp) -> dict:
     if not isinstance(schema, dict):
         raise SchemaParseError(schema_location)
     return schema
-
-
-def _make_ref_resolver(schema, schema_uri) -> jsonschema.RefResolver:
-    base_uri = schema.get("$id", schema_uri)
-    return jsonschema.RefResolver(base_uri, schema)
 
 
 class LocalSchemaReader:
@@ -59,13 +52,11 @@ class SchemaLoader:
         schemafile: str,
         cache_filename: t.Optional[str] = None,
         disable_cache: bool = False,
-        format_enabled: bool = True,
     ):
         # record input parameters (these are not to be modified)
         self.schemafile = schemafile
         self.cache_filename = cache_filename
         self.disable_cache = disable_cache
-        self.format_enabled = format_enabled
 
         # if the schema location is a URL, which may include a file:// URL, parse it
         self.url_info = None
@@ -91,26 +82,8 @@ class SchemaLoader:
                 f"detected parsed URL had an unrecognized scheme: {self.url_info}"
             )
 
-    def get_validator(self):
-        schema = self.reader.read_schema()
+    def get_schema_ref_base(self):
+        return self.reader.get_ref_base()
 
-        # format checker (which may be None)
-        format_checker = jsonschema.FormatChecker() if self.format_enabled else None
-
-        # ref resolver which may be built from the schema path
-        # if the location is a URL, there's no change, but if it's a file path
-        # it's made absolute and URI-ized
-        # the resolver should use `$id` if there is one present in the schema
-        ref_resolver = _make_ref_resolver(schema, self.reader.get_ref_base())
-
-        # get the correct validator class and check the schema under its metaschema
-        validator_cls = jsonschema.validators.validator_for(schema)
-        validator_cls.check_schema(schema)
-
-        # now that we know it's safe to try to create the validator instance, do it
-        validator = validator_cls(
-            schema,
-            resolver=ref_resolver,
-            format_checker=format_checker,
-        )
-        return validator
+    def get_schema(self):
+        return self.reader.read_schema()
