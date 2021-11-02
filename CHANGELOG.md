@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- For schemas which do not include `$id`, the schema URI will be used for
+  `$ref` resolution. This applies to HTTP(S) schema URI as well as to local
+  paths. Thanks to [@dkolepp](https://github.com/dkolepp) for the bug report
+  and contributions!
+
 ## 0.6.0
 
 - Add support for string format verification, by enabling use of the
