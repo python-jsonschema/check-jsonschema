@@ -17,28 +17,17 @@ def _json_load_schema(schema_location, fp):
         raise SchemaParseError(schema_location)
 
 
-def _resolve_path(path):
-    """
-    This is a testing shim which wraps
-        pathlib.Path.expanduser
-    and
-        pathlib.Path.resolve
-
-    for path resolution.
-
-    The purpose of this method is to be mock-friendly.
-    """
-    return path.expanduser().resolve()
-
-
 class LocalSchemaReader:
     def __init__(self, filename):
         self.filename = filename
-        path = pathlib.Path(filename)
-        self.resolved_filename = str(_resolve_path(path))
+        self.path = pathlib.Path(filename)
+        self.abs_path = self.path.expanduser().resolve()
+
+    def get_ref_base(self) -> str:
+        return self.abs_path.as_uri()
 
     def read_schema(self):
-        with open(self.resolved_filename) as f:
+        with self.abs_path.open() as f:
             return _json_load_schema(self.filename, f)
 
 
@@ -48,6 +37,9 @@ class HttpSchemaReader:
         self.downloader = CacheDownloader(
             url, cache_filename, disable_cache=disable_cache
         )
+
+    def get_ref_base(self) -> str:
+        return self.url
 
     def read_schema(self):
         with self.downloader.open() as fp:
@@ -94,8 +86,23 @@ class SchemaLoader:
 
     def get_validator(self):
         schema = self.reader.read_schema()
+
+        # format checker (which may be None)
         format_checker = jsonschema.FormatChecker() if self.format_enabled else None
+
+        # ref resolver which is built from the schema path
+        # if the location is a URL, there's no change, but if it's a file path
+        # it's made absolute and URI-ized
+        ref_resolver = jsonschema.RefResolver(self.reader.get_ref_base(), schema)
+
+        # get the correct validator class and check the schema under its metaschema
         validator_cls = jsonschema.validators.validator_for(schema)
         validator_cls.check_schema(schema)
-        validator = validator_cls(schema, format_checker=format_checker)
+
+        # now that we know it's safe to try to create the validator instance, do it
+        validator = validator_cls(
+            schema,
+            resolver=ref_resolver,
+            format_checker=format_checker,
+        )
         return validator

@@ -10,6 +10,20 @@ class _CLIResult:
         self.stdout = ""
         self.stderr = ""
 
+    def __str__(self):
+        return f"""\
+<CLIResult>
+err: {self.err}
+exit_code: {self.exit_code}
+<stdout>
+{self.stdout}
+</stdout>
+<stderr>
+{self.stderr}
+</stderr>
+</CLIResult>
+"""
+
 
 @pytest.fixture
 def cli_runner(capsys):
@@ -30,7 +44,7 @@ def cli_runner(capsys):
         res.stderr = captured.err
 
         if expect_ok:
-            assert res.exit_code == 0
+            assert res.exit_code == 0, str(res)
 
         return res
 

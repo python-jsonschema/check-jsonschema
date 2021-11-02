@@ -1,6 +1,5 @@
 import os
 import pathlib
-import platform
 
 import pytest
 
@@ -28,7 +27,7 @@ def test_schemaloader_path_handling_relative_local_path(in_tmp_dir):
     sl = SchemaLoader(filename)
     assert isinstance(sl.reader, LocalSchemaReader)
     assert sl.reader.filename == filename
-    assert sl.reader.resolved_filename == os.path.abspath(filename)
+    assert str(sl.reader.abs_path) == os.path.abspath(filename)
 
 
 @pytest.mark.parametrize(
@@ -42,30 +41,6 @@ def test_schemaloader_remote_path(schemafile):
     sl = SchemaLoader(schemafile)
     assert isinstance(sl.reader, HttpSchemaReader)
     assert sl.reader.url == schemafile
-
-
-def test_schemaloader_expanduser(monkeypatch):
-    if platform.system() == "Windows":
-        pytest.skip("skip this test on windows for simplicity")
-
-    def fake_resolve(path):
-        path = str(path)
-        if path.startswith("~/"):
-            path = os.path.join("/home/dummy-user/", path[2:])
-            return pathlib.Path(path)
-        else:
-            path = os.path.join("/dummy/abs/path/", path)
-            return pathlib.Path(path)
-
-    monkeypatch.setattr("check_jsonschema.loaders.schema._resolve_path", fake_resolve)
-
-    sl = SchemaLoader("~/schema1.json")
-    assert isinstance(sl.reader, LocalSchemaReader)
-    assert sl.reader.resolved_filename == "/home/dummy-user/schema1.json"
-
-    sl = SchemaLoader("somepath/schema1.json")
-    assert isinstance(sl.reader, LocalSchemaReader)
-    assert sl.reader.resolved_filename == "/dummy/abs/path/somepath/schema1.json"
 
 
 @pytest.mark.parametrize(
