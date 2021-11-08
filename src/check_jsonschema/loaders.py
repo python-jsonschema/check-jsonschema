@@ -92,12 +92,18 @@ class SchemaLoader:
     def get_validator(self):
         schema = self._read_schema()
         format_checker = jsonschema.FormatChecker() if self._format_enabled else None
+        base_uri = pathlib.Path(self._filename).resolve().as_uri()
+        ref_resolver = (
+            jsonschema.validators.RefResolver(base_uri=base_uri, referrer=schema)
+            if self._filename
+            else None
+        )
         validator_cls = jsonschema.validators.validator_for(schema)
         validator_cls.check_schema(schema)
         validator = validator_cls(schema, format_checker=format_checker)
-        validator = validator_cls(schema,
-                                  format_checker=format_checker,
-                                  resolver=ref_resolver)
+        validator = validator_cls(
+            schema, format_checker=format_checker, resolver=ref_resolver
+        )
         return validator
 
 
