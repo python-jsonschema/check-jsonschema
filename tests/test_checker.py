@@ -14,7 +14,7 @@ def test_checker_non_json_schemafile(tmp_path, capsys):
         checker.get_validator()
 
     stdio = capsys.readouterr()
-    assert "schemafile could not be parsed" in stdio.out
+    assert "schemafile could not be parsed" in stdio.err
 
 
 def test_checker_invalid_schemafile(tmp_path, capsys):
@@ -28,4 +28,4 @@ def test_checker_invalid_schemafile(tmp_path, capsys):
         checker.get_validator()
 
     stdio = capsys.readouterr()
-    assert "schemafile was not valid" in stdio.out
+    assert "schemafile was not valid" in stdio.err
