@@ -3,6 +3,7 @@ import typing as t
 
 import jsonschema
 
+from . import utils
 from .loaders import InstanceLoader, SchemaLoader, SchemaParseError
 
 
@@ -44,6 +45,7 @@ class SchemaChecker:
         disable_cache: bool = False,
         format_enabled: bool = True,
         default_instance_filetype: t.Optional[str] = None,
+        traceback_mode: str = "short",
     ):
         self._schemafile = schemafile
         self._instancefiles = instancefiles
@@ -52,9 +54,12 @@ class SchemaChecker:
         self._disable_cache = disable_cache
         self._format_enabled = format_enabled
         self._default_instance_filetype = default_instance_filetype
+        self._traceback_mode = traceback_mode
 
-    def _fail(self, msg):
-        print(msg)
+    def _fail(self, msg: str, err: t.Optional[Exception] = None) -> t.NoReturn:
+        print(msg, file=sys.stderr)
+        if err is not None:
+            utils.print_error(err, mode=self._traceback_mode)
         sys.exit(1)
 
     def get_validator(self):
@@ -72,7 +77,16 @@ class SchemaChecker:
         except SchemaParseError:
             self._fail("Error: schemafile could not be parsed as JSON")
         except jsonschema.SchemaError as e:
-            self._fail(f"Error: schemafile was not valid: {e}")
+            self._fail(f"Error: schemafile was not valid: {e}\n", e)
+
+    def _build_error_map(self, validator, instance_loader):
+        errors = {}
+        for filename, doc in instance_loader.iter_files():
+            for err in validator.iter_errors(doc):
+                if filename not in errors:
+                    errors[filename] = []
+                errors[filename].append(err)
+        return errors
 
     def run(self):
         validator = self.get_validator()
@@ -81,16 +95,14 @@ class SchemaChecker:
             self._instancefiles, default_filetype=self._default_instance_filetype
         )
 
-        failures = {}
-        for filename, doc in instances.iter_files():
-            try:
-                validator.validate(instance=doc)
-            except jsonschema.ValidationError as err:
-                failures[filename] = err
+        try:
+            errors = self._build_error_map(validator, instances)
+        except jsonschema.RefResolutionError as err:
+            self._fail("Failure resolving $ref within schema\n", err)
 
-        if failures:
+        if errors:
             print("Schema validation errors were encountered.")
-            for filename, err in failures.items():
+            for filename, err in errors.items():
                 path = [str(x) for x in err.path] or ["<root>"]
                 path = ".".join(x if "." not in x else f'"{x}"' for x in path)
                 print(f"  \033[0;33m{filename}::{path}: \033[0m{err.message}")

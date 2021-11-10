@@ -44,6 +44,16 @@ def get_parser(cls=None):
         type=str.lower,
         choices=("json", "yaml"),
     )
+    parser.add_argument(
+        "--traceback-mode",
+        help=(
+            "Set the mode of presentation for error traces. "
+            "Defaults to shortened tracebacks."
+        ),
+        type=str.lower,
+        default="short",
+        choices=("full", "short"),
+    )
     parser.add_argument("instancefiles", nargs="+", help="JSON or YAML files to check.")
     return parser
 

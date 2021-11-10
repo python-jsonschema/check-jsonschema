@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Exception tracebacks for several known-cases are printed in a shortened
+  format. A new option, `--traceback-mode` can be used to request long traces,
+  as in `--traceback-mode full`
 - For schemas which do not include `$id`, the schema URI will be used for
   `$ref` resolution. This applies to HTTP(S) schema URI as well as to local
   paths. Thanks to [@dkolepp](https://github.com/dkolepp) for the bug report
