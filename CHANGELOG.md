@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.7.0
+
 - Exception tracebacks for several known-cases are printed in a shortened
   format. A new option, `--traceback-mode` can be used to request long traces,
   as in `--traceback-mode full`
