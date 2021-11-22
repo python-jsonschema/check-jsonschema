@@ -102,8 +102,12 @@ class SchemaChecker:
 
         if errors:
             print("Schema validation errors were encountered.")
-            for filename, err in errors.items():
-                path = [str(x) for x in err.path] or ["<root>"]
-                path = ".".join(x if "." not in x else f'"{x}"' for x in path)
-                print(f"  \033[0;33m{filename}::{path}: \033[0m{err.message}")
+            for filename, file_errors in errors.items():
+                for err in file_errors:
+                    path = [str(x) for x in err.path] or ["<root>"]
+                    path = ".".join(x if "." not in x else f'"{x}"' for x in path)
+                    print(
+                        f"  \033[0;33m{filename}::{path}: \033[0m{err.message}",
+                        file=sys.stderr,
+                    )
             sys.exit(1)

@@ -27,6 +27,18 @@ CASE2_VALUES_SCHEMA = {
     "$defs": {"test": {"type": "string"}},
 }
 CASE2_PASSING_DOCUMENT = {"test": "some data"}
+CASE2_FAILING_DOCUMENT = {"test": {"foo": "bar"}}
+
+
+def _prep_files(tmp_path, main_schema, other_schema_data, instance):
+    main_schemafile = tmp_path / "main_schema.json"
+    main_schemafile.write_text(json.dumps(main_schema))
+    for k, v in other_schema_data.items():
+        schemafile = tmp_path / k
+        schemafile.write_text(json.dumps(v))
+    doc = tmp_path / "doc.json"
+    doc.write_text(json.dumps(instance))
+    return main_schemafile, doc
 
 
 @pytest.mark.parametrize(
@@ -47,25 +59,36 @@ CASE2_PASSING_DOCUMENT = {"test": "some data"}
 def test_local_ref_schema(
     cli_runner, tmp_path, main_schema, other_schema_data, instance
 ):
-    main_schemafile = tmp_path / "main_schema.json"
-    main_schemafile.write_text(json.dumps(main_schema))
-    for k, v in other_schema_data.items():
-        schemafile = tmp_path / k
-        schemafile.write_text(json.dumps(v))
-    doc = tmp_path / "doc.json"
-    doc.write_text(json.dumps(instance))
-
+    main_schemafile, doc = _prep_files(
+        tmp_path, main_schema, other_schema_data, instance
+    )
     cli_runner(["--schemafile", str(main_schemafile), str(doc)])
 
 
-def test_local_ref_schema_failure_case(cli_runner, tmp_path):
-    main_schemafile = tmp_path / "main_schema.json"
-    main_schemafile.write_text(json.dumps(CASE1_MAIN_SCHEMA))
-    title_schemafile = tmp_path / "title_schema.json"
-    title_schemafile.write_text(json.dumps(CASE1_TITLE_SCHEMA))
-
-    doc2 = tmp_path / "doc2.json"
-    doc2.write_text(json.dumps(CASE1_FAILING_DOCUMENT))
-
-    res = cli_runner(["--schemafile", str(main_schemafile), str(doc2)], expect_ok=False)
+@pytest.mark.parametrize(
+    "main_schema, other_schema_data, instance, expect_err",
+    [
+        (
+            CASE1_MAIN_SCHEMA,
+            {"title_schema.json": CASE1_TITLE_SCHEMA},
+            CASE1_FAILING_DOCUMENT,
+            None,
+        ),
+        (
+            CASE2_MAIN_SCHEMA,
+            {"values.json": CASE2_VALUES_SCHEMA},
+            CASE2_FAILING_DOCUMENT,
+            "{'foo': 'bar'} is not of type 'string'",
+        ),
+    ],
+)
+def test_local_ref_schema_failure_case(
+    cli_runner, tmp_path, main_schema, other_schema_data, instance, expect_err
+):
+    main_schemafile, doc = _prep_files(
+        tmp_path, main_schema, other_schema_data, instance
+    )
+    res = cli_runner(["--schemafile", str(main_schemafile), str(doc)], expect_ok=False)
     assert res.exit_code == 1
+    if expect_err is not None:
+        assert expect_err in res.stderr

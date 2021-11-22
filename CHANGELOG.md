@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Bugfix: validation errors were not being displayed correctly.
+- Errors are now sent to stderr instead of stdout.
+
 ## 0.7.0
 
 - Exception tracebacks for several known-cases are printed in a shortened
