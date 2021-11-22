@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.7.1
+
 - Bugfix: validation errors were not being displayed correctly.
 - Errors are now sent to stderr instead of stdout.
 
