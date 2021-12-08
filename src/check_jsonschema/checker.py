@@ -7,6 +7,23 @@ from . import utils
 from .loaders import InstanceLoader, SchemaLoader, SchemaParseError
 
 
+def json_path(err: jsonschema.ValidationError) -> str:
+    """
+    This method is a backport of the json_path attribute provided by
+    jsonschema.ValidationError for jsonschema v4.x
+
+    It is needed until python3.6 is no longer supported by check-jsonschema,
+    as jsonschema 4 dropped support for py36
+    """
+    path = "$"
+    for elem in err.absolute_path:
+        if isinstance(elem, int):
+            path += "[" + str(elem) + "]"
+        else:
+            path += "." + elem
+    return path
+
+
 def make_ref_resolver(schema_uri: str, schema: dict) -> jsonschema.RefResolver:
     base_uri = schema.get("$id", schema_uri)
     return jsonschema.RefResolver(base_uri, schema)
@@ -104,10 +121,8 @@ class SchemaChecker:
             print("Schema validation errors were encountered.")
             for filename, file_errors in errors.items():
                 for err in file_errors:
-                    path = [str(x) for x in err.path] or ["<root>"]
-                    path = ".".join(x if "." not in x else f'"{x}"' for x in path)
                     print(
-                        f"  \033[0;33m{filename}::{path}: \033[0m{err.message}",
+                        f"  \033[0;33m{filename}::{json_path(err)}: \033[0m{err.message}",
                         file=sys.stderr,
                     )
             sys.exit(1)

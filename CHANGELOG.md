@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Use the latest version (version 4) of the `jsonschema` library. Note
+  that `jsonschema` has dropped support for python3.6, and  `check-jsonschema`
+  will therefore use `jsonschema` version 3 when running on python3.6
+- The path shown in error messages is now a valid
+  [JSONPath](https://goessner.net/articles/JsonPath/) expression
+
 ## 0.7.1
 
 - Bugfix: validation errors were not being displayed correctly.
