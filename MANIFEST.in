@@ -1,0 +1,2 @@
+include src/check_jsonschema/builtin_schemas/vendor/*
+include src/check_jsonschema/builtin_schemas/custom/*.json

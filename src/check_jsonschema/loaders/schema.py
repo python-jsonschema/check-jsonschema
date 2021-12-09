@@ -1,8 +1,10 @@
 import json
 import pathlib
 import typing as t
+import urllib.error
 import urllib.parse
 
+from ..builtin_schemas import get_vendored_schema
 from ..cachedownloader import CacheDownloader
 from ..utils import is_url_ish
 from .errors import SchemaParseError, UnsupportedUrlScheme
@@ -32,8 +34,15 @@ class LocalSchemaReader:
 
 
 class HttpSchemaReader:
-    def __init__(self, url, cache_filename: t.Optional[str], disable_cache: bool):
+    def __init__(
+        self,
+        url,
+        cache_filename: t.Optional[str],
+        disable_cache: bool,
+        failover_builtin_schema: t.Optional[str] = None,
+    ):
         self.url = url
+        self.failover_builtin_schema = failover_builtin_schema
         self.downloader = CacheDownloader(
             url, cache_filename, disable_cache=disable_cache
         )
@@ -42,8 +51,19 @@ class HttpSchemaReader:
         return self.url
 
     def read_schema(self):
-        with self.downloader.open() as fp:
-            return _json_load_schema(self.url, fp)
+        try:
+            with self.downloader.open() as fp:
+                return _json_load_schema(self.url, fp)
+        except urllib.error.URLError as err:
+            if self.failover_builtin_schema:
+                val = get_vendored_schema(self.failover_builtin_schema)
+                if val:
+                    return val
+                else:
+                    raise ValueError(
+                        f"failover schema {self.failover_builtin_schema} not valid"
+                    ) from err
+            raise
 
 
 class SchemaLoader:
@@ -52,11 +72,13 @@ class SchemaLoader:
         schemafile: str,
         cache_filename: t.Optional[str] = None,
         disable_cache: bool = False,
+        failover_builtin_schema: t.Optional[str] = None,
     ):
         # record input parameters (these are not to be modified)
         self.schemafile = schemafile
         self.cache_filename = cache_filename
         self.disable_cache = disable_cache
+        self.failover_builtin_schema = failover_builtin_schema
 
         # if the schema location is a URL, which may include a file:// URL, parse it
         self.url_info = None
@@ -72,7 +94,10 @@ class SchemaLoader:
 
         if self.url_info.scheme in ("http", "https"):
             return HttpSchemaReader(
-                self.schemafile, self.cache_filename, self.disable_cache
+                self.schemafile,
+                self.cache_filename,
+                self.disable_cache,
+                self.failover_builtin_schema,
             )
         elif self.url_info.scheme in ("file", ""):
             return LocalSchemaReader(self.url_info.path)

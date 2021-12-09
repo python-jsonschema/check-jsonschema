@@ -12,6 +12,7 @@ def main(cli_args=None):
         format_enabled=not args.disable_format,
         default_instance_filetype=args.default_filetype,
         traceback_mode=args.traceback_mode,
+        failover_builtin_schema=args.failover_builtin_schema,
     )
     checker.run()
     print("ok -- validation done")

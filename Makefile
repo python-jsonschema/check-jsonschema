@@ -1,10 +1,12 @@
 PKG_VERSION=$(shell grep '^version' setup.cfg | cut -d '=' -f2 | tr -d ' ')
 
-.PHONY: lint test release showvars
+.PHONY: lint test vendor-schemas release showvars
 lint:
 	tox -e lint
 test:
 	tox
+vendor-schemas:
+	tox -e vendor-schemas
 showvars:
 	@echo "PKG_VERSION=$(PKG_VERSION)"
 release:

@@ -63,8 +63,10 @@ class SchemaChecker:
         format_enabled: bool = True,
         default_instance_filetype: t.Optional[str] = None,
         traceback_mode: str = "short",
+        failover_builtin_schema: t.Optional[str] = None,
     ):
         self._schemafile = schemafile
+        self._failover_builtin_schema = failover_builtin_schema
         self._instancefiles = instancefiles
 
         self._cache_filename = cache_filename
@@ -84,6 +86,7 @@ class SchemaChecker:
             self._schemafile,
             self._cache_filename,
             self._disable_cache,
+            self._failover_builtin_schema,
         )
         try:
             return make_validator(

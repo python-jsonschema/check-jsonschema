@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- `check-jsonschema` now ships with vendored versions of the external schemas
+  used for the default suite of hooks. The vendored schemas are used as a
+  failover option in the event that downloading an external schema fails.
 - Use the latest version (version 4) of the `jsonschema` library. Note
   that `jsonschema` has dropped support for python3.6, and  `check-jsonschema`
   will therefore use `jsonschema` version 3 when running on python3.6

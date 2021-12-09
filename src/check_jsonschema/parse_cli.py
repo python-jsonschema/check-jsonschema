@@ -15,6 +15,14 @@ def get_parser(cls=None):
         ),
     )
     parser.add_argument(
+        "--failover-builtin-schema",
+        help=(
+            "Failover to a specific builtin schema if the schemafile is remote and "
+            "cannot be fetched."
+        ),
+        type=str.lower,
+    )
+    parser.add_argument(
         "--no-cache",
         action="store_true",
         default=False,
