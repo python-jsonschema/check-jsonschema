@@ -24,55 +24,19 @@ def json_path(err: jsonschema.ValidationError) -> str:
     return path
 
 
-def make_ref_resolver(schema_uri: str, schema: dict) -> jsonschema.RefResolver:
-    base_uri = schema.get("$id", schema_uri)
-    return jsonschema.RefResolver(base_uri, schema)
-
-
-def make_validator(schema_uri: str, schema: dict, format_enabled: bool):
-    # format checker (which may be None)
-    format_checker = jsonschema.FormatChecker() if format_enabled else None
-
-    # ref resolver which may be built from the schema path
-    # if the location is a URL, there's no change, but if it's a file path
-    # it's made absolute and URI-ized
-    # the resolver should use `$id` if there is one present in the schema
-    ref_resolver = make_ref_resolver(schema_uri, schema)
-
-    # get the correct validator class and check the schema under its metaschema
-    validator_cls = jsonschema.validators.validator_for(schema)
-    validator_cls.check_schema(schema)
-
-    # now that we know it's safe to try to create the validator instance, do it
-    validator = validator_cls(
-        schema,
-        resolver=ref_resolver,
-        format_checker=format_checker,
-    )
-    return validator
-
-
 class SchemaChecker:
     def __init__(
         self,
-        schemafile: str,
-        instancefiles: t.List[str],
+        schema_loader: SchemaLoader,
+        instance_loader: InstanceLoader,
         *,
-        cache_filename: t.Optional[str] = None,
-        disable_cache: bool = False,
         format_enabled: bool = True,
-        default_instance_filetype: t.Optional[str] = None,
         traceback_mode: str = "short",
-        failover_builtin_schema: t.Optional[str] = None,
     ):
-        self._schemafile = schemafile
-        self._failover_builtin_schema = failover_builtin_schema
-        self._instancefiles = instancefiles
+        self._schema_loader = schema_loader
+        self._instance_loader = instance_loader
 
-        self._cache_filename = cache_filename
-        self._disable_cache = disable_cache
         self._format_enabled = format_enabled
-        self._default_instance_filetype = default_instance_filetype
         self._traceback_mode = traceback_mode
 
     def _fail(self, msg: str, err: t.Optional[Exception] = None) -> t.NoReturn:
@@ -82,26 +46,18 @@ class SchemaChecker:
         sys.exit(1)
 
     def get_validator(self):
-        schema_loader = SchemaLoader(
-            self._schemafile,
-            self._cache_filename,
-            self._disable_cache,
-            self._failover_builtin_schema,
-        )
         try:
-            return make_validator(
-                schema_loader.get_schema_ref_base(),
-                schema_loader.get_schema(),
-                self._format_enabled,
-            )
+            return self._schema_loader.make_validator(self._format_enabled)
         except SchemaParseError:
             self._fail("Error: schemafile could not be parsed as JSON")
         except jsonschema.SchemaError as e:
             self._fail(f"Error: schemafile was not valid: {e}\n", e)
+        except Exception as e:
+            self._fail("Error: Unexpected Error building schema validator", e)
 
-    def _build_error_map(self, validator, instance_loader):
+    def _build_error_map(self, validator):
         errors = {}
-        for filename, doc in instance_loader.iter_files():
+        for filename, doc in self._instance_loader.iter_files():
             for err in validator.iter_errors(doc):
                 if filename not in errors:
                     errors[filename] = []
@@ -111,12 +67,8 @@ class SchemaChecker:
     def run(self):
         validator = self.get_validator()
 
-        instances = InstanceLoader(
-            self._instancefiles, default_filetype=self._default_instance_filetype
-        )
-
         try:
-            errors = self._build_error_map(validator, instances)
+            errors = self._build_error_map(validator)
         except jsonschema.RefResolutionError as err:
             self._fail("Failure resolving $ref within schema\n", err)
 

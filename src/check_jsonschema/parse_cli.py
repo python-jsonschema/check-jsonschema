@@ -6,12 +6,18 @@ def get_parser(cls=None):
     parser = cls() if cls is not None else argparse.ArgumentParser()
     parser.add_argument(
         "--schemafile",
-        required=True,
         help=(
-            "REQUIRED. "
             "The path to a file containing the jsonschema to use or an "
             "HTTP(S) URI for the schema. If a remote file is used, "
-            "it will be downloaded and cached locally based on mtime."
+            "it will be downloaded and cached locally based on mtime. "
+            "This option is required unless --builtin-schema is passed."
+        ),
+    )
+    parser.add_argument(
+        "--builtin-schema",
+        help=(
+            "The name of an internal schema to use for `--schemafile`. "
+            "Schema names can be found in project documentation."
         ),
     )
     parser.add_argument(
@@ -68,4 +74,9 @@ def get_parser(cls=None):
 
 def parse_args(args=None, cls=None):
     parser = get_parser(cls=cls)
-    return parser.parse_args(args)
+    args = parser.parse_args(args)
+    if args.schemafile and args.builtin_schema:
+        parser.error("--schemafile and --builtin-schema are mutually exclusive")
+    if not args.schemafile and not args.builtin_schema:
+        parser.error("Either --schemafile or --builtin-schema must be provided")
+    return args

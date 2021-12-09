@@ -20,3 +20,11 @@ def get_vendored_schema(name: str) -> t.Optional[t.Dict[str, t.Any]]:
 
 def get_custom_schema(name: str) -> t.Optional[t.Dict[str, t.Any]]:
     return _get_or_none("check_jsonschema.builtin_schemas.custom", f"{name}.json")
+
+
+def get_builtin_schema_from_external_name(name: str) -> t.Optional[t.Dict[str, t.Any]]:
+    if name.startswith("vendor."):
+        return get_vendored_schema(name[7:])
+    elif name.startswith("custom."):
+        return get_custom_schema(name[7:])
+    return get_custom_schema(name)

@@ -39,3 +39,7 @@ class InstanceLoader:
 
             with open(fn) as fp:
                 yield (fn, loadfunc(fp))
+
+
+def instance_loader_from_args(args):
+    return InstanceLoader(args.instancefiles, default_filetype=args.default_filetype)

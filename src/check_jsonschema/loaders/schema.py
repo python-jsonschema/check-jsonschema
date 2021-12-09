@@ -4,10 +4,22 @@ import typing as t
 import urllib.error
 import urllib.parse
 
-from ..builtin_schemas import get_vendored_schema
+import jsonschema
+
+from ..builtin_schemas import get_builtin_schema_from_external_name, get_vendored_schema
 from ..cachedownloader import CacheDownloader
 from ..utils import is_url_ish
 from .errors import SchemaParseError, UnsupportedUrlScheme
+
+
+def _make_ref_resolver(
+    schema_uri: t.Optional[str], schema: dict
+) -> t.Optional[jsonschema.RefResolver]:
+    if not schema_uri:
+        return None
+
+    base_uri = schema.get("$id", schema_uri)
+    return jsonschema.RefResolver(base_uri, schema)
 
 
 def _json_load_schema(schema_location: str, fp) -> dict:
@@ -86,9 +98,9 @@ class SchemaLoader:
             self.url_info = urllib.parse.urlparse(self.schemafile)
 
         # setup a schema reader
-        self.reader = self.get_schema_reader()
+        self.reader = self._get_schema_reader()
 
-    def get_schema_reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
+    def _get_schema_reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
         if self.url_info is None:
             return LocalSchemaReader(self.schemafile)
 
@@ -107,8 +119,58 @@ class SchemaLoader:
                 f"detected parsed URL had an unrecognized scheme: {self.url_info}"
             )
 
-    def get_schema_ref_base(self):
+    def get_schema_ref_base(self) -> t.Optional[str]:
         return self.reader.get_ref_base()
 
-    def get_schema(self):
+    def get_schema(self) -> t.Optional[t.Dict[str, t.Any]]:
         return self.reader.read_schema()
+
+    def make_validator(self, format_enabled: bool):
+        schema_uri = self.get_schema_ref_base()
+        schema = self.get_schema()
+        if schema is None:
+            raise ValueError("Unable to load schema")
+
+        # format checker (which may be None)
+        format_checker = jsonschema.FormatChecker() if format_enabled else None
+
+        # ref resolver which may be built from the schema path
+        # if the location is a URL, there's no change, but if it's a file path
+        # it's made absolute and URI-ized
+        # the resolver should use `$id` if there is one present in the schema
+        ref_resolver = _make_ref_resolver(schema_uri, schema)
+
+        # get the correct validator class and check the schema under its metaschema
+        validator_cls = jsonschema.validators.validator_for(schema)
+        validator_cls.check_schema(schema)
+
+        # now that we know it's safe to try to create the validator instance, do it
+        validator = validator_cls(
+            schema,
+            resolver=ref_resolver,
+            format_checker=format_checker,
+        )
+        return validator
+
+
+class BuiltinSchemaLoader(SchemaLoader):
+    def __init__(self, schema_name: str) -> None:
+        self.schema_name = schema_name
+
+    def get_schema_ref_base(self) -> t.Optional[str]:
+        return None
+
+    def get_schema(self) -> t.Optional[t.Dict[str, t.Any]]:
+        return get_builtin_schema_from_external_name(self.schema_name)
+
+
+def schema_loader_from_args(args) -> SchemaLoader:
+    if args.schemafile is not None:
+        return SchemaLoader(
+            args.schemafile,
+            args.cache_filename,
+            args.no_cache,
+            args.failover_builtin_schema,
+        )
+    else:
+        return BuiltinSchemaLoader(args.builtin_schema)
