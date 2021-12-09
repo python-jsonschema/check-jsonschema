@@ -18,17 +18,23 @@ def _get(package: str, resource: str, name: str) -> t.Dict[str, t.Any]:
         raise NoSuchSchemaError(f"no builtin schema named {name} was found")
 
 
-def get_vendored_schema(name: str) -> t.Dict[str, t.Any]:
+def _get_vendored_schema(name: str) -> t.Dict[str, t.Any]:
     return _get("check_jsonschema.builtin_schemas.vendor", f"{name}.json", name)
 
 
-def get_custom_schema(name: str) -> t.Dict[str, t.Any]:
+def _get_custom_schema(name: str) -> t.Dict[str, t.Any]:
     return _get("check_jsonschema.builtin_schemas.custom", f"{name}.json", name)
 
 
-def get_builtin_schema_from_external_name(name: str) -> t.Optional[t.Dict[str, t.Any]]:
+def get_builtin_schema(name: str) -> t.Optional[t.Dict[str, t.Any]]:
+    # first, look for an identifying prefix
     if name.startswith("vendor."):
-        return get_vendored_schema(name[7:])
+        return _get_vendored_schema(name[7:])
     elif name.startswith("custom."):
-        return get_custom_schema(name[7:])
-    return get_custom_schema(name)
+        return _get_custom_schema(name[7:])
+
+    # if there is no prefix, just try in order: first custom, then vendored
+    try:
+        return _get_custom_schema(name)
+    except NoSuchSchemaError:
+        return _get_vendored_schema(name)

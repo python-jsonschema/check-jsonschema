@@ -6,7 +6,7 @@ import urllib.parse
 
 import jsonschema
 
-from ..builtin_schemas import get_builtin_schema_from_external_name, get_vendored_schema
+from ..builtin_schemas import get_builtin_schema
 from ..cachedownloader import CacheDownloader
 from ..utils import is_url_ish
 from .errors import SchemaParseError, UnsupportedUrlScheme
@@ -68,7 +68,7 @@ class HttpSchemaReader:
                 return _json_load_schema(self.url, fp)
         except urllib.error.URLError as err:
             if self.failover_builtin_schema:
-                val = get_vendored_schema(self.failover_builtin_schema)
+                val = get_builtin_schema(self.failover_builtin_schema)
                 if val:
                     return val
                 else:
@@ -159,7 +159,7 @@ class BuiltinSchemaLoader(SchemaLoader):
         return None
 
     def get_schema(self) -> t.Dict[str, t.Any]:
-        return get_builtin_schema_from_external_name(self.schema_name)
+        return get_builtin_schema(self.schema_name)
 
 
 def schema_loader_from_args(args) -> SchemaLoader:

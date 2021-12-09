@@ -9,14 +9,14 @@
 - id: check-github-workflows
   name: Validate GitHub Workflows
   description: 'Validate GitHub Workflows against the schema provided by Schemastore'
-  entry: check-jsonschema --schemafile "https://json.schemastore.org/github-workflow" --failover-builtin-schema github-workflows
+  entry: check-jsonschema --schemafile "https://json.schemastore.org/github-workflow" --failover-builtin-schema vendor.github-workflows
   language: python
   files: ^\.github/workflows/
   types: [yaml]
 - id: check-github-actions
   name: Validate GitHub Actions
   description: 'Validate GitHub Actions against the schema provided by Schemastore'
-  entry: check-jsonschema --schemafile "https://json.schemastore.org/github-action" --failover-builtin-schema github-actions
+  entry: check-jsonschema --schemafile "https://json.schemastore.org/github-action" --failover-builtin-schema vendor.github-actions
   language: python
   files: >
     (?x)^(
@@ -27,14 +27,14 @@
 - id: check-azure-pipelines
   name: Validate Azure Pipelines
   description: 'Validate Azure Pipelines config against the schema provided by Microsoft'
-  entry: check-jsonschema --schemafile "https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/v1.188.1/service-schema.json" --failover-builtin-schema azure-pipelines
+  entry: check-jsonschema --schemafile "https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/v1.188.1/service-schema.json" --failover-builtin-schema vendor.azure-pipelines
   language: python
   files: ^(\.)?azure-pipelines.(yml|yaml)$
   types: [yaml]
 - id: check-travis
   name: Validate Travis Config
   description: 'Validate Travis config against the schema provided by Schemastore'
-  entry: check-jsonschema --schemafile "https://json.schemastore.org/travis" --failover-builtin-schema travis
+  entry: check-jsonschema --schemafile "https://json.schemastore.org/travis" --failover-builtin-schema vendor.travis
   language: python
   files: ^\.travis.(yml|yaml)$
   types: [yaml]
