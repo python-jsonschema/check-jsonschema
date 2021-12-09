@@ -4,6 +4,7 @@ import typing as t
 import jsonschema
 
 from . import utils
+from .builtin_schemas import NoSuchSchemaError
 from .loaders import InstanceLoader, SchemaLoader, SchemaParseError
 
 
@@ -52,6 +53,8 @@ class SchemaChecker:
             self._fail("Error: schemafile could not be parsed as JSON")
         except jsonschema.SchemaError as e:
             self._fail(f"Error: schemafile was not valid: {e}\n", e)
+        except NoSuchSchemaError as e:
+            self._fail("Error: builtin schema could not be loaded, no such schema\n", e)
         except Exception as e:
             self._fail("Error: Unexpected Error building schema validator", e)
 

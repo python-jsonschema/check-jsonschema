@@ -60,6 +60,21 @@ manually, you could do this:
       args: ["--schemafile", "https://json.schemastore.org/github-workflow"]
 ```
 
+And to check with the builtin schema that a GitHub workflow sets
+`timeout-minutes` on all jobs:
+
+```yaml
+- repo: https://github.com/sirosen/check-jsonschema
+  rev: 0.7.1
+  hooks:
+    - id: check-jsonschema
+      name: "Check GitHub Workflows set timeout-minutes"
+      language: python
+      files: ^\.github/workflows/
+      types: [yaml]
+      args: ["--builtin-schema", "github-workflows-require-timeout"]
+```
+
 ## Standalone Usage
 
 You can also `pip install check-jsonschema` to run the tool manually.
@@ -78,7 +93,7 @@ These options apply both to standalone usage and pre-commit hook usage.
 
 The path or URL for a file containing a schema to use.
 
-This option is required.
+This option is required unless `--builtin-schema` is used.
 
 ### `--no-cache`
 
@@ -113,3 +128,35 @@ no extension should be treated as YAML.
 
 By default, this is not set and files without a detected type of JSON or YAML
 will fail.
+
+## `--builtin-schema`
+
+The name of a builtin schema from `check-jsonschema` to use.
+Use of this option replaces `--schemafile`, and the two are mutually exclusive.
+
+The following values are valid and refer to vendored copies of schemastore
+schemas:
+
+- `vendor.azure-pipelines`
+- `vendor.github-actions`
+- `vendor.github-workflows`
+- `vendor.travis`
+
+The following values are valid and refer to custom schemas:
+
+- `github-workflows-require-timeout` -- This schema checks that a GitHub
+  workflow explicitly sets `timeout-minutes` on all jobs. (The default value
+  for this is 6 hours.)
+
+## `--failover-builtin-schema`
+
+Specify one of the `vendor` schemas which should be used if fetching
+`--schemafile` fails.
+
+For example, to download the latest `travis` schema, but failover to the
+vendored copy, use
+```bash
+check-jsonschema --schemafile "https://json.schemastore.org/travis" --failover-builtin-schema vendor.travis
+```
+
+This is what is used by the hooks provided by `check-jsonschema`.

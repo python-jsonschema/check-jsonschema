@@ -77,6 +77,11 @@ def parse_args(args=None, cls=None):
     args = parser.parse_args(args)
     if args.schemafile and args.builtin_schema:
         parser.error("--schemafile and --builtin-schema are mutually exclusive")
-    if not args.schemafile and not args.builtin_schema:
-        parser.error("Either --schemafile or --builtin-schema must be provided")
+    if not args.schemafile:
+        if not args.builtin_schema:
+            parser.error("Either --schemafile or --builtin-schema must be provided")
+        if args.failover_builtin_schema:
+            parser.error(
+                "--failover-builtin-schema is incompatible with --builtin-schema"
+            )
     return args

@@ -122,14 +122,12 @@ class SchemaLoader:
     def get_schema_ref_base(self) -> t.Optional[str]:
         return self.reader.get_ref_base()
 
-    def get_schema(self) -> t.Optional[t.Dict[str, t.Any]]:
+    def get_schema(self) -> t.Dict[str, t.Any]:
         return self.reader.read_schema()
 
     def make_validator(self, format_enabled: bool):
         schema_uri = self.get_schema_ref_base()
         schema = self.get_schema()
-        if schema is None:
-            raise ValueError("Unable to load schema")
 
         # format checker (which may be None)
         format_checker = jsonschema.FormatChecker() if format_enabled else None
@@ -160,7 +158,7 @@ class BuiltinSchemaLoader(SchemaLoader):
     def get_schema_ref_base(self) -> t.Optional[str]:
         return None
 
-    def get_schema(self) -> t.Optional[t.Dict[str, t.Any]]:
+    def get_schema(self) -> t.Dict[str, t.Any]:
         return get_builtin_schema_from_external_name(self.schema_name)
 
 
