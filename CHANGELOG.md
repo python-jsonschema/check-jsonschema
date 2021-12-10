@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add ReadTheDocs hook
+
 ## 0.8.1
 
 - Bugfix for package metadata to include builtin schemas
