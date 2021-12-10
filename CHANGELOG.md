@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.8.2
+
 - Add ReadTheDocs hook
 
 ## 0.8.1

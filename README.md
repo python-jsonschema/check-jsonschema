@@ -28,6 +28,9 @@ These hooks check known files against schemas provided by other sources:
 - check-azure-pipelines:
     Validate Azure Pipelines config against the schema provided by Microsoft
 
+- check-readthedocs:
+    Validate ReadTheDocs yaml config against the schema provided by ReadTheDocs
+
 ## Example Usage
 
 ### Validate GitHub Workflows with Schemastore
