@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.8.1
+
+- Bugfix for package metadata to include builtin schemas
+
 ## 0.8.0
 
 - `check-jsonschema` now ships with vendored versions of the external schemas
