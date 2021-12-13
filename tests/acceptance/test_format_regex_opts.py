@@ -26,6 +26,18 @@ JS_REGEX_DOCUMENT = {
     "pattern": "a(?<captured>)bc",
 }
 
+# taken from https://github.com/sirosen/check-jsonschema/issues/25
+RENOVATE_DOCUMENT = {
+    "regexManagers": [
+        {
+            "fileMatch": ["^Dockerfile$"],
+            "matchStrings": ["ENV YARN_VERSION=(?<currentValue>.*?)\n"],
+            "depNameTemplate": "yarn",
+            "datasourceTemplate": "npm",
+        }
+    ]
+}
+
 
 @pytest.mark.parametrize("regexopt", ["disabled", "default", "python"])
 def test_regex_format_good(cli_runner, tmp_path, regexopt):
@@ -72,3 +84,10 @@ def test_regex_format_js_specific(cli_runner, tmp_path, regexopt):
     )
     if not expect_ok:
         assert res.exit_code == 1
+
+
+def test_regex_format_in_renovate_config(cli_runner, tmp_path):
+    doc = tmp_path / "doc.json"
+    doc.write_text(json.dumps(RENOVATE_DOCUMENT))
+
+    cli_runner(["--builtin-schema", "vendor.renovate", str(doc)])

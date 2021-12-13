@@ -1,0 +1,2474 @@
+{
+  "title": "JSON schema for Renovate config files (https://renovatebot.com/)",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "addLabels": {
+      "description": "Labels to add to Pull Request.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "additionalBranchPrefix": {
+      "description": "Additional string value to be appended to branchPrefix.",
+      "type": "string",
+      "default": ""
+    },
+    "additionalReviewers": {
+      "description": "Additional reviewers for Pull Requests (in contrast to `reviewers`, this option adds to the existing reviewer list, rather than replacing it).",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "aliases": {
+      "description": "Aliases for registries, package manager specific.",
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "type": "string",
+        "format": "uri"
+      },
+      "$ref": "#"
+    },
+    "allowCustomCrateRegistries": {
+      "description": "Configure this to true if custom crate registries are allowed.",
+      "type": "boolean",
+      "default": false
+    },
+    "allowPlugins": {
+      "description": "Configure this to true if repositories are allowed to run install plugins.",
+      "type": "boolean",
+      "default": false
+    },
+    "allowPostUpgradeCommandTemplating": {
+      "description": "If true allow templating for post-upgrade commands.",
+      "type": "boolean",
+      "default": false
+    },
+    "allowScripts": {
+      "description": "Configure this to true if repositories are allowed to run install scripts.",
+      "type": "boolean",
+      "default": false
+    },
+    "allowedPostUpgradeCommands": {
+      "description": "A list of regular expressions that determine which post-upgrade tasks are allowed.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "ansible": {
+      "description": "Configuration object for the ansible manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)tasks/[^/]+\\.ya?ml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "ansible-galaxy": {
+      "description": "Configuration object for the ansible-galaxy manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)requirements\\.ya?ml$",
+          "(^|/)galaxy\\.ya?ml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "argocd": {
+      "description": "Configuration object for the argocd manager",
+      "type": "object",
+      "default": {
+        "fileMatch": []
+      },
+      "$ref": "#"
+    },
+    "assignAutomerge": {
+      "description": "Assign reviewers and assignees even if the PR is to be automerged.",
+      "type": "boolean",
+      "default": false
+    },
+    "assignees": {
+      "description": "Assignees for Pull Request (either username or email address depending on the platform).",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assigneesFromCodeOwners": {
+      "description": "Determine assignees based on configured code owners and changes in PR.",
+      "type": "boolean",
+      "default": false
+    },
+    "assigneesSampleSize": {
+      "description": "Take a random sample of given size from assignees.",
+      "type": "integer",
+      "default": null
+    },
+    "autodiscover": {
+      "description": "Autodiscover all repositories.",
+      "type": "boolean",
+      "default": false
+    },
+    "autodiscoverFilter": {
+      "description": "Filter the list of autodiscovered repositories.",
+      "type": "string",
+      "default": null
+    },
+    "automerge": {
+      "description": "Whether to automerge branches/PRs automatically, without human intervention.",
+      "type": "boolean",
+      "default": false
+    },
+    "automergeComment": {
+      "description": "PR comment to add to trigger automerge. Used only if automergeType=pr-comment.",
+      "type": "string",
+      "default": "automergeComment"
+    },
+    "automergeStrategy": {
+      "description": "The merge strategy to use when automerging PRs. Used only if `automergeType=pr`.",
+      "type": "string",
+      "enum": [
+        "auto",
+        "fast-forward",
+        "merge-commit",
+        "rebase",
+        "squash"
+      ],
+      "default": "auto"
+    },
+    "automergeType": {
+      "description": "How to automerge, if enabled.",
+      "type": "string",
+      "enum": [
+        "branch",
+        "pr",
+        "pr-comment"
+      ],
+      "default": "pr"
+    },
+    "azure-pipelines": {
+      "description": "Configuration object for the azure-pipelines manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "azure.*pipelines?.*\\.ya?ml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "azureAutoApprove": {
+      "description": "If set to true, Azure DevOps PRs will be automatically approved.",
+      "type": "boolean",
+      "default": false
+    },
+    "azureWorkItemId": {
+      "description": "The id of an existing work item on Azure Boards to link to each PR.",
+      "type": "integer",
+      "default": 0
+    },
+    "baseBranches": {
+      "description": "An array of one or more custom base branches to be processed. If left empty, the default branch will be chosen.",
+      "type": "array"
+    },
+    "baseDir": {
+      "description": "The base directory for Renovate to store local files, including repository files and cache. If left empty, Renovate will create its own temporary directory to use.",
+      "type": "string"
+    },
+    "batect": {
+      "description": "Configuration object for the batect manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)batect(-bundle)?\\.yml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "batect-wrapper": {
+      "description": "Configuration object for the batect-wrapper manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)batect$"
+        ],
+        "versioning": "semver"
+      },
+      "$ref": "#"
+    },
+    "bazel": {
+      "description": "Configuration object for the bazel manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)WORKSPACE(|\\.bazel)$",
+          "\\.bzl$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "bbUseDefaultReviewers": {
+      "description": "Use the default reviewers (Bitbucket only).",
+      "type": "boolean",
+      "default": true
+    },
+    "binarySource": {
+      "description": "Controls whether third-party tools like npm or Gradle are called directly, via Docker sidecar containers, or dynamic install.",
+      "type": "string",
+      "enum": [
+        "global",
+        "docker",
+        "install"
+      ],
+      "default": "global"
+    },
+    "bitbucket-pipelines": {
+      "description": "Configuration object for the bitbucket-pipelines manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.?bitbucket-pipelines\\.ya?ml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "branchConcurrentLimit": {
+      "description": "Limit to a maximum of x concurrent branches. 0 means no limit, `null` (default) inherits value from `prConcurrentLimit`.",
+      "type": "integer",
+      "default": null
+    },
+    "branchName": {
+      "description": "Branch name template.",
+      "type": "string",
+      "default": "{{{branchPrefix}}}{{{additionalBranchPrefix}}}{{{branchTopic}}}"
+    },
+    "branchPrefix": {
+      "description": "Prefix to use for all branch names.",
+      "type": "string",
+      "default": "renovate/"
+    },
+    "branchTopic": {
+      "description": "Branch topic.",
+      "type": "string",
+      "default": "{{{depNameSanitized}}}-{{{newMajor}}}{{#if separateMinorPatch}}{{#if isPatch}}.{{{newMinor}}}{{/if}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}"
+    },
+    "buildkite": {
+      "description": "Configuration object for the buildkite manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "buildkite\\.ya?ml",
+          "\\.buildkite/.+\\.ya?ml$"
+        ],
+        "commitMessageTopic": "buildkite plugin {{depName}}",
+        "commitMessageExtra": "to {{#if isMajor}}v{{{newMajor}}}{{else}}{{{newValue}}}{{/if}}"
+      },
+      "$ref": "#"
+    },
+    "bumpVersion": {
+      "description": "Bump the version in the package file being updated.",
+      "type": "string",
+      "enum": [
+        "major",
+        "minor",
+        "patch"
+      ]
+    },
+    "bundler": {
+      "description": "Configuration object for the bundler manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)Gemfile$"
+        ],
+        "versioning": "ruby"
+      },
+      "$ref": "#"
+    },
+    "cacheDir": {
+      "description": "The directory for Renovate for storing caches. If left empty, Renovate will create a subdirectory within `baseDir` to use.",
+      "type": "string"
+    },
+    "cake": {
+      "description": "Configuration object for the cake manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.cake$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "cargo": {
+      "description": "Configuration object for the cargo manager",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "Rust crate {{depName}}",
+        "fileMatch": [
+          "(^|/)Cargo.toml$"
+        ],
+        "versioning": "cargo",
+        "rangeStrategy": "bump"
+      },
+      "$ref": "#"
+    },
+    "cdnurl": {
+      "description": "Configuration object for the cdnurl manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [],
+        "versioning": "semver"
+      },
+      "$ref": "#"
+    },
+    "circleci": {
+      "description": "Configuration object for the circleci manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/).circleci/config.yml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "cloneSubmodules": {
+      "description": "Set to true to enable initialization of submodules during repository clone.",
+      "type": "boolean",
+      "default": false
+    },
+    "cloudbuild": {
+      "description": "Configuration object for the cloudbuild manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)cloudbuild.ya?ml"
+        ]
+      },
+      "$ref": "#"
+    },
+    "cocoapods": {
+      "description": "Configuration object for the cocoapods manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)Podfile$"
+        ],
+        "versioning": "ruby"
+      },
+      "$ref": "#"
+    },
+    "commitBody": {
+      "description": "Commit message body template. Will be appended to commit message, separated by two line returns.",
+      "type": "string"
+    },
+    "commitBodyTable": {
+      "description": "If enabled, append a table in the commit message body describing all updates in the commit.",
+      "type": "boolean",
+      "default": false
+    },
+    "commitMessage": {
+      "description": "Message to use for commit messages and pull request titles.",
+      "type": "string",
+      "default": "{{{commitMessagePrefix}}} {{{commitMessageAction}}} {{{commitMessageTopic}}} {{{commitMessageExtra}}} {{{commitMessageSuffix}}}"
+    },
+    "commitMessageAction": {
+      "description": "Action verb to use in commit messages and PR titles.",
+      "type": "string",
+      "default": "Update"
+    },
+    "commitMessageExtra": {
+      "description": "Extra description used after the commit message topic - typically the version.",
+      "type": "string",
+      "default": "to {{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}"
+    },
+    "commitMessagePrefix": {
+      "description": "Prefix to add to start of commit messages and PR titles. Uses a semantic prefix if semanticCommits enabled.",
+      "type": "string"
+    },
+    "commitMessageSuffix": {
+      "description": "Suffix to add to end of commit messages and PR titles.",
+      "type": "string"
+    },
+    "commitMessageTopic": {
+      "description": "The upgrade topic/noun used in commit messages and PR titles.",
+      "type": "string",
+      "default": "dependency {{depName}}"
+    },
+    "composer": {
+      "description": "Configuration object for the composer manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)([\\w-]*)composer.json$"
+        ],
+        "versioning": "composer"
+      },
+      "$ref": "#"
+    },
+    "composerIgnorePlatformReqs": {
+      "description": "Configure use of `--ignore-platform-reqs`/`--ignore-platform-req` for the Composer package manager.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "confidential": {
+      "description": "If enabled, issues created by Renovate are set as confidential.",
+      "type": "boolean",
+      "default": false
+    },
+    "configWarningReuseIssue": {
+      "description": "Set this to false and Renovate will open each config warning in a new issue instead of reopening/reusing an existing issue.",
+      "type": "boolean",
+      "default": true
+    },
+    "constraints": {
+      "description": "Configuration object to define language or manager version constraints.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "customEnvVariables": {
+      "description": "Custom environment variables for child processes and sidecar Docker containers.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "deepExtract": {
+      "description": "Enable extraction of dependencies using package managers.",
+      "type": "boolean",
+      "default": false
+    },
+    "dependencyDashboard": {
+      "description": "Whether to create a \"Dependency Dashboard\" issue within the repository.",
+      "type": "boolean",
+      "default": false
+    },
+    "dependencyDashboardApproval": {
+      "description": "Whether updates should require manual approval from within the Dependency Dashboard issue before creation.",
+      "type": "boolean",
+      "default": false
+    },
+    "dependencyDashboardAutoclose": {
+      "description": "Set to `true` and Renovate will autoclose the Dependency Dashboard issue if there are no updates.",
+      "type": "boolean",
+      "default": false
+    },
+    "dependencyDashboardFooter": {
+      "description": "Any text added here will be placed last in the Dependency Dashboard issue body, with a divider separator before it.",
+      "type": "string"
+    },
+    "dependencyDashboardHeader": {
+      "description": "Any text added here will be placed first in the Dependency Dashboard issue body.",
+      "type": "string",
+      "default": "This issue provides visibility into Renovate updates and their statuses. [Learn more](https://docs.renovatebot.com/key-concepts/dashboard/)"
+    },
+    "dependencyDashboardLabels": {
+      "description": "These labels will always be applied on the Dependency Dashboard issue, even when they have been removed manually.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": null
+    },
+    "dependencyDashboardTitle": {
+      "description": "Title to use for the Dependency Dashboard issue.",
+      "type": "string",
+      "default": "Dependency Dashboard"
+    },
+    "deps-edn": {
+      "description": "Configuration object for the deps-edn manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)deps\\.edn$"
+        ],
+        "versioning": "maven"
+      },
+      "$ref": "#"
+    },
+    "description": {
+      "description": "Plain text description for a config or preset.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "detectGlobalManagerConfig": {
+      "description": "If true, Renovate will attempt to read global manager config from the file system.",
+      "type": "boolean",
+      "default": false
+    },
+    "detectHostRulesFromEnv": {
+      "description": "If true, Renovate tries to detect host rules from environment variables.",
+      "type": "boolean",
+      "default": false
+    },
+    "digest": {
+      "description": "Configuration to apply when updating a digest (no change in tag/version).",
+      "type": "object",
+      "default": {
+        "branchTopic": "{{{depNameSanitized}}}-digest",
+        "commitMessageExtra": "to {{newDigestShort}}",
+        "commitMessageTopic": "{{{depName}}} commit hash"
+      },
+      "$ref": "#"
+    },
+    "docker": {
+      "description": "Configuration object for Docker language.",
+      "type": "object",
+      "default": {
+        "versioning": "docker"
+      },
+      "$ref": "#"
+    },
+    "docker-compose": {
+      "description": "Configuration object for the docker-compose manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)docker-compose[^/]*\\.ya?ml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "dockerChildPrefix": {
+      "description": "Change this value in order to add a prefix to the Renovate Docker sidecar container names and labels.",
+      "type": "string",
+      "default": "renovate_"
+    },
+    "dockerImagePrefix": {
+      "description": "Change this value in order to override the default Renovate Docker sidecar image name prefix.",
+      "type": "string",
+      "default": "docker.io/renovate"
+    },
+    "dockerUser": {
+      "description": "Specify UID and GID for Docker-based binaries when binarySource=docker is used.",
+      "type": "string"
+    },
+    "dockerfile": {
+      "description": "Configuration object for the dockerfile manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/|\\.)Dockerfile$",
+          "(^|/)Dockerfile\\.[^/]*$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "dotnet": {
+      "description": "Configuration object for .NET language.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "draftPR": {
+      "description": "If enabled, the PR created by Renovate is set to a draft.",
+      "type": "boolean",
+      "default": false
+    },
+    "droneci": {
+      "description": "Configuration object for the droneci manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/).drone.yml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "dryRun": {
+      "description": "If enabled, perform a dry run by logging messages instead of creating/updating/deleting branches and PRs.",
+      "type": "boolean",
+      "default": false
+    },
+    "enabled": {
+      "description": "Enable or disable the bot.",
+      "type": "boolean"
+    },
+    "enabledManagers": {
+      "description": "A list of package managers to enable. If defined, then all managers not on the list are disabled.",
+      "type": "array"
+    },
+    "encrypted": {
+      "description": "A configuration object containing configuration encrypted with project key.",
+      "type": "object",
+      "default": null,
+      "$ref": "#"
+    },
+    "endpoint": {
+      "description": "Custom endpoint to use.",
+      "type": "string",
+      "default": null
+    },
+    "excludeCommitPaths": {
+      "description": "A file that matches any of these glob patterns will not be committed, even if it has been updated.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "executionTimeout": {
+      "description": "Default execution timeout in minutes for child processes Renovate creates.",
+      "type": "integer",
+      "default": 15
+    },
+    "exposeAllEnv": {
+      "description": "Configure this to true to allow passing of all env variables to package managers.",
+      "type": "boolean",
+      "default": false
+    },
+    "extends": {
+      "description": "Configuration presets to use/extend. Note: does not work if configured in config.js.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "extractVersion": {
+      "description": "A regex (re2) to extract a version from a datasource's raw version string.",
+      "type": "string",
+      "format": "regex"
+    },
+    "fetchReleaseNotes": {
+      "description": "Allow to disable release notes fetching.",
+      "type": "boolean",
+      "default": true
+    },
+    "fileMatch": {
+      "description": "RegEx (re2) pattern for matching manager files.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "regex"
+          }
+        },
+        {
+          "type": "string",
+          "format": "regex"
+        }
+      ]
+    },
+    "filterUnavailableUsers": {
+      "description": "Filter reviewers and assignees based on their availability.",
+      "type": "boolean",
+      "default": false
+    },
+    "followTag": {
+      "description": "If defined, packages will follow this release tag exactly.",
+      "type": "string"
+    },
+    "force": {
+      "description": "Any configuration defined within this object will force override existing settings.",
+      "type": "object",
+      "$ref": "#"
+    },
+    "forceCli": {
+      "description": "Whether CLI configuration options should be moved to the `force` config section.",
+      "type": "boolean",
+      "default": true
+    },
+    "forkMode": {
+      "description": "Set to true to fork the source repository and create branches there instead.",
+      "type": "boolean",
+      "default": false
+    },
+    "forkToken": {
+      "description": "Will be used on GitHub when `forkMode` is set to `true` to clone the repositories.",
+      "type": "string",
+      "default": ""
+    },
+    "git-submodules": {
+      "description": "Configuration object for the git-submodules manager",
+      "type": "object",
+      "default": {
+        "enabled": false,
+        "versioning": "git",
+        "fileMatch": [
+          "(^|/).gitmodules$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "gitAuthor": {
+      "description": "Author to use for Git commits. Must conform to RFC5322.",
+      "type": "string"
+    },
+    "gitIgnoredAuthors": {
+      "description": "Additional git authors which are ignored by Renovate. Must conform to RFC5322.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gitLabIgnoreApprovals": {
+      "description": "Ignore approval rules for MRs created by Renovate, which is useful for automerge.",
+      "type": "boolean",
+      "default": false
+    },
+    "gitNoVerify": {
+      "description": "Which git commands will be run with the `--no-verify` option.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "commit",
+              "push"
+            ]
+          }
+        },
+        {
+          "type": "string",
+          "enum": [
+            "commit",
+            "push"
+          ]
+        }
+      ],
+      "default": [
+        "commit",
+        "push"
+      ]
+    },
+    "gitPrivateKey": {
+      "description": "PGP key to use for signing Git commits.",
+      "type": "string"
+    },
+    "gitUrl": {
+      "description": "Overrides the default resolution for git remote, e.g. to switch GitLab from HTTPS to SSH-based.",
+      "type": "string",
+      "enum": [
+        "default",
+        "ssh",
+        "endpoint"
+      ],
+      "default": "default"
+    },
+    "github-actions": {
+      "description": "Configuration object for the github-actions manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "^(workflow-templates|\\.github\\/workflows)\\/[^/]+\\.ya?ml$",
+          "(^|\\/)action\\.ya?ml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "gitlabci": {
+      "description": "Configuration object for the gitlabci manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.gitlab-ci\\.yml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "gitlabci-include": {
+      "description": "Configuration object for the gitlabci-include manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.gitlab-ci\\.yml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "golang": {
+      "description": "Configuration object for Go language.",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "module {{depName}}"
+      },
+      "$ref": "#"
+    },
+    "gomod": {
+      "description": "Configuration object for the gomod manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)go.mod$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "gradle": {
+      "description": "Configuration object for the gradle manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.gradle(\\.kts)?$",
+          "(^|\\/)gradle\\.properties$",
+          "(^|\\/)gradle\\/.+\\.toml$",
+          "\\.versions\\.toml$"
+        ],
+        "timeout": 600,
+        "versioning": "gradle"
+      },
+      "$ref": "#"
+    },
+    "gradle-wrapper": {
+      "description": "Configuration object for the gradle-wrapper manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)gradle/wrapper/gradle-wrapper.properties$"
+        ],
+        "versioning": "gradle"
+      },
+      "$ref": "#"
+    },
+    "group": {
+      "description": "Config if groupName is enabled.",
+      "type": "object",
+      "default": {
+        "branchTopic": "{{{groupSlug}}}",
+        "commitMessageTopic": "{{{groupName}}}"
+      },
+      "$ref": "#"
+    },
+    "groupName": {
+      "description": "Human understandable name for the dependency group.",
+      "type": "string",
+      "default": null
+    },
+    "groupSlug": {
+      "description": "Slug to use for group (e.g. in branch name). Will be calculated from groupName if null.",
+      "type": "string",
+      "default": null
+    },
+    "hashedBranchLength": {
+      "description": "If enabled, branch names will use a hashing function to ensure each branch has that length.",
+      "type": "integer",
+      "default": null
+    },
+    "helm-requirements": {
+      "description": "Configuration object for the helm-requirements manager",
+      "type": "object",
+      "default": {
+        "aliases": {
+          "stable": "https://charts.helm.sh/stable"
+        },
+        "commitMessageTopic": "helm chart {{depName}}",
+        "fileMatch": [
+          "(^|/)requirements\\.yaml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "helm-values": {
+      "description": "Configuration object for the helm-values manager",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "helm values {{depName}}",
+        "fileMatch": [
+          "(^|/)values.yaml$"
+        ],
+        "pinDigests": false
+      },
+      "$ref": "#"
+    },
+    "helmfile": {
+      "description": "Configuration object for the helmfile manager",
+      "type": "object",
+      "default": {
+        "aliases": {
+          "stable": "https://charts.helm.sh/stable"
+        },
+        "commitMessageTopic": "helm chart {{depName}}",
+        "fileMatch": [
+          "(^|/)helmfile.yaml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "helmsman": {
+      "description": "Configuration object for the helmsman manager",
+      "type": "object",
+      "default": {
+        "fileMatch": []
+      },
+      "$ref": "#"
+    },
+    "helmv3": {
+      "description": "Configuration object for the helmv3 manager",
+      "type": "object",
+      "default": {
+        "aliases": {
+          "stable": "https://charts.helm.sh/stable"
+        },
+        "commitMessageTopic": "helm chart {{depName}}",
+        "fileMatch": [
+          "(^|/)Chart.yaml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "homebrew": {
+      "description": "Configuration object for the homebrew manager",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "Homebrew Formula {{depName}}",
+        "fileMatch": [
+          "^Formula/[^/]+[.]rb$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "hostRules": {
+      "description": "Host rules/configuration including credentials.",
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "abortIgnoreStatusCodes": {
+                "description": "A list of HTTP status codes to ignore and *not* abort the run because of when abortOnError=true.",
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "abortOnError": {
+                "description": "If enabled, Renovate will abort its run when HTTP request errors occur.",
+                "type": "boolean",
+                "default": false
+              },
+              "authType": {
+                "description": "Authentication type for http header. e.g. \"Bearer\" or \"Basic\". Use \"Token-Only\" to use only the token without an authorization type.",
+                "type": "string",
+                "default": "Bearer"
+              },
+              "concurrentRequestLimit": {
+                "description": "Limit concurrent requests per host.",
+                "type": "integer",
+                "default": null
+              },
+              "enableHttp2": {
+                "description": "Enable got HTTP/2 support.",
+                "type": "boolean",
+                "default": false
+              },
+              "hostType": {
+                "description": "hostType for a package rule. Can be a platform name or a datasource name.",
+                "type": "string"
+              },
+              "insecureRegistry": {
+                "description": "Explicitly turn on insecure Docker registry access (HTTP).",
+                "type": "boolean"
+              },
+              "matchHost": {
+                "description": "A domain name, host name or base URL to match against",
+                "type": "string"
+              },
+              "timeout": {
+                "description": "Timeout (in milliseconds) for queries to external endpoints.",
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      },
+      "default": [
+        {
+          "timeout": 60000
+        }
+      ]
+    },
+    "html": {
+      "description": "Configuration object for the html manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.html?$"
+        ],
+        "versioning": "semver",
+        "digest": {
+          "enabled": false
+        },
+        "pinDigests": false
+      },
+      "$ref": "#"
+    },
+    "ignoreDeprecated": {
+      "description": "Ignore deprecated versions unless the current version is deprecated.",
+      "type": "boolean",
+      "default": true
+    },
+    "ignoreDeps": {
+      "description": "Dependencies to ignore.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ignorePaths": {
+      "description": "Skip any package file whose path matches one of these. Can be a string or glob pattern.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "**/node_modules/**",
+        "**/bower_components/**"
+      ]
+    },
+    "ignorePlugins": {
+      "description": "Configure this to true if allowPlugins=true but you wish to skip running plugins when updating lock files.",
+      "type": "boolean",
+      "default": false
+    },
+    "ignorePrAuthor": {
+      "description": "Set to true to fetch the entire list of PRs instead of only those authored by the Renovate user.",
+      "type": "boolean",
+      "default": false
+    },
+    "ignorePresets": {
+      "description": "A list of presets to ignore, including nested ones inside `extends`.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "ignoreScripts": {
+      "description": "Configure this to true if allowScripts=true but you wish to skip running scripts when updating lock files.",
+      "type": "boolean",
+      "default": false
+    },
+    "ignoreTests": {
+      "description": "Set to true to enable automerging without tests.",
+      "type": "boolean",
+      "default": false
+    },
+    "ignoreUnstable": {
+      "description": "Ignore versions with unstable SemVer.",
+      "type": "boolean"
+    },
+    "includeForks": {
+      "description": "Whether to process forked repositories or not. By default, all forked repositories are skipped.",
+      "type": "boolean",
+      "default": false
+    },
+    "includePaths": {
+      "description": "Include package files only within these defined paths.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "internalChecksFilter": {
+      "description": "When/how to filter based on internal checks.",
+      "type": "string",
+      "enum": [
+        "strict",
+        "flexible",
+        "none"
+      ],
+      "default": "none"
+    },
+    "java": {
+      "description": "Configuration object for all Java package managers.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "jenkins": {
+      "description": "Configuration object for the jenkins manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)plugins\\.(txt|ya?ml)$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "js": {
+      "description": "Configuration object for JavaScript language.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "jsonnet-bundler": {
+      "description": "Configuration object for the jsonnet-bundler manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)jsonnetfile.json$"
+        ],
+        "datasource": "git-tags"
+      },
+      "$ref": "#"
+    },
+    "kubernetes": {
+      "description": "Configuration object for the kubernetes manager",
+      "type": "object",
+      "default": {
+        "fileMatch": []
+      },
+      "$ref": "#"
+    },
+    "kustomize": {
+      "description": "Configuration object for the kustomize manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)kustomization\\.yaml"
+        ],
+        "pinDigests": false
+      },
+      "$ref": "#"
+    },
+    "labels": {
+      "description": "Labels to set in Pull Request.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "leiningen": {
+      "description": "Configuration object for the leiningen manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)project\\.clj$"
+        ],
+        "versioning": "maven"
+      },
+      "$ref": "#"
+    },
+    "lockFileMaintenance": {
+      "description": "Configuration for lock file maintenance.",
+      "type": "object",
+      "default": {
+        "enabled": false,
+        "recreateClosed": true,
+        "rebaseStalePrs": true,
+        "branchTopic": "lock-file-maintenance",
+        "commitMessageAction": "Lock file maintenance",
+        "commitMessageTopic": null,
+        "commitMessageExtra": null,
+        "schedule": [
+          "before 5am on monday"
+        ],
+        "groupName": null,
+        "prBodyDefinitions": {
+          "Change": "All locks refreshed"
+        }
+      },
+      "$ref": "#"
+    },
+    "logContext": {
+      "description": "Add a global or per-repo log context to each log entry.",
+      "type": "string",
+      "default": null
+    },
+    "logFile": {
+      "description": "Log file path.",
+      "type": "string"
+    },
+    "logFileLevel": {
+      "description": "Log file log level.",
+      "type": "string",
+      "default": "debug"
+    },
+    "major": {
+      "description": "Configuration to apply when an update type is major.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "maven": {
+      "description": "Configuration object for the maven manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.pom\\.xml$",
+          "(^|/)pom\\.xml$"
+        ],
+        "versioning": "maven"
+      },
+      "$ref": "#"
+    },
+    "meteor": {
+      "description": "Configuration object for the meteor manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)package.js$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "migratePresets": {
+      "description": "Define presets here which have been removed or renamed and should be migrated automatically.",
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "type": "string"
+      },
+      "$ref": "#"
+    },
+    "minor": {
+      "description": "Configuration to apply when an update type is minor.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "mix": {
+      "description": "Configuration object for the mix manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)mix\\.exs$"
+        ],
+        "versioning": "hex"
+      },
+      "$ref": "#"
+    },
+    "node": {
+      "description": "Configuration object for Node version renovation.",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "Node.js"
+      },
+      "$ref": "#"
+    },
+    "nodenv": {
+      "description": "Configuration object for the nodenv manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/).node-version$"
+        ],
+        "versioning": "node"
+      },
+      "$ref": "#"
+    },
+    "npm": {
+      "description": "Configuration object for the npm manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)package.json$"
+        ],
+        "rollbackPrs": true,
+        "versioning": "npm",
+        "digest": {
+          "prBodyDefinitions": {
+            "Change": "{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}"
+          }
+        },
+        "prBodyDefinitions": {
+          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
+        }
+      },
+      "$ref": "#"
+    },
+    "npmToken": {
+      "description": "npm token used for authenticating with the default registry.",
+      "type": "string"
+    },
+    "npmrc": {
+      "description": "String copy of npmrc file. Use \\n instead of line breaks.",
+      "type": "string"
+    },
+    "npmrcMerge": {
+      "description": "Whether to merge config.npmrc with repo .npmrc content if both are found.",
+      "type": "boolean",
+      "default": false
+    },
+    "nuget": {
+      "description": "Configuration object for the nuget manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.(?:cs|fs|vb)proj$",
+          "\\.(?:props|targets)$",
+          "(^|\\/)dotnet-tools\\.json$",
+          "(^|\\/)global\\.json$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "nvm": {
+      "description": "Configuration object for the nvm manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.nvmrc$"
+        ],
+        "versioning": "node",
+        "pinDigests": false
+      },
+      "$ref": "#"
+    },
+    "onboarding": {
+      "description": "Require a Configuration PR first.",
+      "type": "boolean"
+    },
+    "onboardingBranch": {
+      "description": "Change this value in order to override the default onboarding branch name.",
+      "type": "string",
+      "default": "renovate/configure"
+    },
+    "onboardingCommitMessage": {
+      "description": "Change this value in order to override the default onboarding commit message.",
+      "type": "string",
+      "default": null
+    },
+    "onboardingConfig": {
+      "description": "Configuration to use in onboarding PRs.",
+      "type": "object",
+      "default": {
+        "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+      },
+      "$ref": "#"
+    },
+    "onboardingConfigFileName": {
+      "description": "Change this value in order to override the default onboarding config file name.",
+      "type": "string",
+      "default": "renovate.json"
+    },
+    "onboardingNoDeps": {
+      "description": "Onboard repository even if no dependencies found.",
+      "type": "boolean",
+      "default": false
+    },
+    "onboardingPrTitle": {
+      "description": "Change this value in order to override the default onboarding PR title.",
+      "type": "string",
+      "default": "Configure Renovate"
+    },
+    "optimizeForDisabled": {
+      "description": "Set to true to first check for disabling in config before cloning.",
+      "type": "boolean",
+      "default": false
+    },
+    "packageRules": {
+      "description": "Rules for matching package names.",
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "allowedVersions": {
+                "description": "A version range or regex pattern capturing allowed versions for dependencies.",
+                "type": "string"
+              },
+              "excludePackageNames": {
+                "description": "Package names to exclude. Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "excludePackagePatterns": {
+                "description": "Package name patterns to exclude. Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "regex"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "format": "regex"
+                  }
+                ]
+              },
+              "excludePackagePrefixes": {
+                "description": "Package name prefixes to exclude. Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchBaseBranches": {
+                "description": "List of branches to match (e.g. [\"master\"]). Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchCurrentVersion": {
+                "description": "A version or version range to match against the current version of a package. Valid only within `packageRules` object.",
+                "type": "string"
+              },
+              "matchDatasources": {
+                "description": "List of datasources to match (e.g. [\"orb\"]). Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchDepTypes": {
+                "description": "List of depTypes to match (e.g. [`peerDependencies`]). Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchFiles": {
+                "description": "List of strings to do an exact match against package files with full path. Applicable inside packageRules only.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "matchLanguages": {
+                "description": "List of languages to match (e.g. [\"python\"]). Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchManagers": {
+                "description": "List of package managers to match (e.g. [\"pipenv\"]). Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchPackageNames": {
+                "description": "Package names to match. Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchPackagePatterns": {
+                "description": "Package name patterns to match. Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "regex"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "format": "regex"
+                  }
+                ]
+              },
+              "matchPackagePrefixes": {
+                "description": "Package name prefixes to match. Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchPaths": {
+                "description": "List of strings or glob patterns to match against package files. Applicable inside packageRules only.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "matchSourceUrlPrefixes": {
+                "description": "A list of source URL prefixes to match against, commonly used for grouping of monorepos or packages from the same organization.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchUpdateTypes": {
+                "description": "Update types to match against (major, minor, pin, etc). Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "major",
+                        "minor",
+                        "patch",
+                        "pin",
+                        "digest",
+                        "lockFileMaintenance",
+                        "rollback",
+                        "bump"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "major",
+                      "minor",
+                      "patch",
+                      "pin",
+                      "digest",
+                      "lockFileMaintenance",
+                      "rollback",
+                      "bump"
+                    ]
+                  }
+                ]
+              },
+              "replacementName": {
+                "description": "The name of the new dependency that replaces the old deprecated dependency.",
+                "type": "string"
+              },
+              "replacementVersion": {
+                "description": "The version of the new dependency that replaces the old deprecated dependency.",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "password": {
+      "description": "Password for authentication. Currently Bitbucket only (AppPassword).",
+      "type": "string"
+    },
+    "patch": {
+      "description": "Configuration to apply when an update type is patch.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "persistRepoData": {
+      "description": "If set to true, repository data will preserved between runs instead of deleted.",
+      "type": "boolean",
+      "default": false
+    },
+    "php": {
+      "description": "Configuration object for PHP.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "pin": {
+      "description": "Configuration to apply when an update type is pin.",
+      "type": "object",
+      "default": {
+        "rebaseWhen": "behind-base-branch",
+        "groupName": "Pin Dependencies",
+        "groupSlug": "pin-dependencies",
+        "commitMessageAction": "Pin",
+        "group": {
+          "commitMessageTopic": "dependencies",
+          "commitMessageExtra": ""
+        }
+      },
+      "$ref": "#"
+    },
+    "pinDigests": {
+      "description": "Whether to add digests to Dockerfile source images.",
+      "type": "boolean",
+      "default": false
+    },
+    "pip-compile": {
+      "description": "Configuration object for the pip-compile manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [],
+        "lockFileMaintenance": {
+          "enabled": true,
+          "branchTopic": "pip-compile-refresh",
+          "commitMessageAction": "Refresh pip-compile outputs"
+        }
+      },
+      "$ref": "#"
+    },
+    "pip_requirements": {
+      "description": "Configuration object for the pip_requirements manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)([\\w-]*)requirements\\.(txt|pip)$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "pip_setup": {
+      "description": "Configuration object for the pip_setup manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)setup.py$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "pipenv": {
+      "description": "Configuration object for the pipenv manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)Pipfile$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "platform": {
+      "description": "Platform type of repository.",
+      "type": "string",
+      "enum": [
+        "azure",
+        "bitbucket",
+        "bitbucket-server",
+        "gitea",
+        "github",
+        "gitlab"
+      ],
+      "default": "github"
+    },
+    "platformAutomerge": {
+      "description": "Enable or disable usage of platform-native auto-merge capabilities when available.",
+      "type": "boolean",
+      "default": false
+    },
+    "poetry": {
+      "description": "Configuration object for the poetry manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)pyproject\\.toml$"
+        ]
+      },
+      "$ref": "#"
+    },
+    "postUpdateOptions": {
+      "description": "Enable post-update options to be run after package/artifact updating.",
+      "type": "array",
+      "default": []
+    },
+    "postUpgradeTasks": {
+      "description": "Post-upgrade tasks that are executed before a commit is made by Renovate.",
+      "type": "object",
+      "default": {
+        "commands": [],
+        "fileFilters": [],
+        "executionMode": "update"
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "commands": {
+                "description": "A list of post-upgrade commands that are executed before a commit is made by Renovate.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              },
+              "executionMode": {
+                "description": "Controls whether the post upgrade tasks runs for every update or once per upgrade branch",
+                "type": "string",
+                "enum": [
+                  "update",
+                  "branch"
+                ],
+                "default": "update"
+              },
+              "fileFilters": {
+                "description": "Files that match these glob patterns will be committed if they are present after running a post-upgrade task.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              }
+            }
+          }
+        ]
+      }
+    },
+    "prBodyColumns": {
+      "description": "List of columns to use in PR bodies.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "Package",
+        "Type",
+        "Update",
+        "Change"
+      ]
+    },
+    "prBodyDefinitions": {
+      "description": "Table column definitions for use in PR tables.",
+      "type": "object",
+      "default": {
+        "Package": "{{{depNameLinked}}}",
+        "Type": "{{{depType}}}",
+        "Update": "{{{updateType}}}",
+        "Current value": "{{{currentValue}}}",
+        "New value": "{{{newValue}}}",
+        "Change": "`{{{displayFrom}}}` -> `{{{displayTo}}}`",
+        "References": "{{{references}}}",
+        "Package file": "{{{packageFile}}}"
+      }
+    },
+    "prBodyNotes": {
+      "description": "List of additional notes/templates to be included in the Pull Request bodies.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "default": []
+    },
+    "prBodyTemplate": {
+      "description": "Pull Request body template. Controls which sections are rendered in the body.",
+      "type": "string",
+      "default": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{configDescription}}}{{{controls}}}{{{footer}}}"
+    },
+    "prCommitsPerRunLimit": {
+      "description": "Set a maximum number of commits per Renovate run. Default is no limit.",
+      "type": "integer",
+      "default": 0
+    },
+    "prConcurrentLimit": {
+      "description": "Limit to a maximum of x concurrent branches/PRs. 0 (default) means no limit.",
+      "type": "integer",
+      "default": 0
+    },
+    "prCreation": {
+      "description": "When to create the PR for a branch.",
+      "type": "string",
+      "enum": [
+        "immediate",
+        "not-pending",
+        "status-success",
+        "approval"
+      ],
+      "default": "immediate"
+    },
+    "prFooter": {
+      "description": "Any text added here will be placed last in the PR body, with a divider separator before it.",
+      "type": "string",
+      "default": "This PR has been generated by [Renovate Bot](https://github.com/renovatebot/renovate)."
+    },
+    "prHeader": {
+      "description": "Any text added here will be placed first in the PR body.",
+      "type": "string"
+    },
+    "prHourlyLimit": {
+      "description": "Rate limit PRs to maximum x created per hour. 0 (default) means no limit.",
+      "type": "integer",
+      "default": 0
+    },
+    "prNotPendingHours": {
+      "description": "Timeout in hours for when prCreation=not-pending.",
+      "type": "integer",
+      "default": 25
+    },
+    "prPriority": {
+      "description": "Set sorting priority for PR creation. PRs with higher priority are created first, negative priority last.",
+      "type": "integer",
+      "default": 0
+    },
+    "prTitle": {
+      "description": "Pull Request title template (deprecated). Now uses commitMessage.",
+      "type": "string",
+      "default": null
+    },
+    "pre-commit": {
+      "description": "Configuration object for the pre-commit manager",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "pre-commit hook {{depName}}",
+        "enabled": false,
+        "fileMatch": [
+          "(^|/)\\.pre-commit-config\\.yaml$"
+        ],
+        "prBodyNotes": [
+          "Note: The `pre-commit` manager in Renovate is not supported by the `pre-commit` maintainers or community. Please do not report any problems there, instead [create a Discussion in the Renovate repository](https://github.com/renovatebot/renovate/discussions/new) if you have any questions."
+        ]
+      },
+      "$ref": "#"
+    },
+    "printConfig": {
+      "description": "If enabled, log the full resolved config for each repo, including resolved presets.",
+      "type": "boolean",
+      "default": false
+    },
+    "privateKey": {
+      "description": "Server-side private key.",
+      "type": "string"
+    },
+    "privateKeyOld": {
+      "description": "Secondary/old private key to try.",
+      "type": "string"
+    },
+    "privateKeyPath": {
+      "description": "Path to the Server-side private key.",
+      "type": "string"
+    },
+    "privateKeyPathOld": {
+      "description": "Path to the Server-side old private key.",
+      "type": "string"
+    },
+    "productLinks": {
+      "description": "Links which are embedded within PRs, issues, etc.",
+      "type": "object",
+      "default": {
+        "documentation": "https://docs.renovatebot.com/",
+        "help": "https://github.com/renovatebot/renovate/discussions",
+        "homepage": "https://github.com/renovatebot/renovate"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "format": "uri"
+      },
+      "$ref": "#"
+    },
+    "pruneStaleBranches": {
+      "description": "Enable or disable pruning of stale branches.",
+      "type": "boolean",
+      "default": true
+    },
+    "pub": {
+      "description": "Configuration object for the pub manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)pubspec\\.ya?ml$"
+        ],
+        "versioning": "npm"
+      },
+      "$ref": "#"
+    },
+    "pyenv": {
+      "description": "Configuration object for the pyenv manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/).python-version$"
+        ],
+        "versioning": "docker"
+      },
+      "$ref": "#"
+    },
+    "python": {
+      "description": "Configuration object for Python.",
+      "type": "object",
+      "default": {
+        "versioning": "pep440"
+      },
+      "$ref": "#"
+    },
+    "rangeStrategy": {
+      "description": "Policy for how to modify/update existing ranges.",
+      "type": "string",
+      "enum": [
+        "auto",
+        "pin",
+        "bump",
+        "replace",
+        "widen",
+        "update-lockfile"
+      ],
+      "default": "replace"
+    },
+    "rebaseLabel": {
+      "description": "Label to use to request the bot to rebase a PR manually.",
+      "type": "string",
+      "default": "rebase"
+    },
+    "rebaseWhen": {
+      "description": "Control when Renovate decides to rebase an existing branch.",
+      "type": "string",
+      "enum": [
+        "auto",
+        "never",
+        "conflicted",
+        "behind-base-branch"
+      ],
+      "default": "auto"
+    },
+    "recreateClosed": {
+      "description": "Recreate PRs even if same ones were closed previously.",
+      "type": "boolean",
+      "default": false
+    },
+    "redisUrl": {
+      "description": "If defined, this Redis URL will be used for caching instead of the file system.",
+      "type": "string"
+    },
+    "regex": {
+      "description": "Configuration object for the regex manager",
+      "type": "object",
+      "default": {
+        "pinDigests": false
+      },
+      "$ref": "#"
+    },
+    "regexManagers": {
+      "description": "Custom managers using regex matching.",
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "autoReplaceStringTemplate": {
+                "description": "Optional extractVersion for extracted dependencies. Valid only within a `regexManagers` object.",
+                "type": "string"
+              },
+              "currentValueTemplate": {
+                "description": "Optional currentValue for extracted dependencies. Valid only within a `regexManagers` object.",
+                "type": "string"
+              },
+              "datasourceTemplate": {
+                "description": "Optional datasource for extracted dependencies. Valid only within a `regexManagers` object.",
+                "type": "string"
+              },
+              "depNameTemplate": {
+                "description": "Optional depName for extracted dependencies. Valid only within a `regexManagers` object.",
+                "type": "string"
+              },
+              "depTypeTemplate": {
+                "description": "Optional depType for extracted dependencies. Valid only within a `regexManagers` object.",
+                "type": "string"
+              },
+              "extractVersionTemplate": {
+                "description": "Optional extractVersion for extracted dependencies. Valid only within a `regexManagers` object.",
+                "type": "string"
+              },
+              "lookupNameTemplate": {
+                "description": "Optional lookupName for extracted dependencies, else defaults to depName value. Valid only within a `regexManagers` object.",
+                "type": "string"
+              },
+              "matchStrings": {
+                "description": "Regex capture rule to use. Valid only within a `regexManagers` object.",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "regex"
+                }
+              },
+              "matchStringsStrategy": {
+                "description": "Strategy how to interpret matchStrings.",
+                "type": "string",
+                "enum": [
+                  "any",
+                  "recursive",
+                  "combination"
+                ],
+                "default": "any"
+              },
+              "registryUrlTemplate": {
+                "description": "Optional registry URL for extracted dependencies. Valid only within a `regexManagers` object.",
+                "type": "string"
+              },
+              "versioningTemplate": {
+                "description": "Optional versioning for extracted dependencies. Valid only within a `regexManagers` object.",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "default": []
+    },
+    "registryUrls": {
+      "description": "List of URLs to try for dependency lookup. Package manager specific.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": null
+    },
+    "replacement": {
+      "description": "Configuration to apply when replacing a dependency.",
+      "type": "object",
+      "default": {
+        "branchTopic": "{{{depNameSanitized}}}-replacement",
+        "commitMessageAction": "Replace",
+        "commitMessageExtra": "with {{newName}} {{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
+        "prBodyNotes": [
+          "This is a special PR that replaces `{{{depNameSanitized}}}` with the community suggested minimal stable replacement version."
+        ]
+      },
+      "$ref": "#"
+    },
+    "repositories": {
+      "description": "List of Repositories.",
+      "type": "array"
+    },
+    "repositoryCache": {
+      "description": "Option to do repository extract caching.",
+      "type": "string",
+      "enum": [
+        "disabled",
+        "enabled",
+        "reset"
+      ],
+      "default": "disabled"
+    },
+    "requireConfig": {
+      "description": "Set to false if it is optional for repositories to contain a config.",
+      "type": "boolean",
+      "default": true
+    },
+    "respectLatest": {
+      "description": "Ignore versions newer than npm \"latest\" version.",
+      "type": "boolean"
+    },
+    "reviewers": {
+      "description": "Requested reviewers for Pull Requests (either username or email address depending on the platform).",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reviewersFromCodeOwners": {
+      "description": "Determine reviewers based on configured code owners and changes in PR.",
+      "type": "boolean",
+      "default": false
+    },
+    "reviewersSampleSize": {
+      "description": "Take a random sample of given size from reviewers.",
+      "type": "integer",
+      "default": null
+    },
+    "rollback": {
+      "description": "Configuration to apply when rolling back a version.",
+      "type": "object",
+      "default": {
+        "branchTopic": "{{{depNameSanitized}}}-rollback",
+        "commitMessageAction": "Roll back",
+        "semanticCommitType": "fix"
+      },
+      "$ref": "#"
+    },
+    "rollbackPrs": {
+      "description": "Create PRs to roll back versions if the current version is not found in the registry.",
+      "type": "boolean",
+      "default": false
+    },
+    "ruby": {
+      "description": "Configuration object for Ruby language.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "ruby-version": {
+      "description": "Configuration object for the ruby-version manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.ruby-version$"
+        ],
+        "versioning": "ruby"
+      },
+      "$ref": "#"
+    },
+    "rust": {
+      "description": "Configuration option for Rust package management.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
+    },
+    "sbt": {
+      "description": "Configuration object for the sbt manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.sbt$",
+          "project/[^/]*.scala$"
+        ],
+        "versioning": "ivy"
+      },
+      "$ref": "#"
+    },
+    "schedule": {
+      "description": "Times of day/week to limit branch creation to.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "default": [
+        "at any time"
+      ]
+    },
+    "secrets": {
+      "description": "Object containing secret name/value pairs",
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "type": "string"
+      },
+      "$ref": "#"
+    },
+    "semanticCommitScope": {
+      "description": "Commit scope to use if Semantic Commits are enabled.",
+      "type": "string",
+      "default": "deps"
+    },
+    "semanticCommitType": {
+      "description": "Commit type to use if Semantic Commits is enabled.",
+      "type": "string",
+      "default": "chore"
+    },
+    "semanticCommits": {
+      "description": "Enable Semantic Commit prefixes for commits and PR titles.",
+      "type": "string",
+      "enum": [
+        "auto",
+        "enabled",
+        "disabled"
+      ],
+      "default": "auto"
+    },
+    "separateMajorMinor": {
+      "description": "If set to false, it will upgrade dependencies to latest release only, and not separate major/minor branches.",
+      "type": "boolean"
+    },
+    "separateMinorPatch": {
+      "description": "If set to true, it will separate minor and patch updates into separate branches.",
+      "type": "boolean",
+      "default": false
+    },
+    "separateMultipleMajor": {
+      "description": "If set to true, PRs will be raised separately for each available major upgrade version.",
+      "type": "boolean",
+      "default": false
+    },
+    "setup-cfg": {
+      "description": "Configuration object for the setup-cfg manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)setup\\.cfg$"
+        ],
+        "versioning": "pep440"
+      },
+      "$ref": "#"
+    },
+    "skipInstalls": {
+      "description": "Skip installing modules/dependencies if lock file updating is possible alone.",
+      "type": "boolean",
+      "default": null
+    },
+    "stabilityDays": {
+      "description": "Number of days required before a new release is considered to be stabilized.",
+      "type": "integer",
+      "default": 0
+    },
+    "suppressNotifications": {
+      "description": "Options to suppress various types of warnings and other notifications.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "prIgnoreNotification",
+          "branchAutomergeFailure",
+          "lockFileErrors",
+          "artifactErrors",
+          "deprecationWarningIssues",
+          "onboardingClose"
+        ]
+      },
+      "default": [
+        "deprecationWarningIssues"
+      ]
+    },
+    "swift": {
+      "description": "Configuration object for the swift manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)Package\\.swift"
+        ],
+        "versioning": "swift",
+        "rangeStrategy": "bump"
+      },
+      "$ref": "#"
+    },
+    "terraform": {
+      "description": "Configuration object for the terraform manager",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "Terraform {{managerData.terraformDependencyType}} {{depName}}",
+        "fileMatch": [
+          "\\.tf$"
+        ],
+        "versioning": "hashicorp"
+      },
+      "$ref": "#"
+    },
+    "terraform-version": {
+      "description": "Configuration object for the terraform-version manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.terraform-version$"
+        ],
+        "versioning": "hashicorp",
+        "extractVersion": "^v(?<version>.*)$"
+      },
+      "$ref": "#"
+    },
+    "terragrunt": {
+      "description": "Configuration object for the terragrunt manager",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "Terragrunt dependency {{depName}}",
+        "fileMatch": [
+          "(^|/)terragrunt\\.hcl$"
+        ],
+        "versioning": "hashicorp"
+      },
+      "$ref": "#"
+    },
+    "terragrunt-version": {
+      "description": "Configuration object for the terragrunt-version manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.terragrunt-version$"
+        ],
+        "versioning": "hashicorp",
+        "extractVersion": "^v(?<version>.+)$"
+      },
+      "$ref": "#"
+    },
+    "timezone": {
+      "description": "[IANA Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)",
+      "type": "string"
+    },
+    "token": {
+      "description": "Repository Auth Token.",
+      "type": "string"
+    },
+    "transitiveRemediation": {
+      "description": "Enable remediation of transitive dependencies.",
+      "type": "boolean",
+      "default": false
+    },
+    "travis": {
+      "description": "Configuration object for the travis manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "^.travis.yml$"
+        ],
+        "major": {
+          "enabled": false
+        },
+        "versioning": "node"
+      },
+      "$ref": "#"
+    },
+    "unicodeEmoji": {
+      "description": "Enable or disable Unicode emoji.",
+      "type": "boolean",
+      "default": true
+    },
+    "updateInternalDeps": {
+      "description": "Whether to update internal dep versions in a monorepo (Lerna or Yarn Workspaces).",
+      "type": "boolean",
+      "default": false
+    },
+    "updateLockFiles": {
+      "description": "Set to false to disable lock file updating.",
+      "type": "boolean"
+    },
+    "updateNotScheduled": {
+      "description": "Whether to update (but not create) branches when not scheduled.",
+      "type": "boolean"
+    },
+    "updatePinnedDependencies": {
+      "description": "Whether to update pinned (single version) dependencies or not.",
+      "type": "boolean",
+      "default": true
+    },
+    "userStrings": {
+      "description": "User-facing strings pertaining to the PR comment that gets posted when a PR is closed.",
+      "type": "object",
+      "default": {
+        "ignoreTopic": "Renovate Ignore Notification",
+        "ignoreMajor": "As this PR has been closed unmerged, Renovate will ignore this upgrade and you will not receive PRs for *any* future {{{newMajor}}}.x releases. However, if you upgrade to {{{newMajor}}}.x manually then Renovate will reenable minor and patch updates automatically.",
+        "ignoreDigest": "As this PR has been closed unmerged, Renovate will ignore this upgrade and you will not receive PRs for *any* future {{{depName}}}:{{{currentValue}}} digest updates. Digest updates will resume if you update the specified tag at any time.",
+        "ignoreOther": "As this PR has been closed unmerged, Renovate will now ignore this update ({{{newValue}}}). You will still receive a PR once a newer version is released, so if you wish to permanently ignore this dependency, please add it to the `ignoreDeps` array of your renovate config."
+      },
+      "$ref": "#"
+    },
+    "username": {
+      "description": "Username for authentication. Currently Bitbucket only.",
+      "type": "string"
+    },
+    "versioning": {
+      "description": "Versioning to use for filtering and comparisons.",
+      "type": "string",
+      "enum": [
+        "aws-machine-image",
+        "cargo",
+        "composer",
+        "docker",
+        "git",
+        "gradle",
+        "hashicorp",
+        "helm",
+        "hex",
+        "ivy",
+        "loose",
+        "maven",
+        "node",
+        "npm",
+        "nuget",
+        "pep440",
+        "poetry",
+        "regex",
+        "rez",
+        "ruby",
+        "semver",
+        "semver-coerced",
+        "swift",
+        "ubuntu"
+      ]
+    },
+    "vulnerabilityAlerts": {
+      "description": "Config to apply when a PR is necessary due to vulnerability of existing package version.",
+      "type": "object",
+      "default": {
+        "groupName": null,
+        "schedule": [],
+        "dependencyDashboardApproval": false,
+        "rangeStrategy": "update-lockfile",
+        "commitMessageSuffix": "[SECURITY]",
+        "branchTopic": "{{{datasource}}}-{{{depName}}}-vulnerability",
+        "prCreation": "immediate"
+      },
+      "$ref": "#"
+    },
+    "writeDiscoveredRepos": {
+      "description": "Writes discovered repositories to a JSON file and then exit.",
+      "type": "string"
+    }
+  }
+}

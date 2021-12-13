@@ -26,6 +26,8 @@ The following values are valid for `--builtin-schema` and `--failover-builtin-sc
   vendor.github-actions
   vendor.github-workflows
   vendor.travis
+  vendor.readthedocs
+  vendor.renovate
   github-workflows-require-timeout
 
 """,

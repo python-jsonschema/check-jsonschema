@@ -153,6 +153,8 @@ schemas:
 - `vendor.github-actions`
 - `vendor.github-workflows`
 - `vendor.travis`
+- `vendor.readthedocs`
+- `vendor.renovate`
 
 The following values are valid and refer to custom schemas:
 

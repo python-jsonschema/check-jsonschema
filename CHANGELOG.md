@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Format checking now has special handling for the `regex` format. The default
+  looks for recognizable syntaxes which indicate the use of an engine-specific
+  regex feature which cannot be parsed in python. Such regexes are always
+  treated as valid. To get strict python behavior (the previous behavior), use
+  `--format-regex=python`. For no regex checking at all, without disabling
+  other formats, use `--format-regex=disabled`.
+  resolves [#20](https://github.com/sirosen/check-jsonschema/issues/20))
+- Add a hook for Renovate Bot config, `check-renovate`. Note that the hook does
+  not support config in `package.json` (all other configuration locations are
+  supported)
+
 ## 0.8.2
 
 - Add ReadTheDocs hook

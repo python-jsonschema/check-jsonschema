@@ -18,3 +18,8 @@ license for azure-pipelines-vscode.
 
 The ReadTheDocs schema is provided by ReadTheDocs and licensed under the
 license for readthedocs.org
+
+### Renovate
+
+The Renovate schema is provided by Renovate and licensed under the license for
+renovatebot
