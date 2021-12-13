@@ -113,6 +113,17 @@ Because `"format"` checking is not done by all JSON Schema tools, it is
 possible that a file may validate under a schema with a different tool, but
 fail with `check-jsonschema` if `--disable-format` is not set.
 
+### `--format-regex`
+
+Set a mode for handling of the `"regex"` value for `"format"`. The modes are as
+follows:
+
+mode | description
+---|---
+disabled | Skip checking `regex`, but leave other formats enabled.
+default | Check for known non-python regex syntaxes. If one is found, the expression always passes. Otherwise, check validity in the python engine.
+python | Require the regex to be valid in python regex syntax.
+
 ### `--cache-filename`
 
 The name to use for caching a remote (HTTP or HTTPS) schema.
@@ -130,7 +141,7 @@ no extension should be treated as YAML.
 By default, this is not set and files without a detected type of JSON or YAML
 will fail.
 
-## `--builtin-schema`
+### `--builtin-schema`
 
 The name of a builtin schema from `check-jsonschema` to use.
 Use of this option replaces `--schemafile`, and the two are mutually exclusive.
@@ -149,7 +160,7 @@ The following values are valid and refer to custom schemas:
   workflow explicitly sets `timeout-minutes` on all jobs. (The default value
   for this is 6 hours.)
 
-## `--failover-builtin-schema`
+### `--failover-builtin-schema`
 
 Specify one of the `vendor` schemas which should be used if fetching
 `--schemafile` fails.

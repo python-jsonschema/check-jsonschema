@@ -5,6 +5,7 @@ import jsonschema
 
 from . import utils
 from .builtin_schemas import NoSuchSchemaError
+from .formats import FormatOptions
 from .loaders import InstanceLoader, SchemaLoader, SchemaParseError
 
 
@@ -31,13 +32,13 @@ class SchemaChecker:
         schema_loader: SchemaLoader,
         instance_loader: InstanceLoader,
         *,
-        format_enabled: bool = True,
+        format_opts: t.Optional[FormatOptions] = None,
         traceback_mode: str = "short",
     ):
         self._schema_loader = schema_loader
         self._instance_loader = instance_loader
 
-        self._format_enabled = format_enabled
+        self._format_opts = format_opts if format_opts is not None else FormatOptions()
         self._traceback_mode = traceback_mode
 
     def _fail(self, msg: str, err: t.Optional[Exception] = None) -> t.NoReturn:
@@ -48,7 +49,7 @@ class SchemaChecker:
 
     def get_validator(self):
         try:
-            return self._schema_loader.make_validator(self._format_enabled)
+            return self._schema_loader.make_validator(self._format_opts)
         except SchemaParseError:
             self._fail("Error: schemafile could not be parsed as JSON")
         except jsonschema.SchemaError as e:

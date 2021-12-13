@@ -8,6 +8,7 @@ import jsonschema
 
 from ..builtin_schemas import get_builtin_schema
 from ..cachedownloader import CacheDownloader
+from ..formats import FormatOptions, make_format_checker
 from ..utils import is_url_ish
 from .errors import SchemaParseError, UnsupportedUrlScheme
 
@@ -125,12 +126,12 @@ class SchemaLoader:
     def get_schema(self) -> t.Dict[str, t.Any]:
         return self.reader.read_schema()
 
-    def make_validator(self, format_enabled: bool):
+    def make_validator(self, format_opts: FormatOptions):
         schema_uri = self.get_schema_ref_base()
         schema = self.get_schema()
 
         # format checker (which may be None)
-        format_checker = jsonschema.FormatChecker() if format_enabled else None
+        format_checker = make_format_checker(format_opts)
 
         # ref resolver which may be built from the schema path
         # if the location is a URL, there's no change, but if it's a file path
