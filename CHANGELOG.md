@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.9.0
+
 - Format checking now has special handling for the `regex` format. The default
   looks for recognizable syntaxes which indicate the use of an engine-specific
   regex feature which cannot be parsed in python. Such regexes are always

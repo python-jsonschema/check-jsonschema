@@ -31,6 +31,10 @@ These hooks check known files against schemas provided by other sources:
 - check-readthedocs:
     Validate ReadTheDocs yaml config against the schema provided by ReadTheDocs
 
+- check-renovate:
+    Validate RenovateBot config against the schema provided by Renovate (does
+    not support config in package.json)
+
 ## Example Usage
 
 ### Validate GitHub Workflows with Schemastore
