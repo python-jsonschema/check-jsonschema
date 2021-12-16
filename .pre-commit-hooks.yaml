@@ -27,7 +27,7 @@
 - id: check-azure-pipelines
   name: Validate Azure Pipelines
   description: 'Validate Azure Pipelines config against the schema provided by Microsoft'
-  entry: check-jsonschema --schemafile "https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/v1.188.1/service-schema.json" --failover-builtin-schema vendor.azure-pipelines
+  entry: check-jsonschema --schemafile "https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/main/service-schema.json" --failover-builtin-schema vendor.azure-pipelines
   language: python
   files: ^(\.)?azure-pipelines.(yml|yaml)$
   types: [yaml]
@@ -41,7 +41,7 @@
 - id: check-readthedocs
   name: Validate ReadTheDocs Config
   description: 'Validate ReadTheDocs config against the schema provided by ReadTheDocs'
-  entry: check-jsonschema --schemafile "https://raw.githubusercontent.com/readthedocs/readthedocs.org/6.3.0/readthedocs/rtd_tests/fixtures/spec/v2/schema.json" --failover-builtin-schema vendor.readthedocs
+  entry: check-jsonschema --schemafile "https://raw.githubusercontent.com/readthedocs/readthedocs.org/master/readthedocs/rtd_tests/fixtures/spec/v2/schema.json" --failover-builtin-schema vendor.readthedocs
   language: python
   files: ^\.readthedocs.(yml|yaml)$
   types: [yaml]

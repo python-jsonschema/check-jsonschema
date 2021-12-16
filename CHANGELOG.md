@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Update Azure Pipelines and ReadTheDocs hooks to always download latest
+  schemas (rather than specific versions). This is safe now that they can
+  failover to builtin schemas
+- Update Azure Pipelines schema to latest
+
 ## 0.9.0
 
 - Format checking now has special handling for the `regex` format. The default
