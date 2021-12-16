@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.9.1
+
 - Update Azure Pipelines and ReadTheDocs hooks to always download latest
   schemas (rather than specific versions). This is safe now that they can
   failover to builtin schemas
