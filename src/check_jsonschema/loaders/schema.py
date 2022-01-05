@@ -4,13 +4,17 @@ import typing as t
 import urllib.error
 import urllib.parse
 
+import identify
 import jsonschema
+import ruamel.yaml
 
 from ..builtin_schemas import get_builtin_schema
 from ..cachedownloader import CacheDownloader
 from ..formats import FormatOptions, make_format_checker
 from ..utils import is_url_ish
 from .errors import SchemaParseError, UnsupportedUrlScheme
+
+yaml = ruamel.yaml.YAML(typ="safe")
 
 
 def _make_ref_resolver(
@@ -33,6 +37,16 @@ def _json_load_schema(schema_location: str, fp) -> dict:
     return schema
 
 
+def _yaml_load_schema(schema_location: str, fp) -> dict:
+    try:
+        schema = yaml.load(fp)
+    except ruamel.yaml.error.YAMLError:
+        raise SchemaParseError(schema_location)
+    if not isinstance(schema, dict):
+        raise SchemaParseError(schema_location)
+    return schema
+
+
 class LocalSchemaReader:
     def __init__(self, filename):
         self.filename = filename
@@ -42,8 +56,14 @@ class LocalSchemaReader:
         return self.path.as_uri()
 
     def read_schema(self):
+        tags = identify.identify.tags_from_path(self.filename)
         with self.path.open() as f:
-            return _json_load_schema(self.filename, f)
+            if "yaml" in tags:
+                return _yaml_load_schema(self.filename, f)
+            elif "json" in tags:
+                return _json_load_schema(self.filename, f)
+            else:
+                return _json_load_schema(self.filename, f)
 
 
 class HttpSchemaReader:
