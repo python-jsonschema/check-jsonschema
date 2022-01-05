@@ -29,10 +29,10 @@ def test_schemaloader_path_handling_relative_local_path(in_tmp_dir, filename):
     path.parent.mkdir(parents=True)
     path.touch()
 
-    sl = SchemaLoader(filename)
+    sl = SchemaLoader(str(path))
     assert isinstance(sl.reader, LocalSchemaReader)
-    assert sl.reader.filename == filename
-    assert str(sl.reader.path) == os.path.abspath(filename)
+    assert sl.reader.filename == str(path)
+    assert str(sl.reader.path) == str(path.resolve())
 
 
 @pytest.mark.parametrize(
