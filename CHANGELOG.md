@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.10.0
+
+- Support YAML as a format for schema files (local schemas only).
+  Thanks to [@yyuu](https://github.com/yyuu) for the contribution!
+
 ## 0.9.1
 
 - Update Azure Pipelines and ReadTheDocs hooks to always download latest
