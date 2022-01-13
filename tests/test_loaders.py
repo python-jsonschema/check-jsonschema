@@ -14,20 +14,68 @@ def in_tmp_dir(request, tmp_path):
     os.chdir(request.config.invocation_dir)
 
 
-def test_schemaloader_path_handling_relative_local_path(in_tmp_dir):
-    filename = os.path.join("path", "to", "schema.json")
-
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "schema.json",
+        "schema.yaml",
+    ],
+)
+def test_schemaloader_path_handling_relative_local_path(in_tmp_dir, filename):
     # ensure that the file exists so that the behavior of pathlib resolution will be
     # correct on Windows with older python versions
     # see: https://bugs.python.org/issue38671
-    path = pathlib.Path(filename)
+    path = pathlib.Path("path", "to") / filename
     path.parent.mkdir(parents=True)
     path.touch()
 
-    sl = SchemaLoader(filename)
+    sl = SchemaLoader(str(path))
     assert isinstance(sl.reader, LocalSchemaReader)
-    assert sl.reader.filename == filename
-    assert str(sl.reader.path) == os.path.abspath(filename)
+    assert sl.reader.filename == str(path)
+    assert str(sl.reader.path) == str(path.resolve())
+
+
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "schema.yaml",
+        "schema.yml",
+    ],
+)
+def test_schemaloader_local_yaml_data(tmp_path, filename):
+    f = tmp_path / filename
+    f.write_text(
+        """
+---
+"$schema": https://json-schema.org/draft/2020-12/schema
+type: object
+properties:
+  a:
+    type: object
+    properties:
+      b:
+        type: array
+        items:
+          type: integer
+      c:
+        type: string
+"""
+    )
+    sl = SchemaLoader(str(f))
+    schema = sl.get_schema()
+    assert schema == {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "a": {
+                "type": "object",
+                "properties": {
+                    "b": {"type": "array", "items": {"type": "integer"}},
+                    "c": {"type": "string"},
+                },
+            },
+        },
+    }
 
 
 @pytest.mark.parametrize(
