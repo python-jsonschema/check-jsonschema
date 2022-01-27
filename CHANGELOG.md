@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.10.1
+
+- Use pypa's `build` tool to build dists
+- Update vendored schema versions (2022-01-27)
+
 ## 0.10.0
 
 - Support YAML as a format for schema files (local schemas only).
