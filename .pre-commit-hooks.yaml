@@ -52,8 +52,7 @@
   language: python
   files: >
     (?x)^(
-      \.(github|gitlab)/renovate.(json|json5)|
-      renovate.(json|json5)|
+      \.(github|gitlab)/renovate.json|
+      renovate.json|
       .renovaterc(|.json)
     )$
-  types: [yaml]
