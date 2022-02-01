@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 0.10.2
+
+- Fix the `check-renovate` hook, which was skipping all files. Do not attempt
+  to check JSON5 files, which are not supported.
+  Thanks to [@tpansino](https://github.com/tpansino) for the contribution!
+- Update vendored schema versions (2022-02-01)
+
 ## 0.10.1
 
 - Use pypa's `build` tool to build dists
