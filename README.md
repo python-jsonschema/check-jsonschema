@@ -33,7 +33,7 @@ These hooks check known files against schemas provided by other sources:
 
 - check-renovate:
     Validate RenovateBot config against the schema provided by Renovate (does
-    not support config in package.json)
+    not support config in package.json or JSON5)
 
 ## Example Usage
 
