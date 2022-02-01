@@ -1,0 +1,14 @@
+# this data was taken from the azure-pipelines-language-server
+# https://github.com/microsoft/azure-pipelines-language-server/blob/71b20f92874c02dfe82ad2cc2dcc7fa64996be91/language-service/test/pipelinesTests/yamlvalidation.test.ts#L50
+#
+# original license can be found in
+#   src/check_jsonschema/builtin_schemas/vendor/LICENSE.azure-pipelines
+#
+steps:
+- ${{ if succeeded() }}:
+  - task: npmAuthenticate@0
+    inputs:
+      ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+        workingFile: .npmrc
+      ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+        workingFile: .other_npmrc

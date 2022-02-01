@@ -188,3 +188,11 @@ On validation errors, show all of the underlying errors which occurred.
 
 This is useful when a schema contains `oneOf` and `anyOf` clauses that make the
 default error message uninformative.
+
+### `--data-transform`
+
+If given, `--data-transform` applies a transformation which should be applied
+to instancefiles before they are checked.
+
+e.g. The "azure-pipelines" transform unpacks compile-time expressions for Azure
+Pipelines files.

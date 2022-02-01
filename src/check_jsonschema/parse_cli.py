@@ -1,6 +1,7 @@
 import argparse
 
 from .formats import RegexFormatBehavior
+from .transforms import TRANFORM_LIBRARY
 
 
 # support passing through an argparser class to support tests
@@ -113,6 +114,15 @@ The following values are valid for `--builtin-schema` and `--failover-builtin-sc
         default="short",
         choices=("full", "short"),
     )
+    parser.add_argument(
+        "--data-transform",
+        help=(
+            "Select a builtin transform which should be applied to instancefiles before "
+            "they are checked."
+        ),
+        type=str.lower,
+        choices=TRANFORM_LIBRARY.keys(),
+    )
     parser.add_argument("instancefiles", nargs="+", help="JSON or YAML files to check.")
     return parser
 
@@ -130,4 +140,6 @@ def parse_args(args=None, cls=None):
                 "--failover-builtin-schema is incompatible with --builtin-schema"
             )
     args.format_regex = RegexFormatBehavior(args.format_regex)
+    if args.data_transform:
+        args.data_transform = TRANFORM_LIBRARY[args.data_transform]
     return args

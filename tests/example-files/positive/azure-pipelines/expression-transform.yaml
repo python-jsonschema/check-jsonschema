@@ -1,0 +1,9 @@
+parameters:
+- name: vals
+  default: ""
+
+jobs:
+- ${{ each val in parameter.vals }}:
+  - job: foo
+    steps:
+    - bash: echo ${{ val }}
