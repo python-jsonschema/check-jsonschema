@@ -446,6 +446,14 @@
       "type": "boolean",
       "default": false
     },
+    "defaultRegistryUrls": {
+      "description": "List of registry URLs to use as the default for a datasource.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": null
+    },
     "dependencyDashboard": {
       "description": "Whether to create a \"Dependency Dashboard\" issue within the repository.",
       "type": "boolean",
@@ -683,7 +691,9 @@
       "description": "Configuration object for the flux manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "fileMatch": [
+          "(^|/)flux-system/gotk-components\\.yaml$"
+        ]
       },
       "$ref": "#"
     },
@@ -1992,7 +2002,8 @@
         "bump",
         "replace",
         "widen",
-        "update-lockfile"
+        "update-lockfile",
+        "in-range-only"
       ],
       "default": "replace"
     },
@@ -2439,8 +2450,7 @@
         "ignoreMajor": "As this PR has been closed unmerged, Renovate will ignore this upgrade and you will not receive PRs for *any* future {{{newMajor}}}.x releases. However, if you upgrade to {{{newMajor}}}.x manually then Renovate will reenable minor and patch updates automatically.",
         "ignoreDigest": "As this PR has been closed unmerged, Renovate will ignore this upgrade and you will not receive PRs for the `{{{depName}}}` `{{{newDigestShort}}}` update again.",
         "ignoreOther": "As this PR has been closed unmerged, Renovate will now ignore this update ({{{newValue}}}). You will still receive a PR once a newer version is released, so if you wish to permanently ignore this dependency, please add it to the `ignoreDeps` array of your renovate config."
-      },
-      "$ref": "#"
+      }
     },
     "username": {
       "description": "Username for authentication. Currently Bitbucket only.",
