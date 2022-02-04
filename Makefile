@@ -2,7 +2,7 @@ PKG_VERSION=$(shell grep '^version' setup.cfg | cut -d '=' -f2 | tr -d ' ')
 
 .PHONY: lint test vendor-schemas release showvars
 lint:
-	tox -e lint
+	pre-commit run -a
 test:
 	tox
 vendor-schemas:
