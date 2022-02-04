@@ -1,3 +1,6 @@
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/sirosen/check-jsonschema/main.svg)](https://results.pre-commit.ci/latest/github/sirosen/check-jsonschema/main)
+
+
 # check-jsonschema
 
 A [pre-commit](https://pre-commit.com/) hook for checking files against a [JSONSchema](https://json-schema.org/), built using the python [jsonschema](https://github.com/Julian/jsonschema/) package.
