@@ -1,7 +1,7 @@
 repos:
 # dogfood
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.3.2
+  rev: 0.10.2
   hooks:
     - id: check-github-workflows
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
