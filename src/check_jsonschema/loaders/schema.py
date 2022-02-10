@@ -9,7 +9,7 @@ import jsonschema
 import ruamel.yaml
 
 from ..builtin_schemas import get_builtin_schema
-from ..cachedownloader import CacheDownloader
+from ..cachedownloader import CacheDownloader, FailedDownloadError
 from ..formats import FormatOptions, make_format_checker
 from ..utils import is_url_ish
 from .errors import SchemaParseError, UnsupportedUrlScheme
@@ -87,7 +87,7 @@ class HttpSchemaReader:
         try:
             with self.downloader.open() as fp:
                 return _json_load_schema(self.url, fp)
-        except urllib.error.URLError as err:
+        except FailedDownloadError as err:
             if self.failover_builtin_schema:
                 val = get_builtin_schema(self.failover_builtin_schema)
                 if val:
