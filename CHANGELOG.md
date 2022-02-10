@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+<!-- vendor-insert-here -->
 - Use `requests` to make HTTP requests, and retry request failures
 
 ## 0.10.2
