@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Use `requests` to make HTTP requests, and retry request failures
+
 ## 0.10.2
 
 - Fix the `check-renovate` hook, which was skipping all files. Do not attempt

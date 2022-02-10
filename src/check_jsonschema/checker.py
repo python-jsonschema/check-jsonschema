@@ -50,8 +50,8 @@ class SchemaChecker:
     def get_validator(self):
         try:
             return self._schema_loader.make_validator(self._format_opts)
-        except SchemaParseError:
-            self._fail("Error: schemafile could not be parsed as JSON")
+        except SchemaParseError as e:
+            self._fail("Error: schemafile could not be parsed as JSON", e)
         except jsonschema.SchemaError as e:
             self._fail(f"Error: schemafile was not valid: {e}\n", e)
         except NoSuchSchemaError as e:
