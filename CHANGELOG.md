@@ -3,6 +3,7 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- update vendored schemas (2022-02-12)
 - update vendored schemas (2022-02-10)
 - Use `requests` to make HTTP requests, and retry request failures
 
