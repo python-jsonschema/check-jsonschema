@@ -38,4 +38,4 @@ jobs:
       - name: run on own workflows via HTTPS schema
         run: check-jsonschema  --schemafile "https://json.schemastore.org/github-workflow" .github/workflows/*.yaml
       - name: run on own workflows via vendored schema
-        run: check-jsonschema  --builtin-schema vendor.github-workflow .github/workflows/*.yaml
+        run: check-jsonschema  --builtin-schema vendor.github-workflows .github/workflows/*.yaml
