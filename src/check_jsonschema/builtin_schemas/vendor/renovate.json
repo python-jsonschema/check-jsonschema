@@ -419,6 +419,20 @@
       },
       "default": []
     },
+    "conan": {
+      "description": "Configuration object for the conan manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)conanfile\\.(txt|py)$"
+        ],
+        "datasource": "conan",
+        "versioning": "conan",
+        "rangeStrategy": "bump",
+        "enabled": false
+      },
+      "$ref": "#"
+    },
     "confidential": {
       "description": "If enabled, issues created by Renovate are set as confidential.",
       "type": "boolean",
@@ -819,6 +833,13 @@
         ]
       },
       "$ref": "#"
+    },
+    "globalExtends": {
+      "description": "Configuration presets to use/extend for a self-hosted config.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "golang": {
       "description": "Configuration object for Go language.",
@@ -2463,6 +2484,7 @@
         "aws-machine-image",
         "cargo",
         "composer",
+        "conan",
         "docker",
         "git",
         "gradle",
