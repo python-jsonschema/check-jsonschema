@@ -6,17 +6,19 @@
   types_or: [json,yaml]
   # we need types_or support
   minimum_pre_commit_version: 2.9.0
+
 - id: check-github-workflows
   name: Validate GitHub Workflows
   description: 'Validate GitHub Workflows against the schema provided by Schemastore'
-  entry: check-jsonschema --schemafile "https://json.schemastore.org/github-workflow" --failover-builtin-schema vendor.github-workflows
+  entry: check-jsonschema --builtin-schema vendor.github-workflows
   language: python
   files: ^\.github/workflows/
   types: [yaml]
+
 - id: check-github-actions
   name: Validate GitHub Actions
   description: 'Validate GitHub Actions against the schema provided by Schemastore'
-  entry: check-jsonschema --schemafile "https://json.schemastore.org/github-action" --failover-builtin-schema vendor.github-actions
+  entry: check-jsonschema --builtin-schema vendor.github-actions
   language: python
   files: >
     (?x)^(
@@ -24,31 +26,35 @@
       \.github/actions/.*
     )$
   types: [yaml]
+
 - id: check-azure-pipelines
   name: Validate Azure Pipelines
   description: 'Validate Azure Pipelines config against the schema provided by Microsoft'
-  entry: check-jsonschema --schemafile "https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/main/service-schema.json" --failover-builtin-schema vendor.azure-pipelines
+  entry: check-jsonschema --builtin-schema vendor.azure-pipelines
   language: python
   files: ^(\.)?azure-pipelines.(yml|yaml)$
   types: [yaml]
+
 - id: check-travis
   name: Validate Travis Config
   description: 'Validate Travis config against the schema provided by Schemastore'
-  entry: check-jsonschema --schemafile "https://json.schemastore.org/travis" --failover-builtin-schema vendor.travis
+  entry: check-jsonschema --builtin-schema vendor.travis
   language: python
   files: ^\.travis.(yml|yaml)$
   types: [yaml]
+
 - id: check-readthedocs
   name: Validate ReadTheDocs Config
   description: 'Validate ReadTheDocs config against the schema provided by ReadTheDocs'
-  entry: check-jsonschema --schemafile "https://raw.githubusercontent.com/readthedocs/readthedocs.org/master/readthedocs/rtd_tests/fixtures/spec/v2/schema.json" --failover-builtin-schema vendor.readthedocs
+  entry: check-jsonschema --builtin-schema vendor.readthedocs
   language: python
   files: ^\.readthedocs.(yml|yaml)$
   types: [yaml]
+
 - id: check-renovate
   name: Validate Renovate Config
   description: 'Validate Renovate config against the schema provided by Renovate (does not support renovate config in package.json)'
-  entry: check-jsonschema --schemafile "https://docs.renovatebot.com/renovate-schema.json" --failover-builtin-schema vendor.renovate
+  entry: check-jsonschema --builtin-schema vendor.renovate
   language: python
   files: >
     (?x)^(

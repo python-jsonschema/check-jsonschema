@@ -3,8 +3,10 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
-- update vendored schemas (2022-02-12)
-- update vendored schemas (2022-02-10)
+- Use vendored schemas in all hooks, not latest schemastore copies. This
+  ensures that hook behavior is consistent
+  ([#38](https://github.com/sirosen/check-jsonschema/issues/38))
+- Update vendored schemas (2022-02-12)
 - Use `requests` to make HTTP requests, and retry request failures
 
 ## 0.10.2
@@ -39,7 +41,7 @@
   treated as valid. To get strict python behavior (the previous behavior), use
   `--format-regex=python`. For no regex checking at all, without disabling
   other formats, use `--format-regex=disabled`.
-  resolves [#20](https://github.com/sirosen/check-jsonschema/issues/20))
+  resolves [#20](https://github.com/sirosen/check-jsonschema/issues/20)
 - Add a hook for Renovate Bot config, `check-renovate`. Note that the hook does
   not support config in `package.json` (all other configuration locations are
   supported)
@@ -57,7 +59,7 @@
 - `check-jsonschema` now ships with vendored versions of the external schemas
   used for the default suite of hooks. The vendored schemas are used as a
   failover option in the event that downloading an external schema fails. This
-  resolves [#21](https://github.com/sirosen/check-jsonschema/issues/21))
+  resolves [#21](https://github.com/sirosen/check-jsonschema/issues/21)
 - New CLI options, `--builtin-schema` and `--failover-builtin-schema` are
   available to access the builtin schemas. See documentation for details.
 - Use the latest version (version 4) of the `jsonschema` library. Note
