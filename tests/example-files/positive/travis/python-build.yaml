@@ -1,0 +1,48 @@
+sudo: false
+dist: xenial
+language: python
+matrix:
+  include:
+    - name: "lint"
+      python: "3.6"
+      env: TOXENV=lint
+    - python: "2.7"
+      env: TOXENV=py
+    - python: "3.5"
+      env: TOXENV=py
+    - python: "3.6"
+      env: TOXENV=py
+    - python: "3.7"
+      env: TOXENV=py
+    - python: "3.8"
+      env: TOXENV=py
+    # non-Linux testing
+    #   https://docs.travis-ci.com/user/languages/python/#running-python-tests-on-multiple-operating-systems
+    #
+    # Windows
+    - name: "py2 + windows"
+      os: windows
+      language: shell
+      env: TOXENV=py PATH=/c/Python27:/c/Python27/Scripts:$PATH
+      before_install:
+        - choco install python2
+        - python -m pip install --upgrade pip wheel
+    - name: "py3.8 + windows"
+      os: windows
+      language: shell
+      env: TOXENV=py PATH=/c/Python38:/c/Python38/Scripts:$PATH
+      before_install:
+        - choco install python3
+        - python -m pip install --upgrade pip wheel
+    # macOS
+    - name: "py3 + macOS"
+      os: osx
+      osx_image: xcode10.2  # py3.7 on macOS 10.14
+      language: shell
+      env: TOXENV=py3
+cache: pip
+install:
+  - pip install -U pip setuptools
+  - pip install tox
+script:
+  - tox

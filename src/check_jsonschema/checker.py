@@ -9,6 +9,11 @@ from .formats import FormatOptions
 from .loaders import InstanceLoader, SchemaLoader, SchemaParseError
 
 
+class _Exit(Exception):
+    def __init__(self, code: int):
+        self.code = code
+
+
 def json_path(err: jsonschema.ValidationError) -> str:
     """
     This method is a backport of the json_path attribute provided by
@@ -45,7 +50,7 @@ class SchemaChecker:
         print(msg, file=sys.stderr)
         if err is not None:
             utils.print_error(err, mode=self._traceback_mode)
-        sys.exit(1)
+        raise _Exit(1)
 
     def get_validator(self):
         try:
@@ -68,7 +73,7 @@ class SchemaChecker:
                 errors[filename].append(err)
         return errors
 
-    def run(self):
+    def _run(self) -> None:
         validator = self.get_validator()
 
         try:
@@ -84,4 +89,11 @@ class SchemaChecker:
                         f"  \033[0;33m{filename}::{json_path(err)}: \033[0m{err.message}",
                         file=sys.stderr,
                     )
-            sys.exit(1)
+            raise _Exit(1)
+
+    def run(self) -> int:
+        try:
+            self._run()
+        except _Exit as e:
+            return e.code
+        return 0

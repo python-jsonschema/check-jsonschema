@@ -1,0 +1,18 @@
+name: Run Redis
+description: 'This action spins up a Redis instance that can be accessed and used in subsequent steps.'
+branding:
+  icon: 'database'
+  color: 'green'
+
+inputs:
+  redis-version:
+    description: 'The version of Redis to use'
+    required: false
+    default: '6.2.5'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    REDIS_VERSION: ${{ inputs.redis-version }}
+

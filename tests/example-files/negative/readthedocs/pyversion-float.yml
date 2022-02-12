@@ -1,0 +1,17 @@
+version: 2
+
+sphinx:
+  configuration: docs/conf.py
+
+build:
+  os: ubuntu-20.04
+  tools:
+    # this will fail because the version is a float (should be str)
+    python: 3.10
+
+python:
+  install:
+    - method: pip
+      path: .
+      extra_requirements:
+        - dev
