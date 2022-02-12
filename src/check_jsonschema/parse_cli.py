@@ -95,6 +95,15 @@ The following values are valid for `--builtin-schema` and `--failover-builtin-sc
         choices=("json", "yaml"),
     )
     parser.add_argument(
+        "--show-all-validation-errors",
+        action="store_true",
+        default=False,
+        help=(
+            "On validation errors, show all of the underlying errors which occurred. "
+            "These may be useful when oneOf or anyOf is used in the schema."
+        ),
+    )
+    parser.add_argument(
         "--traceback-mode",
         help=(
             "Set the mode of presentation for error traces. "

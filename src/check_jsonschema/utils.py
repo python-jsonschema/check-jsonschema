@@ -3,6 +3,8 @@ import sys
 import traceback
 import typing as t
 
+import jsonschema
+
 # this is a short list of schemes which will be recognized as being
 # schemes at all; anything else will not even be reported as an
 # unsupported scheme
@@ -71,3 +73,49 @@ def print_error(err: Exception, mode: str = "short"):
         print_shortened_trace(err)
     else:
         traceback.print_exception(type(err), err, err.__traceback__)
+
+
+def json_path(err: jsonschema.ValidationError) -> str:
+    """
+    This method is a backport of the json_path attribute provided by
+    jsonschema.ValidationError for jsonschema v4.x
+
+    It is needed until python3.6 is no longer supported by check-jsonschema,
+    as jsonschema 4 dropped support for py36
+    """
+    path = "$"
+    for elem in err.absolute_path:
+        if isinstance(elem, int):
+            path += "[" + str(elem) + "]"
+        else:
+            path += "." + elem
+    return path
+
+
+def format_validation_error_message(err, filename=None):
+    if filename:
+        return f"\033[0;33m{filename}::{json_path(err)}: \033[0m{err.message}"
+    return f"  \033[0;33m{json_path(err)}: \033[0m{err.message}"
+
+
+def iter_validation_error(err):
+    for e in err.context:
+        yield e
+        yield from iter_validation_error(e)
+
+
+def print_validation_error(
+    filename: str, err: jsonschema.ValidationError, show_all_errors: bool = False
+):
+    def _echo(s):
+        print("  " + s, file=sys.stderr)
+
+    _echo(format_validation_error_message(err, filename=filename))
+    if err.context and show_all_errors:
+        best_match = jsonschema.exceptions.best_match(err.context)
+        _echo("Underlying errors caused this.")
+        _echo("Best Match:")
+        _echo(format_validation_error_message(best_match))
+        _echo("All Errors:")
+        for err in iter_validation_error(err):
+            _echo(format_validation_error_message(err))

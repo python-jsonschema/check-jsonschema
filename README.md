@@ -181,3 +181,10 @@ check-jsonschema --schemafile "https://json.schemastore.org/travis" --failover-b
 ```
 
 This is what is used by the hooks provided by `check-jsonschema`.
+
+### `--show-all-validation-errors`
+
+On validation errors, show all of the underlying errors which occurred.
+
+This is useful when a schema contains `oneOf` and `anyOf` clauses that make the
+default error message uninformative.

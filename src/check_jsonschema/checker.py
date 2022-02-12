@@ -14,23 +14,6 @@ class _Exit(Exception):
         self.code = code
 
 
-def json_path(err: jsonschema.ValidationError) -> str:
-    """
-    This method is a backport of the json_path attribute provided by
-    jsonschema.ValidationError for jsonschema v4.x
-
-    It is needed until python3.6 is no longer supported by check-jsonschema,
-    as jsonschema 4 dropped support for py36
-    """
-    path = "$"
-    for elem in err.absolute_path:
-        if isinstance(elem, int):
-            path += "[" + str(elem) + "]"
-        else:
-            path += "." + elem
-    return path
-
-
 class SchemaChecker:
     def __init__(
         self,
@@ -39,12 +22,14 @@ class SchemaChecker:
         *,
         format_opts: t.Optional[FormatOptions] = None,
         traceback_mode: str = "short",
+        show_all_errors: bool = False,
     ):
         self._schema_loader = schema_loader
         self._instance_loader = instance_loader
 
         self._format_opts = format_opts if format_opts is not None else FormatOptions()
         self._traceback_mode = traceback_mode
+        self._show_all_errors = show_all_errors
 
     def _fail(self, msg: str, err: t.Optional[Exception] = None) -> t.NoReturn:
         print(msg, file=sys.stderr)
@@ -85,9 +70,8 @@ class SchemaChecker:
             print("Schema validation errors were encountered.")
             for filename, file_errors in errors.items():
                 for err in file_errors:
-                    print(
-                        f"  \033[0;33m{filename}::{json_path(err)}: \033[0m{err.message}",
-                        file=sys.stderr,
+                    utils.print_validation_error(
+                        filename, err, show_all_errors=self._show_all_errors
                     )
             raise _Exit(1)
 

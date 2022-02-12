@@ -21,9 +21,11 @@ def main(cli_args=None, *, exit=True):
         instance_loader,
         format_opts=format_opts,
         traceback_mode=args.traceback_mode,
+        show_all_errors=args.show_all_validation_errors,
     )
     ret = checker.run()
-    print("ok -- validation done")
+    if ret == 0:
+        print("ok -- validation done")
     if exit:  # pragma: no cover
         sys.exit(ret)
     else:
