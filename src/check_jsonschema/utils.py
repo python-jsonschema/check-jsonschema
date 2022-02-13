@@ -111,11 +111,12 @@ def print_validation_error(
         print("  " + s, file=sys.stderr)
 
     _echo(format_validation_error_message(err, filename=filename))
-    if err.context and show_all_errors:
+    if err.context:
         best_match = jsonschema.exceptions.best_match(err.context)
         _echo("Underlying errors caused this.")
         _echo("Best Match:")
         _echo(format_validation_error_message(best_match))
-        _echo("All Errors:")
-        for err in iter_validation_error(err):
-            _echo(format_validation_error_message(err))
+        if show_all_errors:
+            _echo("All Errors:")
+            for err in iter_validation_error(err):
+                _echo(format_validation_error_message(err))

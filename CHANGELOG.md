@@ -4,8 +4,11 @@
 
 <!-- vendor-insert-here -->
 - Add support for `--data-transform azure-pipelines` to handle compile-time
-    expressions in Pipelines files. This option is applied to the azure
-    pipelines hook ([#29](https://github.com/sirosen/check-jsonschema/issues/29))
+  expressions in Pipelines files. This option is applied to the azure
+  pipelines hook ([#29](https://github.com/sirosen/check-jsonschema/issues/29))
+- Improve handing of validation errors from schemas with `anyOf` and `oneOf`
+  clauses. Show the "best match" from underlying errors, and add an option
+  `--show-all-validation-errors` which displays all of the underlying errors
 - Use vendored schemas in all hooks, not latest schemastore copies. This
   ensures that hook behavior is consistent
   ([#38](https://github.com/sirosen/check-jsonschema/issues/38))
