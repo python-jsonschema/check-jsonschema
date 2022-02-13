@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.11.0
+
 <!-- vendor-insert-here -->
 - Add support for `--data-transform azure-pipelines` to handle compile-time
   expressions in Pipelines files. This option is applied to the azure
