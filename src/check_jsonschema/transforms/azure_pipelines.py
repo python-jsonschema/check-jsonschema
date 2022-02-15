@@ -45,6 +45,9 @@ def traverse_data(data: t.Any):
         return traverse_dict(data)
     if isinstance(data, list):
         return traverse_list(data)
+    # Coerce booleans to Azure's bool-like regex
+    if isinstance(data, bool):
+        return str(data).lower()
     return data
 
 
