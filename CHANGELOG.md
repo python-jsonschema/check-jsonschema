@@ -5,6 +5,7 @@
 ## 0.11.0
 
 <!-- vendor-insert-here -->
+- Update vendored schemas (2022-02-16)
 - Add support for `--data-transform azure-pipelines` to handle compile-time
   expressions in Pipelines files. This option is applied to the azure
   pipelines hook ([#29](https://github.com/sirosen/check-jsonschema/issues/29))
