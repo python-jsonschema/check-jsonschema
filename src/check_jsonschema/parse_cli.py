@@ -22,7 +22,7 @@ For the "regex" format, there are multiple modes which can be specified with
     disabled |  do not check the regex format
     python   |  check that the string is a valid python regex
 
-The following values are valid for `--builtin-schema` and `--failover-builtin-schema`:
+The following values are valid for `--builtin-schema`:
   vendor.azure-pipelines
   vendor.github-actions
   vendor.github-workflows
@@ -48,15 +48,6 @@ The following values are valid for `--builtin-schema` and `--failover-builtin-sc
             "The name of an internal schema to use for '--schemafile'. "
             "Schema names can be found in project documentation."
         ),
-    )
-    parser.add_argument(
-        "--failover-builtin-schema",
-        help=(
-            "Failover to a specific builtin schema if the schemafile is remote and "
-            "cannot be fetched. "
-            "Schema names can be found in project documentation."
-        ),
-        type=str.lower,
     )
     parser.add_argument(
         "--no-cache",
@@ -132,13 +123,8 @@ def parse_args(args=None, cls=None):
     args = parser.parse_args(args)
     if args.schemafile and args.builtin_schema:
         parser.error("--schemafile and --builtin-schema are mutually exclusive")
-    if not args.schemafile:
-        if not args.builtin_schema:
-            parser.error("Either --schemafile or --builtin-schema must be provided")
-        if args.failover_builtin_schema:
-            parser.error(
-                "--failover-builtin-schema is incompatible with --builtin-schema"
-            )
+    if not (args.schemafile or args.builtin_schema):
+        parser.error("Either --schemafile or --builtin-schema must be provided")
     args.format_regex = RegexFormatBehavior(args.format_regex)
     if args.data_transform:
         args.data_transform = TRANFORM_LIBRARY[args.data_transform]

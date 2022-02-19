@@ -169,19 +169,6 @@ The following values are valid and refer to custom schemas:
   workflow explicitly sets `timeout-minutes` on all jobs. (The default value
   for this is 6 hours.)
 
-### `--failover-builtin-schema`
-
-Specify one of the `vendor` schemas which should be used if fetching
-`--schemafile` fails.
-
-For example, to download the latest `travis` schema, but failover to the
-vendored copy, use
-```bash
-check-jsonschema --schemafile "https://json.schemastore.org/travis" --failover-builtin-schema vendor.travis
-```
-
-This is what is used by the hooks provided by `check-jsonschema`.
-
 ### `--show-all-validation-errors`
 
 On validation errors, show all of the underlying errors which occurred.
