@@ -62,3 +62,11 @@
       renovate.json|
       .renovaterc(|.json)
     )$
+
+- id: check-gitlab-ci
+  name: Validate GitLab CI Config
+  description: 'Validate GitLab CI config against the schema provided by Schemastore'
+  entry: check-jsonschema --builtin-schema vendor.gitlab-ci
+  language: python
+  files: ^.*\.gitlab-ci.yml$
+  types: [yaml]

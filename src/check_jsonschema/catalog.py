@@ -14,6 +14,9 @@ SCHEMA_CATALOG: t.Dict[str, t.Dict[str, t.Any]] = {
     "github-workflows": {
         "url": "https://json.schemastore.org/github-workflow",
     },
+    "gitlab-ci": {
+        "url": "https://www.schemastore.org/schemas/json/gitlab-ci.json",
+    },
     "readthedocs": {
         "url": "https://raw.githubusercontent.com/readthedocs/readthedocs.org/master/readthedocs/rtd_tests/fixtures/spec/v2/schema.json",  # noqa: E501
     },

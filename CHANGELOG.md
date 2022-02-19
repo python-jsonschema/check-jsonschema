@@ -3,6 +3,7 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- Add hook for GitLab CI
 - Remove the `--failover-builtin-schema` behavior. Now that vendored schemas
   are used by default for hooks, this option had very limited utility.
 - Update vendored schemas (2022-02-16)
