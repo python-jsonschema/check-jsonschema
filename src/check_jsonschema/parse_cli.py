@@ -63,6 +63,15 @@ The '--builtin-schema' flag supports the following schema names:
         metavar="BUILTIN_SCHEMA_NAME",
     )
     parser.add_argument(
+        "--check-metaschema",
+        help=(
+            "Instead of validating the instances against a schema, treat each file as a "
+            "schema and validate them under ther matching metaschemas."
+        ),
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
         "--no-cache",
         action="store_true",
         default=False,
@@ -131,13 +140,24 @@ The '--builtin-schema' flag supports the following schema names:
     return parser
 
 
+def _count_mutex_args(args) -> int:
+    return sum(
+        1 if x else 0
+        for x in (args.schemafile, args.builtin_schema, args.check_metaschema)
+    )
+
+
+def _mutex_arg_list(conjunction: str = "and") -> str:
+    return f"--schemafile, --builtin-schema, {conjunction} --check-metaschema"
+
+
 def parse_args(args=None, cls=None):
     parser = get_parser(cls=cls)
     args = parser.parse_args(args)
-    if args.schemafile and args.builtin_schema:
-        parser.error("--schemafile and --builtin-schema are mutually exclusive")
-    if not (args.schemafile or args.builtin_schema):
-        parser.error("Either --schemafile or --builtin-schema must be provided")
+    if _count_mutex_args(args) > 1:
+        parser.error(f"{_mutex_arg_list()} are mutually exclusive")
+    if _count_mutex_args(args) == 0:
+        parser.error(f"Either {_mutex_arg_list('or')} must be provided")
     args.format_regex = RegexFormatBehavior(args.format_regex)
     if args.data_transform:
         args.data_transform = TRANFORM_LIBRARY[args.data_transform]

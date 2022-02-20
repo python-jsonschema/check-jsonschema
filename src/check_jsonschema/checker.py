@@ -4,9 +4,13 @@ import typing as t
 import jsonschema
 
 from . import utils
-from .builtin_schemas import NoSuchSchemaError
 from .formats import FormatOptions
-from .loaders import BadFileTypeError, InstanceLoader, SchemaLoader, SchemaParseError
+from .loaders import (
+    BadFileTypeError,
+    InstanceLoader,
+    SchemaLoaderBase,
+    SchemaParseError,
+)
 
 
 class _Exit(Exception):
@@ -17,7 +21,7 @@ class _Exit(Exception):
 class SchemaChecker:
     def __init__(
         self,
-        schema_loader: SchemaLoader,
+        schema_loader: SchemaLoaderBase,
         instance_loader: InstanceLoader,
         *,
         format_opts: t.Optional[FormatOptions] = None,
@@ -37,21 +41,20 @@ class SchemaChecker:
             utils.print_error(err, mode=self._traceback_mode)
         raise _Exit(1)
 
-    def get_validator(self):
+    def get_validator(self, filename: str, doc: t.Dict[str, t.Any]):
         try:
-            return self._schema_loader.make_validator(self._format_opts)
+            return self._schema_loader.get_validator(filename, doc, self._format_opts)
         except SchemaParseError as e:
             self._fail("Error: schemafile could not be parsed as JSON", e)
         except jsonschema.SchemaError as e:
             self._fail(f"Error: schemafile was not valid: {e}\n", e)
-        except NoSuchSchemaError as e:
-            self._fail("Error: builtin schema could not be loaded, no such schema\n", e)
         except Exception as e:
             self._fail("Error: Unexpected Error building schema validator", e)
 
-    def _build_error_map(self, validator):
+    def _build_error_map(self):
         errors = {}
         for filename, doc in self._instance_loader.iter_files():
+            validator = self.get_validator(filename, doc)
             for err in validator.iter_errors(doc):
                 if filename not in errors:
                     errors[filename] = []
@@ -59,10 +62,8 @@ class SchemaChecker:
         return errors
 
     def _run(self) -> None:
-        validator = self.get_validator()
-
         try:
-            errors = self._build_error_map(validator)
+            errors = self._build_error_map()
         except jsonschema.RefResolutionError as err:
             self._fail("Failure resolving $ref within schema\n", err)
         except BadFileTypeError as err:

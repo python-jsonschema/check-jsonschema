@@ -1,20 +1,14 @@
-import json
-import pathlib
 import typing as t
 import urllib.error
 import urllib.parse
 
-import identify
 import jsonschema
-import ruamel.yaml
 
-from ..builtin_schemas import get_builtin_schema
-from ..cachedownloader import CacheDownloader
-from ..formats import FormatOptions, make_format_checker
-from ..utils import is_url_ish
-from .errors import SchemaParseError, UnsupportedUrlScheme
-
-yaml = ruamel.yaml.YAML(typ="safe")
+from ...builtin_schemas import get_builtin_schema
+from ...formats import FormatOptions, make_format_checker
+from ...utils import is_url_ish
+from ..errors import UnsupportedUrlScheme
+from .readers import HttpSchemaReader, LocalSchemaReader
 
 
 def _make_ref_resolver(
@@ -27,66 +21,17 @@ def _make_ref_resolver(
     return jsonschema.RefResolver(base_uri, schema)
 
 
-def _json_load_schema(schema_location: str, fp) -> dict:
-    try:
-        schema = json.load(fp)
-    except ValueError:
-        raise SchemaParseError(schema_location)
-    if not isinstance(schema, dict):
-        raise SchemaParseError(schema_location)
-    return schema
-
-
-def _yaml_load_schema(schema_location: str, fp) -> dict:
-    try:
-        schema = yaml.load(fp)
-    except ruamel.yaml.error.YAMLError:
-        raise SchemaParseError(schema_location)
-    if not isinstance(schema, dict):
-        raise SchemaParseError(schema_location)
-    return schema
-
-
-class LocalSchemaReader:
-    def __init__(self, filename):
-        self.filename = filename
-        self.path = pathlib.Path(filename).expanduser().resolve()
-
-    def get_ref_base(self) -> str:
-        return self.path.as_uri()
-
-    def read_schema(self):
-        tags = identify.identify.tags_from_path(self.filename)
-        with self.path.open() as f:
-            if "yaml" in tags:
-                return _yaml_load_schema(self.filename, f)
-            elif "json" in tags:
-                return _json_load_schema(self.filename, f)
-            else:
-                return _json_load_schema(self.filename, f)
-
-
-class HttpSchemaReader:
-    def __init__(
+class SchemaLoaderBase:
+    def get_validator(
         self,
-        url,
-        cache_filename: t.Optional[str],
-        disable_cache: bool,
+        instance_filename: str,
+        instance_doc: t.Dict[str, t.Any],
+        format_opts: FormatOptions,
     ):
-        self.url = url
-        self.downloader = CacheDownloader(
-            url, cache_filename, disable_cache=disable_cache
-        )
-
-    def get_ref_base(self) -> str:
-        return self.url
-
-    def read_schema(self):
-        with self.downloader.open() as fp:
-            return _json_load_schema(self.url, fp)
+        raise NotImplementedError
 
 
-class SchemaLoader:
+class SchemaLoader(SchemaLoaderBase):
     def __init__(
         self,
         schemafile: str,
@@ -105,6 +50,9 @@ class SchemaLoader:
 
         # setup a schema reader
         self.reader = self._get_schema_reader()
+
+        # setup a location to store the validator so that it is only built once by default
+        self._validator = None
 
     def _get_schema_reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
         if self.url_info is None:
@@ -155,6 +103,15 @@ class SchemaLoader:
         )
         return validator
 
+    def get_validator(
+        self,
+        instance_filename: str,
+        instance_doc: t.Dict[str, t.Any],
+        format_opts: FormatOptions,
+    ):
+        self._validator = self.make_validator(format_opts)
+        return self._validator
+
 
 class BuiltinSchemaLoader(SchemaLoader):
     def __init__(self, schema_name: str) -> None:
@@ -167,12 +124,25 @@ class BuiltinSchemaLoader(SchemaLoader):
         return get_builtin_schema(self.schema_name)
 
 
-def schema_loader_from_args(args) -> SchemaLoader:
+class MetaSchemaLoader(SchemaLoaderBase):
+    def get_validator(
+        self,
+        instance_filename: str,
+        instance_doc: t.Dict[str, t.Any],
+        format_opts: FormatOptions,
+    ):
+        validator = jsonschema.validators.validator_for(instance_doc)
+        return validator(validator.META_SCHEMA)
+
+
+def schema_loader_from_args(args) -> SchemaLoaderBase:
     if args.schemafile is not None:
         return SchemaLoader(
             args.schemafile,
             args.cache_filename,
             args.no_cache,
         )
-    else:
+    elif args.builtin_schema:
         return BuiltinSchemaLoader(args.builtin_schema)
+    else:
+        return MetaSchemaLoader()

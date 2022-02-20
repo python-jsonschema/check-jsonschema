@@ -3,6 +3,8 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- Add support for `--check-metaschema`, which validates each instance file as a
+    JSON Schema, using the metaschema specified by `"$schema"`
 - `--builtin-schema` now validates its arguments (with `choices=...`), and its
     options are automatically picked up from the internal schema catalog and
     listed in the `--help` output

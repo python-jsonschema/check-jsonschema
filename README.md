@@ -174,6 +174,11 @@ The following values refer to custom schemas:
   workflow explicitly sets `timeout-minutes` on all jobs. (The default value
   for this is 6 hours.)
 
+### `--check-metaschema`
+
+Validate each instancefile as a JSON Schema, using the relevant metaschema
+defined in `"$schema"`.
+
 ### `--show-all-validation-errors`
 
 On validation errors, show all of the underlying errors which occurred.
