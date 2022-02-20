@@ -109,52 +109,7 @@ These options apply both to standalone usage and pre-commit hook usage.
 
 The path or URL for a file containing a schema to use.
 
-This option is required unless `--builtin-schema` is used.
-
-### `--no-cache`
-
-Do not cache HTTP(S) downloaded schemas.
-
-### `--disable-format`
-
-JSON Schema defines a `"format"` attribute for string fields but does not require
-that any validation for formats be applied.
-
-Starting in version 0.6.0, `check-jsonschema` will automatically check some
-formats by default.
-This flag disables these checks.
-
-Because `"format"` checking is not done by all JSON Schema tools, it is
-possible that a file may validate under a schema with a different tool, but
-fail with `check-jsonschema` if `--disable-format` is not set.
-
-### `--format-regex`
-
-Set a mode for handling of the `"regex"` value for `"format"`. The modes are as
-follows:
-
-mode | description
----|---
-disabled | Skip checking `regex`, but leave other formats enabled.
-default | Check for known non-python regex syntaxes. If one is found, the expression always passes. Otherwise, check validity in the python engine.
-python | Require the regex to be valid in python regex syntax.
-
-### `--cache-filename`
-
-The name to use for caching a remote (HTTP or HTTPS) schema.
-
-Defaults to using the last slash-delimited part of the URI.
-
-### `--default-filetype`
-
-The default filetype to assume on instance files when they are detected neither
-as JSON nor as YAML.
-
-For example, pass `--default-filetype yaml` to instruct that files which have
-no extension should be treated as YAML.
-
-By default, this is not set and files without a detected type of JSON or YAML
-will fail.
+This option is required unless `--builtin-schema` or `--check-metaschema` is used.
 
 ### `--builtin-schema`
 
@@ -186,20 +141,88 @@ The following values refer to custom schemas:
 Validate each instancefile as a JSON Schema, using the relevant metaschema
 defined in `"$schema"`.
 
-### `--show-all-validation-errors`
+This option replaces `--schemafile` and `--builtin-schema`, and these options
+are mutually exclusive.
+
+### `--default-filetype`
+
+The default filetype to assume on instance files when they are detected neither
+as JSON nor as YAML.
+
+For example, pass `--default-filetype yaml` to instruct that files which have
+no extension should be treated as YAML.
+
+By default, this is not set and files without a detected type of JSON or YAML
+will fail.
+
+### `--data-transform`
+
+`--data-transform` applies a transformation to instancefiles before they are
+checked. The following transforms are supported:
+
+- `azure-pipelines`:
+    "Unpack" compile-time expressions for Azure Pipelines files, skipping them
+    for the purposes of validation. This transformation is based on Microsoft's
+    lanaguage-server for VSCode and how it handles expressions
+
+### Downloading and Caching Options
+
+By default, when `--schemafile` is used to refer to an `http://` or `https://`
+location, the schema is downloaded and cached based on the schema's
+Last-Modified time. The following options control caching behaviors.
+
+#### `--no-cache`
+
+Disable caching. Do not cache downloaded schemas.
+
+#### `--cache-filename`
+
+The name to use for caching a remote schema.
+
+Defaults to using the last slash-delimited part of the URI.
+
+### "format" Validation Options
+
+JSON Schema defines a `"format"` attribute for string fields but does not require
+that any validation for formats be applied.
+
+`check-jsonschema` supports checking several `"format"`s by default. The
+following options can be used to control this behavior.
+
+#### `--disable-format`
+
+Disable all `"format"` checks.
+
+Because `"format"` checking is not done by all JSON Schema tools, it is
+possible that a file may validate under a schema with a different tool, but
+fail with `check-jsonschema` if `--disable-format` is not set.
+
+#### `--format-regex`
+
+Set a mode for handling of the `"regex"` value for `"format"`. The modes are as
+follows:
+
+mode | description
+---|---
+disabled | Skip checking `regex`, but leave other formats enabled.
+default | Check for known non-python regex syntaxes. If one is found, the expression always passes. Otherwise, check validity in the python engine.
+python | Require the regex to be valid in python regex syntax.
+
+### Error Handling Options
+
+#### `--show-all-validation-errors`
 
 On validation errors, show all of the underlying errors which occurred.
 
 This is useful when a schema contains `oneOf` and `anyOf` clauses that make the
 default error message uninformative.
 
-### `--data-transform`
+#### `--traceback-mode`
 
-If given, `--data-transform` applies a transformation which should be applied
-to instancefiles before they are checked.
-
-e.g. The "azure-pipelines" transform unpacks compile-time expressions for Azure
-Pipelines files.
+By default, when an error is encountered, `check-jsonschema` will pretty-print
+the error and exit.
+Use `--traceback-mode full` to request the full traceback be printed, for
+debugging and troubleshooting.
 
 ## Optional Parsers
 
