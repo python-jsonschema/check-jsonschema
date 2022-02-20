@@ -4,6 +4,7 @@ import pathlib
 import pytest
 
 from check_jsonschema.loaders import BadFileTypeError, InstanceLoader, SchemaLoader
+from check_jsonschema.loaders.instance.json5 import ENABLED as JSON5_ENABLED
 from check_jsonschema.loaders.schema import HttpSchemaReader, LocalSchemaReader
 
 
@@ -146,3 +147,27 @@ def test_instanceloader_unknown_type(tmp_path):
     # at iteration time, the file should error
     with pytest.raises(BadFileTypeError):
         list(loader.iter_files())
+
+
+@pytest.mark.skipif(not JSON5_ENABLED, reason="requires json5 support")
+def test_instanceloader_json5_enabled(tmp_path):
+    f = tmp_path / "foo.json5"  # json5 extension
+    f.write_text("{}")  # json data (works as json5)
+    loader = InstanceLoader([str(f)])
+    # at iteration time, the file should load fine
+    data = list(loader.iter_files())
+    assert data == [(str(f), {})]
+
+
+@pytest.mark.skipif(JSON5_ENABLED, reason="requires that json5 support is missing")
+def test_instanceloader_json5_not_enabled(tmp_path):
+    f = tmp_path / "foo.json5"  # json5 extension
+    f.write_text("{}")  # json data (works as json5)
+    loader = InstanceLoader([str(f)])
+    # at iteration time, an error should be raised
+    with pytest.raises(BadFileTypeError) as excinfo:
+        list(loader.iter_files())
+
+    err = excinfo.value
+    # error message should be instructive
+    assert "pip install json5" in str(err)

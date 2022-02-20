@@ -58,9 +58,9 @@
   language: python
   files: >
     (?x)^(
-      \.(github|gitlab)/renovate.json|
-      renovate.json|
-      .renovaterc(|.json)
+      renovate\.(json|json5)|
+      \.(github|gitlab)/renovate\.(json|json5)|
+      \.renovaterc(\.json)?
     )$
 
 - id: check-gitlab-ci

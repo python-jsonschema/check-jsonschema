@@ -5,6 +5,7 @@ import pytest
 import ruamel.yaml
 
 from check_jsonschema import main
+from check_jsonschema.loaders.instance.json5 import ENABLED as JSON5_ENABLED
 
 yaml = ruamel.yaml.YAML(typ="safe")
 
@@ -48,6 +49,9 @@ def run(base_cmd, target):
 
 @pytest.mark.parametrize("case_name", POSITIVE_CASES.keys())
 def test_hook_positive_examples(case_name):
+    if case_name.endswith("json5") and not JSON5_ENABLED:
+        pytest.skip("cannot check json5 support without json5 enabled")
+
     hook_id = POSITIVE_CASES[case_name]
     ret = run(HOOK_CONFIG[hook_id], EXAMPLE_FILES / case_name)
     assert ret == 0

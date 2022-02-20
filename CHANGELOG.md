@@ -3,6 +3,10 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- Add support for JSON5 files when `pyjson5` or `json5` is installed, and
+    update the Renovate hook to list JSON5 config files. If a JSON5 file is
+    checked without one of the necessary packages installed, a special error
+    with installation instructions will be raised
 - Add hooks for GitLab CI and Bamboo Specs
 - Remove the `--failover-builtin-schema` behavior. Now that vendored schemas
   are used by default for hooks, this option had very limited utility.

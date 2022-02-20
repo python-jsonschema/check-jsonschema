@@ -6,7 +6,7 @@ import jsonschema
 from . import utils
 from .builtin_schemas import NoSuchSchemaError
 from .formats import FormatOptions
-from .loaders import InstanceLoader, SchemaLoader, SchemaParseError
+from .loaders import BadFileTypeError, InstanceLoader, SchemaLoader, SchemaParseError
 
 
 class _Exit(Exception):
@@ -65,6 +65,8 @@ class SchemaChecker:
             errors = self._build_error_map(validator)
         except jsonschema.RefResolutionError as err:
             self._fail("Failure resolving $ref within schema\n", err)
+        except BadFileTypeError as err:
+            self._fail("Failure while loading instance files\n", err)
 
         if errors:
             print("Schema validation errors were encountered.")
