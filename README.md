@@ -15,29 +15,27 @@ The most generic hook is this one:
 - check-jsonschema:
     Validate JSON or YAML files against a jsonschema on disk or fetched via HTTP(S)
 
-These hooks check known files against schemas provided by Schemastore:
+The following hooks check specific files against various schemas provided by
+SchemaStore and other sources:
 
-- check-github-workflows:
-    Validate GitHub Workflows in `.github/workflows/`
-
-- check-github-actions:
-    Validate GitHub Actions in `.github/actions/` or the `action.yml` at the
-    repo root
-
-- check-travis: Validate Travis config
-
-These hooks check known files against schemas provided by other sources:
-
+<!-- generated-hook-list-start -->
 - check-azure-pipelines:
     Validate Azure Pipelines config against the schema provided by Microsoft
-
+- check-bamboo-spec:
+    Validate Bamboo Specs against the schema provided by SchemaStore
+- check-github-actions:
+    Validate GitHub Actions against the schema provided by SchemaStore
+- check-github-workflows:
+    Validate GitHub Workflows against the schema provided by SchemaStore
+- check-gitlab-ci:
+    Validate GitLab CI config against the schema provided by SchemaStore
 - check-readthedocs:
-    Validate ReadTheDocs yaml config against the schema provided by ReadTheDocs
-
+    Validate ReadTheDocs config against the schema provided by ReadTheDocs
 - check-renovate:
-    Validate RenovateBot config against the schema provided by Renovate (does
-    not support config in package.json). JSON5 support requires additional
-    installation of a JSON5 parser
+    Validate Renovate config against the schema provided by Renovate (does not support renovate config in package.json)
+- check-travis:
+    Validate Travis Config against the schema provided by SchemaStore
+<!-- generated-hook-list-end -->
 
 ## Example Usage
 

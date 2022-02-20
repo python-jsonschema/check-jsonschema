@@ -4,6 +4,22 @@ from __future__ import annotations
 from check_jsonschema.catalog import SCHEMA_CATALOG
 
 
+def iter_catalog_hooks():
+    for name in SCHEMA_CATALOG:
+        # copy config (new dict)
+        config = dict(SCHEMA_CATALOG[name]["hook_config"])
+        # set computed attributes
+        config["schema_name"] = name
+        config["id"] = f"check-{name}"
+        config["description"] = (
+            config.get("description")
+            or f"{config['name']} against the schema provided by SchemaStore"
+        )
+        if "types" in config and isinstance(config["types"], str):
+            config["types"] = [config["types"]]
+        yield config
+
+
 def update_hook_config(new_config: str) -> None:
     print("updating .pre-commit-hooks.yaml")
     with open(".pre-commit-hooks.yaml") as fp:
@@ -20,19 +36,14 @@ def update_hook_config(new_config: str) -> None:
         fp.write(content)
 
 
-def format_hook(name: str) -> str:
-    config = SCHEMA_CATALOG[name]["hook_config"]
-    description = (
-        config.get("description")
-        or f"{config['name']} against the schema provided by SchemaStore"
-    )
+def format_hook(config) -> str:
     add_args = " ".join(config.get("add_args", []))
     if add_args:
         add_args = " " + add_args
-    if isinstance(config["files"], str):
-        files = config["files"]
-    else:
-        files = r""">
+    if isinstance(config["files"], list):
+        config[
+            "files"
+        ] = r""">
     (?x)^(
       {}
     )$""".format(
@@ -40,30 +51,26 @@ def format_hook(name: str) -> str:
         )
 
     config_str = f"""\
-- id: check-{name}
+- id: {config["id"]}
   name: {config["name"]}
-  description: '{description}'
-  entry: check-jsonschema --builtin-schema vendor.{name}{add_args}
+  description: '{config["description"]}'
+  entry: check-jsonschema --builtin-schema vendor.{config["schema_name"]}{add_args}
   language: python
-  files: {files}
+  files: {config["files"]}
 """
     if "types" in config:
-        if isinstance(config["types"], str):
-            type_str = config["types"]
-        else:
-            type_str = ",".join(config["types"])
         config_str += f"""\
-  types: [{type_str}]
+  types: [{','.join(config['types'])}]
 """
     return config_str
 
 
 def generate_hook_config() -> str:
-    return "\n".join(format_hook(hookname) for hookname in SCHEMA_CATALOG)
+    return "\n".join(format_hook(h) for h in iter_catalog_hooks())
 
 
-def update_readme() -> None:
-    print("updating README.md")
+def update_readme_list_schemas() -> None:
+    print("updating README.md -- list schemas")
     with open("README.md") as fp:
         content = fp.read()
 
@@ -82,6 +89,36 @@ def update_readme() -> None:
     content = content_head + generated_list + content_tail
     with open("README.md", "w") as fp:
         fp.write(content)
+
+
+def update_readme_supported_hooks() -> None:
+    print("updating README.md -- generated hooks")
+    with open("README.md") as fp:
+        content = fp.read()
+
+    generated_list_start = "<!-- generated-hook-list-start -->"
+    generated_list_end = "<!-- generated-hook-list-end -->"
+
+    content_head = content.split(generated_list_start)[0]
+    content_tail = content.split(generated_list_end)[-1]
+
+    generated_list = "\n".join(
+        [generated_list_start]
+        + [
+            f"- {config['id']}:\n    {config['description']}"
+            for config in iter_catalog_hooks()
+        ]
+        + [generated_list_end]
+    )
+
+    content = content_head + generated_list + content_tail
+    with open("README.md", "w") as fp:
+        fp.write(content)
+
+
+def update_readme() -> None:
+    update_readme_list_schemas()
+    update_readme_supported_hooks()
 
 
 def main() -> None:
