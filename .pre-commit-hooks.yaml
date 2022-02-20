@@ -9,7 +9,7 @@
 
 - id: check-github-workflows
   name: Validate GitHub Workflows
-  description: 'Validate GitHub Workflows against the schema provided by Schemastore'
+  description: 'Validate GitHub Workflows against the schema provided by SchemaStore'
   entry: check-jsonschema --builtin-schema vendor.github-workflows
   language: python
   files: ^\.github/workflows/
@@ -17,7 +17,7 @@
 
 - id: check-github-actions
   name: Validate GitHub Actions
-  description: 'Validate GitHub Actions against the schema provided by Schemastore'
+  description: 'Validate GitHub Actions against the schema provided by SchemaStore'
   entry: check-jsonschema --builtin-schema vendor.github-actions
   language: python
   files: >
@@ -37,7 +37,7 @@
 
 - id: check-travis
   name: Validate Travis Config
-  description: 'Validate Travis config against the schema provided by Schemastore'
+  description: 'Validate Travis config against the schema provided by SchemaStore'
   entry: check-jsonschema --builtin-schema vendor.travis
   language: python
   files: ^\.travis.(yml|yaml)$
@@ -65,8 +65,16 @@
 
 - id: check-gitlab-ci
   name: Validate GitLab CI Config
-  description: 'Validate GitLab CI config against the schema provided by Schemastore'
+  description: 'Validate GitLab CI config against the schema provided by SchemaStore'
   entry: check-jsonschema --builtin-schema vendor.gitlab-ci
   language: python
   files: ^.*\.gitlab-ci.yml$
+  types: [yaml]
+
+- id: check-bamboo-spec
+  name: Validate Bamboo Specs
+  description: 'Validate Bamboo configuration-as-code against the schema provided by SchemaStore'
+  entry: check-jsonschema --builtin-schema vendor.bamboo-spec
+  language: python
+  files: ^bamboo-specs/.*\.(yml|yaml)$
   types: [yaml]
