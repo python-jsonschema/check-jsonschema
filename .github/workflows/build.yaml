@@ -19,7 +19,7 @@ jobs:
       - name: install requirements
         run: python -m pip install tox
       - name: test
-        run: python -m tox -e py
+        run: python -m tox -e py,py-json5,py-pyjson5
       - name: twine-check
         run: python -m tox -e twine-check
 
