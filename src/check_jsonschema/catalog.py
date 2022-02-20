@@ -14,18 +14,46 @@ SCHEMA_CATALOG: t.Dict[str, t.Dict[str, t.Any]] = {
         "url": _githubusercontent_url(
             "microsoft", "azure-pipelines-vscode", "main", "service-schema.json"
         ),
+        "hook_config": {
+            "name": "Validate Azure Pipelines",
+            "description": "Validate Azure Pipelines config against the schema provided "
+            "by Microsoft",
+            "add_args": ["--data-transform", "azure-pipelines"],
+            "files": r"^(\.)?azure-pipelines.(yml|yaml)$",
+            "types": "yaml",
+        },
     },
     "bamboo-spec": {
         "url": "https://json.schemastore.org/bamboo-spec.json",
+        "hook_config": {
+            "name": "Validate Bamboo Specs",
+            "files": r"^bamboo-specs/.*\.(yml|yaml)$",
+            "types": "yaml",
+        },
     },
     "github-actions": {
         "url": "https://json.schemastore.org/github-action",
+        "hook_config": {
+            "name": "Validate GitHub Actions",
+            "files": ["action.(yml|yaml)", r"\.github/actions/.*"],
+            "types": "yaml",
+        },
     },
     "github-workflows": {
         "url": "https://json.schemastore.org/github-workflow",
+        "hook_config": {
+            "name": "Validate GitHub Workflows",
+            "files": r"^\.github/workflows/",
+            "types": "yaml",
+        },
     },
     "gitlab-ci": {
         "url": "https://www.schemastore.org/schemas/json/gitlab-ci.json",
+        "hook_config": {
+            "name": "Validate GitLab CI config",
+            "files": r"^.*\.gitlab-ci.yml$",
+            "types": "yaml",
+        },
     },
     "readthedocs": {
         "url": _githubusercontent_url(
@@ -34,11 +62,33 @@ SCHEMA_CATALOG: t.Dict[str, t.Dict[str, t.Any]] = {
             "master",
             "readthedocs/rtd_tests/fixtures/spec/v2/schema.json",
         ),
+        "hook_config": {
+            "name": "Validate ReadTheDocs Config",
+            "description": "Validate ReadTheDocs config against the schema "
+            "provided by ReadTheDocs",
+            "files": r"^\.readthedocs.(yml|yaml)$",
+            "types": "yaml",
+        },
     },
     "renovate": {
         "url": "https://docs.renovatebot.com/renovate-schema.json",
+        "hook_config": {
+            "name": "Validate Renovate Config",
+            "description": "Validate Renovate config against the schema provided by "
+            "Renovate (does not support renovate config in package.json)",
+            "files": [
+                r"renovate\.(json|json5)",
+                r"\.(github|gitlab)/renovate\.(json|json5)",
+                r"\.renovaterc(\.json)?",
+            ],
+        },
     },
     "travis": {
         "url": "https://json.schemastore.org/travis",
+        "hook_config": {
+            "name": "Validate Travis Config",
+            "files": r"^\.travis.(yml|yaml)$",
+            "types": "yaml",
+        },
     },
 }

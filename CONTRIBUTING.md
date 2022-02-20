@@ -39,6 +39,13 @@ the `negative/` test cases should fail the hook with the matching name.
 
 These files are automatically picked up by the testsuite and checked.
 
+### Adding new hooks
+
+Hooks are defined in `src/check_jsonschema/catalog.py`, and rendered to
+`.pre-commit-hooks.yaml` with the generator script. It can be run with
+
+    make generate-hooks
+
 ## Documentation
 
 All of the features of `check-jsonschema` should be documented in the readme

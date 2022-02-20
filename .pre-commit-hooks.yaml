@@ -7,12 +7,22 @@
   # we need types_or support
   minimum_pre_commit_version: 2.9.0
 
-- id: check-github-workflows
-  name: Validate GitHub Workflows
-  description: 'Validate GitHub Workflows against the schema provided by SchemaStore'
-  entry: check-jsonschema --builtin-schema vendor.github-workflows
+# --AUTOGEN_HOOKS_START-- #
+
+- id: check-azure-pipelines
+  name: Validate Azure Pipelines
+  description: 'Validate Azure Pipelines config against the schema provided by Microsoft'
+  entry: check-jsonschema --builtin-schema vendor.azure-pipelines --data-transform azure-pipelines
   language: python
-  files: ^\.github/workflows/
+  files: ^(\.)?azure-pipelines.(yml|yaml)$
+  types: [yaml]
+
+- id: check-bamboo-spec
+  name: Validate Bamboo Specs
+  description: 'Validate Bamboo Specs against the schema provided by SchemaStore'
+  entry: check-jsonschema --builtin-schema vendor.bamboo-spec
+  language: python
+  files: ^bamboo-specs/.*\.(yml|yaml)$
   types: [yaml]
 
 - id: check-github-actions
@@ -27,20 +37,20 @@
     )$
   types: [yaml]
 
-- id: check-azure-pipelines
-  name: Validate Azure Pipelines
-  description: 'Validate Azure Pipelines config against the schema provided by Microsoft'
-  entry: check-jsonschema --builtin-schema vendor.azure-pipelines --data-transform azure-pipelines
+- id: check-github-workflows
+  name: Validate GitHub Workflows
+  description: 'Validate GitHub Workflows against the schema provided by SchemaStore'
+  entry: check-jsonschema --builtin-schema vendor.github-workflows
   language: python
-  files: ^(\.)?azure-pipelines.(yml|yaml)$
+  files: ^\.github/workflows/
   types: [yaml]
 
-- id: check-travis
-  name: Validate Travis Config
-  description: 'Validate Travis config against the schema provided by SchemaStore'
-  entry: check-jsonschema --builtin-schema vendor.travis
+- id: check-gitlab-ci
+  name: Validate GitLab CI config
+  description: 'Validate GitLab CI config against the schema provided by SchemaStore'
+  entry: check-jsonschema --builtin-schema vendor.gitlab-ci
   language: python
-  files: ^\.travis.(yml|yaml)$
+  files: ^.*\.gitlab-ci.yml$
   types: [yaml]
 
 - id: check-readthedocs
@@ -63,18 +73,10 @@
       \.renovaterc(\.json)?
     )$
 
-- id: check-gitlab-ci
-  name: Validate GitLab CI Config
-  description: 'Validate GitLab CI config against the schema provided by SchemaStore'
-  entry: check-jsonschema --builtin-schema vendor.gitlab-ci
+- id: check-travis
+  name: Validate Travis Config
+  description: 'Validate Travis Config against the schema provided by SchemaStore'
+  entry: check-jsonschema --builtin-schema vendor.travis
   language: python
-  files: ^.*\.gitlab-ci.yml$
-  types: [yaml]
-
-- id: check-bamboo-spec
-  name: Validate Bamboo Specs
-  description: 'Validate Bamboo configuration-as-code against the schema provided by SchemaStore'
-  entry: check-jsonschema --builtin-schema vendor.bamboo-spec
-  language: python
-  files: ^bamboo-specs/.*\.(yml|yaml)$
+  files: ^\.travis.(yml|yaml)$
   types: [yaml]
