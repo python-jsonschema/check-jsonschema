@@ -154,17 +154,21 @@ will fail.
 The name of a builtin schema from `check-jsonschema` to use.
 Use of this option replaces `--schemafile`, and the two are mutually exclusive.
 
-The following values are valid and refer to vendored copies of schemastore
-schemas:
+The following values are valid and refer to vendored copies schemas from
+SchemaStore and other sources:
 
+<!-- vendored-schema-list-start -->
 - `vendor.azure-pipelines`
+- `vendor.bamboo-spec`
 - `vendor.github-actions`
 - `vendor.github-workflows`
-- `vendor.travis`
+- `vendor.gitlab-ci`
 - `vendor.readthedocs`
 - `vendor.renovate`
+- `vendor.travis`
+<!-- vendored-schema-list-end -->
 
-The following values are valid and refer to custom schemas:
+The following values refer to custom schemas:
 
 - `github-workflows-require-timeout` -- This schema checks that a GitHub
   workflow explicitly sets `timeout-minutes` on all jobs. (The default value

@@ -44,3 +44,8 @@ def test_no_cache_behavior():
     assert args.no_cache is False
     args = _call_parse(["--schemafile", "schema.json", "foo.json", "--no-cache"])
     assert args.no_cache is True
+
+
+def test_mutex_schema_opts():
+    with pytest.raises(CustomArgError):
+        _call_parse(["--schemafile", "x.json", "--builtin-schema", "vendor.travis"])

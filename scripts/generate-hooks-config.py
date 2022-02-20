@@ -62,8 +62,31 @@ def generate_hook_config() -> str:
     return "\n".join(format_hook(hookname) for hookname in SCHEMA_CATALOG)
 
 
+def update_readme() -> None:
+    print("updating README.md")
+    with open("README.md") as fp:
+        content = fp.read()
+
+    vendored_list_start = "<!-- vendored-schema-list-start -->"
+    vendored_list_end = "<!-- vendored-schema-list-end -->"
+
+    content_head = content.split(vendored_list_start)[0]
+    content_tail = content.split(vendored_list_end)[-1]
+
+    generated_list = "\n".join(
+        [vendored_list_start]
+        + [f"- `vendor.{n}`" for n in SCHEMA_CATALOG]
+        + [vendored_list_end]
+    )
+
+    content = content_head + generated_list + content_tail
+    with open("README.md", "w") as fp:
+        fp.write(content)
+
+
 def main() -> None:
     update_hook_config(generate_hook_config())
+    update_readme()
 
 
 if __name__ == "__main__":

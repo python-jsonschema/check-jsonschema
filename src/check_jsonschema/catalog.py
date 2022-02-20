@@ -5,6 +5,11 @@ def _githubusercontent_url(owner: str, repo: str, ref: str, path: str) -> str:
     return f"https://raw.githubusercontent.com/{owner}/{repo}/{ref}/{path}"
 
 
+# this lists custom schemas which are *not* part of the catalog
+CUSTOM_SCHEMA_NAMES = [
+    "github-workflows-require-timeout",
+]
+
 # Known configs. The SchemaCatalog lists known schema URLs with their names.
 # kept in alphabetical order by name
 #

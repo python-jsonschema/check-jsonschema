@@ -1,16 +1,15 @@
 import argparse
 import textwrap
 
-from .catalog import SCHEMA_CATALOG
+from .catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from .formats import RegexFormatBehavior
 from .transforms import TRANFORM_LIBRARY
 
-_CUSTOM_SCHEMA_NAMES = ["github-workflows-require-timeout"]
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
-    f"custom.{k}" for k in _CUSTOM_SCHEMA_NAMES
+    f"custom.{k}" for k in CUSTOM_SCHEMA_NAMES
 ]
 BUILTIN_SCHEMA_CHOICES = (
-    BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + _CUSTOM_SCHEMA_NAMES
+    BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + CUSTOM_SCHEMA_NAMES
 )
 
 
