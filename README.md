@@ -36,7 +36,8 @@ These hooks check known files against schemas provided by other sources:
 
 - check-renovate:
     Validate RenovateBot config against the schema provided by Renovate (does
-    not support config in package.json or JSON5)
+    not support config in package.json). JSON5 support requires additional
+    installation of a JSON5 parser
 
 ## Example Usage
 
@@ -183,3 +184,25 @@ to instancefiles before they are checked.
 
 e.g. The "azure-pipelines" transform unpacks compile-time expressions for Azure
 Pipelines files.
+
+## Optional Parsers
+
+`check-jsonschema` comes with out-of-the-box support for the JSON and YAML file
+formats. Additional optional parsers may be installed, and are supported when
+present.
+
+### JSON5
+
+In order to support JSON5 files, either the `pyjson5` or `json5` package must
+be installed.
+
+In `pre-commit-config.yaml`, this can be done with `additional_dependencies`.
+For example,
+
+```yaml
+- repo: https://github.com/sirosen/check-jsonschema
+  rev: 0.11.0
+  hooks:
+    - id: check-renovate
+      additional_dependencies: ['pyjson5']
+```
