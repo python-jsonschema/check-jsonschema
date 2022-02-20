@@ -26,13 +26,19 @@ def update_changelog(new_version):
     print("updating CHANGELOG.md")
     with open("CHANGELOG.md") as fp:
         content = fp.read()
-    content = content.replace(
-        "## Unreleased\n",
+
+    vendor_marker = "<!-- vendor-insert-here -->"
+
+    content = re.sub(
+        r"\#\#\s+Unreleased(\s*\n)+" + re.escape(vendor_marker),
         f"""\
 ## Unreleased
 
+{vendor_marker}
+
 ## {new_version}
 """,
+        content,
     )
     with open("CHANGELOG.md", "w") as fp:
         fp.write(content)

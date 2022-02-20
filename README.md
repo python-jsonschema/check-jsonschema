@@ -48,7 +48,7 @@ files. All you need to add to your `.pre-commit-config.yaml` is this:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.11.0
+  rev: 0.12.0
   hooks:
     - id: check-github-workflows
 ```
@@ -61,7 +61,7 @@ manually, you could do this:
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.11.0
+  rev: 0.12.0
   hooks:
     - id: check-jsonschema
       name: "Check GitHub Workflows"
@@ -75,7 +75,7 @@ And to check with the builtin schema that a GitHub workflow sets
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.11.0
+  rev: 0.12.0
   hooks:
     - id: check-jsonschema
       name: "Check GitHub Workflows set timeout-minutes"
@@ -201,7 +201,7 @@ For example,
 
 ```yaml
 - repo: https://github.com/sirosen/check-jsonschema
-  rev: 0.11.0
+  rev: 0.12.0
   hooks:
     - id: check-renovate
       additional_dependencies: ['pyjson5']

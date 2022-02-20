@@ -3,6 +3,9 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+
+## 0.12.0
+
 - Add support for JSON5 files when `pyjson5` or `json5` is installed, and
     update the Renovate hook to list JSON5 config files. If a JSON5 file is
     checked without one of the necessary packages installed, a special error
