@@ -102,10 +102,10 @@ def update_readme_supported_hooks() -> None:
     content_head = content.split(generated_list_start)[0]
     content_tail = content.split(generated_list_end)[-1]
 
-    generated_list = "\n".join(
+    generated_list = "\n\n".join(
         [generated_list_start]
         + [
-            f"- {config['id']}:\n    {config['description']}"
+            f"- `{config['id']}`:\n    {config['description']}"
             for config in iter_catalog_hooks()
         ]
         + [generated_list_end]

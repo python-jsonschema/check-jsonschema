@@ -12,29 +12,38 @@ Remote files are automatically downloaded and cached if possible.
 
 The most generic hook is this one:
 
-- check-jsonschema:
+- `check-jsonschema`:
     Validate JSON or YAML files against a jsonschema on disk or fetched via HTTP(S)
 
 The following hooks check specific files against various schemas provided by
 SchemaStore and other sources:
 
 <!-- generated-hook-list-start -->
-- check-azure-pipelines:
+
+- `check-azure-pipelines`:
     Validate Azure Pipelines config against the schema provided by Microsoft
-- check-bamboo-spec:
+
+- `check-bamboo-spec`:
     Validate Bamboo Specs against the schema provided by SchemaStore
-- check-github-actions:
+
+- `check-github-actions`:
     Validate GitHub Actions against the schema provided by SchemaStore
-- check-github-workflows:
+
+- `check-github-workflows`:
     Validate GitHub Workflows against the schema provided by SchemaStore
-- check-gitlab-ci:
+
+- `check-gitlab-ci`:
     Validate GitLab CI config against the schema provided by SchemaStore
-- check-readthedocs:
+
+- `check-readthedocs`:
     Validate ReadTheDocs config against the schema provided by ReadTheDocs
-- check-renovate:
+
+- `check-renovate`:
     Validate Renovate config against the schema provided by Renovate (does not support renovate config in package.json)
-- check-travis:
+
+- `check-travis`:
     Validate Travis Config against the schema provided by SchemaStore
+
 <!-- generated-hook-list-end -->
 
 ## Example Usage
