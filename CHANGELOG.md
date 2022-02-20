@@ -3,6 +3,9 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- `--builtin-schema` now validates its arguments (with `choices=...`), and its
+    options are automatically picked up from the internal schema catalog and
+    listed in the `--help` output
 
 ## 0.12.0
 

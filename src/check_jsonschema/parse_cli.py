@@ -1,7 +1,17 @@
 import argparse
+import textwrap
 
+from .catalog import SCHEMA_CATALOG
 from .formats import RegexFormatBehavior
 from .transforms import TRANFORM_LIBRARY
+
+_CUSTOM_SCHEMA_NAMES = ["github-workflows-require-timeout"]
+BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
+    f"custom.{k}" for k in _CUSTOM_SCHEMA_NAMES
+]
+BUILTIN_SCHEMA_CHOICES = (
+    BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + _CUSTOM_SCHEMA_NAMES
+)
 
 
 # support passing through an argparser class to support tests
@@ -15,24 +25,28 @@ The schema is specified either with '--schemafile' or with '--builtin-schema'.
 
 'check-jsonschema' supports and checks the following formats by default:
   date, email, ipv4, regex, uuid
-
+""",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
 For the "regex" format, there are multiple modes which can be specified with
 '--format-regex':
     default  |  best effort check
     disabled |  do not check the regex format
     python   |  check that the string is a valid python regex
 
-The following values are valid for `--builtin-schema`:
-  vendor.azure-pipelines
-  vendor.github-actions
-  vendor.github-workflows
-  vendor.travis
-  vendor.readthedocs
-  vendor.renovate
-  github-workflows-require-timeout
-
-""",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
+The '--builtin-schema' flag supports the following schema names:
+"""
+        + textwrap.indent(
+            "\n".join(
+                textwrap.wrap(
+                    ", ".join(BUILTIN_SCHEMA_NAMES),
+                    width=75,
+                    break_long_words=False,
+                    break_on_hyphens=False,
+                ),
+            ),
+            "    ",
+        ),
     )
     parser.add_argument(
         "--schemafile",
@@ -44,10 +58,10 @@ The following values are valid for `--builtin-schema`:
     )
     parser.add_argument(
         "--builtin-schema",
-        help=(
-            "The name of an internal schema to use for '--schemafile'. "
-            "Schema names can be found in project documentation."
-        ),
+        help=("The name of an internal schema to use for '--schemafile'"),
+        type=str.lower,
+        choices=BUILTIN_SCHEMA_CHOICES,
+        metavar="BUILTIN_SCHEMA_NAME",
     )
     parser.add_argument(
         "--no-cache",
