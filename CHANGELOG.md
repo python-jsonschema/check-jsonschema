@@ -3,6 +3,9 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+
+## 0.13.0
+
 - Add support for `--check-metaschema`, which validates each instance file as a
     JSON Schema, using the metaschema specified by `"$schema"`
 - `--builtin-schema` now validates its arguments (with `choices=...`), and its
