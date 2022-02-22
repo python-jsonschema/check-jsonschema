@@ -4,6 +4,8 @@
 
 <!-- vendor-insert-here -->
 - Update vendored schemas (2022-02-23)
+- Add support for a new hook, `check-metaschema`, which invokes
+    `check-jsonschema --check-metaschema`
 - The `check-jsonschema` repo has moved to a new home at
     https://github.com/python-jsonschema/check-jsonschema
 
