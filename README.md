@@ -1,4 +1,4 @@
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/sirosen/check-jsonschema/main.svg)](https://results.pre-commit.ci/latest/github/sirosen/check-jsonschema/main)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/python-jsonschema/check-jsonschema/main.svg)](https://results.pre-commit.ci/latest/github/python-jsonschema/check-jsonschema/main)
 
 
 # check-jsonschema
@@ -54,7 +54,7 @@ You can use the schemastore github workflow schema to lint your GitHub workflow
 files. All you need to add to your `.pre-commit-config.yaml` is this:
 
 ```yaml
-- repo: https://github.com/sirosen/check-jsonschema
+- repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.13.0
   hooks:
     - id: check-github-workflows
@@ -67,7 +67,7 @@ file or set of files. For example, to implement the GitHub workflow check
 manually, you could do this:
 
 ```yaml
-- repo: https://github.com/sirosen/check-jsonschema
+- repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.13.0
   hooks:
     - id: check-jsonschema
@@ -81,7 +81,7 @@ And to check with the builtin schema that a GitHub workflow sets
 `timeout-minutes` on all jobs:
 
 ```yaml
-- repo: https://github.com/sirosen/check-jsonschema
+- repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.13.0
   hooks:
     - id: check-jsonschema
@@ -239,7 +239,7 @@ In `pre-commit-config.yaml`, this can be done with `additional_dependencies`.
 For example,
 
 ```yaml
-- repo: https://github.com/sirosen/check-jsonschema
+- repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.13.0
   hooks:
     - id: check-renovate
