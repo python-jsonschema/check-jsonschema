@@ -1,6 +1,6 @@
 repos:
 # dogfood
-- repo: https://github.com/sirosen/check-jsonschema
+- repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.13.0
   hooks:
     - id: check-github-workflows

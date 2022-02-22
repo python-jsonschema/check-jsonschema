@@ -26,7 +26,7 @@ JS_REGEX_DOCUMENT = {
     "pattern": "a(?<captured>)bc",
 }
 
-# taken from https://github.com/sirosen/check-jsonschema/issues/25
+# taken from https://github.com/python-jsonschema/check-jsonschema/issues/25
 RENOVATE_DOCUMENT = {
     "regexManagers": [
         {

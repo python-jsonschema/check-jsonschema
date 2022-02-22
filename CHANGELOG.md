@@ -3,6 +3,8 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- The `check-jsonschema` repo has moved to a new home at
+    https://github.com/python-jsonschema/check-jsonschema
 
 ## 0.13.0
 
@@ -27,13 +29,13 @@
 
 - Add support for `--data-transform azure-pipelines` to handle compile-time
   expressions in Pipelines files. This option is applied to the azure
-  pipelines hook ([#29](https://github.com/sirosen/check-jsonschema/issues/29))
+  pipelines hook ([#29](https://github.com/python-jsonschema/check-jsonschema/issues/29))
 - Improve handing of validation errors from schemas with `anyOf` and `oneOf`
   clauses. Show the "best match" from underlying errors, and add an option
   `--show-all-validation-errors` which displays all of the underlying errors
 - Use vendored schemas in all hooks, not latest schemastore copies. This
   ensures that hook behavior is consistent
-  ([#38](https://github.com/sirosen/check-jsonschema/issues/38))
+  ([#38](https://github.com/python-jsonschema/check-jsonschema/issues/38))
 - Update vendored schemas (2022-02-12)
 - Use `requests` to make HTTP requests, and retry request failures
 
@@ -69,7 +71,7 @@
   treated as valid. To get strict python behavior (the previous behavior), use
   `--format-regex=python`. For no regex checking at all, without disabling
   other formats, use `--format-regex=disabled`.
-  resolves [#20](https://github.com/sirosen/check-jsonschema/issues/20)
+  resolves [#20](https://github.com/python-jsonschema/check-jsonschema/issues/20)
 - Add a hook for Renovate Bot config, `check-renovate`. Note that the hook does
   not support config in `package.json` (all other configuration locations are
   supported)
@@ -87,7 +89,7 @@
 - `check-jsonschema` now ships with vendored versions of the external schemas
   used for the default suite of hooks. The vendored schemas are used as a
   failover option in the event that downloading an external schema fails. This
-  resolves [#21](https://github.com/sirosen/check-jsonschema/issues/21)
+  resolves [#21](https://github.com/python-jsonschema/check-jsonschema/issues/21)
 - New CLI options, `--builtin-schema` and `--failover-builtin-schema` are
   available to access the builtin schemas. See documentation for details.
 - Use the latest version (version 4) of the `jsonschema` library. Note
@@ -129,7 +131,7 @@
   file. Defaults to failure on extensionless files.
 - Schemafiles are now passed through `os.path.expanduser`, meaning that a
   schema path of `~/myschema.json` will be expanded by check-jsonschema
-  itself ([#9](https://github.com/sirosen/check-jsonschema/issues/9))
+  itself ([#9](https://github.com/python-jsonschema/check-jsonschema/issues/9))
 - Performance enhancement for testing many files: only load the schema once
 - Added `--no-cache` option to disable schema caching
 - Change the default schema download cache directory from

@@ -4,7 +4,7 @@ Interested in contributing to `check-jsonschema`? That's great!
 
 ## Questions, Feature Requests, Bug Reports, and Feedback...
 
-…should be reported the [Issue Tracker](https://github.com/sirosen/check-jsonschema/issues)_
+…should be reported the [Issue Tracker](https://github.com/python-jsonschema/check-jsonschema/issues)_
 
 ## Contributing Code
 
