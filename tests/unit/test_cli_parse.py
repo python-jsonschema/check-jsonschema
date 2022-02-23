@@ -6,7 +6,8 @@ from check_jsonschema.parse_cli import parse_args
 
 
 class CustomArgError(ValueError):
-    pass
+    def __init__(self, message):
+        self.message = message
 
 
 class CustomArgParser(argparse.ArgumentParser):
@@ -46,6 +47,40 @@ def test_no_cache_behavior():
     assert args.no_cache is True
 
 
-def test_mutex_schema_opts():
-    with pytest.raises(CustomArgError):
-        _call_parse(["--schemafile", "x.json", "--builtin-schema", "vendor.travis"])
+@pytest.mark.parametrize(
+    "cmd_args",
+    [
+        [
+            "--schemafile",
+            "x.json",
+            "--builtin-schema",
+            "vendor.travis",
+            "foo.json",
+        ],
+        [
+            "--schemafile",
+            "x.json",
+            "--builtin-schema",
+            "vendor.travis",
+            "--check-metaschema",
+            "foo.json",
+        ],
+        [
+            "--schemafile",
+            "x.json",
+            "--check-metaschema",
+            "foo.json",
+        ],
+        [
+            "--builtin-schema",
+            "vendor.travis",
+            "--check-metaschema",
+            "foo.json",
+        ],
+    ],
+)
+def test_mutex_schema_opts(cmd_args):
+    with pytest.raises(CustomArgError) as excinfo:
+        _call_parse(cmd_args)
+    err = excinfo.value
+    assert "are mutually exclusive" in err.message
