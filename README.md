@@ -15,6 +15,10 @@ The most generic hook is this one:
 - `check-jsonschema`:
     Validate JSON or YAML files against a jsonschema on disk or fetched via HTTP(S)
 
+- `check-metaschema`:
+    Validate JSON Schema files against their matching metaschema, as specified in their
+    `"$schema"` key
+
 The following hooks check specific files against various schemas provided by
 SchemaStore and other sources:
 
