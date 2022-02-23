@@ -3,6 +3,7 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- Update vendored schemas (2022-02-23)
 - The `check-jsonschema` repo has moved to a new home at
     https://github.com/python-jsonschema/check-jsonschema
 
