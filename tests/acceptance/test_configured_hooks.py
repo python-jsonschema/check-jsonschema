@@ -10,11 +10,11 @@ from check_jsonschema.loaders.instance.json5 import ENABLED as JSON5_ENABLED
 yaml = ruamel.yaml.YAML(typ="safe")
 
 HERE = Path(__file__).parent
-EXAMPLE_FILES = HERE / "example-files" / "hooks"
+EXAMPLE_FILES = HERE.parent / "example-files" / "hooks"
 
 
 def _iter_hook_config():
-    config_file = HERE.parent / ".pre-commit-hooks.yaml"
+    config_file = HERE.parent.parent / ".pre-commit-hooks.yaml"
     with open(config_file) as fp:
         for hook in yaml.load(fp):
             hookid = hook["id"]

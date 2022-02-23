@@ -6,7 +6,7 @@ from check_jsonschema.catalog import SCHEMA_CATALOG
 
 yaml = ruamel.yaml.YAML(typ="safe")
 HERE = Path(__file__).parent
-CONFIG_FILE = HERE.parent / ".pre-commit-hooks.yaml"
+CONFIG_FILE = HERE.parent.parent / ".pre-commit-hooks.yaml"
 
 
 def test_schema_catalog_is_alphabetized():
