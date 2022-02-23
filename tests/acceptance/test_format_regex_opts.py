@@ -39,7 +39,11 @@ RENOVATE_DOCUMENT = {
 }
 
 
-@pytest.mark.parametrize("regexopt", ["disabled", "default", "python"])
+@pytest.fixture(params=["disabled", "default", "python"])
+def regexopt(request):
+    return request.param
+
+
 def test_regex_format_good(cli_runner, tmp_path, regexopt):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
@@ -50,7 +54,23 @@ def test_regex_format_good(cli_runner, tmp_path, regexopt):
     cli_runner(["--format-regex", regexopt, "--schemafile", str(schemafile), str(doc)])
 
 
-@pytest.mark.parametrize("regexopt", ["disabled", "default", "python"])
+def test_regex_format_accepts_non_str_inputs(cli_runner, tmp_path, regexopt):
+    # potentially confusing, but a format checker is allowed to check non-str instances
+    # validate the format checker behavior on such a case
+    schemafile = tmp_path / "schema.json"
+    schemafile.write_text(
+        json.dumps(
+            {
+                "$schema": "http://json-schema.org/draft-07/schema",
+                "properties": {"pattern": {"type": "integer", "format": "regex"}},
+            }
+        )
+    )
+    doc = tmp_path / "doc.json"
+    doc.write_text(json.dumps({"pattern": 0}))
+    cli_runner(["--format-regex", regexopt, "--schemafile", str(schemafile), str(doc)])
+
+
 def test_regex_format_bad(cli_runner, tmp_path, regexopt):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
@@ -66,9 +86,9 @@ def test_regex_format_bad(cli_runner, tmp_path, regexopt):
     )
     if not expect_ok:
         assert res.exit_code == 1
+        assert "is not a 'regex'" in res.stderr
 
 
-@pytest.mark.parametrize("regexopt", ["disabled", "default", "python"])
 def test_regex_format_js_specific(cli_runner, tmp_path, regexopt):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
@@ -84,6 +104,7 @@ def test_regex_format_js_specific(cli_runner, tmp_path, regexopt):
     )
     if not expect_ok:
         assert res.exit_code == 1
+        assert "is not a 'regex'" in res.stderr
 
 
 def test_regex_format_in_renovate_config(cli_runner, tmp_path):
