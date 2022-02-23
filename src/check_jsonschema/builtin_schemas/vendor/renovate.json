@@ -1188,7 +1188,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)kustomization\\.yaml"
+          "(^|/)kustomization\\.ya?ml$"
         ],
         "pinDigests": false
       },
