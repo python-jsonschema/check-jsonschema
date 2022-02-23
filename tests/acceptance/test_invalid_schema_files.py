@@ -18,3 +18,14 @@ def test_checker_invalid_schemafile(cli_runner, tmp_path):
     res = cli_runner(["--schemafile", str(foo), str(bar)], expect_ok=False)
     assert res.exit_code == 1
     assert "schemafile was not valid" in res.stderr
+
+
+def test_checker_invalid_schemafile_scheme(cli_runner, tmp_path):
+    foo = tmp_path / "foo.json"
+    bar = tmp_path / "bar.json"
+    foo.write_text('{"title": "foo"}')
+    bar.write_text("{}")
+
+    res = cli_runner(["--schemafile", f"ftp://{foo}", str(bar)], expect_ok=False)
+    assert res.exit_code == 1
+    assert "only supports http, https" in res.stderr

@@ -48,11 +48,17 @@ class SchemaLoader(SchemaLoaderBase):
         if is_url_ish(self.schemafile):
             self.url_info = urllib.parse.urlparse(self.schemafile)
 
-        # setup a schema reader
-        self.reader = self._get_schema_reader()
+        # setup a schema reader lazily, when needed
+        self._reader = None
 
         # setup a location to store the validator so that it is only built once by default
         self._validator = None
+
+    @property
+    def reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
+        if self._reader is None:
+            self._reader = self._get_schema_reader()
+        return self._reader
 
     def _get_schema_reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
         if self.url_info is None:

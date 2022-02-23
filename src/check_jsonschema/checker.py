@@ -10,6 +10,7 @@ from .loaders import (
     InstanceLoader,
     SchemaLoaderBase,
     SchemaParseError,
+    UnsupportedUrlScheme,
 )
 
 
@@ -48,6 +49,8 @@ class SchemaChecker:
             self._fail("Error: schemafile could not be parsed as JSON", e)
         except jsonschema.SchemaError as e:
             self._fail(f"Error: schemafile was not valid: {e}\n", e)
+        except UnsupportedUrlScheme as e:
+            self._fail(f"Error: {e}\n", e)
         except Exception as e:
             self._fail("Error: Unexpected Error building schema validator", e)
 
