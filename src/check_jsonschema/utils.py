@@ -1,9 +1,16 @@
 import linecache
+import os
+import pathlib
 import sys
 import traceback
 import typing as t
+import urllib.parse
+import urllib.request
 
 import jsonschema
+
+WINDOWS = os.name == "nt"
+
 
 # this is a short list of schemes which will be recognized as being
 # schemes at all; anything else will not even be reported as an
@@ -40,6 +47,40 @@ def is_url_ish(path: str) -> bool:
         return False
     scheme = path.split(":", 1)[0].lower()
     return scheme in KNOWN_URL_SCHEMES
+
+
+def filename2path(filename: str) -> pathlib.Path:
+    """
+    Convert a filename which may be a local file URI to a pathlib.Path object
+
+    This implementation was influenced strongly by how pip handles this problem:
+      https://github.com/pypa/pip/blob/bf91a079791f2daf4339115fb39ce7d7e33a9312/src/pip/_internal/utils/urls.py#L26
+    """
+    if not filename.startswith("file://"):
+        # for local paths, support use of `~`
+        p = pathlib.Path(filename).expanduser()
+    else:
+        urlinfo = urllib.parse.urlsplit(filename)
+        # local (vs UNC paths)
+        is_local_path = urlinfo.netloc in (None, "", "localhost")
+
+        if is_local_path:
+            netloc = ""
+        elif WINDOWS:
+            netloc = "\\\\" + urlinfo.netloc
+
+        filename = urllib.request.url2pathname(netloc + urlinfo.path)
+
+        # url2pathname on windows local paths can produce paths like
+        #   /C:/Users/foo/...
+        # the leading slash messes up a lot of logic for pathlib and similar functions
+        # so strip the leading slash in this case
+        if WINDOWS and is_local_path and filename.startswith("/"):
+            filename = filename[1:]
+
+        p = pathlib.Path(filename)
+
+    return p.resolve()
 
 
 def print_shortened_error(

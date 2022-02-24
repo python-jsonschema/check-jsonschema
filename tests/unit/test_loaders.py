@@ -32,7 +32,7 @@ def test_schemaloader_path_handling_relative_local_path(in_tmp_dir, filename):
 
     sl = SchemaLoader(str(path))
     assert isinstance(sl.reader, LocalSchemaReader)
-    assert sl.reader.filename == str(path)
+    assert sl.reader.filename == os.path.abspath(str(path))
     assert str(sl.reader.path) == str(path.resolve())
 
 

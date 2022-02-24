@@ -1,9 +1,10 @@
 import json
-import pathlib
 import typing as t
 
 import identify
 import ruamel.yaml
+
+from check_jsonschema import utils
 
 from ...cachedownloader import CacheDownloader
 from ..errors import SchemaParseError
@@ -32,9 +33,9 @@ def _yaml_load_schema(schema_location: str, fp) -> dict:
 
 
 class LocalSchemaReader:
-    def __init__(self, filename):
-        self.filename = filename
-        self.path = pathlib.Path(filename).expanduser().resolve()
+    def __init__(self, filename: str) -> None:
+        self.path = utils.filename2path(filename)
+        self.filename = str(self.path)
 
     def get_ref_base(self) -> str:
         return self.path.as_uri()

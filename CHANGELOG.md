@@ -3,6 +3,7 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- Improve handling of file-URI inputs on Windows
 - Update vendored schemas (2022-02-25)
 - Add support for a new hook, `check-metaschema`, which invokes
     `check-jsonschema --check-metaschema`

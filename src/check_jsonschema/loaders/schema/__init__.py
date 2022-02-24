@@ -61,7 +61,7 @@ class SchemaLoader(SchemaLoaderBase):
         return self._reader
 
     def _get_schema_reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
-        if self.url_info is None:
+        if self.url_info is None or self.url_info.scheme in ("file", ""):
             return LocalSchemaReader(self.schemafile)
 
         if self.url_info.scheme in ("http", "https"):
@@ -70,8 +70,6 @@ class SchemaLoader(SchemaLoaderBase):
                 self.cache_filename,
                 self.disable_cache,
             )
-        elif self.url_info.scheme in ("file", ""):
-            return LocalSchemaReader(self.url_info.path)
         else:
             raise UnsupportedUrlScheme(
                 "check-jsonschema only supports http, https, and local files. "
