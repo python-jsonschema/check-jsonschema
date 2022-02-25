@@ -3,6 +3,7 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- Update vendored schemas (2022-02-25)
 - Update vendored schemas (2022-02-23)
 - Add support for a new hook, `check-metaschema`, which invokes
     `check-jsonschema --check-metaschema`
