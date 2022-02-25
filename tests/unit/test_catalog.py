@@ -16,7 +16,7 @@ def test_schema_catalog_is_alphabetized():
 
 
 def test_hooks_cover_catalog():
-    with open(CONFIG_FILE) as fp:
+    with open(CONFIG_FILE, "rb") as fp:
         config = yaml.load(fp)
     config_hook_ids = {x["id"] for x in config}
     catalog_hook_ids = {f"check-{name}" for name in SCHEMA_CATALOG}

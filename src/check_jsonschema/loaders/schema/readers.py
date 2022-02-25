@@ -42,7 +42,7 @@ class LocalSchemaReader:
 
     def read_schema(self):
         tags = identify.identify.tags_from_path(self.filename)
-        with self.path.open() as f:
+        with self.path.open(mode="rb") as f:
             if "yaml" in tags:
                 return _yaml_load_schema(self.filename, f)
             elif "json" in tags:
