@@ -1,7 +1,9 @@
 try:
-    import importlib.resources as importlib_resources
-except ImportError:
+    # first, try to import the installed package version
     import importlib_resources
+except ImportError:
+    # if it's not installed, assume that the stdlib version is new enough (e.g. py3.10)
+    import importlib.resources as importlib_resources
 
 import json
 import typing as t
@@ -13,7 +15,9 @@ class NoSuchSchemaError(ValueError):
 
 def _get(package: str, resource: str, name: str) -> t.Dict[str, t.Any]:
     try:
-        return json.loads(importlib_resources.read_text(package, resource))
+        return json.loads(
+            importlib_resources.files(package).joinpath(resource).read_text()
+        )
     except (FileNotFoundError, ModuleNotFoundError):
         raise NoSuchSchemaError(f"no builtin schema named {name} was found")
 

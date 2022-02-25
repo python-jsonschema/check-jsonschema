@@ -15,7 +15,7 @@ def add_default_response():
         "https://example.com/schema1.json",
         headers={"Last-Modified": "Sun, 01 Jan 2000 00:00:01 GMT"},
         json={},
-        match_querystring=False,
+        match_querystring=None,
     )
 
 
@@ -127,14 +127,14 @@ def test_cachedownloader_e2e(tmp_path, mode, failures):
                 "GET",
                 "https://example.com/schema1.json",
                 status=500,
-                match_querystring=False,
+                match_querystring=None,
             )
     else:
         responses.add(
             "GET",
             "https://example.com/schema1.json",
             body=failures(),
-            match_querystring=False,
+            match_querystring=None,
         )
     add_default_response()
     f = tmp_path / "schema1.json"
