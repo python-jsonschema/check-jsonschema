@@ -1771,6 +1771,11 @@
       "type": "boolean",
       "default": false
     },
+    "platformCommit": {
+      "description": "Use platform API to perform commits instead of using git directly.",
+      "type": "boolean",
+      "default": false
+    },
     "poetry": {
       "description": "Configuration object for the poetry manager",
       "type": "object",
