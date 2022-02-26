@@ -735,6 +735,17 @@
       "type": "string",
       "default": ""
     },
+    "fvm": {
+      "description": "Configuration object for the fvm manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|\\/)\\.fvm\\/fvm_config\\.json$"
+        ],
+        "versioning": "semver"
+      },
+      "$ref": "#"
+    },
     "git-submodules": {
       "description": "Configuration object for the git-submodules manager",
       "type": "object",
