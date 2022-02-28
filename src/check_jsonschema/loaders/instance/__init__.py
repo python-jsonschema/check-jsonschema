@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import typing as t
 
@@ -11,13 +13,13 @@ from . import json5
 yaml = ruamel.yaml.YAML(typ="safe")
 
 
-LOAD_FUNC_BY_TAG: t.Dict[str, t.Callable] = {
+LOAD_FUNC_BY_TAG: dict[str, t.Callable] = {
     "json": json.load,
     "yaml": yaml.load,
 }
 if json5.ENABLED:
     LOAD_FUNC_BY_TAG["json5"] = json5.load
-MISSING_SUPPORT_MESSAGES: t.Dict[str, str] = {
+MISSING_SUPPORT_MESSAGES: dict[str, str] = {
     "json5": json5.MISSING_SUPPORT_MESSAGE,
 }
 
@@ -26,8 +28,8 @@ class InstanceLoader:
     def __init__(
         self,
         filenames,
-        default_filetype: t.Optional[str] = None,
-        data_transform: t.Optional[TransformT] = None,
+        default_filetype: str | None = None,
+        data_transform: TransformT | None = None,
     ):
         self._filenames = filenames
         self._default_ft = default_filetype.lower() if default_filetype else None
@@ -63,7 +65,7 @@ class InstanceLoader:
                 yield (fn, data)
 
 
-def instance_loader_from_args(args):
+def instance_loader_from_args(args) -> InstanceLoader:
     return InstanceLoader(
         args.instancefiles,
         default_filetype=args.default_filetype,

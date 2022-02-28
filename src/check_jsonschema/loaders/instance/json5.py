@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import typing as t
 
 # try to import pyjson5 first
@@ -5,7 +7,7 @@ import typing as t
 try:
     import pyjson5
 
-    load: t.Optional[t.Callable] = pyjson5.load
+    load: t.Callable | None = pyjson5.load
 except ImportError:
     # if pyjson5 was not available, try to import 'json5', the pure-python implementation
     try:

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import contextlib
 import io
 import os
@@ -5,7 +7,6 @@ import platform
 import shutil
 import tempfile
 import time
-import typing as t
 
 import requests
 
@@ -27,8 +28,8 @@ class CacheDownloader:
     def __init__(
         self,
         file_url: str,
-        filename: t.Optional[str] = None,
-        cache_dir: t.Optional[str] = None,
+        filename: str | None = None,
+        cache_dir: str | None = None,
         disable_cache: bool = False,
     ):
         self._file_url = file_url
@@ -36,7 +37,7 @@ class CacheDownloader:
         self._cache_dir = cache_dir or self._compute_default_cache_dir()
         self._disable_cache = disable_cache
 
-    def _compute_default_cache_dir(self) -> t.Optional[str]:
+    def _compute_default_cache_dir(self) -> str | None:
         sysname = platform.system()
 
         # on windows, try to get the appdata env var
@@ -61,7 +62,7 @@ class CacheDownloader:
         try:
             # do manual retries, rather than using urllib3 retries, to make it trivially
             # testable with 'responses'
-            r: t.Optional[requests.Response] = None
+            r: requests.Response | None = None
             for _attempt in range(3):
                 r = requests.get(self._file_url, stream=True)
                 if r.ok:

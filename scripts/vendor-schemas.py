@@ -21,7 +21,7 @@ def download_schema(schema_name: str, schema_url: str) -> bool:
 
     hashfile = f"src/check_jsonschema/builtin_schemas/vendor/{schema_name}.sha256"
     if os.path.exists(hashfile):
-        with open(hashfile, "r") as fp:
+        with open(hashfile) as fp:
             prev_digest: str | None = fp.read().strip()
     else:
         prev_digest = None

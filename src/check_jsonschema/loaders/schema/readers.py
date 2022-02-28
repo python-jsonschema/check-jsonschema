@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 import json
-import typing as t
 
 import identify
 import ruamel.yaml
@@ -54,10 +55,10 @@ class LocalSchemaReader:
 class HttpSchemaReader:
     def __init__(
         self,
-        url,
-        cache_filename: t.Optional[str],
+        url: str,
+        cache_filename: str | None,
         disable_cache: bool,
-    ):
+    ) -> None:
         self.url = url
         self.downloader = CacheDownloader(
             url, cache_filename, disable_cache=disable_cache

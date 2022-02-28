@@ -27,6 +27,7 @@ into
         steps:
           - bash: echo ${{ val }}
 """
+from __future__ import annotations
 
 import typing as t
 
@@ -100,7 +101,7 @@ def traverse_dict(data: dict) -> dict:
     return newdata
 
 
-def azure_main(data: t.Union[dict, list]) -> t.Union[dict, list]:
+def azure_main(data: dict | list) -> dict | list:
     if isinstance(data, list):
         raise AzurePipelinesDataError(
             "this transform requires that the data be an object, got list"

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import typing as t
 
 
@@ -14,7 +16,7 @@ CUSTOM_SCHEMA_NAMES = [
 # kept in alphabetical order by name
 #
 # Additional config could be associated with the schemas in the future.
-SCHEMA_CATALOG: t.Dict[str, t.Dict[str, t.Any]] = {
+SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
     "azure-pipelines": {
         "url": _githubusercontent_url(
             "microsoft", "azure-pipelines-vscode", "main", "service-schema.json"

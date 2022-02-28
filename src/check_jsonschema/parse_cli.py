@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 import textwrap
 
@@ -14,7 +16,7 @@ BUILTIN_SCHEMA_CHOICES = (
 
 
 # support passing through an argparser class to support tests
-def get_parser(cls=None):
+def get_parser(cls: type[argparse.ArgumentParser] | None = None):
     parser_cls = cls if cls is not None else argparse.ArgumentParser
     parser = parser_cls(
         description="""\

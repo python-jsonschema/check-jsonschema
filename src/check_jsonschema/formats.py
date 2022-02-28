@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 import enum
 import re
-import typing as t
 
 import jsonschema
 
@@ -32,15 +33,15 @@ class FormatOptions:
         self,
         *,
         enabled: bool = True,
-        regex_behavior: RegexFormatBehavior = RegexFormatBehavior.default
+        regex_behavior: RegexFormatBehavior = RegexFormatBehavior.default,
     ):
         self.enabled = enabled
         self.regex_behavior = regex_behavior
 
 
 def make_format_checker(
-    opts: FormatOptions, draft: t.Optional[str] = None
-) -> t.Optional[jsonschema.FormatChecker]:
+    opts: FormatOptions, draft: str | None = None
+) -> jsonschema.FormatChecker | None:
     if not opts.enabled:
         return None
 

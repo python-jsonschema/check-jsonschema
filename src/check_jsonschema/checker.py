@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import sys
 import typing as t
 
@@ -25,7 +27,7 @@ class SchemaChecker:
         schema_loader: SchemaLoaderBase,
         instance_loader: InstanceLoader,
         *,
-        format_opts: t.Optional[FormatOptions] = None,
+        format_opts: FormatOptions | None = None,
         traceback_mode: str = "short",
         show_all_errors: bool = False,
     ):
@@ -36,13 +38,13 @@ class SchemaChecker:
         self._traceback_mode = traceback_mode
         self._show_all_errors = show_all_errors
 
-    def _fail(self, msg: str, err: t.Optional[Exception] = None) -> t.NoReturn:
+    def _fail(self, msg: str, err: Exception | None = None) -> t.NoReturn:
         print(msg, file=sys.stderr)
         if err is not None:
             utils.print_error(err, mode=self._traceback_mode)
         raise _Exit(1)
 
-    def get_validator(self, filename: str, doc: t.Dict[str, t.Any]):
+    def get_validator(self, filename: str, doc: dict[str, t.Any]):
         try:
             return self._schema_loader.get_validator(filename, doc, self._format_opts)
         except SchemaParseError as e:

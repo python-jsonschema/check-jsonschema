@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import typing as t
 import urllib.error
 import urllib.parse
@@ -12,8 +14,8 @@ from .readers import HttpSchemaReader, LocalSchemaReader
 
 
 def _make_ref_resolver(
-    schema_uri: t.Optional[str], schema: dict
-) -> t.Optional[jsonschema.RefResolver]:
+    schema_uri: str | None, schema: dict
+) -> jsonschema.RefResolver | None:
     if not schema_uri:
         return None
 
@@ -25,7 +27,7 @@ class SchemaLoaderBase:
     def get_validator(
         self,
         instance_filename: str,
-        instance_doc: t.Dict[str, t.Any],
+        instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
     ):
         raise NotImplementedError
@@ -35,7 +37,7 @@ class SchemaLoader(SchemaLoaderBase):
     def __init__(
         self,
         schemafile: str,
-        cache_filename: t.Optional[str] = None,
+        cache_filename: str | None = None,
         disable_cache: bool = False,
     ):
         # record input parameters (these are not to be modified)
@@ -55,12 +57,12 @@ class SchemaLoader(SchemaLoaderBase):
         self._validator = None
 
     @property
-    def reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
+    def reader(self) -> LocalSchemaReader | HttpSchemaReader:
         if self._reader is None:
             self._reader = self._get_schema_reader()
         return self._reader
 
-    def _get_schema_reader(self) -> t.Union[LocalSchemaReader, HttpSchemaReader]:
+    def _get_schema_reader(self) -> LocalSchemaReader | HttpSchemaReader:
         if self.url_info is None or self.url_info.scheme in ("file", ""):
             return LocalSchemaReader(self.schemafile)
 
@@ -76,10 +78,10 @@ class SchemaLoader(SchemaLoaderBase):
                 f"detected parsed URL had an unrecognized scheme: {self.url_info}"
             )
 
-    def get_schema_ref_base(self) -> t.Optional[str]:
+    def get_schema_ref_base(self) -> str | None:
         return self.reader.get_ref_base()
 
-    def get_schema(self) -> t.Dict[str, t.Any]:
+    def get_schema(self) -> dict[str, t.Any]:
         return self.reader.read_schema()
 
     def make_validator(self, format_opts: FormatOptions):
@@ -110,7 +112,7 @@ class SchemaLoader(SchemaLoaderBase):
     def get_validator(
         self,
         instance_filename: str,
-        instance_doc: t.Dict[str, t.Any],
+        instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
     ):
         self._validator = self.make_validator(format_opts)
@@ -121,10 +123,10 @@ class BuiltinSchemaLoader(SchemaLoader):
     def __init__(self, schema_name: str) -> None:
         self.schema_name = schema_name
 
-    def get_schema_ref_base(self) -> t.Optional[str]:
+    def get_schema_ref_base(self) -> str | None:
         return None
 
-    def get_schema(self) -> t.Dict[str, t.Any]:
+    def get_schema(self) -> dict[str, t.Any]:
         return get_builtin_schema(self.schema_name)
 
 
@@ -132,7 +134,7 @@ class MetaSchemaLoader(SchemaLoaderBase):
     def get_validator(
         self,
         instance_filename: str,
-        instance_doc: t.Dict[str, t.Any],
+        instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
     ):
         validator = jsonschema.validators.validator_for(instance_doc)

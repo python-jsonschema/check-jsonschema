@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import linecache
 import os
 import pathlib
@@ -109,20 +111,24 @@ def print_shortened_trace(
         print_shortened_error(err, stream=stream, indent=indent)
 
 
-def print_error(err: Exception, mode: str = "short"):
+def print_error(err: Exception, mode: str = "short") -> None:
     if mode == "short":
         print_shortened_trace(err)
     else:
         traceback.print_exception(type(err), err, err.__traceback__)
 
 
-def format_validation_error_message(err, filename=None):
+def format_validation_error_message(
+    err: jsonschema.ValidationError, filename: str | None = None
+) -> str:
     if filename:
         return f"\033[0;33m{filename}::{err.json_path}: \033[0m{err.message}"
     return f"  \033[0;33m{err.json_path}: \033[0m{err.message}"
 
 
-def iter_validation_error(err):
+def iter_validation_error(
+    err: jsonschema.ValidationError,
+) -> t.Iterator[jsonschema.ValidationError]:
     for e in err.context:
         yield e
         yield from iter_validation_error(e)
@@ -130,7 +136,7 @@ def iter_validation_error(err):
 
 def print_validation_error(
     filename: str, err: jsonschema.ValidationError, show_all_errors: bool = False
-):
+) -> None:
     def _echo(s):
         print("  " + s, file=sys.stderr)
 
