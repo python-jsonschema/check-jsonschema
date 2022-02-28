@@ -3,6 +3,7 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+- Drop support for python3.6 and improve internal type annotations
 - Update vendored schemas (2022-02-28)
 - Improve handling of file-URI inputs on Windows
 - Add support for a new hook, `check-metaschema`, which invokes

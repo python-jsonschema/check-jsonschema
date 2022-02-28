@@ -69,10 +69,10 @@ class SchemaChecker:
     def _run(self) -> None:
         try:
             errors = self._build_error_map()
-        except jsonschema.RefResolutionError as err:
-            self._fail("Failure resolving $ref within schema\n", err)
-        except BadFileTypeError as err:
-            self._fail("Failure while loading instance files\n", err)
+        except jsonschema.RefResolutionError as e:
+            self._fail("Failure resolving $ref within schema\n", e)
+        except BadFileTypeError as e:
+            self._fail("Failure while loading instance files\n", e)
 
         if errors:
             print("Schema validation errors were encountered.")

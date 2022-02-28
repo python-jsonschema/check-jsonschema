@@ -7,6 +7,7 @@ import platform
 import shutil
 import tempfile
 import time
+import typing as t
 
 import requests
 
@@ -67,6 +68,7 @@ class CacheDownloader:
                 r = requests.get(self._file_url, stream=True)
                 if r.ok:
                     return r
+            assert r is not None
             raise FailedDownloadError(
                 f"got responses with status={r.status_code}, retries exhausted"
             )
@@ -103,6 +105,7 @@ class CacheDownloader:
         os.remove(fp.name)
 
     def _download(self) -> str:
+        assert self._cache_dir
         os.makedirs(self._cache_dir, exist_ok=True)
         dest = os.path.join(self._cache_dir, self._filename)
 
@@ -115,7 +118,7 @@ class CacheDownloader:
         return dest
 
     @contextlib.contextmanager
-    def open(self) -> io.BytesIO:
+    def open(self) -> t.Generator[t.BinaryIO, None, None]:
         if (not self._cache_dir) or self._disable_cache:
             yield io.BytesIO(self._get_request().content)
         else:

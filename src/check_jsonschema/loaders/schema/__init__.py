@@ -20,7 +20,8 @@ def _make_ref_resolver(
         return None
 
     base_uri = schema.get("$id", schema_uri)
-    return jsonschema.RefResolver(base_uri, schema)
+    # FIXME: temporary type-ignore beause typeshed has the type wrong
+    return jsonschema.RefResolver(base_uri, schema)  # type: ignore[arg-type]
 
 
 class SchemaLoaderBase:
@@ -51,7 +52,7 @@ class SchemaLoader(SchemaLoaderBase):
             self.url_info = urllib.parse.urlparse(self.schemafile)
 
         # setup a schema reader lazily, when needed
-        self._reader = None
+        self._reader: LocalSchemaReader | HttpSchemaReader | None = None
 
         # setup a location to store the validator so that it is only built once by default
         self._validator = None

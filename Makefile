@@ -3,6 +3,7 @@ PKG_VERSION=$(shell grep '^version' setup.cfg | cut -d '=' -f2 | tr -d ' ')
 .PHONY: lint test vendor-schemas generate-hooks release showvars
 lint:
 	pre-commit run -a
+	tox -e mypy
 test:
 	tox
 vendor-schemas:

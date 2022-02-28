@@ -5,7 +5,7 @@ try:
     import importlib_resources
 except ImportError:
     # if it's not installed, assume that the stdlib version is new enough (e.g. py3.10)
-    import importlib.resources as importlib_resources
+    import importlib.resources as importlib_resources  # type: ignore[no-redef]
 
 import json
 import typing as t
@@ -32,7 +32,7 @@ def _get_custom_schema(name: str) -> dict[str, t.Any]:
     return _get("check_jsonschema.builtin_schemas.custom", f"{name}.json", name)
 
 
-def get_builtin_schema(name: str) -> dict[str, t.Any] | None:
+def get_builtin_schema(name: str) -> dict[str, t.Any]:
     # first, look for an identifying prefix
     if name.startswith("vendor."):
         return _get_vendored_schema(name[7:])

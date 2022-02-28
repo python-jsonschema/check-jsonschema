@@ -89,20 +89,21 @@ def print_shortened_error(
     err: Exception, *, stream: t.TextIO = sys.stderr, indent: int = 0
 ) -> None:
     print(indent * " " + f"{type(err).__name__}: {err}", file=stream)
-    lineno = err.__traceback__.tb_lineno
-    tb_frame = err.__traceback__.tb_frame
-    filename = tb_frame.f_code.co_filename
-    line = linecache.getline(filename, lineno)
-    print((indent + 2) * " " + f'in "{filename}", line {lineno}', file=stream)
-    print((indent + 2) * " " + ">>> " + line.strip(), file=stream)
+    if err.__traceback__ is not None:
+        lineno = err.__traceback__.tb_lineno
+        tb_frame = err.__traceback__.tb_frame
+        filename = tb_frame.f_code.co_filename
+        line = linecache.getline(filename, lineno)
+        print((indent + 2) * " " + f'in "{filename}", line {lineno}', file=stream)
+        print((indent + 2) * " " + ">>> " + line.strip(), file=stream)
 
 
 def print_shortened_trace(
     caught_err: Exception, *, stream: t.TextIO = sys.stderr
 ) -> None:
-    err_stack = [caught_err]
+    err_stack: list[Exception] = [caught_err]
     while err_stack[-1].__context__ is not None:
-        err_stack.append(err_stack[-1].__context__)
+        err_stack.append(err_stack[-1].__context__)  # type: ignore[arg-type]
     print_shortened_error(caught_err, stream=stream)
     indent = 0
     for err in err_stack[1:]:

@@ -18,7 +18,7 @@ LOAD_FUNC_BY_TAG: dict[str, t.Callable] = {
     "yaml": yaml.load,
 }
 if json5.ENABLED:
-    LOAD_FUNC_BY_TAG["json5"] = json5.load
+    LOAD_FUNC_BY_TAG["json5"] = json5.load  # type: ignore[assignment]
 MISSING_SUPPORT_MESSAGES: dict[str, str] = {
     "json5": json5.MISSING_SUPPORT_MESSAGE,
 }
