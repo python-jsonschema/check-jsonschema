@@ -116,27 +116,10 @@ def print_error(err: Exception, mode: str = "short"):
         traceback.print_exception(type(err), err, err.__traceback__)
 
 
-def json_path(err: jsonschema.ValidationError) -> str:
-    """
-    This method is a backport of the json_path attribute provided by
-    jsonschema.ValidationError for jsonschema v4.x
-
-    It is needed until python3.6 is no longer supported by check-jsonschema,
-    as jsonschema 4 dropped support for py36
-    """
-    path = "$"
-    for elem in err.absolute_path:
-        if isinstance(elem, int):
-            path += "[" + str(elem) + "]"
-        else:
-            path += "." + elem
-    return path
-
-
 def format_validation_error_message(err, filename=None):
     if filename:
-        return f"\033[0;33m{filename}::{json_path(err)}: \033[0m{err.message}"
-    return f"  \033[0;33m{json_path(err)}: \033[0m{err.message}"
+        return f"\033[0;33m{filename}::{err.json_path}: \033[0m{err.message}"
+    return f"  \033[0;33m{err.json_path}: \033[0m{err.message}"
 
 
 def iter_validation_error(err):

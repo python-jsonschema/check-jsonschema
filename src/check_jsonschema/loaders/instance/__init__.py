@@ -35,9 +35,6 @@ class InstanceLoader:
 
     def get_loadfunc(self, filename):
         tags = identify.tags_from_path(filename)
-        # TODO: remove once identify releases with json5 support
-        if filename.endswith(".json5"):
-            tags.add("json5")
         for (tag, loadfunc) in LOAD_FUNC_BY_TAG.items():
             if tag in tags:
                 return loadfunc
