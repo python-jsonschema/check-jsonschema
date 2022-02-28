@@ -3,6 +3,9 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+
+## 0.14.0
+
 - Drop support for python3.6 and improve internal type annotations
 - Update vendored schemas (2022-02-28)
 - Improve handling of file-URI inputs on Windows
