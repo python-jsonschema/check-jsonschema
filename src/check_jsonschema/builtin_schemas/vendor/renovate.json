@@ -455,11 +455,6 @@
       "default": {},
       "$ref": "#"
     },
-    "deepExtract": {
-      "description": "Enable extraction of dependencies using package managers.",
-      "type": "boolean",
-      "default": false
-    },
     "defaultRegistryUrls": {
       "description": "List of registry URLs to use as the default for a datasource.",
       "type": "array",
@@ -2109,10 +2104,6 @@
                 "description": "Optional extractVersion for extracted dependencies. Valid only within a `regexManagers` object.",
                 "type": "string"
               },
-              "lookupNameTemplate": {
-                "description": "Optional lookupName for extracted dependencies, else defaults to depName value. Valid only within a `regexManagers` object.",
-                "type": "string"
-              },
               "matchStrings": {
                 "description": "Regex capture rule to use. Valid only within a `regexManagers` object.",
                 "type": "array",
@@ -2130,6 +2121,10 @@
                   "combination"
                 ],
                 "default": "any"
+              },
+              "packageNameTemplate": {
+                "description": "Optional packageName for extracted dependencies, else defaults to depName value. Valid only within a `regexManagers` object.",
+                "type": "string"
               },
               "registryUrlTemplate": {
                 "description": "Optional registry URL for extracted dependencies. Valid only within a `regexManagers` object.",
