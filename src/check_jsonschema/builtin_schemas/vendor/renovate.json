@@ -541,7 +541,7 @@
       "default": {
         "branchTopic": "{{{depNameSanitized}}}-digest",
         "commitMessageExtra": "to {{newDigestShort}}",
-        "commitMessageTopic": "{{{depName}}} commit hash"
+        "commitMessageTopic": "{{{depName}}} digest"
       },
       "$ref": "#"
     },
