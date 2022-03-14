@@ -4,7 +4,6 @@
 
 <!-- vendor-insert-here -->
 - Update vendored schemas (2022-03-14)
-- Update vendored schemas (2022-03-09)
 
 ## 0.14.0
 
