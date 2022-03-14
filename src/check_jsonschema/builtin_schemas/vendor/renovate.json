@@ -758,7 +758,7 @@
       "type": "string"
     },
     "gitIgnoredAuthors": {
-      "description": "Additional git authors which are ignored by Renovate. Must conform to RFC5322.",
+      "description": "Additional Git authors which are ignored by Renovate. Must conform to RFC5322.",
       "type": "array",
       "items": {
         "type": "string"
@@ -770,7 +770,7 @@
       "default": false
     },
     "gitNoVerify": {
-      "description": "Which git commands will be run with the `--no-verify` option.",
+      "description": "Which Git commands will be run with the `--no-verify` option.",
       "oneOf": [
         {
           "type": "array",
@@ -800,7 +800,7 @@
       "type": "string"
     },
     "gitUrl": {
-      "description": "Overrides the default resolution for git remote, e.g. to switch GitLab from HTTPS to SSH-based.",
+      "description": "Overrides the default resolution for Git remote, e.g. to switch GitLab from HTTPS to SSH-based.",
       "type": "string",
       "enum": [
         "default",
@@ -1778,7 +1778,7 @@
       "default": false
     },
     "platformCommit": {
-      "description": "Use platform API to perform commits instead of using git directly.",
+      "description": "Use platform API to perform commits instead of using Git directly.",
       "type": "boolean",
       "default": false
     },
