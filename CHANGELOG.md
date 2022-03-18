@@ -3,6 +3,9 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+
+## 0.14.1
+
 - Update vendored schemas: azure-pipelines, renovate (2022-03-17)
 - Allow invocation via `python -m check_jsonschema`
 
