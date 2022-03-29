@@ -611,8 +611,13 @@
     },
     "dryRun": {
       "description": "If enabled, perform a dry run by logging messages instead of creating/updating/deleting branches and PRs.",
-      "type": "boolean",
-      "default": false
+      "type": "string",
+      "enum": [
+        "extract",
+        "lookup",
+        "full"
+      ],
+      "default": null
     },
     "enabled": {
       "description": "Enable or disable the bot.",
@@ -652,7 +657,7 @@
       "default": false
     },
     "extends": {
-      "description": "Configuration presets to use/extend. Note: does not work if configured in config.js.",
+      "description": "Configuration presets to use/extend.",
       "oneOf": [
         {
           "type": "array",
@@ -1616,6 +1621,20 @@
               },
               "matchSourceUrlPrefixes": {
                 "description": "A list of source URL prefixes to match against, commonly used for grouping of monorepos or packages from the same organization.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchSourceUrls": {
+                "description": "A list of source URLs to exact match against.",
                 "oneOf": [
                   {
                     "type": "array",
