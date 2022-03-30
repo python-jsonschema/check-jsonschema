@@ -55,7 +55,8 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         },
     },
     "gitlab-ci": {
-        "url": "https://www.schemastore.org/schemas/json/gitlab-ci.json",
+        "url": "https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts"
+        "/editor/schema/ci.json",
         "hook_config": {
             "name": "Validate GitLab CI config",
             "files": r"^.*\.gitlab-ci.yml$",
