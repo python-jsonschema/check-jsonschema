@@ -46,6 +46,11 @@ Hooks are defined in `src/check_jsonschema/catalog.py`, and rendered to
 
     make generate-hooks
 
+Schemas are pulled down based on this same config. If you want to update the
+vendored schema copies, run
+
+    make vendor-schemas
+
 ## Documentation
 
 All of the features of `check-jsonschema` should be documented in the readme
