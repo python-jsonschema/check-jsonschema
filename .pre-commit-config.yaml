@@ -4,6 +4,10 @@ repos:
   rev: 0.14.1
   hooks:
     - id: check-github-workflows
+    - id: check-jsonschema
+      name: Validate Vendored Schemas
+      args: ["--check-metaschema"]
+      files: ^src/check_jsonschema/builtin_schemas/vendor/.*\.json$
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
   rev: v4.1.0
   hooks:
