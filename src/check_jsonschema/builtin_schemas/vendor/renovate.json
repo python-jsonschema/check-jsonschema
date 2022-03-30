@@ -611,13 +611,8 @@
     },
     "dryRun": {
       "description": "If enabled, perform a dry run by logging messages instead of creating/updating/deleting branches and PRs.",
-      "type": "string",
-      "enum": [
-        "extract",
-        "lookup",
-        "full"
-      ],
-      "default": null
+      "type": "boolean",
+      "default": false
     },
     "enabled": {
       "description": "Enable or disable the bot.",
@@ -657,7 +652,7 @@
       "default": false
     },
     "extends": {
-      "description": "Configuration presets to use/extend.",
+      "description": "Configuration presets to use/extend. Note: does not work if configured in config.js.",
       "oneOf": [
         {
           "type": "array",
