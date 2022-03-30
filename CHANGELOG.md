@@ -3,7 +3,9 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
-- Update vendored schemas (2022-03-30)
+- Update vendored schemas: renovate, github-workflows, gitlab-ci (2022-03-30)
+- Fix the vendored schema for GitLab to pull from the correct location.
+  Thanks [@dsch](https://github.com/dsch) for the fix!
 
 ## 0.14.1
 

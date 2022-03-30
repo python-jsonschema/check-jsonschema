@@ -23,3 +23,9 @@ license for readthedocs.org
 
 The Renovate schema is provided by Renovate and licensed under the license for
 renovatebot
+
+### GitLab
+
+The GitLab CI schema is provided by GitLab and licensed under the license for
+the public gitlab repo. In particular, it falls under the "MIT Expat" portion
+of the license for that repo.
