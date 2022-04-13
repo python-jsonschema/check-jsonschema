@@ -3,7 +3,10 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
-- Update vendored schemas (2022-04-13)
+
+## 0.14.3
+
+- Update vendored schemas: renovate, gitlab-ci (2022-04-13)
 - `check-jsonschema` now treats all instance files as UTF-8, regardless of the
   platform and locale. This ensures that files are handled uniformly between
   \*nix and Windows
