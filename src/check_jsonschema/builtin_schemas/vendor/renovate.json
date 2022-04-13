@@ -611,8 +611,13 @@
     },
     "dryRun": {
       "description": "If enabled, perform a dry run by logging messages instead of creating/updating/deleting branches and PRs.",
-      "type": "boolean",
-      "default": false
+      "type": "string",
+      "enum": [
+        "extract",
+        "lookup",
+        "full"
+      ],
+      "default": null
     },
     "enabled": {
       "description": "Enable or disable the bot.",
