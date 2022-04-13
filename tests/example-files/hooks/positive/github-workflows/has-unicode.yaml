@@ -1,0 +1,14 @@
+name: test
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: "Всё хорошо?"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - run: python -m pip install tox
+      - run: python -m tox -e py

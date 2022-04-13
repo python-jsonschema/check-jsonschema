@@ -58,7 +58,7 @@ class InstanceLoader:
         for fn in self._filenames:
             loadfunc = self.get_loadfunc(fn)
 
-            with open(fn) as fp:
+            with open(fn, encoding="utf-8") as fp:
                 data = loadfunc(fp)
                 if self._data_transform:
                     data = self._data_transform(data)
