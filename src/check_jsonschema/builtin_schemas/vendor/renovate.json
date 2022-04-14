@@ -825,6 +825,11 @@
       },
       "$ref": "#"
     },
+    "githubTokenWarn": {
+      "description": "Display warnings about GitHub token not being set.",
+      "type": "boolean",
+      "default": true
+    },
     "gitlabci": {
       "description": "Configuration object for the gitlabci manager",
       "type": "object",
