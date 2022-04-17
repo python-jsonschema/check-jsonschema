@@ -2399,7 +2399,8 @@
         "fileMatch": [
           "\\.tf$"
         ],
-        "versioning": "hashicorp"
+        "versioning": "hashicorp",
+        "pinDigests": false
       },
       "$ref": "#"
     },
