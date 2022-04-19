@@ -804,6 +804,11 @@
       "description": "PGP key to use for signing Git commits.",
       "type": "string"
     },
+    "gitTimeout": {
+      "description": "Configure the timeout with a number of milliseconds to wait for a git task",
+      "type": "integer",
+      "default": 10000
+    },
     "gitUrl": {
       "description": "Overrides the default resolution for Git remote, e.g. to switch GitLab from HTTPS to SSH-based.",
       "type": "string",
