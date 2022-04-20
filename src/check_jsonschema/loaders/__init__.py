@@ -1,5 +1,5 @@
 from .errors import BadFileTypeError, SchemaParseError, UnsupportedUrlScheme
-from .instance import InstanceLoader, instance_loader_from_args
+from .instance import InstanceLoader
 from .schema import (
     BuiltinSchemaLoader,
     SchemaLoader,
@@ -16,5 +16,4 @@ __all__ = (
     "SchemaLoaderBase",
     "InstanceLoader",
     "schema_loader_from_args",
-    "instance_loader_from_args",
 )

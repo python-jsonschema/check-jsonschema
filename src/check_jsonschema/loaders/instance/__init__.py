@@ -63,11 +63,3 @@ class InstanceLoader:
                 if self._data_transform:
                     data = self._data_transform(data)
                 yield (fn, data)
-
-
-def instance_loader_from_args(args) -> InstanceLoader:
-    return InstanceLoader(
-        args.instancefiles,
-        default_filetype=args.default_filetype,
-        data_transform=args.data_transform,
-    )

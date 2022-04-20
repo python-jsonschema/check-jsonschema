@@ -24,38 +24,45 @@ FAILING_DOCUMENT = {
 }
 
 
-def test_format_check_passing(cli_runner, tmp_path):
+def test_format_check_passing(run_line_simple, tmp_path):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
 
     doc1 = tmp_path / "doc1.json"
     doc1.write_text(json.dumps(PASSING_DOCUMENT))
 
-    cli_runner(["--schemafile", str(schemafile), str(doc1)])
+    run_line_simple(["--schemafile", str(schemafile), str(doc1)])
 
 
-def test_format_failure_exit_error(cli_runner, tmp_path):
+def test_format_failure_exit_error(run_line, tmp_path):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
 
     doc1 = tmp_path / "doc1.json"
     doc1.write_text(json.dumps(FAILING_DOCUMENT))
 
-    res = cli_runner(["--schemafile", str(schemafile), str(doc1)], expect_ok=False)
+    res = run_line(["check-jsonschema", "--schemafile", str(schemafile), str(doc1)])
     assert res.exit_code == 1
 
 
-def test_format_failure_ignore(cli_runner, tmp_path):
+def test_format_failure_ignore(run_line_simple, tmp_path):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
 
     doc1 = tmp_path / "doc1.json"
     doc1.write_text(json.dumps(FAILING_DOCUMENT))
 
-    cli_runner(["--disable-format", "--schemafile", str(schemafile), str(doc1)])
+    run_line_simple(
+        [
+            "--disable-format",
+            "--schemafile",
+            str(schemafile),
+            str(doc1),
+        ]
+    )
 
 
-def test_format_failure_ignore_multidoc(cli_runner, tmp_path):
+def test_format_failure_ignore_multidoc(run_line_simple, tmp_path):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
 
@@ -65,6 +72,12 @@ def test_format_failure_ignore_multidoc(cli_runner, tmp_path):
     doc2 = tmp_path / "doc2.json"
     doc2.write_text(json.dumps(PASSING_DOCUMENT))
 
-    cli_runner(
-        ["--disable-format", "--schemafile", str(schemafile), str(doc1), str(doc2)]
+    run_line_simple(
+        [
+            "--disable-format",
+            "--schemafile",
+            str(schemafile),
+            str(doc1),
+            str(doc2),
+        ]
     )

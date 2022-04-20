@@ -1,50 +1,65 @@
-import argparse
+import sys
+from unittest import mock
 
 import pytest
+from click.testing import CliRunner
 
-from check_jsonschema.parse_cli import parse_args
-
-
-class CustomArgError(ValueError):
-    def __init__(self, message):
-        self.message = message
+from check_jsonschema import main as cli_main
 
 
-class CustomArgParser(argparse.ArgumentParser):
-    def error(self, message):
-        raise CustomArgError(message)
+# py3.7 compatibility: mock call objects are specialized tuples
+# and they may be 2-tuples or 3-tuples
+# in py3.8, `kwargs` was added as an attribute
+def _get_call_kwargs(call_obj):
+    if sys.version_info < (3, 8):
+        if len(call_obj) == 2:
+            _args, kwargs = call_obj
+        else:
+            _name, _args, kwargs = call_obj
+        return kwargs
+    return call_obj.kwargs
 
 
-def _call_parse(args):
-    return parse_args(args, cls=CustomArgParser)
+@pytest.fixture
+def runner():
+    return CliRunner(mix_stderr=False)
 
 
-def test_requires_some_args():
-    with pytest.raises(CustomArgError):
-        _call_parse([])
+def test_requires_some_args(runner):
+    result = runner.invoke(cli_main, [])
+    assert result.exit_code == 2
 
 
-def test_schemafile_and_instancefile():
-    args = _call_parse(["--schemafile", "schema.json", "foo.json"])
-    assert args.schemafile == "schema.json"
-    assert list(args.instancefiles) == ["foo.json"]
+def test_schemafile_and_instancefile(runner):
+    with mock.patch("check_jsonschema.do_main") as m:
+        runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
+        call_kwargs = _get_call_kwargs(m.call_args)
+        assert call_kwargs["schemafile"] == "schema.json"
+        assert call_kwargs["instancefiles"] == ("foo.json",)
 
 
-def test_requires_at_least_one_instancefile():
-    with pytest.raises(CustomArgError):
-        _call_parse(["--schemafile", "schema.json"])
+def test_requires_at_least_one_instancefile(runner):
+    result = runner.invoke(cli_main, ["--schemafile", "schema.json"])
+    assert result.exit_code == 2
 
 
-def test_requires_schemafile():
-    with pytest.raises(CustomArgError):
-        _call_parse(["foo.json"])
+def test_requires_schemafile(runner):
+    result = runner.invoke(cli_main, ["foo.json"])
+    assert result.exit_code == 2
 
 
-def test_no_cache_behavior():
-    args = _call_parse(["--schemafile", "schema.json", "foo.json"])
-    assert args.no_cache is False
-    args = _call_parse(["--schemafile", "schema.json", "foo.json", "--no-cache"])
-    assert args.no_cache is True
+def test_no_cache_behavior(runner):
+    with mock.patch("check_jsonschema.do_main") as m:
+        runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
+        call_kwargs = _get_call_kwargs(m.call_args)
+        assert call_kwargs["no_cache"] is False
+
+    with mock.patch("check_jsonschema.do_main") as m:
+        runner.invoke(
+            cli_main, ["--schemafile", "schema.json", "foo.json", "--no-cache"]
+        )
+        call_kwargs = _get_call_kwargs(m.call_args)
+        assert call_kwargs["no_cache"] is True
 
 
 @pytest.mark.parametrize(
@@ -79,8 +94,7 @@ def test_no_cache_behavior():
         ],
     ],
 )
-def test_mutex_schema_opts(cmd_args):
-    with pytest.raises(CustomArgError) as excinfo:
-        _call_parse(cmd_args)
-    err = excinfo.value
-    assert "are mutually exclusive" in err.message
+def test_mutex_schema_opts(runner, cmd_args):
+    result = runner.invoke(cli_main, cmd_args)
+    assert result.exit_code == 2
+    assert "are mutually exclusive" in result.stderr

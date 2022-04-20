@@ -58,7 +58,12 @@ def _prep_files(tmp_path, main_schema, other_schema_data, instance):
 )
 @pytest.mark.parametrize("with_file_scheme", [True, False])
 def test_local_ref_schema(
-    cli_runner, tmp_path, main_schema, other_schema_data, instance, with_file_scheme
+    run_line_simple,
+    tmp_path,
+    main_schema,
+    other_schema_data,
+    instance,
+    with_file_scheme,
 ):
     main_schemafile, doc = _prep_files(
         tmp_path, main_schema, other_schema_data, instance
@@ -67,7 +72,7 @@ def test_local_ref_schema(
         schemafile = main_schemafile.resolve().as_uri()
     else:
         schemafile = str(main_schemafile)
-    cli_runner(["--schemafile", schemafile, str(doc)])
+    run_line_simple(["--schemafile", schemafile, str(doc)])
 
 
 @pytest.mark.parametrize(
@@ -89,7 +94,7 @@ def test_local_ref_schema(
 )
 @pytest.mark.parametrize("with_file_scheme", [True, False])
 def test_local_ref_schema_failure_case(
-    cli_runner,
+    run_line,
     tmp_path,
     main_schema,
     other_schema_data,
@@ -104,7 +109,7 @@ def test_local_ref_schema_failure_case(
         schemafile = main_schemafile.resolve().as_uri()
     else:
         schemafile = str(main_schemafile)
-    res = cli_runner(["--schemafile", schemafile, str(doc)], expect_ok=False)
+    res = run_line(["check-jsonschema", "--schemafile", schemafile, str(doc)])
     assert res.exit_code == 1
     if expect_err is not None:
         assert expect_err in res.stderr

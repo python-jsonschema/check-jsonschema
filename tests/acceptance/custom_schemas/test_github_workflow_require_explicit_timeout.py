@@ -42,15 +42,15 @@ jobs:
     ["github-workflows", "vendor.github-workflows"],
 )
 def test_github_require_timeouts_passing(
-    cli_runner, tmp_path, schemaname, vendor_schemaname
+    run_line_simple, tmp_path, schemaname, vendor_schemaname
 ):
     workflow = tmp_path / "doc.yaml"
     workflow.write_text(PASSING_WORKFLOW)
 
     # vendored github workflow schema passes on it
-    cli_runner(["--builtin-schema", vendor_schemaname, str(workflow)])
+    run_line_simple(["--builtin-schema", vendor_schemaname, str(workflow)])
 
-    cli_runner(["--builtin-schema", schemaname, str(workflow)])
+    run_line_simple(["--builtin-schema", schemaname, str(workflow)])
 
 
 @pytest.mark.parametrize(
@@ -62,16 +62,18 @@ def test_github_require_timeouts_passing(
     ["github-workflows", "vendor.github-workflows"],
 )
 def test_github_require_timeouts_failing(
-    cli_runner, tmp_path, schemaname, vendor_schemaname
+    run_line, tmp_path, schemaname, vendor_schemaname
 ):
     workflow = tmp_path / "doc.yaml"
     workflow.write_text(FAILING_WORKFLOW)
 
     # vendored github workflow schema passes on it
-    cli_runner(["--builtin-schema", vendor_schemaname, str(workflow)])
-
-    res = cli_runner(
-        ["--builtin-schema", schemaname, str(workflow)],
-        expect_ok=False,
+    res1 = run_line(
+        ["check-jsonschema", "--builtin-schema", vendor_schemaname, str(workflow)]
     )
-    assert res.exit_code == 1
+    assert res1.exit_code == 0
+
+    res2 = run_line(
+        ["check-jsonschema", "--builtin-schema", schemaname, str(workflow)],
+    )
+    assert res2.exit_code == 1

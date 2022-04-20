@@ -44,17 +44,19 @@ def regexopt(request):
     return request.param
 
 
-def test_regex_format_good(cli_runner, tmp_path, regexopt):
+def test_regex_format_good(run_line_simple, tmp_path, regexopt):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
 
     doc = tmp_path / "doc.json"
     doc.write_text(json.dumps(ALWAYS_PASSING_DOCUMENT))
 
-    cli_runner(["--format-regex", regexopt, "--schemafile", str(schemafile), str(doc)])
+    run_line_simple(
+        ["--format-regex", regexopt, "--schemafile", str(schemafile), str(doc)]
+    )
 
 
-def test_regex_format_accepts_non_str_inputs(cli_runner, tmp_path, regexopt):
+def test_regex_format_accepts_non_str_inputs(run_line_simple, tmp_path, regexopt):
     # potentially confusing, but a format checker is allowed to check non-str instances
     # validate the format checker behavior on such a case
     schemafile = tmp_path / "schema.json"
@@ -68,10 +70,12 @@ def test_regex_format_accepts_non_str_inputs(cli_runner, tmp_path, regexopt):
     )
     doc = tmp_path / "doc.json"
     doc.write_text(json.dumps({"pattern": 0}))
-    cli_runner(["--format-regex", regexopt, "--schemafile", str(schemafile), str(doc)])
+    run_line_simple(
+        ["--format-regex", regexopt, "--schemafile", str(schemafile), str(doc)]
+    )
 
 
-def test_regex_format_bad(cli_runner, tmp_path, regexopt):
+def test_regex_format_bad(run_line, tmp_path, regexopt):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
 
@@ -80,16 +84,25 @@ def test_regex_format_bad(cli_runner, tmp_path, regexopt):
 
     expect_ok = regexopt == "disabled"
 
-    res = cli_runner(
-        ["--format-regex", regexopt, "--schemafile", str(schemafile), str(doc)],
-        expect_ok=expect_ok,
+    res = run_line(
+        [
+            "check-jsonschema",
+            "--format-regex",
+            regexopt,
+            "--schemafile",
+            str(schemafile),
+            str(doc),
+        ],
     )
-    if not expect_ok:
+    if expect_ok:
+        assert res.exit_code == 0
+    else:
         assert res.exit_code == 1
+        print(res.stdout)
         assert "is not a 'regex'" in res.stderr
 
 
-def test_regex_format_js_specific(cli_runner, tmp_path, regexopt):
+def test_regex_format_js_specific(run_line, tmp_path, regexopt):
     schemafile = tmp_path / "schema.json"
     schemafile.write_text(json.dumps(FORMAT_SCHEMA))
 
@@ -98,17 +111,25 @@ def test_regex_format_js_specific(cli_runner, tmp_path, regexopt):
 
     expect_ok = regexopt in ("disabled", "default")
 
-    res = cli_runner(
-        ["--format-regex", regexopt, "--schemafile", str(schemafile), str(doc)],
-        expect_ok=expect_ok,
+    res = run_line(
+        [
+            "check-jsonschema",
+            "--format-regex",
+            regexopt,
+            "--schemafile",
+            str(schemafile),
+            str(doc),
+        ],
     )
-    if not expect_ok:
+    if expect_ok:
+        assert res.exit_code == 0
+    else:
         assert res.exit_code == 1
         assert "is not a 'regex'" in res.stderr
 
 
-def test_regex_format_in_renovate_config(cli_runner, tmp_path):
+def test_regex_format_in_renovate_config(run_line_simple, tmp_path):
     doc = tmp_path / "doc.json"
     doc.write_text(json.dumps(RENOVATE_DOCUMENT))
 
-    cli_runner(["--builtin-schema", "vendor.renovate", str(doc)])
+    run_line_simple(["--builtin-schema", "vendor.renovate", str(doc)])

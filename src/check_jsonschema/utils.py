@@ -9,6 +9,7 @@ import typing as t
 import urllib.parse
 import urllib.request
 
+import click
 import jsonschema
 
 WINDOWS = os.name == "nt"
@@ -139,7 +140,7 @@ def print_validation_error(
     filename: str, err: jsonschema.ValidationError, show_all_errors: bool = False
 ) -> None:
     def _echo(s):
-        print("  " + s, file=sys.stderr)
+        click.echo("  " + s, err=True)
 
     _echo(format_validation_error_message(err, filename=filename))
     if err.context:

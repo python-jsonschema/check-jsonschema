@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import sys
 import typing as t
 
+import click
 import jsonschema
 
 from . import utils
@@ -39,7 +39,7 @@ class SchemaChecker:
         self._show_all_errors = show_all_errors
 
     def _fail(self, msg: str, err: Exception | None = None) -> t.NoReturn:
-        print(msg, file=sys.stderr)
+        click.echo(msg, err=True)
         if err is not None:
             utils.print_error(err, mode=self._traceback_mode)
         raise _Exit(1)
@@ -75,7 +75,7 @@ class SchemaChecker:
             self._fail("Failure while loading instance files\n", e)
 
         if errors:
-            print("Schema validation errors were encountered.")
+            click.echo("Schema validation errors were encountered.")
             for filename, file_errors in errors.items():
                 for err in file_errors:
                     utils.print_validation_error(
