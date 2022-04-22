@@ -5,7 +5,6 @@ from .schema import (
     MetaSchemaLoader,
     SchemaLoader,
     SchemaLoaderBase,
-    schema_loader_from_args,
 )
 
 __all__ = (
@@ -17,5 +16,4 @@ __all__ = (
     "SchemaLoader",
     "SchemaLoaderBase",
     "InstanceLoader",
-    "schema_loader_from_args",
 )

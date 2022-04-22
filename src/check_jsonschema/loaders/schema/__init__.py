@@ -140,24 +140,3 @@ class MetaSchemaLoader(SchemaLoaderBase):
     ):
         validator = jsonschema.validators.validator_for(instance_doc)
         return validator(validator.META_SCHEMA)
-
-
-def schema_loader_from_args(
-    schemafile: str | None,
-    cache_filename: str | None,
-    no_cache: bool,
-    builtin_schema: str | None,
-    check_metaschema: bool,
-) -> SchemaLoaderBase:
-    if check_metaschema:
-        return MetaSchemaLoader()
-    elif builtin_schema is not None:
-        return BuiltinSchemaLoader(builtin_schema)
-    if schemafile is not None:
-        return SchemaLoader(
-            schemafile,
-            cache_filename,
-            no_cache,
-        )
-    else:
-        raise NotImplementedError("no valid schema option provided")

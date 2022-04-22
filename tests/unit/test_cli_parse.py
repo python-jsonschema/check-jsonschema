@@ -74,7 +74,7 @@ def test_requires_some_args(runner):
     assert result.exit_code == 2
 
 
-def test_schemafile_and_instancefile(runner, mock_command_state, mock_cli_exec):
+def test_schemafile_and_instancefile(runner, mock_cli_exec, mock_command_state):
     runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
     assert mock_command_state.schema_mode == SchemaLoadingMode.filepath
     assert mock_command_state.schema_path == "schema.json"
@@ -92,16 +92,14 @@ def test_requires_schemafile(runner):
     assert result.exit_code == 2
 
 
-def test_no_cache_defaults_false(runner, mock_cli_exec):
+def test_no_cache_defaults_false(runner, mock_command_state):
     runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
-    call_kwargs = _get_call_kwargs(mock_cli_exec)
-    assert call_kwargs["no_cache"] is False
+    assert mock_command_state.disable_cache is False
 
 
-def test_no_cache_flag_is_true(runner, mock_cli_exec):
+def test_no_cache_flag_is_true(runner, mock_command_state):
     runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json", "--no-cache"])
-    call_kwargs = _get_call_kwargs(mock_cli_exec)
-    assert call_kwargs["no_cache"] is True
+    assert mock_command_state.disable_cache is True
 
 
 @pytest.mark.parametrize(

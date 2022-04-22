@@ -35,6 +35,8 @@ class CommandState:
     def __init__(self) -> None:
         self._schema_mode: SchemaLoadingMode | None = None
         self._schema_path: str | None = None
+        self.disable_cache: bool = False
+        self.cache_filename: str | None = None
 
     @classmethod
     def ensure(cls) -> CommandState:
@@ -78,17 +80,31 @@ class CommandState:
             raise ValueError("cannot access schema before it is set")
         return self._schema_path
 
-    def build_schema_loader(
-        self, cache_filename: str | None, no_cache: bool
-    ) -> SchemaLoaderBase:
+    def build_schema_loader(self) -> SchemaLoaderBase:
         if self.schema_mode == SchemaLoadingMode.metaschema:
             return MetaSchemaLoader()
         elif self.schema_mode == SchemaLoadingMode.builtin:
             return BuiltinSchemaLoader(self.schema_path)
         elif self.schema_mode == SchemaLoadingMode.filepath:
-            return SchemaLoader(self.schema_path, cache_filename, no_cache)
+            return SchemaLoader(
+                self.schema_path, self.cache_filename, self.disable_cache
+            )
         else:
             raise NotImplementedError("no valid schema option provided")
+
+
+def _no_cache_callback(ctx, param, value):
+    if value is None or ctx.resilient_parsing:
+        return
+    state = CommandState.ensure()
+    state.disable_cache = True
+
+
+def _cache_filename_callback(ctx, param, value):
+    if value is None or ctx.resilient_parsing:
+        return
+    state = CommandState.ensure()
+    state.cache_filename = value
 
 
 @click.command(
@@ -149,6 +165,8 @@ The '--builtin-schema' flag supports the following schema names:
     "--no-cache",
     is_flag=True,
     help="Disable schema caching. Always download remote schemas.",
+    expose_value=False,
+    callback=_no_cache_callback,
 )
 @click.option(
     "--cache-filename",
@@ -156,6 +174,8 @@ The '--builtin-schema' flag supports the following schema names:
         "The name to use for caching a remote schema. "
         "Defaults to the last slash-delimited part of the URI."
     ),
+    expose_value=False,
+    callback=_cache_filename_callback,
 )
 @click.option(
     "--disable-format",
@@ -207,8 +227,6 @@ def main(
     schemafile: str | None,
     builtin_schema: str | None,
     check_metaschema: bool,
-    no_cache: bool,
-    cache_filename: str | None,
     disable_format: bool,
     format_regex: str,
     default_filetype: str | None,
@@ -221,8 +239,6 @@ def main(
     state.set_schema(schemafile, builtin_schema, check_metaschema)
 
     execute(
-        no_cache=no_cache,
-        cache_filename=cache_filename,
         disable_format=disable_format,
         format_regex=format_regex,
         default_filetype=default_filetype,
@@ -236,8 +252,6 @@ def main(
 # separate parsing from execution for simpler mocking for unit tests
 def execute(
     *,
-    no_cache: bool,
-    cache_filename: str | None,
     disable_format: bool,
     format_regex: str,
     default_filetype: str | None,
@@ -247,7 +261,7 @@ def execute(
     instancefiles: tuple[str, ...],
 ):
     state = CommandState.ensure()
-    schema_loader = state.build_schema_loader(cache_filename, no_cache)
+    schema_loader = state.build_schema_loader()
 
     instance_loader = InstanceLoader(
         instancefiles,
