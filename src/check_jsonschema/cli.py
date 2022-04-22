@@ -15,7 +15,7 @@ from .loaders import (
     SchemaLoader,
     SchemaLoaderBase,
 )
-from .transforms import TRANFORM_LIBRARY
+from .transforms import TRANSFORM_LIBRARY, TransformT
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
     f"custom.{k}" for k in CUSTOM_SCHEMA_NAMES
@@ -31,15 +31,18 @@ class SchemaLoadingMode(enum.Enum):
     metaschema = "metaschema"
 
 
-class CommandState:
+class ParseResult:
     def __init__(self) -> None:
         self._schema_mode: SchemaLoadingMode | None = None
         self._schema_path: str | None = None
         self.disable_cache: bool = False
         self.cache_filename: str | None = None
+        self.instancefiles: tuple[str, ...] = ()
+        self.default_filetype: str | None = None
+        self.data_transform: TransformT | None = None
 
     @classmethod
-    def ensure(cls) -> CommandState:
+    def ensure(cls) -> ParseResult:
         return click.get_current_context().ensure_object(cls)
 
     def set_schema(
@@ -80,31 +83,30 @@ class CommandState:
             raise ValueError("cannot access schema before it is set")
         return self._schema_path
 
-    def build_schema_loader(self) -> SchemaLoaderBase:
-        if self.schema_mode == SchemaLoadingMode.metaschema:
-            return MetaSchemaLoader()
-        elif self.schema_mode == SchemaLoadingMode.builtin:
-            return BuiltinSchemaLoader(self.schema_path)
-        elif self.schema_mode == SchemaLoadingMode.filepath:
-            return SchemaLoader(
-                self.schema_path, self.cache_filename, self.disable_cache
-            )
-        else:
-            raise NotImplementedError("no valid schema option provided")
-
 
 def _no_cache_callback(ctx, param, value):
-    if value is None or ctx.resilient_parsing:
-        return
-    state = CommandState.ensure()
-    state.disable_cache = True
+    if value:
+        ParseResult.ensure().disable_cache = True
 
 
 def _cache_filename_callback(ctx, param, value):
-    if value is None or ctx.resilient_parsing:
-        return
-    state = CommandState.ensure()
-    state.cache_filename = value
+    if value is not None:
+        ParseResult.ensure().cache_filename = value
+
+
+def _instancefiles_callback(ctx, param, value):
+    if value is not None:
+        ParseResult.ensure().instancefiles = value
+
+
+def _default_filetype_callback(ctx, param, value):
+    if value is not None:
+        ParseResult.ensure().default_filetype = value
+
+
+def _data_transform_callback(ctx, param, value):
+    if value is not None:
+        ParseResult.ensure().data_transform = TRANSFORM_LIBRARY[value]
 
 
 @click.command(
@@ -195,6 +197,8 @@ The '--builtin-schema' flag supports the following schema names:
     "--default-filetype",
     help="A default filetype to assume when a file is not detected as JSON or YAML",
     type=click.Choice(("json", "yaml"), case_sensitive=True),
+    callback=_default_filetype_callback,
+    expose_value=False,
 )
 @click.option(
     "--show-all-validation-errors",
@@ -219,9 +223,17 @@ The '--builtin-schema' flag supports the following schema names:
         "Select a builtin transform which should be applied to instancefiles before "
         "they are checked."
     ),
-    type=click.Choice(TRANFORM_LIBRARY.keys()),
+    type=click.Choice(TRANSFORM_LIBRARY.keys()),
+    callback=_data_transform_callback,
+    expose_value=False,
 )
-@click.argument("instancefiles", required=True, nargs=-1)
+@click.argument(
+    "instancefiles",
+    required=True,
+    nargs=-1,
+    callback=_instancefiles_callback,
+    expose_value=False,
+)
 def main(
     *,
     schemafile: str | None,
@@ -229,47 +241,52 @@ def main(
     check_metaschema: bool,
     disable_format: bool,
     format_regex: str,
-    default_filetype: str | None,
     show_all_validation_errors: bool,
     traceback_mode: str,
-    data_transform: str | None,
-    instancefiles: tuple[str, ...],
 ):
-    state = CommandState.ensure()
-    state.set_schema(schemafile, builtin_schema, check_metaschema)
+    ParseResult.ensure().set_schema(schemafile, builtin_schema, check_metaschema)
 
     execute(
         disable_format=disable_format,
         format_regex=format_regex,
-        default_filetype=default_filetype,
         show_all_validation_errors=show_all_validation_errors,
         traceback_mode=traceback_mode,
-        data_transform=data_transform,
-        instancefiles=instancefiles,
     )
 
 
 # separate parsing from execution for simpler mocking for unit tests
+
+
+def build_schema_loader() -> SchemaLoaderBase:
+    args = ParseResult.ensure()
+    if args.schema_mode == SchemaLoadingMode.metaschema:
+        return MetaSchemaLoader()
+    elif args.schema_mode == SchemaLoadingMode.builtin:
+        return BuiltinSchemaLoader(args.schema_path)
+    elif args.schema_mode == SchemaLoadingMode.filepath:
+        return SchemaLoader(args.schema_path, args.cache_filename, args.disable_cache)
+    else:
+        raise NotImplementedError("no valid schema option provided")
+
+
+def build_instance_loader() -> InstanceLoader:
+    args = ParseResult.ensure()
+    return InstanceLoader(
+        args.instancefiles,
+        default_filetype=args.default_filetype,
+        data_transform=args.data_transform,
+    )
+
+
 def execute(
     *,
     disable_format: bool,
     format_regex: str,
-    default_filetype: str | None,
     show_all_validation_errors: bool,
     traceback_mode: str,
-    data_transform: str | None,
-    instancefiles: tuple[str, ...],
 ):
-    state = CommandState.ensure()
-    schema_loader = state.build_schema_loader()
-
-    instance_loader = InstanceLoader(
-        instancefiles,
-        default_filetype=default_filetype,
-        data_transform=(
-            TRANFORM_LIBRARY[data_transform] if data_transform is not None else None
-        ),
-    )
+    schema_loader = build_schema_loader()
+    instance_loader = build_instance_loader()
 
     format_opts = FormatOptions(
         enabled=not disable_format,

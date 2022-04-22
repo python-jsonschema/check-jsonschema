@@ -7,7 +7,7 @@ from .azure_pipelines import azure_main
 DataT = t.Union[dict, list]
 TransformT = t.Callable[[DataT], DataT]
 
-TRANFORM_LIBRARY: dict[str, t.Callable[[dict | list], dict | list]] = {
+TRANSFORM_LIBRARY: dict[str, t.Callable[[dict | list], dict | list]] = {
     "azure-pipelines": azure_main,
 }
 
