@@ -33,8 +33,8 @@ class SchemaLoadingMode(enum.Enum):
 
 class ParseResult:
     def __init__(self) -> None:
-        self._schema_mode: SchemaLoadingMode | None = None
-        self._schema_path: str | None = None
+        self.schema_mode: SchemaLoadingMode = SchemaLoadingMode.filepath
+        self.schema_path: str | None = None
         self.disable_cache: bool = False
         self.cache_filename: str | None = None
         self.instancefiles: tuple[str, ...] = ()
@@ -44,6 +44,15 @@ class ParseResult:
     @classmethod
     def ensure(cls) -> ParseResult:
         return click.get_current_context().ensure_object(cls)
+
+    @classmethod
+    def attr_arg_callback(cls, attrname: str):
+        def callback(ctx, param, value):
+            if value is not None and not ctx.resilient_parsing:
+                obj = cls.ensure()
+                setattr(obj, attrname, value)
+
+        return callback
 
     def set_schema(
         self, schemafile: str | None, builtin_schema: str | None, check_metaschema: bool
@@ -63,45 +72,13 @@ class ParseResult:
             )
 
         if schemafile:
-            self._schema_mode = SchemaLoadingMode.filepath
-            self._schema_path = schemafile
+            self.schema_mode = SchemaLoadingMode.filepath
+            self.schema_path = schemafile
         elif builtin_schema:
-            self._schema_mode = SchemaLoadingMode.builtin
-            self._schema_path = builtin_schema
+            self.schema_mode = SchemaLoadingMode.builtin
+            self.schema_path = builtin_schema
         else:
-            self._schema_mode = SchemaLoadingMode.metaschema
-
-    @property
-    def schema_mode(self) -> SchemaLoadingMode:
-        if self._schema_mode is None:
-            raise ValueError("cannot access schema mode before it is set")
-        return self._schema_mode
-
-    @property
-    def schema_path(self) -> str:
-        if self._schema_path is None:
-            raise ValueError("cannot access schema before it is set")
-        return self._schema_path
-
-
-def _no_cache_callback(ctx, param, value):
-    if value:
-        ParseResult.ensure().disable_cache = True
-
-
-def _cache_filename_callback(ctx, param, value):
-    if value is not None:
-        ParseResult.ensure().cache_filename = value
-
-
-def _instancefiles_callback(ctx, param, value):
-    if value is not None:
-        ParseResult.ensure().instancefiles = value
-
-
-def _default_filetype_callback(ctx, param, value):
-    if value is not None:
-        ParseResult.ensure().default_filetype = value
+            self.schema_mode = SchemaLoadingMode.metaschema
 
 
 def _data_transform_callback(ctx, param, value):
@@ -168,7 +145,7 @@ The '--builtin-schema' flag supports the following schema names:
     is_flag=True,
     help="Disable schema caching. Always download remote schemas.",
     expose_value=False,
-    callback=_no_cache_callback,
+    callback=ParseResult.attr_arg_callback("disable_cache"),
 )
 @click.option(
     "--cache-filename",
@@ -177,7 +154,7 @@ The '--builtin-schema' flag supports the following schema names:
         "Defaults to the last slash-delimited part of the URI."
     ),
     expose_value=False,
-    callback=_cache_filename_callback,
+    callback=ParseResult.attr_arg_callback("cache_filename"),
 )
 @click.option(
     "--disable-format",
@@ -197,7 +174,7 @@ The '--builtin-schema' flag supports the following schema names:
     "--default-filetype",
     help="A default filetype to assume when a file is not detected as JSON or YAML",
     type=click.Choice(("json", "yaml"), case_sensitive=True),
-    callback=_default_filetype_callback,
+    callback=ParseResult.attr_arg_callback("default_filetype"),
     expose_value=False,
 )
 @click.option(
@@ -231,7 +208,7 @@ The '--builtin-schema' flag supports the following schema names:
     "instancefiles",
     required=True,
     nargs=-1,
-    callback=_instancefiles_callback,
+    callback=ParseResult.attr_arg_callback("instancefiles"),
     expose_value=False,
 )
 def main(
@@ -262,8 +239,10 @@ def build_schema_loader() -> SchemaLoaderBase:
     if args.schema_mode == SchemaLoadingMode.metaschema:
         return MetaSchemaLoader()
     elif args.schema_mode == SchemaLoadingMode.builtin:
+        assert args.schema_path is not None
         return BuiltinSchemaLoader(args.schema_path)
     elif args.schema_mode == SchemaLoadingMode.filepath:
+        assert args.schema_path is not None
         return SchemaLoader(args.schema_path, args.cache_filename, args.disable_cache)
     else:
         raise NotImplementedError("no valid schema option provided")

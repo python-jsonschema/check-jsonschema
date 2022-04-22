@@ -38,11 +38,9 @@ def test_parse_result_set_schema(
     schemafile, builtin_schema, check_metaschema, expect_mode
 ):
     args = ParseResult()
-    # access prior to setting raises an error
-    with pytest.raises(ValueError):
-        args.schema_mode
-    with pytest.raises(ValueError):
-        args.schema_path
+    # starts as None (always)
+    assert args.schema_path is None
+
     args.set_schema(schemafile, builtin_schema, check_metaschema)
     assert args.schema_mode == expect_mode
     if schemafile:
@@ -50,8 +48,7 @@ def test_parse_result_set_schema(
     if builtin_schema:
         assert args.schema_path == builtin_schema
     if check_metaschema:
-        with pytest.raises(ValueError):
-            args.schema_path
+        assert args.schema_path is None
 
 
 def test_requires_some_args(runner):
