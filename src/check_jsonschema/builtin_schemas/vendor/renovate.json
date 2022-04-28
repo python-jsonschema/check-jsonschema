@@ -2501,7 +2501,7 @@
       "default": true
     },
     "useBaseBranchConfig": {
-      "description": "Whether to read configuration from `baseBranches` instead of only the default branch",
+      "description": "Whether to read configuration from `baseBranches` instead of only the default branch.",
       "type": "string",
       "enum": [
         "merge",
