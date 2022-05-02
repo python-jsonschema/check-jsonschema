@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/Microsoft/azure-pipelines-vscode/blob/main/service-schema.json",
-  "$comment": "v1.200.0",
+  "$comment": "v1.202.0",
   "title": "Pipeline schema",
   "description": "A pipeline definition",
   "oneOf": [
@@ -1901,6 +1901,9 @@
             "lockBehavior": {
               "description": "Behavior lock requests from this stage should exhibit in relation to other exclusive lock requests",
               "$ref": "#/definitions/lockBehavior"
+            },
+            "templateContext": {
+              "$ref": "#/definitions/templateContext"
             }
           },
           "additionalProperties": false,
@@ -2229,6 +2232,9 @@
             "steps": {
               "description": "A list of steps to run",
               "$ref": "#/definitions/steps"
+            },
+            "templateContext": {
+              "$ref": "#/definitions/templateContext"
             }
           },
           "additionalProperties": false,
@@ -2296,6 +2302,9 @@
             "services": {
               "description": "Container resources to run as a service container",
               "$ref": "#/definitions/jobServices"
+            },
+            "templateContext": {
+              "$ref": "#/definitions/templateContext"
             }
           },
           "additionalProperties": false,
@@ -3992,6 +4001,10 @@
       "type": "string",
       "pattern": "^[-_A-Za-z0-9]*$"
     },
+    "templateContext": {
+      "type": "object",
+      "additionalProperties": true
+    },
     "boolean": {
       "anyOf": [
         {
@@ -4095,6 +4108,14 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
+                "AzurePowerShell@4"
+              ]
+            },
+            {
+              "description": "Run a PowerShell script within an Azure environment",
+              "doNotSuggest": false,
+              "ignoreCase": "value",
+              "enum": [
                 "AzurePowerShell@5"
               ]
             },
@@ -4112,14 +4133,6 @@
               "ignoreCase": "value",
               "enum": [
                 "AzurePowerShell@3"
-              ]
-            },
-            {
-              "description": "Run a PowerShell script within an Azure environment",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "AzurePowerShell@4"
               ]
             },
             {
@@ -4213,14 +4226,6 @@
               ]
             },
             {
-              "description": "Creates a manifest.json and bsi.json for all the files in a folder. This generated manifest can be used to validate the contents of the folder in the future.",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "ManifestGeneratorTask@0"
-              ]
-            },
-            {
               "description": "Update Azure App Service using Web Deploy / Kudu REST APIs",
               "doNotSuggest": false,
               "ignoreCase": "value",
@@ -4245,19 +4250,19 @@
               ]
             },
             {
-              "description": "Execute PowerShell scripts on remote machine(s)",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "PowerShellOnTargetMachines@1"
-              ]
-            },
-            {
               "description": "Execute PowerShell scripts on remote machines using PSSession and Invoke-Command for remoting",
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
                 "PowerShellOnTargetMachines@3"
+              ]
+            },
+            {
+              "description": "Execute PowerShell scripts on remote machine(s)",
+              "doNotSuggest": false,
+              "ignoreCase": "value",
+              "enum": [
+                "PowerShellOnTargetMachines@1"
               ]
             },
             {
@@ -4512,14 +4517,6 @@
               "ignoreCase": "value",
               "enum": [
                 "NuGetAuthenticate@0"
-              ]
-            },
-            {
-              "description": "Include with your build to enable automatic Component Governance detection.",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "ComponentGovernanceComponentDetection@0"
               ]
             },
             {
@@ -4916,14 +4913,6 @@
               ]
             },
             {
-              "description": "Restores NuGet packages in preparation for a Visual Studio Build step.",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "NuGetRestore@1"
-              ]
-            },
-            {
               "description": "Restore, pack, or push NuGet packages, or run a NuGet command. Supports NuGet.org and authenticated feeds like Azure Artifacts and MyGet. Uses NuGet.exe and works with .NET Framework apps. For .NET Core and .NET Standard apps, use the .NET Core task.",
               "doNotSuggest": false,
               "ignoreCase": "value",
@@ -4937,6 +4926,14 @@
               "ignoreCase": "value",
               "enum": [
                 "NuGetInstaller@0"
+              ]
+            },
+            {
+              "description": "Restores NuGet packages in preparation for a Visual Studio Build step.",
+              "doNotSuggest": false,
+              "ignoreCase": "value",
+              "enum": [
+                "NuGetRestore@1"
               ]
             },
             {
@@ -5180,14 +5177,6 @@
               ]
             },
             {
-              "description": "A task to scan for vulnerabilities in nuget files.",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "nuget-security-analysis@0"
-              ]
-            },
-            {
               "description": "Downloads a GitHub Release from a repository",
               "doNotSuggest": false,
               "ignoreCase": "value",
@@ -5242,7 +5231,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "Kubernetes@1"
+                "Kubernetes@0"
               ]
             },
             {
@@ -5250,7 +5239,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "Kubernetes@0"
+                "Kubernetes@1"
               ]
             },
             {
@@ -5325,14 +5314,6 @@
               "ignoreCase": "value",
               "enum": [
                 "UsePythonVersion@0"
-              ]
-            },
-            {
-              "description": "Scan accessibility issues in an Azure DevOps pipeline",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "accessibility-insights@1"
               ]
             },
             {
@@ -5523,14 +5504,6 @@
               ]
             },
             {
-              "description": "Creates a manifest.json and bsi.json for all the files in a folder. This generated manifest can be used to validate the contents of the folder in the future.",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "ManifestGeneratorTask@0"
-              ]
-            },
-            {
               "description": "[DEPRECATED] Use the Copy Files task and the Publish Build Artifacts task instead",
               "deprecationMessage": "CopyPublishBuildArtifacts is deprecated - [DEPRECATED] Use the Copy Files task and the Publish Build Artifacts task instead",
               "doNotSuggest": true,
@@ -5658,14 +5631,6 @@
               "ignoreCase": "value",
               "enum": [
                 "Npm@0"
-              ]
-            },
-            {
-              "description": "Validates a given drop against a manifest generated at build time to verify the integrity of the drop.",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "DropValidatorTask@0"
               ]
             },
             {
@@ -6199,6 +6164,111 @@
             "task": {
               "description": "Azure PowerShell\n\nRun a PowerShell script within an Azure environment",
               "ignoreCase": "value",
+              "pattern": "^AzurePowerShell@4$"
+            },
+            "inputs": {
+              "description": "Azure PowerShell inputs",
+              "properties": {
+                "azureSubscription": {
+                  "type": "string",
+                  "description": "Azure Subscription",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "ConnectedServiceNameARM"
+                  ]
+                },
+                "ScriptType": {
+                  "description": "Script Type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "FilePath",
+                    "InlineScript"
+                  ]
+                },
+                "ScriptPath": {
+                  "type": "string",
+                  "description": "Script Path",
+                  "ignoreCase": "key"
+                },
+                "Inline": {
+                  "type": "string",
+                  "description": "Inline Script",
+                  "ignoreCase": "key"
+                },
+                "ScriptArguments": {
+                  "type": "string",
+                  "description": "Script Arguments",
+                  "ignoreCase": "key"
+                },
+                "errorActionPreference": {
+                  "description": "ErrorActionPreference",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "stop",
+                    "continue",
+                    "silentlyContinue"
+                  ]
+                },
+                "FailOnStandardError": {
+                  "type": "boolean",
+                  "description": "Fail on Standard Error",
+                  "ignoreCase": "key"
+                },
+                "RestrictContextToCurrentTask": {
+                  "type": "boolean",
+                  "description": "Restrict scope of context to current task",
+                  "ignoreCase": "key"
+                },
+                "azurePowerShellVersion": {
+                  "description": "Azure PowerShell Version",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "LatestVersion",
+                    "OtherVersion"
+                  ],
+                  "aliases": [
+                    "TargetAzurePs"
+                  ]
+                },
+                "preferredAzurePowerShellVersion": {
+                  "type": "string",
+                  "description": "Preferred Azure PowerShell Version",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "CustomTargetAzurePs"
+                  ]
+                },
+                "pwsh": {
+                  "type": "boolean",
+                  "description": "Use PowerShell Core",
+                  "ignoreCase": "key"
+                },
+                "workingDirectory": {
+                  "type": "string",
+                  "description": "Working Directory",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "azureSubscription"
+              ]
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task",
+            "inputs"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "Azure PowerShell\n\nRun a PowerShell script within an Azure environment",
+              "ignoreCase": "value",
               "pattern": "^AzurePowerShell@5$"
             },
             "inputs": {
@@ -6490,111 +6560,6 @@
           ],
           "required": [
             "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": "Azure PowerShell\n\nRun a PowerShell script within an Azure environment",
-              "ignoreCase": "value",
-              "pattern": "^AzurePowerShell@4$"
-            },
-            "inputs": {
-              "description": "Azure PowerShell inputs",
-              "properties": {
-                "azureSubscription": {
-                  "type": "string",
-                  "description": "Azure Subscription",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "ConnectedServiceNameARM"
-                  ]
-                },
-                "ScriptType": {
-                  "description": "Script Type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "FilePath",
-                    "InlineScript"
-                  ]
-                },
-                "ScriptPath": {
-                  "type": "string",
-                  "description": "Script Path",
-                  "ignoreCase": "key"
-                },
-                "Inline": {
-                  "type": "string",
-                  "description": "Inline Script",
-                  "ignoreCase": "key"
-                },
-                "ScriptArguments": {
-                  "type": "string",
-                  "description": "Script Arguments",
-                  "ignoreCase": "key"
-                },
-                "errorActionPreference": {
-                  "description": "ErrorActionPreference",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "stop",
-                    "continue",
-                    "silentlyContinue"
-                  ]
-                },
-                "FailOnStandardError": {
-                  "type": "boolean",
-                  "description": "Fail on Standard Error",
-                  "ignoreCase": "key"
-                },
-                "RestrictContextToCurrentTask": {
-                  "type": "boolean",
-                  "description": "Restrict scope of context to current task",
-                  "ignoreCase": "key"
-                },
-                "azurePowerShellVersion": {
-                  "description": "Azure PowerShell Version",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "LatestVersion",
-                    "OtherVersion"
-                  ],
-                  "aliases": [
-                    "TargetAzurePs"
-                  ]
-                },
-                "preferredAzurePowerShellVersion": {
-                  "type": "string",
-                  "description": "Preferred Azure PowerShell Version",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "CustomTargetAzurePs"
-                  ]
-                },
-                "pwsh": {
-                  "type": "boolean",
-                  "description": "Use PowerShell Core",
-                  "ignoreCase": "key"
-                },
-                "workingDirectory": {
-                  "type": "string",
-                  "description": "Working Directory",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "azureSubscription"
-              ]
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task",
-            "inputs"
           ]
         },
         {
@@ -8053,59 +8018,6 @@
         {
           "properties": {
             "task": {
-              "description": "Manifest Generator Task\n\nCreates a manifest.json and bsi.json for all the files in a folder. This generated manifest can be used to validate the contents of the folder in the future.",
-              "ignoreCase": "value",
-              "pattern": "^ManifestGeneratorTask@0$"
-            },
-            "inputs": {
-              "description": "Manifest Generator Task inputs",
-              "properties": {
-                "BuildDropPath": {
-                  "type": "string",
-                  "description": "The root folder for which the manifest has to be generated.",
-                  "ignoreCase": "key"
-                },
-                "ManifestDirPath": {
-                  "type": "string",
-                  "description": "The folder where the generated manifest will be placed. Its recommended to not set this value, by default we will create a '_manifest' folder in the root path.",
-                  "ignoreCase": "key"
-                },
-                "Verbosity": {
-                  "description": "The verbosity of the output generated by the manifest generator.",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "Verbose",
-                    "Debug",
-                    "Information",
-                    "Warning",
-                    "Error",
-                    "Fatal"
-                  ]
-                },
-                "ConfigFilePath": {
-                  "type": "string",
-                  "description": "The json file that contains the configuration for the Manifest Tool.",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "BuildDropPath"
-              ]
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task",
-            "inputs"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
               "description": "Azure App Service Deploy\n\nUpdate Azure App Service using Web Deploy / Kudu REST APIs",
               "ignoreCase": "value",
               "pattern": "^AzureRmWebAppDeployment@2$"
@@ -8715,99 +8627,6 @@
         {
           "properties": {
             "task": {
-              "description": "PowerShell on Target Machines\n\nExecute PowerShell scripts on remote machine(s)",
-              "ignoreCase": "value",
-              "pattern": "^PowerShellOnTargetMachines@1$"
-            },
-            "inputs": {
-              "description": "PowerShell on Target Machines inputs",
-              "properties": {
-                "EnvironmentName": {
-                  "type": "string",
-                  "description": "Machines",
-                  "ignoreCase": "key"
-                },
-                "AdminUserName": {
-                  "type": "string",
-                  "description": "Admin Login",
-                  "ignoreCase": "key"
-                },
-                "AdminPassword": {
-                  "type": "string",
-                  "description": "Password",
-                  "ignoreCase": "key"
-                },
-                "Protocol": {
-                  "description": "Protocol",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "Http",
-                    "Https"
-                  ]
-                },
-                "TestCertificate": {
-                  "type": "boolean",
-                  "description": "Test Certificate",
-                  "ignoreCase": "key"
-                },
-                "ScriptPath": {
-                  "type": "string",
-                  "description": "PowerShell Script",
-                  "ignoreCase": "key"
-                },
-                "ScriptArguments": {
-                  "type": "string",
-                  "description": "Script Arguments",
-                  "ignoreCase": "key"
-                },
-                "InitializationScriptPath": {
-                  "type": "string",
-                  "description": "Initialization Script",
-                  "ignoreCase": "key"
-                },
-                "SessionVariables": {
-                  "type": "string",
-                  "description": "Session Variables",
-                  "ignoreCase": "key"
-                },
-                "RunPowershellInParallel": {
-                  "type": "boolean",
-                  "description": "Run PowerShell in Parallel",
-                  "ignoreCase": "key"
-                },
-                "ResourceFilteringMethod": {
-                  "description": "Select Machines By",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "machineNames",
-                    "tags"
-                  ]
-                },
-                "MachineNames": {
-                  "type": "string",
-                  "description": "Filter Criteria",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "EnvironmentName",
-                "ScriptPath"
-              ]
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task",
-            "inputs"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
               "description": "PowerShell on target machines\n\nExecute PowerShell scripts on remote machines using PSSession and Invoke-Command for remoting",
               "ignoreCase": "value",
               "pattern": "^PowerShellOnTargetMachines@3$"
@@ -8917,6 +8736,99 @@
               "additionalProperties": false,
               "required": [
                 "Machines"
+              ]
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task",
+            "inputs"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "PowerShell on Target Machines\n\nExecute PowerShell scripts on remote machine(s)",
+              "ignoreCase": "value",
+              "pattern": "^PowerShellOnTargetMachines@1$"
+            },
+            "inputs": {
+              "description": "PowerShell on Target Machines inputs",
+              "properties": {
+                "EnvironmentName": {
+                  "type": "string",
+                  "description": "Machines",
+                  "ignoreCase": "key"
+                },
+                "AdminUserName": {
+                  "type": "string",
+                  "description": "Admin Login",
+                  "ignoreCase": "key"
+                },
+                "AdminPassword": {
+                  "type": "string",
+                  "description": "Password",
+                  "ignoreCase": "key"
+                },
+                "Protocol": {
+                  "description": "Protocol",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "Http",
+                    "Https"
+                  ]
+                },
+                "TestCertificate": {
+                  "type": "boolean",
+                  "description": "Test Certificate",
+                  "ignoreCase": "key"
+                },
+                "ScriptPath": {
+                  "type": "string",
+                  "description": "PowerShell Script",
+                  "ignoreCase": "key"
+                },
+                "ScriptArguments": {
+                  "type": "string",
+                  "description": "Script Arguments",
+                  "ignoreCase": "key"
+                },
+                "InitializationScriptPath": {
+                  "type": "string",
+                  "description": "Initialization Script",
+                  "ignoreCase": "key"
+                },
+                "SessionVariables": {
+                  "type": "string",
+                  "description": "Session Variables",
+                  "ignoreCase": "key"
+                },
+                "RunPowershellInParallel": {
+                  "type": "boolean",
+                  "description": "Run PowerShell in Parallel",
+                  "ignoreCase": "key"
+                },
+                "ResourceFilteringMethod": {
+                  "description": "Select Machines By",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "machineNames",
+                    "tags"
+                  ]
+                },
+                "MachineNames": {
+                  "type": "string",
+                  "description": "Filter Criteria",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "EnvironmentName",
+                "ScriptPath"
               ]
             }
           },
@@ -10590,6 +10502,9 @@
               "additionalProperties": false,
               "required": [
                 "SourcePath",
+                "MachineNames",
+                "AdminUserName",
+                "AdminPassword",
                 "TargetPath"
               ]
             }
@@ -11087,111 +11002,6 @@
                 "forceReinstallCredentialProvider": {
                   "type": "boolean",
                   "description": "Reinstall the credential provider even if already installed",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": "Component Governance Detection\n\nInclude with your build to enable automatic Component Governance detection.",
-              "ignoreCase": "value",
-              "pattern": "^ComponentGovernanceComponentDetection@0$"
-            },
-            "inputs": {
-              "description": "Component Governance Detection inputs",
-              "properties": {
-                "scanType": {
-                  "description": "Scan mode",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "Register",
-                    "LogOnly"
-                  ]
-                },
-                "governanceProduct": {
-                  "type": "string",
-                  "description": "Product",
-                  "ignoreCase": "key"
-                },
-                "autoInjected": {
-                  "type": "boolean",
-                  "description": "AutoInjected",
-                  "ignoreCase": "key"
-                },
-                "whatif": {
-                  "type": "boolean",
-                  "description": "[OBSOLETE] Whatif Mode (uncheck and use Scan Mode instead)",
-                  "ignoreCase": "key"
-                },
-                "useDefaultDetectors": {
-                  "type": "boolean",
-                  "description": "Use the default dependency detectors",
-                  "ignoreCase": "key"
-                },
-                "detectorsToRun": {
-                  "description": "Dependency detectors override",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "NuGet",
-                    "Npm",
-                    "Maven"
-                  ]
-                },
-                "verbosity": {
-                  "description": "Verbosity",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "Register",
-                    "Normal",
-                    "Verbose"
-                  ]
-                },
-                "sourceScanPath": {
-                  "type": "string",
-                  "description": "Working folder",
-                  "ignoreCase": "key"
-                },
-                "detectorsFilter": {
-                  "type": "string",
-                  "description": "Component detectors filter",
-                  "ignoreCase": "key"
-                },
-                "dockerImagesToScan": {
-                  "type": "string",
-                  "description": "Docker images to scan",
-                  "ignoreCase": "key"
-                },
-                "alertWarningLevel": {
-                  "description": "Minimum alert severity to warn",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "Never",
-                    "Critical",
-                    "High",
-                    "Medium",
-                    "Low"
-                  ]
-                },
-                "failOnAlert": {
-                  "type": "boolean",
-                  "description": "Fail build on alerts above threshold",
-                  "ignoreCase": "key"
-                },
-                "ignoreDirectories": {
-                  "type": "string",
-                  "description": "Folder exclusion list",
                   "ignoreCase": "key"
                 }
               },
@@ -16003,77 +15813,6 @@
         {
           "properties": {
             "task": {
-              "description": "NuGet Restore\n\nRestores NuGet packages in preparation for a Visual Studio Build step.",
-              "ignoreCase": "value",
-              "pattern": "^NuGetRestore@1$"
-            },
-            "inputs": {
-              "description": "NuGet Restore inputs",
-              "properties": {
-                "solution": {
-                  "type": "string",
-                  "description": "Path to solution, packages.config, or project.json",
-                  "ignoreCase": "key"
-                },
-                "selectOrConfig": {
-                  "description": "Feeds to use",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "select",
-                    "config"
-                  ]
-                },
-                "feed": {
-                  "type": "string",
-                  "description": "Use packages from this Azure Artifacts feed",
-                  "ignoreCase": "key"
-                },
-                "includeNuGetOrg": {
-                  "type": "boolean",
-                  "description": "Use packages from NuGet.org",
-                  "ignoreCase": "key"
-                },
-                "nugetConfigPath": {
-                  "type": "string",
-                  "description": "Path to NuGet.config",
-                  "ignoreCase": "key"
-                },
-                "noCache": {
-                  "type": "boolean",
-                  "description": "Disable local cache",
-                  "ignoreCase": "key"
-                },
-                "packagesDirectory": {
-                  "type": "string",
-                  "description": "Destination directory",
-                  "ignoreCase": "key"
-                },
-                "verbosity": {
-                  "description": "Verbosity",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "-",
-                    "Quiet",
-                    "Normal",
-                    "Detailed"
-                  ]
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
               "description": "NuGet\n\nRestore, pack, or push NuGet packages, or run a NuGet command. Supports NuGet.org and authenticated feeds like Azure Artifacts and MyGet. Uses NuGet.exe and works with .NET Framework apps. For .NET Core and .NET Standard apps, use the .NET Core task.",
               "ignoreCase": "value",
               "pattern": "^NuGetCommand@2$"
@@ -16399,6 +16138,77 @@
                   "type": "string",
                   "description": "Path to NuGet.exe",
                   "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "NuGet Restore\n\nRestores NuGet packages in preparation for a Visual Studio Build step.",
+              "ignoreCase": "value",
+              "pattern": "^NuGetRestore@1$"
+            },
+            "inputs": {
+              "description": "NuGet Restore inputs",
+              "properties": {
+                "solution": {
+                  "type": "string",
+                  "description": "Path to solution, packages.config, or project.json",
+                  "ignoreCase": "key"
+                },
+                "selectOrConfig": {
+                  "description": "Feeds to use",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "select",
+                    "config"
+                  ]
+                },
+                "feed": {
+                  "type": "string",
+                  "description": "Use packages from this VSTS feed",
+                  "ignoreCase": "key"
+                },
+                "includeNuGetOrg": {
+                  "type": "boolean",
+                  "description": "Use packages from NuGet.org",
+                  "ignoreCase": "key"
+                },
+                "nugetConfigPath": {
+                  "type": "string",
+                  "description": "Path to NuGet.config",
+                  "ignoreCase": "key"
+                },
+                "noCache": {
+                  "type": "boolean",
+                  "description": "Disable local cache",
+                  "ignoreCase": "key"
+                },
+                "packagesDirectory": {
+                  "type": "string",
+                  "description": "Destination directory",
+                  "ignoreCase": "key"
+                },
+                "verbosity": {
+                  "description": "Verbosity",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "-",
+                    "Quiet",
+                    "Normal",
+                    "Detailed"
+                  ]
                 }
               },
               "additionalProperties": false,
@@ -19950,28 +19760,6 @@
         {
           "properties": {
             "task": {
-              "description": "Nuget Security Analysis\n\nA task to scan for vulnerabilities in nuget files.",
-              "ignoreCase": "value",
-              "pattern": "^nuget-security-analysis@0$"
-            },
-            "inputs": {
-              "description": "Nuget Security Analysis inputs",
-              "properties": {},
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
               "description": "Download GitHub Release\n\nDownloads a GitHub Release from a repository",
               "ignoreCase": "value",
               "pattern": "^DownloadGitHubRelease@0$"
@@ -20363,6 +20151,194 @@
             "task": {
               "description": "Kubectl\n\nDeploy, configure, update a Kubernetes cluster in Azure Container Service by running kubectl commands",
               "ignoreCase": "value",
+              "pattern": "^Kubernetes@0$"
+            },
+            "inputs": {
+              "description": "Kubectl inputs",
+              "properties": {
+                "kubernetesServiceConnection": {
+                  "type": "string",
+                  "description": "Kubernetes service connection",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "kubernetesServiceEndpoint"
+                  ]
+                },
+                "namespace": {
+                  "type": "string",
+                  "description": "Namespace",
+                  "ignoreCase": "key"
+                },
+                "command": {
+                  "description": "Command",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "apply",
+                    "create",
+                    "delete",
+                    "exec",
+                    "expose",
+                    "get",
+                    "logs",
+                    "run",
+                    "set",
+                    "top"
+                  ]
+                },
+                "useConfigurationFile": {
+                  "type": "boolean",
+                  "description": "Use Configuration files",
+                  "ignoreCase": "key"
+                },
+                "configuration": {
+                  "type": "string",
+                  "description": "Configuration file",
+                  "ignoreCase": "key"
+                },
+                "arguments": {
+                  "type": "string",
+                  "description": "Arguments",
+                  "ignoreCase": "key"
+                },
+                "secretType": {
+                  "description": "Type of secret",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "dockerRegistry",
+                    "generic"
+                  ]
+                },
+                "secretArguments": {
+                  "type": "string",
+                  "description": "Arguments",
+                  "ignoreCase": "key"
+                },
+                "containerRegistryType": {
+                  "description": "Container Registry type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "Azure Container Registry",
+                    "Container Registry"
+                  ]
+                },
+                "dockerRegistryConnection": {
+                  "type": "string",
+                  "description": "Docker Registry service connection",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "dockerRegistryEndpoint"
+                  ]
+                },
+                "azureSubscription": {
+                  "type": "string",
+                  "description": "Azure subscription",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "azureSubscriptionEndpoint"
+                  ]
+                },
+                "azureContainerRegistry": {
+                  "type": "string",
+                  "description": "Azure Container Registry",
+                  "ignoreCase": "key"
+                },
+                "secretName": {
+                  "type": "string",
+                  "description": "Secret name",
+                  "ignoreCase": "key"
+                },
+                "forceUpdate": {
+                  "type": "boolean",
+                  "description": "Force update secret",
+                  "ignoreCase": "key"
+                },
+                "configMapName": {
+                  "type": "string",
+                  "description": "ConfigMap name",
+                  "ignoreCase": "key"
+                },
+                "forceUpdateConfigMap": {
+                  "type": "boolean",
+                  "description": "Force update configmap",
+                  "ignoreCase": "key"
+                },
+                "useConfigMapFile": {
+                  "type": "boolean",
+                  "description": "Use file",
+                  "ignoreCase": "key"
+                },
+                "configMapFile": {
+                  "type": "string",
+                  "description": "ConfigMap file",
+                  "ignoreCase": "key"
+                },
+                "configMapArguments": {
+                  "type": "string",
+                  "description": "Arguments",
+                  "ignoreCase": "key"
+                },
+                "versionOrLocation": {
+                  "description": "Kubectl",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "version",
+                    "location"
+                  ]
+                },
+                "versionSpec": {
+                  "type": "string",
+                  "description": "Version spec",
+                  "ignoreCase": "key"
+                },
+                "checkLatest": {
+                  "type": "boolean",
+                  "description": "Check for latest version",
+                  "ignoreCase": "key"
+                },
+                "specifyLocation": {
+                  "type": "string",
+                  "description": "Path to Kubectl",
+                  "ignoreCase": "key"
+                },
+                "workingDirectory": {
+                  "type": "string",
+                  "description": "Working directory",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "cwd"
+                  ]
+                },
+                "outputFormat": {
+                  "description": "Output format",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "json",
+                    "yaml"
+                  ]
+                },
+                "kubectlOutput": {
+                  "type": "string",
+                  "description": "Output variable name",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "Kubectl\n\nDeploy, configure, update a Kubernetes cluster in Azure Container Service by running kubectl commands",
+              "ignoreCase": "value",
               "pattern": "^Kubernetes@1$"
             },
             "inputs": {
@@ -20563,194 +20539,6 @@
                     "yaml",
                     "none"
                   ]
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": "Kubectl\n\nDeploy, configure, update a Kubernetes cluster in Azure Container Service by running kubectl commands",
-              "ignoreCase": "value",
-              "pattern": "^Kubernetes@0$"
-            },
-            "inputs": {
-              "description": "Kubectl inputs",
-              "properties": {
-                "kubernetesServiceConnection": {
-                  "type": "string",
-                  "description": "Kubernetes service connection",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "kubernetesServiceEndpoint"
-                  ]
-                },
-                "namespace": {
-                  "type": "string",
-                  "description": "Namespace",
-                  "ignoreCase": "key"
-                },
-                "command": {
-                  "description": "Command",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "apply",
-                    "create",
-                    "delete",
-                    "exec",
-                    "expose",
-                    "get",
-                    "logs",
-                    "run",
-                    "set",
-                    "top"
-                  ]
-                },
-                "useConfigurationFile": {
-                  "type": "boolean",
-                  "description": "Use Configuration files",
-                  "ignoreCase": "key"
-                },
-                "configuration": {
-                  "type": "string",
-                  "description": "Configuration file",
-                  "ignoreCase": "key"
-                },
-                "arguments": {
-                  "type": "string",
-                  "description": "Arguments",
-                  "ignoreCase": "key"
-                },
-                "secretType": {
-                  "description": "Type of secret",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "dockerRegistry",
-                    "generic"
-                  ]
-                },
-                "secretArguments": {
-                  "type": "string",
-                  "description": "Arguments",
-                  "ignoreCase": "key"
-                },
-                "containerRegistryType": {
-                  "description": "Container Registry type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "Azure Container Registry",
-                    "Container Registry"
-                  ]
-                },
-                "dockerRegistryConnection": {
-                  "type": "string",
-                  "description": "Docker Registry service connection",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "dockerRegistryEndpoint"
-                  ]
-                },
-                "azureSubscription": {
-                  "type": "string",
-                  "description": "Azure subscription",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "azureSubscriptionEndpoint"
-                  ]
-                },
-                "azureContainerRegistry": {
-                  "type": "string",
-                  "description": "Azure Container Registry",
-                  "ignoreCase": "key"
-                },
-                "secretName": {
-                  "type": "string",
-                  "description": "Secret name",
-                  "ignoreCase": "key"
-                },
-                "forceUpdate": {
-                  "type": "boolean",
-                  "description": "Force update secret",
-                  "ignoreCase": "key"
-                },
-                "configMapName": {
-                  "type": "string",
-                  "description": "ConfigMap name",
-                  "ignoreCase": "key"
-                },
-                "forceUpdateConfigMap": {
-                  "type": "boolean",
-                  "description": "Force update configmap",
-                  "ignoreCase": "key"
-                },
-                "useConfigMapFile": {
-                  "type": "boolean",
-                  "description": "Use file",
-                  "ignoreCase": "key"
-                },
-                "configMapFile": {
-                  "type": "string",
-                  "description": "ConfigMap file",
-                  "ignoreCase": "key"
-                },
-                "configMapArguments": {
-                  "type": "string",
-                  "description": "Arguments",
-                  "ignoreCase": "key"
-                },
-                "versionOrLocation": {
-                  "description": "Kubectl",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "version",
-                    "location"
-                  ]
-                },
-                "versionSpec": {
-                  "type": "string",
-                  "description": "Version spec",
-                  "ignoreCase": "key"
-                },
-                "checkLatest": {
-                  "type": "boolean",
-                  "description": "Check for latest version",
-                  "ignoreCase": "key"
-                },
-                "specifyLocation": {
-                  "type": "string",
-                  "description": "Path to Kubectl",
-                  "ignoreCase": "key"
-                },
-                "workingDirectory": {
-                  "type": "string",
-                  "description": "Working directory",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "cwd"
-                  ]
-                },
-                "outputFormat": {
-                  "description": "Output format",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "json",
-                    "yaml"
-                  ]
-                },
-                "kubectlOutput": {
-                  "type": "string",
-                  "description": "Output variable name",
-                  "ignoreCase": "key"
                 }
               },
               "additionalProperties": false,
@@ -21565,104 +21353,6 @@
                     "x86",
                     "x64"
                   ]
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": "Accessibility Insights Azure DevOps Task\n\nScan accessibility issues in an Azure DevOps pipeline",
-              "ignoreCase": "value",
-              "pattern": "^accessibility-insights@1$"
-            },
-            "inputs": {
-              "description": "Accessibility Insights Azure DevOps Task inputs",
-              "properties": {
-                "repoServiceConnectionName": {
-                  "type": "string",
-                  "description": "Azure Repos Connection",
-                  "ignoreCase": "key"
-                },
-                "outputDir": {
-                  "type": "string",
-                  "description": "Output Directory",
-                  "ignoreCase": "key"
-                },
-                "siteDir": {
-                  "type": "string",
-                  "description": "Site Directory",
-                  "ignoreCase": "key"
-                },
-                "scanUrlRelativePath": {
-                  "type": "string",
-                  "description": "Scan URL Relative Path",
-                  "ignoreCase": "key"
-                },
-                "chromePath": {
-                  "type": "string",
-                  "description": "Chrome Path",
-                  "ignoreCase": "key"
-                },
-                "url": {
-                  "type": "string",
-                  "description": "Website URL",
-                  "ignoreCase": "key"
-                },
-                "maxUrls": {
-                  "type": "integer",
-                  "description": "Maximum number of URLs",
-                  "ignoreCase": "key"
-                },
-                "discoveryPatterns": {
-                  "type": "string",
-                  "description": "Discovery Patterns",
-                  "ignoreCase": "key"
-                },
-                "inputFile": {
-                  "type": "string",
-                  "description": "Input File",
-                  "ignoreCase": "key"
-                },
-                "inputUrls": {
-                  "type": "string",
-                  "description": "Input URLs",
-                  "ignoreCase": "key"
-                },
-                "localhostPort": {
-                  "type": "integer",
-                  "description": "Localhost Port",
-                  "ignoreCase": "key"
-                },
-                "scanTimeout": {
-                  "type": "integer",
-                  "description": "Scan Timeout",
-                  "ignoreCase": "key"
-                },
-                "failOnAccessibilityError": {
-                  "type": "boolean",
-                  "description": "Fail on Accessibility Error",
-                  "ignoreCase": "key"
-                },
-                "baselineFile": {
-                  "type": "string",
-                  "description": "Baseline File Path",
-                  "ignoreCase": "key"
-                },
-                "singleWorker": {
-                  "type": "boolean",
-                  "description": "Uses a single crawler worker.",
-                  "ignoreCase": "key"
                 }
               },
               "additionalProperties": false,
@@ -23523,79 +23213,6 @@
         {
           "properties": {
             "task": {
-              "description": "Manifest Generator Task\n\nCreates a manifest.json and bsi.json for all the files in a folder. This generated manifest can be used to validate the contents of the folder in the future.",
-              "ignoreCase": "value",
-              "pattern": "^ManifestGeneratorTask@0$"
-            },
-            "inputs": {
-              "description": "Manifest Generator Task inputs",
-              "properties": {
-                "BuildDropPath": {
-                  "type": "string",
-                  "description": "The root folder for which the manifest has to be generated.",
-                  "ignoreCase": "key"
-                },
-                "ManifestDirPath": {
-                  "type": "string",
-                  "description": "The path of the directory where the generated manifest files will be placed. If this parameter is not specified, the files will be placed in {BuildDropPath}/_manifest directory.",
-                  "ignoreCase": "key"
-                },
-                "BuildComponentPath": {
-                  "type": "string",
-                  "description": "The folder that contains the build's components/packages.",
-                  "ignoreCase": "key"
-                },
-                "Verbosity": {
-                  "description": "The verbosity of the output generated by the manifest generator.",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "Verbose",
-                    "Debug",
-                    "Information",
-                    "Warning",
-                    "Error",
-                    "Fatal"
-                  ]
-                },
-                "PackageName": {
-                  "type": "string",
-                  "description": "The name of the package this SBOM describes.",
-                  "ignoreCase": "key"
-                },
-                "PackageVersion": {
-                  "type": "string",
-                  "description": "The version of the package this SBOM describes.",
-                  "ignoreCase": "key"
-                },
-                "DockerImagesToScan": {
-                  "type": "string",
-                  "description": "Comma separated list of docker image names or hashes to be scanned for packages, ex: ubuntu:16.04, 56bab49eef2ef07505f6a1b0d5bd3a601dfc3c76ad4460f24c91d6fa298369ab.",
-                  "ignoreCase": "key"
-                },
-                "AdditionalComponentDetectorArgs": {
-                  "type": "string",
-                  "description": "Additional set of command-line arguments for Component Detector.",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "BuildDropPath"
-              ]
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task",
-            "inputs"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
               "description": "Copy and Publish Build Artifacts\n\n[DEPRECATED] Use the Copy Files task and the Publish Build Artifacts task instead",
               "ignoreCase": "value",
               "pattern": "^CopyPublishBuildArtifacts@1$"
@@ -24939,75 +24556,6 @@
         {
           "properties": {
             "task": {
-              "description": "Drop Validator Task\n\nValidates a given drop against a manifest generated at build time to verify the integrity of the drop.",
-              "ignoreCase": "value",
-              "pattern": "^DropValidatorTask@0$"
-            },
-            "inputs": {
-              "description": "Drop Validator Task inputs",
-              "properties": {
-                "BuildDropPath": {
-                  "type": "string",
-                  "description": "The root folder of the drop.",
-                  "ignoreCase": "key"
-                },
-                "ManifestDirPath": {
-                  "type": "string",
-                  "description": "The path of the directory where the manifest will be validated. If this parameter is not specified, the manifest will be validated in {BuildDropPath}/_manifest directory.",
-                  "ignoreCase": "key"
-                },
-                "OutputPath": {
-                  "type": "string",
-                  "description": "The path where the generated output file is placed.",
-                  "ignoreCase": "key"
-                },
-                "ValidateSignature": {
-                  "type": "boolean",
-                  "description": "If checked we will verify the signature of the manifest using the provided catalog file.",
-                  "ignoreCase": "key"
-                },
-                "Verbosity": {
-                  "description": "The verbosity of the output generated by the drop validator.",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "Verbose",
-                    "Debug",
-                    "Information",
-                    "Warning",
-                    "Error",
-                    "Fatal"
-                  ]
-                },
-                "ConfigFilePath": {
-                  "type": "string",
-                  "description": "The json file that contains the configuration for the Manifest Tool.",
-                  "ignoreCase": "key"
-                },
-                "RootPathFilter": {
-                  "type": "string",
-                  "description": "If you're downloading only a part of the drop using the '-r' or 'root' parameter in the drop client, specify the same string value here in order to skip validating paths that are not downloaded.",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "BuildDropPath",
-                "OutputPath"
-              ]
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task",
-            "inputs"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
               "description": "Deploy Azure Static Web App\n\n[PREVIEW] Build and deploy an Azure Static Web App",
               "ignoreCase": "value",
               "pattern": "^AzureStaticWebApp@0$"
@@ -25064,6 +24612,11 @@
                   "description": "Skip app build",
                   "ignoreCase": "key"
                 },
+                "skip_api_build": {
+                  "type": "boolean",
+                  "description": "Skip api build",
+                  "ignoreCase": "key"
+                },
                 "verbose": {
                   "type": "boolean",
                   "description": "Verbose",
@@ -25077,6 +24630,16 @@
                 "azure_static_web_apps_api_token": {
                   "type": "string",
                   "description": "Azure Static Web Apps api token",
+                  "ignoreCase": "key"
+                },
+                "deployment_environment": {
+                  "type": "string",
+                  "description": "Deployment Environment",
+                  "ignoreCase": "key"
+                },
+                "production_branch": {
+                  "type": "string",
+                  "description": "Production Branch",
                   "ignoreCase": "key"
                 }
               },

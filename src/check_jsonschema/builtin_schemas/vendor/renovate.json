@@ -385,7 +385,7 @@
     "commitMessageExtra": {
       "description": "Extra description used after the commit message topic - typically the version.",
       "type": "string",
-      "default": "to {{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}"
+      "default": "to {{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}"
     },
     "commitMessagePrefix": {
       "description": "Prefix to add to start of commit messages and PR titles. Uses a semantic prefix if `semanticCommits` is enabled.",
@@ -1658,7 +1658,7 @@
                 ]
               },
               "matchUpdateTypes": {
-                "description": "Update types to match against (`major`, `minor`, `pin`, etc.). Valid only within a `packageRules` object.",
+                "description": "Update types to match against (`major`, `minor`, `pin`, `pinDigest`, etc). Valid only within `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1669,6 +1669,7 @@
                         "minor",
                         "patch",
                         "pin",
+                        "pinDigest",
                         "digest",
                         "lockFileMaintenance",
                         "rollback",
@@ -1683,6 +1684,7 @@
                       "minor",
                       "patch",
                       "pin",
+                      "pinDigest",
                       "digest",
                       "lockFileMaintenance",
                       "rollback",
@@ -1730,6 +1732,20 @@
       "type": "object",
       "default": {
         "rebaseWhen": "behind-base-branch",
+        "groupName": "Pin Dependencies",
+        "groupSlug": "pin-dependencies",
+        "commitMessageAction": "Pin",
+        "group": {
+          "commitMessageTopic": "dependencies",
+          "commitMessageExtra": ""
+        }
+      },
+      "$ref": "#"
+    },
+    "pinDigest": {
+      "description": "Configuration to apply when pinning a digest (no change in tag/version).",
+      "type": "object",
+      "default": {
         "groupName": "Pin Dependencies",
         "groupSlug": "pin-dependencies",
         "commitMessageAction": "Pin",
@@ -2382,7 +2398,8 @@
           "lockFileErrors",
           "artifactErrors",
           "deprecationWarningIssues",
-          "onboardingClose"
+          "onboardingClose",
+          "configErrorIssue"
         ]
       },
       "default": [
