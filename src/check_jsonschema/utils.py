@@ -89,14 +89,14 @@ def filename2path(filename: str) -> pathlib.Path:
 def print_shortened_error(
     err: Exception, *, stream: t.TextIO = sys.stderr, indent: int = 0
 ) -> None:
-    print(indent * " " + f"{type(err).__name__}: {err}", file=stream)
+    click.echo(indent * " " + f"{type(err).__name__}: {err}", file=stream)
     if err.__traceback__ is not None:
         lineno = err.__traceback__.tb_lineno
         tb_frame = err.__traceback__.tb_frame
         filename = tb_frame.f_code.co_filename
         line = linecache.getline(filename, lineno)
-        print((indent + 2) * " " + f'in "{filename}", line {lineno}', file=stream)
-        print((indent + 2) * " " + ">>> " + line.strip(), file=stream)
+        click.echo((indent + 2) * " " + f'in "{filename}", line {lineno}', file=stream)
+        click.echo((indent + 2) * " " + ">>> " + line.strip(), file=stream)
 
 
 def print_shortened_trace(
@@ -109,7 +109,7 @@ def print_shortened_trace(
     indent = 0
     for err in err_stack[1:]:
         indent += 2
-        print("\n" + indent * " " + "caused by\n", file=stream)
+        click.echo("\n" + indent * " " + "caused by\n", file=stream)
         print_shortened_error(err, stream=stream, indent=indent)
 
 
@@ -123,9 +123,10 @@ def print_error(err: Exception, mode: str = "short") -> None:
 def format_validation_error_message(
     err: jsonschema.ValidationError, filename: str | None = None
 ) -> str:
+    error_loc = err.json_path
     if filename:
-        return f"\033[0;33m{filename}::{err.json_path}: \033[0m{err.message}"
-    return f"  \033[0;33m{err.json_path}: \033[0m{err.message}"
+        error_loc = f"{filename}::{error_loc}"
+    return click.style(error_loc, fg="yellow") + f": {err.message}"
 
 
 def iter_validation_error(
@@ -139,16 +140,16 @@ def iter_validation_error(
 def print_validation_error(
     filename: str, err: jsonschema.ValidationError, show_all_errors: bool = False
 ) -> None:
-    def _echo(s):
-        click.echo("  " + s, err=True)
+    def _echo(s: str, *, n: int = 2):
+        click.echo(" " * n + s, err=True)
 
     _echo(format_validation_error_message(err, filename=filename))
     if err.context:
         best_match = jsonschema.exceptions.best_match(err.context)
         _echo("Underlying errors caused this.")
         _echo("Best Match:")
-        _echo(format_validation_error_message(best_match))
+        _echo(format_validation_error_message(best_match), n=4)
         if show_all_errors:
             _echo("All Errors:")
             for err in iter_validation_error(err):
-                _echo(format_validation_error_message(err))
+                _echo(format_validation_error_message(err), n=4)

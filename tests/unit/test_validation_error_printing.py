@@ -49,7 +49,7 @@ def test_format_validation_error_message_simple():
     )
 
     s2 = strip_ansi(utils.format_validation_error_message(err))
-    assert s2 == "  $.foo: {'bar': 1} is not valid under any of the given schemas"
+    assert s2 == "$.foo: {'bar': 1} is not valid under any of the given schemas"
 
 
 def test_print_validation_error_nested(capsys):

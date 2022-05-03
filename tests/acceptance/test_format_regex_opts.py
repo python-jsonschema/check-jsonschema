@@ -98,7 +98,6 @@ def test_regex_format_bad(run_line, tmp_path, regexopt):
         assert res.exit_code == 0
     else:
         assert res.exit_code == 1
-        print(res.stdout)
         assert "is not a 'regex'" in res.stderr
 
 

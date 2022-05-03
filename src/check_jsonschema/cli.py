@@ -280,5 +280,5 @@ def execute(
     )
     ret = checker.run()
     if ret == 0:
-        print("ok -- validation done")
+        click.echo("ok -- validation done")
     click.get_current_context().exit(ret)
