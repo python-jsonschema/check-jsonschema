@@ -190,7 +190,7 @@ The '--builtin-schema' flag supports the following schema names:
         "Select a builtin transform which should be applied to instancefiles before "
         "they are checked."
     ),
-    type=click.Choice(TRANSFORM_LIBRARY.keys()),
+    type=click.Choice(tuple(TRANSFORM_LIBRARY.keys())),
 )
 @click.argument("instancefiles", required=True, nargs=-1)
 def main(
