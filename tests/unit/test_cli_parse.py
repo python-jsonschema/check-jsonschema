@@ -10,7 +10,7 @@ from check_jsonschema.cli import ParseResult, SchemaLoadingMode
 @pytest.fixture
 def mock_parse_result():
     args = ParseResult()
-    with mock.patch("check_jsonschema.cli.ParseResult.ensure") as m:
+    with mock.patch("check_jsonschema.cli.ParseResult") as m:
         m.return_value = args
         yield args
 

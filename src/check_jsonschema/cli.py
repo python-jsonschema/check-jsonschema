@@ -33,26 +33,23 @@ class SchemaLoadingMode(enum.Enum):
 
 class ParseResult:
     def __init__(self) -> None:
+        # primary options: schema + instances
         self.schema_mode: SchemaLoadingMode = SchemaLoadingMode.filepath
         self.schema_path: str | None = None
+        self.instancefiles: tuple[str, ...] = ()
+        # cache controls
         self.disable_cache: bool = False
         self.cache_filename: str | None = None
-        self.instancefiles: tuple[str, ...] = ()
+        # filetype detection (JSON vs YAML)
         self.default_filetype: str | None = None
+        # data-transform (for Azure Pipelines and potentially future transforms)
         self.data_transform: TransformT | None = None
-
-    @classmethod
-    def ensure(cls) -> ParseResult:
-        return click.get_current_context().ensure_object(cls)
-
-    @classmethod
-    def attr_arg_callback(cls, attrname: str):
-        def callback(ctx, param, value):
-            if value is not None and not ctx.resilient_parsing:
-                obj = cls.ensure()
-                setattr(obj, attrname, value)
-
-        return callback
+        # regex format options
+        self.disable_format: bool = False
+        self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
+        # error and output controls
+        self.show_all_validation_errors: bool = False
+        self.traceback_mode: str = "short"
 
     def set_schema(
         self, schemafile: str | None, builtin_schema: str | None, check_metaschema: bool
@@ -80,10 +77,11 @@ class ParseResult:
         else:
             self.schema_mode = SchemaLoadingMode.metaschema
 
-
-def _data_transform_callback(ctx, param, value):
-    if value is not None:
-        ParseResult.ensure().data_transform = TRANSFORM_LIBRARY[value]
+    @property
+    def format_opts(self) -> FormatOptions:
+        return FormatOptions(
+            enabled=not self.disable_format, regex_behavior=self.format_regex
+        )
 
 
 @click.command(
@@ -144,8 +142,6 @@ The '--builtin-schema' flag supports the following schema names:
     "--no-cache",
     is_flag=True,
     help="Disable schema caching. Always download remote schemas.",
-    expose_value=False,
-    callback=ParseResult.attr_arg_callback("disable_cache"),
 )
 @click.option(
     "--cache-filename",
@@ -153,13 +149,9 @@ The '--builtin-schema' flag supports the following schema names:
         "The name to use for caching a remote schema. "
         "Defaults to the last slash-delimited part of the URI."
     ),
-    expose_value=False,
-    callback=ParseResult.attr_arg_callback("cache_filename"),
 )
 @click.option(
-    "--disable-format",
-    is_flag=True,
-    help="Disable all format checks in the schema.",
+    "--disable-format", is_flag=True, help="Disable all format checks in the schema."
 )
 @click.option(
     "--format-regex",
@@ -174,8 +166,6 @@ The '--builtin-schema' flag supports the following schema names:
     "--default-filetype",
     help="A default filetype to assume when a file is not detected as JSON or YAML",
     type=click.Choice(("json", "yaml"), case_sensitive=True),
-    callback=ParseResult.attr_arg_callback("default_filetype"),
-    expose_value=False,
 )
 @click.option(
     "--show-all-validation-errors",
@@ -201,41 +191,47 @@ The '--builtin-schema' flag supports the following schema names:
         "they are checked."
     ),
     type=click.Choice(TRANSFORM_LIBRARY.keys()),
-    callback=_data_transform_callback,
-    expose_value=False,
 )
-@click.argument(
-    "instancefiles",
-    required=True,
-    nargs=-1,
-    callback=ParseResult.attr_arg_callback("instancefiles"),
-    expose_value=False,
-)
+@click.argument("instancefiles", required=True, nargs=-1)
 def main(
     *,
     schemafile: str | None,
     builtin_schema: str | None,
     check_metaschema: bool,
+    no_cache: bool,
+    cache_filename: str | None,
     disable_format: bool,
     format_regex: str,
+    default_filetype: str | None,
     show_all_validation_errors: bool,
     traceback_mode: str,
+    data_transform: str | None,
+    instancefiles: tuple[str, ...],
 ):
-    ParseResult.ensure().set_schema(schemafile, builtin_schema, check_metaschema)
+    args = ParseResult()
 
-    execute(
-        disable_format=disable_format,
-        format_regex=format_regex,
-        show_all_validation_errors=show_all_validation_errors,
-        traceback_mode=traceback_mode,
-    )
+    args.set_schema(schemafile, builtin_schema, check_metaschema)
+    args.instancefiles = instancefiles
+
+    args.disable_format = disable_format
+    args.format_regex = RegexFormatBehavior(format_regex)
+    args.disable_cache = no_cache
+    if cache_filename is not None:
+        args.cache_filename = cache_filename
+    if default_filetype is not None:
+        args.default_filetype = default_filetype
+    if data_transform is not None:
+        args.data_transform = TRANSFORM_LIBRARY[data_transform]
+    args.show_all_validation_errors = show_all_validation_errors
+    args.traceback_mode = traceback_mode
+
+    execute(args)
 
 
 # separate parsing from execution for simpler mocking for unit tests
 
 
-def build_schema_loader() -> SchemaLoaderBase:
-    args = ParseResult.ensure()
+def build_schema_loader(args: ParseResult) -> SchemaLoaderBase:
     if args.schema_mode == SchemaLoadingMode.metaschema:
         return MetaSchemaLoader()
     elif args.schema_mode == SchemaLoadingMode.builtin:
@@ -248,8 +244,7 @@ def build_schema_loader() -> SchemaLoaderBase:
         raise NotImplementedError("no valid schema option provided")
 
 
-def build_instance_loader() -> InstanceLoader:
-    args = ParseResult.ensure()
+def build_instance_loader(args: ParseResult) -> InstanceLoader:
     return InstanceLoader(
         args.instancefiles,
         default_filetype=args.default_filetype,
@@ -257,27 +252,20 @@ def build_instance_loader() -> InstanceLoader:
     )
 
 
-def execute(
-    *,
-    disable_format: bool,
-    format_regex: str,
-    show_all_validation_errors: bool,
-    traceback_mode: str,
-):
-    schema_loader = build_schema_loader()
-    instance_loader = build_instance_loader()
-
-    format_opts = FormatOptions(
-        enabled=not disable_format,
-        regex_behavior=RegexFormatBehavior(format_regex),
-    )
-    checker = SchemaChecker(
+def build_checker(args: ParseResult) -> SchemaChecker:
+    schema_loader = build_schema_loader(args)
+    instance_loader = build_instance_loader(args)
+    return SchemaChecker(
         schema_loader,
         instance_loader,
-        format_opts=format_opts,
-        traceback_mode=traceback_mode,
-        show_all_errors=show_all_validation_errors,
+        format_opts=args.format_opts,
+        traceback_mode=args.traceback_mode,
+        show_all_errors=args.show_all_validation_errors,
     )
+
+
+def execute(args: ParseResult) -> None:
+    checker = build_checker(args)
     ret = checker.run()
     if ret == 0:
         click.echo("ok -- validation done")
