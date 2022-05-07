@@ -231,6 +231,12 @@ the error and exit.
 Use `--traceback-mode full` to request the full traceback be printed, for
 debugging and troubleshooting.
 
+## Environment Variables
+
+### `NO_COLOR`
+
+Set `NO_COLOR=1` to explicitly turn off colorized output.
+
 ## Optional Parsers
 
 `check-jsonschema` comes with out-of-the-box support for the JSON and YAML file

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import enum
+import os
 import textwrap
 
 import click
@@ -23,6 +24,11 @@ BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
 BUILTIN_SCHEMA_CHOICES = (
     BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + CUSTOM_SCHEMA_NAMES
 )
+
+
+def evaluate_environment_settings(ctx: click.Context) -> None:
+    if os.getenv("NO_COLOR") is not None:
+        ctx.color = False
 
 
 class SchemaLoadingMode(enum.Enum):
@@ -195,7 +201,9 @@ The '--builtin-schema' flag supports the following schema names:
     type=click.Choice(tuple(TRANSFORM_LIBRARY.keys())),
 )
 @click.argument("instancefiles", required=True, nargs=-1)
+@click.pass_context
 def main(
+    ctx: click.Context,
     *,
     schemafile: str | None,
     builtin_schema: str | None,
@@ -211,6 +219,7 @@ def main(
     instancefiles: tuple[str, ...],
 ):
     args = ParseResult()
+    evaluate_environment_settings(ctx)
 
     args.set_schema(schemafile, builtin_schema, check_metaschema)
     args.instancefiles = instancefiles

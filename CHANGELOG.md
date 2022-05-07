@@ -7,6 +7,7 @@
 - Use `click` to implement CLI parsing. This provides several internal features
   as well as shell completion support.
 - Add support for `--version` as an option
+- Add support for the `NO_COLOR=1`
 
 ## 0.14.3
 

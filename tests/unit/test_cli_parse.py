@@ -4,7 +4,11 @@ import pytest
 from click.testing import CliRunner
 
 from check_jsonschema import main as cli_main
-from check_jsonschema.cli import ParseResult, SchemaLoadingMode
+from check_jsonschema.cli import (
+    ParseResult,
+    SchemaLoadingMode,
+    evaluate_environment_settings,
+)
 
 
 @pytest.fixture
@@ -132,3 +136,19 @@ def test_mutex_schema_opts(runner, cmd_args):
 def test_supports_common_option(runner, cmd_args):
     result = runner.invoke(cli_main, cmd_args)
     assert result.exit_code == 0
+
+
+@pytest.mark.parametrize(
+    "setting,expect_value", [(None, None), ("1", False), ("0", False)]
+)
+def test_no_color_env_var(monkeypatch, setting, expect_value):
+    mock_ctx = mock.Mock()
+    mock_ctx.color = None
+
+    if setting is None:
+        monkeypatch.delenv("NO_COLOR", raising=False)
+    else:
+        monkeypatch.setenv("NO_COLOR", setting)
+
+    evaluate_environment_settings(mock_ctx)
+    assert mock_ctx.color == expect_value
