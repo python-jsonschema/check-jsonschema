@@ -119,3 +119,16 @@ def test_mutex_schema_opts(runner, cmd_args):
     result = runner.invoke(cli_main, cmd_args)
     assert result.exit_code == 2
     assert "are mutually exclusive" in result.stderr
+
+
+@pytest.mark.parametrize(
+    "cmd_args",
+    [
+        ["--version"],
+        ["--help"],
+        ["-h"],
+    ],
+)
+def test_supports_common_option(runner, cmd_args):
+    result = runner.invoke(cli_main, cmd_args)
+    assert result.exit_code == 0

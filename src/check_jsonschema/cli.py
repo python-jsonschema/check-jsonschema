@@ -116,6 +116,8 @@ The '--builtin-schema' flag supports the following schema names:
         "    ",
     ),
 )
+@click.help_option("-h", "--help")
+@click.version_option()
 @click.option(
     "--schemafile",
     help=(

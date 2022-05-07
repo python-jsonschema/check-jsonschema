@@ -6,6 +6,7 @@
 - Update vendored schemas (2022-05-02)
 - Use `click` to implement CLI parsing. This provides several internal features
   as well as shell completion support.
+- Add support for `--version` as an option
 
 ## 0.14.3
 
