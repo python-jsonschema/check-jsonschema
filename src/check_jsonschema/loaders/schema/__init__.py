@@ -11,17 +11,7 @@ from ...formats import FormatOptions, make_format_checker
 from ...utils import is_url_ish
 from ..errors import UnsupportedUrlScheme
 from .readers import HttpSchemaReader, LocalSchemaReader
-
-
-def _make_ref_resolver(
-    schema_uri: str | None, schema: dict
-) -> jsonschema.RefResolver | None:
-    if not schema_uri:
-        return None
-
-    base_uri = schema.get("$id", schema_uri)
-    # FIXME: temporary type-ignore beause typeshed has the type wrong
-    return jsonschema.RefResolver(base_uri, schema)  # type: ignore[arg-type]
+from .resolver import make_ref_resolver
 
 
 class SchemaLoaderBase:
@@ -96,7 +86,7 @@ class SchemaLoader(SchemaLoaderBase):
         # if the location is a URL, there's no change, but if it's a file path
         # it's made absolute and URI-ized
         # the resolver should use `$id` if there is one present in the schema
-        ref_resolver = _make_ref_resolver(schema_uri, schema)
+        ref_resolver = make_ref_resolver(schema_uri, schema)
 
         # get the correct validator class and check the schema under its metaschema
         validator_cls = jsonschema.validators.validator_for(schema)

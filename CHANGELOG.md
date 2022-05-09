@@ -8,6 +8,8 @@
   as well as shell completion support.
 - Add support for `--version` as an option
 - Add support for the `NO_COLOR=1`
+- When loading schema references, check for a suffix of `.ya?ml` and emit a
+  warning. This does not abort loading the reference.
 
 ## 0.14.3
 
