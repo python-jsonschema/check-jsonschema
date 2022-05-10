@@ -1,8 +1,9 @@
 import re
 
+import pytest
 from jsonschema import Draft7Validator
 
-from check_jsonschema import utils
+from check_jsonschema.reporter import TextReporter
 
 # ANSI escape regex -- there are variations on this, but an excellent version
 # was provided on SO by Martijn Pieters:
@@ -24,11 +25,16 @@ ANSI_ESCAPE = re.compile(
 )
 
 
+@pytest.fixture
+def text_reporter():
+    return TextReporter()
+
+
 def strip_ansi(text):
     return ANSI_ESCAPE.sub("", text)
 
 
-def test_format_validation_error_message_simple():
+def test_format_validation_error_message_simple(text_reporter):
     validator = Draft7Validator(
         {
             "properties": {
@@ -43,16 +49,18 @@ def test_format_validation_error_message_simple():
     )
     err = next(validator.iter_errors({"foo": {"bar": 1}}))
 
-    s1 = strip_ansi(utils.format_validation_error_message(err, filename="foo.json"))
+    s1 = strip_ansi(
+        text_reporter._format_validation_error_message(err, filename="foo.json")
+    )
     assert (
         s1 == "foo.json::$.foo: {'bar': 1} is not valid under any of the given schemas"
     )
 
-    s2 = strip_ansi(utils.format_validation_error_message(err))
+    s2 = strip_ansi(text_reporter._format_validation_error_message(err))
     assert s2 == "$.foo: {'bar': 1} is not valid under any of the given schemas"
 
 
-def test_print_validation_error_nested(capsys):
+def test_print_validation_error_nested(capsys, text_reporter):
     validator = Draft7Validator(
         {
             "anyOf": [
@@ -84,7 +92,7 @@ def test_print_validation_error_nested(capsys):
     )
     err = next(validator.iter_errors({"foo": {}, "bar": {"baz": "buzz"}}))
 
-    utils.print_validation_error("foo.json", err, show_all_errors=True)
+    text_reporter._show_validation_error("foo.json", err, show_all_errors=True)
     captured = capsys.readouterr()
     # nothing to stderr
     assert captured.err == ""

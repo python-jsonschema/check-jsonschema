@@ -16,6 +16,7 @@ from .loaders import (
     SchemaLoader,
     SchemaLoaderBase,
 )
+from .reporter import TextReporter
 from .transforms import TRANSFORM_LIBRARY, TransformT
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
@@ -269,6 +270,8 @@ def build_checker(args: ParseResult) -> SchemaChecker:
     return SchemaChecker(
         schema_loader,
         instance_loader,
+        # TODO: make the reporter configurable
+        TextReporter(),
         format_opts=args.format_opts,
         traceback_mode=args.traceback_mode,
         show_all_errors=args.show_all_validation_errors,
@@ -278,6 +281,4 @@ def build_checker(args: ParseResult) -> SchemaChecker:
 def execute(args: ParseResult) -> None:
     checker = build_checker(args)
     ret = checker.run()
-    if ret == 0:
-        click.echo("ok -- validation done", err=True)
     click.get_current_context().exit(ret)
