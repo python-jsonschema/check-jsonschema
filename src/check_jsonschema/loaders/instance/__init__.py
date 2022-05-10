@@ -3,15 +3,11 @@ from __future__ import annotations
 import json
 import typing as t
 
-import ruamel.yaml
 from identify import identify
 
 from ...transforms import TransformT
 from ..errors import BadFileTypeError
-from . import json5
-
-yaml = ruamel.yaml.YAML(typ="safe")
-
+from . import json5, yaml
 
 LOAD_FUNC_BY_TAG: dict[str, t.Callable] = {
     "json": json.load,

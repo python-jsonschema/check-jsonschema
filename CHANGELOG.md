@@ -10,6 +10,8 @@
 - Add support for the `NO_COLOR=1`
 - When loading schema references, check for a suffix of `.ya?ml` and emit a
   warning. This does not abort loading the reference.
+- When loading YAML instance files, non-string object keys will be stringified.
+  This makes YAML data better conform to the requirements for JSON Schema.
 
 ## 0.14.3
 
