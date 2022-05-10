@@ -31,7 +31,6 @@ class SchemaChecker:
         *,
         format_opts: FormatOptions | None = None,
         traceback_mode: str = "short",
-        show_all_errors: bool = False,
     ):
         self._schema_loader = schema_loader
         self._instance_loader = instance_loader
@@ -39,7 +38,6 @@ class SchemaChecker:
 
         self._format_opts = format_opts if format_opts is not None else FormatOptions()
         self._traceback_mode = traceback_mode
-        self._show_all_errors = show_all_errors
 
     def _fail(self, msg: str, err: Exception | None = None) -> t.NoReturn:
         click.echo(msg, err=True)

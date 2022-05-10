@@ -16,7 +16,7 @@ from .loaders import (
     SchemaLoader,
     SchemaLoaderBase,
 )
-from .reporter import TextReporter
+from .reporter import JsonReporter, Reporter, ReporterName, TextReporter
 from .transforms import TRANSFORM_LIBRARY, TransformT
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
@@ -57,6 +57,7 @@ class ParseResult:
         # error and output controls
         self.show_all_validation_errors: bool = False
         self.traceback_mode: str = "short"
+        self.report_format: ReporterName = ReporterName.text
 
     def set_schema(
         self, schemafile: str | None, builtin_schema: str | None, check_metaschema: bool
@@ -201,6 +202,13 @@ The '--builtin-schema' flag supports the following schema names:
     ),
     type=click.Choice(tuple(TRANSFORM_LIBRARY.keys())),
 )
+@click.option(
+    "-o",
+    "--output-format",
+    help="Which output format to use",
+    type=click.Choice(tuple(x.value for x in ReporterName), case_sensitive=False),
+    default=ReporterName.text.value,
+)
 @click.argument("instancefiles", required=True, nargs=-1)
 @click.pass_context
 def main(
@@ -217,6 +225,7 @@ def main(
     show_all_validation_errors: bool,
     traceback_mode: str,
     data_transform: str | None,
+    output_format: str,
     instancefiles: tuple[str, ...],
 ):
     args = ParseResult()
@@ -236,6 +245,7 @@ def main(
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
     args.show_all_validation_errors = show_all_validation_errors
     args.traceback_mode = traceback_mode
+    args.report_format = ReporterName(output_format)
 
     execute(args)
 
@@ -264,17 +274,24 @@ def build_instance_loader(args: ParseResult) -> InstanceLoader:
     )
 
 
+def build_reporter(args: ParseResult) -> Reporter:
+    cls: dict[ReporterName, type[Reporter]] = {
+        ReporterName.text: TextReporter,
+        ReporterName.json: JsonReporter,
+    }[args.report_format]
+    return cls(show_all_errors=args.show_all_validation_errors)
+
+
 def build_checker(args: ParseResult) -> SchemaChecker:
     schema_loader = build_schema_loader(args)
     instance_loader = build_instance_loader(args)
+    reporter = build_reporter(args)
     return SchemaChecker(
         schema_loader,
         instance_loader,
-        # TODO: make the reporter configurable
-        TextReporter(),
+        reporter,
         format_opts=args.format_opts,
         traceback_mode=args.traceback_mode,
-        show_all_errors=args.show_all_validation_errors,
     )
 
 
