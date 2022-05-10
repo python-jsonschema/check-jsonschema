@@ -86,13 +86,13 @@ def test_print_validation_error_nested(capsys):
 
     utils.print_validation_error("foo.json", err, show_all_errors=True)
     captured = capsys.readouterr()
-    # nothing to stdout
-    assert captured.out == ""
-    err = strip_ansi(captured.err)
+    # nothing to stderr
+    assert captured.err == ""
+    out = strip_ansi(captured.out)
 
-    # only assert part of th message
+    # only assert part of the message
     # dict member order isn't guaranteed and isn't relevant here
-    assert "is not valid under any of the given schemas" in err
-    assert "Underlying errors" in err
-    assert "$.bar: {'baz': 'buzz'} is not of type 'string'" in err
-    assert "$.bar.baz: 'buzz' is not of type 'integer'" in err
+    assert "is not valid under any of the given schemas" in out
+    assert "Underlying errors" in out
+    assert "$.bar: {'baz': 'buzz'} is not of type 'string'" in out
+    assert "$.bar.baz: 'buzz' is not of type 'integer'" in out

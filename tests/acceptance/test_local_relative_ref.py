@@ -112,4 +112,4 @@ def test_local_ref_schema_failure_case(
     res = run_line(["check-jsonschema", "--schemafile", schemafile, str(doc)])
     assert res.exit_code == 1
     if expect_err is not None:
-        assert expect_err in res.stderr
+        assert expect_err in res.stdout

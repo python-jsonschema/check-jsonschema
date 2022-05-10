@@ -141,7 +141,7 @@ def print_validation_error(
     filename: str, err: jsonschema.ValidationError, show_all_errors: bool = False
 ) -> None:
     def _echo(s: str, *, n: int = 2):
-        click.echo(" " * n + s, err=True)
+        click.echo(" " * n + s)
 
     _echo(format_validation_error_message(err, filename=filename))
     if err.context:

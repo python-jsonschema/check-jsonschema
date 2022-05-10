@@ -279,5 +279,5 @@ def execute(args: ParseResult) -> None:
     checker = build_checker(args)
     ret = checker.run()
     if ret == 0:
-        click.echo("ok -- validation done")
+        click.echo("ok -- validation done", err=True)
     click.get_current_context().exit(ret)

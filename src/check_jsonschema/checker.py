@@ -75,7 +75,7 @@ class SchemaChecker:
             self._fail("Failure while loading instance files\n", e)
 
         if errors:
-            click.echo("Schema validation errors were encountered.")
+            click.echo("Schema validation errors were encountered.", err=True)
             for filename, file_errors in errors.items():
                 for err in file_errors:
                     utils.print_validation_error(

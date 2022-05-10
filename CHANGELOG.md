@@ -12,6 +12,8 @@
   warning. This does not abort loading the reference.
 - When loading YAML instance files, non-string object keys will be stringified.
   This makes YAML data better conform to the requirements for JSON Schema.
+- Change usage of stderr/stdout to send more of the error information to stdout
+  and more of the user-messaging to stderr
 
 ## 0.14.3
 

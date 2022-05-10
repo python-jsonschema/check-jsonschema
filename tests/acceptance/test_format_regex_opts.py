@@ -98,7 +98,7 @@ def test_regex_format_bad(run_line, tmp_path, regexopt):
         assert res.exit_code == 0
     else:
         assert res.exit_code == 1
-        assert "is not a 'regex'" in res.stderr
+        assert "is not a 'regex'" in res.stdout
 
 
 def test_regex_format_js_specific(run_line, tmp_path, regexopt):
@@ -124,7 +124,7 @@ def test_regex_format_js_specific(run_line, tmp_path, regexopt):
         assert res.exit_code == 0
     else:
         assert res.exit_code == 1
-        assert "is not a 'regex'" in res.stderr
+        assert "is not a 'regex'" in res.stdout
 
 
 def test_regex_format_in_renovate_config(run_line_simple, tmp_path):
