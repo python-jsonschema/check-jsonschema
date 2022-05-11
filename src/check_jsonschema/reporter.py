@@ -102,6 +102,7 @@ class JsonReporter(Reporter):
     ) -> None:
         # default to pretty output if stdout is a tty and compact output if not
         self.pretty: bool = pretty if pretty is not None else sys.stdout.isatty()
+        self.show_all_errors = show_all_errors
 
     def _dump(self, data: t.Any) -> None:
         if self.pretty:
@@ -130,10 +131,11 @@ class JsonReporter(Reporter):
                         "path": best_match.json_path,
                         "message": best_match.message,
                     }
-                    item["sub_errors"] = [
-                        {"path": suberr.json_path, "message": suberr.message}
-                        for suberr in iter_validation_error(err)
-                    ]
+                    if self.show_all_errors:
+                        item["sub_errors"] = [
+                            {"path": suberr.json_path, "message": suberr.message}
+                            for suberr in iter_validation_error(err)
+                        ]
 
                 yield item
 

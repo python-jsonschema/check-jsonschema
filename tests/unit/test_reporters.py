@@ -94,7 +94,8 @@ def test_text_print_validation_error_nested(capsys):
 
 
 @pytest.mark.parametrize("pretty_json", (True, False))
-def test_json_format_validation_error_nested(capsys, pretty_json):
+@pytest.mark.parametrize("show_all_errors", (True, False))
+def test_json_format_validation_error_nested(capsys, pretty_json, show_all_errors):
     validator = Draft7Validator(
         {
             "anyOf": [
@@ -126,7 +127,7 @@ def test_json_format_validation_error_nested(capsys, pretty_json):
     )
     err = next(validator.iter_errors({"foo": {}, "bar": {"baz": "buzz"}}))
 
-    json_reporter = JsonReporter(pretty=pretty_json, show_all_errors=True)
+    json_reporter = JsonReporter(pretty=pretty_json, show_all_errors=show_all_errors)
     json_reporter.report_validation_errors({"foo.json": [err]})
     captured = capsys.readouterr()
     # nothing to stderr
@@ -138,8 +139,18 @@ def test_json_format_validation_error_nested(capsys, pretty_json):
     assert len(data["errors"]) == 1
     assert "is not valid under any of the given schemas" in data["errors"][0]["message"]
     assert data["errors"][0]["has_sub_errors"]
+
+    # stop here unless 'show_all_errors=True'
+    if not show_all_errors:
+        assert "sub_errors" not in data["errors"][0]
+        return
+    else:
+        assert "sub_errors" in data["errors"][0]
+
+    sub_errors = data["errors"][0]["sub_errors"]
+
     foo_errors, bar_errors, bar_baz_errors = [], [], []
-    for error_item in data["errors"][0]["sub_errors"]:
+    for error_item in sub_errors:
         if error_item["path"] == "$.foo":
             foo_errors.append(error_item)
         elif error_item["path"] == "$.bar":
