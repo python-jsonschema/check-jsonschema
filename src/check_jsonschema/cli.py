@@ -177,7 +177,6 @@ The '--builtin-schema' flag supports the following schema names:
     help="A default filetype to assume when a file is not detected as JSON or YAML",
     type=click.Choice(("json", "yaml"), case_sensitive=True),
 )
-@click.option("--show-all-validation-errors", is_flag=True, hidden=True)
 @click.option(
     "--traceback-mode",
     help=(
@@ -210,6 +209,12 @@ The '--builtin-schema' flag supports the following schema names:
         "useful when oneOf or anyOf is used in the schema."
     ),
     count=True,
+)
+@click.option(
+    # TODO: remove in v0.15.1 or later
+    "--show-all-validation-errors",
+    is_flag=True,
+    hidden=True,
 )
 @click.argument("instancefiles", required=True, nargs=-1)
 @click.pass_context
