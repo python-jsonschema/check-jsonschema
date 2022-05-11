@@ -55,7 +55,7 @@ class ParseResult:
         self.disable_format: bool = False
         self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
         # error and output controls
-        self.show_all_validation_errors: bool = False
+        self.verbosity: int = 0
         self.traceback_mode: str = "short"
         self.report_format: ReporterName = ReporterName.text
 
@@ -177,14 +177,7 @@ The '--builtin-schema' flag supports the following schema names:
     help="A default filetype to assume when a file is not detected as JSON or YAML",
     type=click.Choice(("json", "yaml"), case_sensitive=True),
 )
-@click.option(
-    "--show-all-validation-errors",
-    is_flag=True,
-    help=(
-        "On validation errors, show all of the underlying errors which occurred. "
-        "These may be useful when oneOf or anyOf is used in the schema."
-    ),
-)
+@click.option("--show-all-validation-errors", is_flag=True, hidden=True)
 @click.option(
     "--traceback-mode",
     help=(
@@ -209,6 +202,15 @@ The '--builtin-schema' flag supports the following schema names:
     type=click.Choice(tuple(x.value for x in ReporterName), case_sensitive=False),
     default=ReporterName.text.value,
 )
+@click.option(
+    "-v",
+    "--verbose",
+    help=(
+        "Increase output verbosity. On validation errors, this may be especially "
+        "useful when oneOf or anyOf is used in the schema."
+    ),
+    count=True,
+)
 @click.argument("instancefiles", required=True, nargs=-1)
 @click.pass_context
 def main(
@@ -226,6 +228,7 @@ def main(
     traceback_mode: str,
     data_transform: str | None,
     output_format: str,
+    verbose: int,
     instancefiles: tuple[str, ...],
 ):
     args = ParseResult()
@@ -243,7 +246,7 @@ def main(
         args.default_filetype = default_filetype
     if data_transform is not None:
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
-    args.show_all_validation_errors = show_all_validation_errors
+    args.verbosity = max(verbose, 1 if show_all_validation_errors else 0)
     args.traceback_mode = traceback_mode
     args.report_format = ReporterName(output_format)
 
@@ -275,11 +278,11 @@ def build_instance_loader(args: ParseResult) -> InstanceLoader:
 
 
 def build_reporter(args: ParseResult) -> Reporter:
-    cls: dict[ReporterName, type[Reporter]] = {
+    cls = {
         ReporterName.text: TextReporter,
         ReporterName.json: JsonReporter,
     }[args.report_format]
-    return cls(show_all_errors=args.show_all_validation_errors)
+    return cls(verbosity=args.verbosity)
 
 
 def build_checker(args: ParseResult) -> SchemaChecker:

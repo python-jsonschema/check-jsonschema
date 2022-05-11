@@ -41,11 +41,11 @@ class TextReporter(Reporter):
         *,
         stream: t.TextIO | None = None,  # default stream is stdout (None)
         color: bool = True,
-        show_all_errors: bool = False,
+        verbosity: int = 0,
     ) -> None:
         self.stream = stream
         self.color = color
-        self.show_all_errors = show_all_errors
+        self.verbosity = verbosity
 
     def echo(self, s: str, *, indent: int = 0):
         click.echo(" " * indent + s, file=self.stream)
@@ -78,7 +78,7 @@ class TextReporter(Reporter):
             self.echo("Underlying errors caused this.", indent=2)
             self.echo("Best Match:", indent=2)
             self.echo(self._format_validation_error_message(best_match), indent=4)
-            if self.show_all_errors:
+            if self.verbosity > 0:
                 self.echo("All Errors:", indent=2)
                 for err in iter_validation_error(err):
                     self.echo(self._format_validation_error_message(err), indent=4)
@@ -94,15 +94,10 @@ class TextReporter(Reporter):
 
 
 class JsonReporter(Reporter):
-    def __init__(
-        self,
-        *,
-        pretty: bool | None = None,
-        show_all_errors: bool = False,
-    ) -> None:
+    def __init__(self, *, pretty: bool | None = None, verbosity: int = 0) -> None:
         # default to pretty output if stdout is a tty and compact output if not
         self.pretty: bool = pretty if pretty is not None else sys.stdout.isatty()
-        self.show_all_errors = show_all_errors
+        self.verbosity = verbosity
 
     def _dump(self, data: t.Any) -> None:
         if self.pretty:
@@ -131,7 +126,7 @@ class JsonReporter(Reporter):
                         "path": best_match.json_path,
                         "message": best_match.message,
                     }
-                    if self.show_all_errors:
+                    if self.verbosity > 0:
                         item["sub_errors"] = [
                             {"path": suberr.json_path, "message": suberr.message}
                             for suberr in iter_validation_error(err)

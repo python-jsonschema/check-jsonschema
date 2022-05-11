@@ -79,7 +79,7 @@ def test_text_print_validation_error_nested(capsys):
     )
     err = next(validator.iter_errors({"foo": {}, "bar": {"baz": "buzz"}}))
 
-    text_reporter = TextReporter(color=False, show_all_errors=True)
+    text_reporter = TextReporter(color=False, verbosity=1)
     text_reporter._show_validation_error("foo.json", err)
     captured = capsys.readouterr()
     # nothing to stderr
@@ -94,8 +94,8 @@ def test_text_print_validation_error_nested(capsys):
 
 
 @pytest.mark.parametrize("pretty_json", (True, False))
-@pytest.mark.parametrize("show_all_errors", (True, False))
-def test_json_format_validation_error_nested(capsys, pretty_json, show_all_errors):
+@pytest.mark.parametrize("verbosity", (0, 1))
+def test_json_format_validation_error_nested(capsys, pretty_json, verbosity):
     validator = Draft7Validator(
         {
             "anyOf": [
@@ -127,7 +127,7 @@ def test_json_format_validation_error_nested(capsys, pretty_json, show_all_error
     )
     err = next(validator.iter_errors({"foo": {}, "bar": {"baz": "buzz"}}))
 
-    json_reporter = JsonReporter(pretty=pretty_json, show_all_errors=show_all_errors)
+    json_reporter = JsonReporter(pretty=pretty_json, verbosity=verbosity)
     json_reporter.report_validation_errors({"foo.json": [err]})
     captured = capsys.readouterr()
     # nothing to stderr
@@ -140,8 +140,8 @@ def test_json_format_validation_error_nested(capsys, pretty_json, show_all_error
     assert "is not valid under any of the given schemas" in data["errors"][0]["message"]
     assert data["errors"][0]["has_sub_errors"]
 
-    # stop here unless 'show_all_errors=True'
-    if not show_all_errors:
+    # stop here unless 'verbosity>=1'
+    if verbosity < 1:
         assert "sub_errors" not in data["errors"][0]
         return
     else:
