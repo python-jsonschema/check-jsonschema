@@ -17,6 +17,10 @@ from .utils import iter_validation_error
 
 
 class Reporter(abc.ABC):
+    def __init__(self, *, verbosity: int, **kwargs):
+        self.verbosity = verbosity
+        super().__init__(**kwargs)
+
     @abc.abstractmethod
     def report_success(self) -> None:
         raise NotImplementedError
@@ -37,9 +41,9 @@ class TextReporter(Reporter):
         stream: t.TextIO | None = None,  # default stream is stdout (None)
         color: bool = True,
     ) -> None:
+        super().__init__(verbosity=verbosity)
         self.stream = stream
         self.color = color
-        self.verbosity = verbosity
 
     def _echo(self, s: str, *, indent: int = 0):
         click.echo(" " * indent + s, file=self.stream)
@@ -92,9 +96,9 @@ class TextReporter(Reporter):
 
 class JsonReporter(Reporter):
     def __init__(self, *, verbosity: int, pretty: bool | None = None) -> None:
+        super().__init__(verbosity=verbosity)
         # default to pretty output if stdout is a tty and compact output if not
         self.pretty: bool = pretty if pretty is not None else sys.stdout.isatty()
-        self.verbosity = verbosity
 
     def _dump(self, data: t.Any) -> None:
         if self.pretty:
@@ -103,7 +107,7 @@ class JsonReporter(Reporter):
             click.echo(json.dumps(data, separators=(",", ":")))
 
     def report_success(self) -> None:
-        report_obj = {"status": "ok"}
+        report_obj: dict[str, t.Any] = {"status": "ok"}
         if self.verbosity > 0:
             report_obj["errors"] = []
         self._dump(report_obj)
@@ -138,7 +142,7 @@ class JsonReporter(Reporter):
         self,
         error_map: dict[str, list[jsonschema.ValidationError]],
     ) -> None:
-        report_obj = {"status": "fail"}
+        report_obj: dict[str, t.Any] = {"status": "fail"}
         if self.verbosity > 0:
             report_obj["errors"] = list(self._dump_error_map(error_map))
         self._dump(report_obj)
