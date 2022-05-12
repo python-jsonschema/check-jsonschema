@@ -16,7 +16,7 @@ from .loaders import (
     SchemaLoader,
     SchemaLoaderBase,
 )
-from .reporter import JsonReporter, Reporter, ReporterName, TextReporter
+from .reporter import REPORTER_BY_NAME, Reporter
 from .transforms import TRANSFORM_LIBRARY, TransformT
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
@@ -57,7 +57,7 @@ class ParseResult:
         # error and output controls
         self.verbosity: int = 0
         self.traceback_mode: str = "short"
-        self.report_format: ReporterName = ReporterName.text
+        self.output_format: str = "text"
 
     def set_schema(
         self, schemafile: str | None, builtin_schema: str | None, check_metaschema: bool
@@ -198,8 +198,8 @@ The '--builtin-schema' flag supports the following schema names:
     "-o",
     "--output-format",
     help="Which output format to use",
-    type=click.Choice(tuple(x.value for x in ReporterName), case_sensitive=False),
-    default=ReporterName.text.value,
+    type=click.Choice(tuple(REPORTER_BY_NAME.keys()), case_sensitive=False),
+    default="text",
 )
 @click.option(
     "-v",
@@ -253,7 +253,7 @@ def main(
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
     args.verbosity = max(verbose, 1 if show_all_validation_errors else 0)
     args.traceback_mode = traceback_mode
-    args.report_format = ReporterName(output_format)
+    args.output_format = output_format
 
     execute(args)
 
@@ -283,10 +283,7 @@ def build_instance_loader(args: ParseResult) -> InstanceLoader:
 
 
 def build_reporter(args: ParseResult) -> Reporter:
-    cls = {
-        ReporterName.text: TextReporter,
-        ReporterName.json: JsonReporter,
-    }[args.report_format]
+    cls = REPORTER_BY_NAME[args.output_format]
     return cls(verbosity=args.verbosity)
 
 

@@ -6,7 +6,6 @@ and report it back to the user.
 from __future__ import annotations
 
 import abc
-import enum
 import json
 import sys
 import typing as t
@@ -15,11 +14,6 @@ import click
 import jsonschema
 
 from .utils import iter_validation_error
-
-
-class ReporterName(enum.Enum):
-    text = "text"
-    json = "json"
 
 
 class Reporter(abc.ABC):
@@ -144,3 +138,9 @@ class JsonReporter(Reporter):
                 "errors": list(self._dump_error_map(error_map)),
             }
         )
+
+
+REPORTER_BY_NAME: dict[str, type[Reporter]] = {
+    "text": TextReporter,
+    "json": JsonReporter,
+}
