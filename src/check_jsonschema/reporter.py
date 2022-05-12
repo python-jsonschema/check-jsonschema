@@ -33,20 +33,22 @@ class TextReporter(Reporter):
     def __init__(
         self,
         *,
+        verbosity: int,
         stream: t.TextIO | None = None,  # default stream is stdout (None)
         color: bool = True,
-        verbosity: int = 0,
     ) -> None:
         self.stream = stream
         self.color = color
         self.verbosity = verbosity
 
-    def echo(self, s: str, *, indent: int = 0):
+    def _echo(self, s: str, *, indent: int = 0):
         click.echo(" " * indent + s, file=self.stream)
 
     def report_success(self) -> None:
+        if self.verbosity < 1:
+            return
         ok = click.style("ok", fg="green") if self.color else "ok"
-        self.echo(f"{ok} -- validation done")
+        self._echo(f"{ok} -- validation done")
 
     def _format_validation_error_message(
         self, err: jsonschema.ValidationError, filename: str | None = None
@@ -63,32 +65,33 @@ class TextReporter(Reporter):
         filename: str,
         err: jsonschema.ValidationError,
     ) -> None:
-
-        self.echo(
+        self._echo(
             self._format_validation_error_message(err, filename=filename), indent=2
         )
         if err.context:
             best_match = jsonschema.exceptions.best_match(err.context)
-            self.echo("Underlying errors caused this.", indent=2)
-            self.echo("Best Match:", indent=2)
-            self.echo(self._format_validation_error_message(best_match), indent=4)
-            if self.verbosity > 0:
-                self.echo("All Errors:", indent=2)
+            self._echo("Underlying errors caused this.", indent=2)
+            self._echo("Best Match:", indent=2)
+            self._echo(self._format_validation_error_message(best_match), indent=4)
+            if self.verbosity > 1:
+                self._echo("All Errors:", indent=2)
                 for err in iter_validation_error(err):
-                    self.echo(self._format_validation_error_message(err), indent=4)
+                    self._echo(self._format_validation_error_message(err), indent=4)
 
     def report_validation_errors(
         self,
         error_map: dict[str, list[jsonschema.ValidationError]],
     ) -> None:
-        self.echo("Schema validation errors were encountered.")
+        if self.verbosity < 1:
+            return
+        self._echo("Schema validation errors were encountered.")
         for filename, errors in error_map.items():
             for err in errors:
                 self._show_validation_error(filename, err)
 
 
 class JsonReporter(Reporter):
-    def __init__(self, *, pretty: bool | None = None, verbosity: int = 0) -> None:
+    def __init__(self, *, verbosity: int, pretty: bool | None = None) -> None:
         # default to pretty output if stdout is a tty and compact output if not
         self.pretty: bool = pretty if pretty is not None else sys.stdout.isatty()
         self.verbosity = verbosity
@@ -100,7 +103,10 @@ class JsonReporter(Reporter):
             click.echo(json.dumps(data, separators=(",", ":")))
 
     def report_success(self) -> None:
-        self._dump({"status": "ok", "errors": []})
+        report_obj = {"status": "ok"}
+        if self.verbosity > 0:
+            report_obj["errors"] = []
+        self._dump(report_obj)
 
     def _dump_error_map(
         self,
@@ -120,7 +126,7 @@ class JsonReporter(Reporter):
                         "path": best_match.json_path,
                         "message": best_match.message,
                     }
-                    if self.verbosity > 0:
+                    if self.verbosity > 1:
                         item["sub_errors"] = [
                             {"path": suberr.json_path, "message": suberr.message}
                             for suberr in iter_validation_error(err)
@@ -132,12 +138,10 @@ class JsonReporter(Reporter):
         self,
         error_map: dict[str, list[jsonschema.ValidationError]],
     ) -> None:
-        self._dump(
-            {
-                "status": "fail",
-                "errors": list(self._dump_error_map(error_map)),
-            }
-        )
+        report_obj = {"status": "fail"}
+        if self.verbosity > 0:
+            report_obj["errors"] = list(self._dump_error_map(error_map))
+        self._dump(report_obj)
 
 
 REPORTER_BY_NAME: dict[str, type[Reporter]] = {

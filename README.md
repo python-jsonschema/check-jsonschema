@@ -174,7 +174,11 @@ checked. The following transforms are supported:
 
 ### `-v`, `--verbose`
 
-Request more verbose output.
+Request more output.
+
+### `-q`, `--quiet`
+
+Request less output.
 
 ### `-o`, `--output-format`
 

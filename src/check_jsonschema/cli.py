@@ -55,7 +55,7 @@ class ParseResult:
         self.disable_format: bool = False
         self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
         # error and output controls
-        self.verbosity: int = 0
+        self.verbosity: int = 1
         self.traceback_mode: str = "short"
         self.output_format: str = "text"
 
@@ -211,6 +211,12 @@ The '--builtin-schema' flag supports the following schema names:
     count=True,
 )
 @click.option(
+    "-q",
+    "--quiet",
+    help="Reduce output verbosity",
+    count=True,
+)
+@click.option(
     # TODO: remove in v0.15.1 or later
     "--show-all-validation-errors",
     is_flag=True,
@@ -234,6 +240,7 @@ def main(
     data_transform: str | None,
     output_format: str,
     verbose: int,
+    quiet: int,
     instancefiles: tuple[str, ...],
 ):
     args = ParseResult()
@@ -251,7 +258,11 @@ def main(
         args.default_filetype = default_filetype
     if data_transform is not None:
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
-    args.verbosity = max(verbose, 1 if show_all_validation_errors else 0)
+    # verbosity behavior:
+    # - default is 1
+    # - count '-v' with a min of 1 if --show-all-validation-errors was given
+    # - subtract count of '-q'
+    args.verbosity = 1 + max(verbose, 1 if show_all_validation_errors else 0) - quiet
     args.traceback_mode = traceback_mode
     args.output_format = output_format
 

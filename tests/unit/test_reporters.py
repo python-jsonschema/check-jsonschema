@@ -6,20 +6,28 @@ from jsonschema import Draft7Validator
 from check_jsonschema.reporter import JsonReporter, TextReporter
 
 
-def test_text_format_success(capsys):
-    reporter = TextReporter(color=False)
+@pytest.mark.parametrize("verbosity", (0, 1, 2))
+def test_text_format_success(capsys, verbosity):
+    reporter = TextReporter(color=False, verbosity=verbosity)
     reporter.report_success()
     captured = capsys.readouterr()
     assert captured.err == ""
-    assert captured.out == "ok -- validation done\n"
+    if verbosity == 0:
+        assert captured.out == ""
+    else:
+        assert captured.out == "ok -- validation done\n"
 
 
-def test_json_format_success(capsys):
-    reporter = JsonReporter()
+@pytest.mark.parametrize("verbosity", (0, 1))
+def test_json_format_success(capsys, verbosity):
+    reporter = JsonReporter(verbosity=verbosity)
     reporter.report_success()
     captured = capsys.readouterr()
     assert captured.err == ""
-    assert captured.out == '{"status":"ok","errors":[]}\n'
+    if verbosity == 0:
+        assert captured.out == '{"status":"ok"}\n'
+    else:
+        assert captured.out == '{"status":"ok","errors":[]}\n'
 
 
 def test_text_format_validation_error_message_simple():
@@ -37,7 +45,7 @@ def test_text_format_validation_error_message_simple():
     )
     err = next(validator.iter_errors({"foo": {"bar": 1}}))
 
-    text_reporter = TextReporter(color=False)
+    text_reporter = TextReporter(color=False, verbosity=1)
     s1 = text_reporter._format_validation_error_message(err, filename="foo.json")
     assert (
         s1 == "foo.json::$.foo: {'bar': 1} is not valid under any of the given schemas"
@@ -47,7 +55,8 @@ def test_text_format_validation_error_message_simple():
     assert s2 == "$.foo: {'bar': 1} is not valid under any of the given schemas"
 
 
-def test_text_print_validation_error_nested(capsys):
+@pytest.mark.parametrize("verbosity", (0, 1, 2))
+def test_text_print_validation_error_nested(capsys, verbosity):
     validator = Draft7Validator(
         {
             "anyOf": [
@@ -79,22 +88,32 @@ def test_text_print_validation_error_nested(capsys):
     )
     err = next(validator.iter_errors({"foo": {}, "bar": {"baz": "buzz"}}))
 
-    text_reporter = TextReporter(color=False, verbosity=1)
-    text_reporter._show_validation_error("foo.json", err)
+    text_reporter = TextReporter(color=False, verbosity=verbosity)
+    text_reporter.report_validation_errors({"foo.json": [err]})
     captured = capsys.readouterr()
     # nothing to stderr
     assert captured.err == ""
+
+    # if verbosity<1 stop here
+    if verbosity < 1:
+        assert captured.out == ""
+        return
 
     # only assert part of the message
     # dict member order isn't guaranteed and isn't relevant here
     assert "is not valid under any of the given schemas" in captured.out
     assert "Underlying errors" in captured.out
-    assert "$.bar: {'baz': 'buzz'} is not of type 'string'" in captured.out
-    assert "$.bar.baz: 'buzz' is not of type 'integer'" in captured.out
+
+    # we don't know which error was the best match (algo for best match could change)
+    # so just assert the presence of the underlying error messages at higher verbosity
+    if verbosity > 1:
+        assert "$.foo: {} is not of type 'string'" in captured.out
+        assert "$.bar: {'baz': 'buzz'} is not of type 'string'" in captured.out
+        assert "$.bar.baz: 'buzz' is not of type 'integer'" in captured.out
 
 
 @pytest.mark.parametrize("pretty_json", (True, False))
-@pytest.mark.parametrize("verbosity", (0, 1))
+@pytest.mark.parametrize("verbosity", (0, 1, 2))
 def test_json_format_validation_error_nested(capsys, pretty_json, verbosity):
     validator = Draft7Validator(
         {
@@ -136,12 +155,18 @@ def test_json_format_validation_error_nested(capsys, pretty_json, verbosity):
     # json data to stdout, parse it
     data = json.loads(captured.out)
     assert data["status"] == "fail"
+
+    # stop here unless verbosity>=1
+    if verbosity < 1:
+        assert data == {"status": "fail"}
+        return
+
     assert len(data["errors"]) == 1
     assert "is not valid under any of the given schemas" in data["errors"][0]["message"]
     assert data["errors"][0]["has_sub_errors"]
 
-    # stop here unless 'verbosity>=1'
-    if verbosity < 1:
+    # stop here unless 'verbosity>=2'
+    if verbosity < 2:
         assert "sub_errors" not in data["errors"][0]
         return
     else:
