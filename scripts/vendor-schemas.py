@@ -4,12 +4,22 @@ from __future__ import annotations
 import datetime
 import hashlib
 import os
+import re
 
 import requests
 
 from check_jsonschema.catalog import SCHEMA_CATALOG
 
 today = datetime.datetime.today().strftime("%Y-%m-%d")
+
+vendor_slug = "\n<!-- vendor-insert-here -->\n"
+
+_existing_changeline_pattern = re.compile(
+    re.escape(f"{vendor_slug}- Update vendored schemas")
+    + r" \(\d{4}-\d{2}-\d{2}\)"
+    + "\n",
+    flags=re.MULTILINE,
+)
 
 
 def download_schema(schema_name: str, schema_url: str) -> bool:
@@ -44,15 +54,12 @@ def download_schema(schema_name: str, schema_url: str) -> bool:
 def update_changelog() -> None:
     with open("CHANGELOG.md", encoding="utf-8") as fp:
         content = fp.read()
-    content = content.replace(
-        """
-<!-- vendor-insert-here -->
-""",
-        f"""
-<!-- vendor-insert-here -->
-- Update vendored schemas ({today})
-""",
-    )
+    new_slug = vendor_slug + f"- Update vendored schemas ({today})\n"
+
+    if _existing_changeline_pattern.search(content):
+        content = re.sub(_existing_changeline_pattern, new_slug, content)
+    else:
+        content = content.replace(vendor_slug, new_slug)
     with open("CHANGELOG.md", "w", encoding="utf-8") as fp:
         fp.write(content)
 
