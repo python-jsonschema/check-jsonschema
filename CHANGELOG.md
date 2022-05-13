@@ -3,6 +3,9 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
+
+## 0.15.0
+
 - Update vendored schemas: renovate, gitlab, github-workflow, github-actions,
   azure-pipelines, readthedocs (2022-05-13)
 - Use `click` to implement CLI parsing. This provides several internal features
