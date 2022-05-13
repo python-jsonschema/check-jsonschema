@@ -19,7 +19,7 @@ jobs:
     # this action seems to have significant usage, so it should be stable
     # can always re-implement with `git status --porcelain`, etc. if necessary
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
+      uses: peter-evans/create-pull-request@v4
       with:
         commit-message: '[vendor-schemas] automated update'
         branch: vendor-schemas-auto
