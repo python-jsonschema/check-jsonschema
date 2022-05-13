@@ -14,6 +14,11 @@
   This makes YAML data better conform to the requirements for JSON Schema.
 - Change usage of stderr/stdout to send more of the error information to stdout
   and more of the user-messaging to stderr
+- Deprecate `--show-all-validation-errors`. It will be removed in a future
+  release.
+- Add `-v/--verbose` and `-o/--output-format` to offer better control over
+  output. `--verbose` replaces `--show-all-validation-errors` and `-o` can be
+  used to request JSON output as in `-o JSON`.
 
 ## 0.14.3
 

@@ -14,6 +14,7 @@ from .loaders import (
     SchemaParseError,
     UnsupportedUrlScheme,
 )
+from .reporter import Reporter
 
 
 class _Exit(Exception):
@@ -26,17 +27,17 @@ class SchemaChecker:
         self,
         schema_loader: SchemaLoaderBase,
         instance_loader: InstanceLoader,
+        reporter: Reporter,
         *,
         format_opts: FormatOptions | None = None,
         traceback_mode: str = "short",
-        show_all_errors: bool = False,
     ):
         self._schema_loader = schema_loader
         self._instance_loader = instance_loader
+        self._reporter = reporter
 
         self._format_opts = format_opts if format_opts is not None else FormatOptions()
         self._traceback_mode = traceback_mode
-        self._show_all_errors = show_all_errors
 
     def _fail(self, msg: str, err: Exception | None = None) -> t.NoReturn:
         click.echo(msg, err=True)
@@ -75,13 +76,10 @@ class SchemaChecker:
             self._fail("Failure while loading instance files\n", e)
 
         if errors:
-            click.echo("Schema validation errors were encountered.", err=True)
-            for filename, file_errors in errors.items():
-                for err in file_errors:
-                    utils.print_validation_error(
-                        filename, err, show_all_errors=self._show_all_errors
-                    )
+            self._reporter.report_validation_errors(errors)
             raise _Exit(1)
+
+        self._reporter.report_success()
 
     def run(self) -> int:
         try:

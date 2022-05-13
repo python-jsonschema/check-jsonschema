@@ -172,6 +172,19 @@ checked. The following transforms are supported:
     for the purposes of validation. This transformation is based on Microsoft's
     lanaguage-server for VSCode and how it handles expressions
 
+### `-v`, `--verbose`
+
+Request more output.
+
+### `-q`, `--quiet`
+
+Request less output.
+
+### `-o`, `--output-format`
+
+Use this option to choose how the output is presented. Either as `TEXT` (the
+default) or `JSON`, as in `-o JSON`.
+
 ### Downloading and Caching Options
 
 By default, when `--schemafile` is used to refer to an `http://` or `https://`
@@ -219,10 +232,7 @@ python | Require the regex to be valid in python regex syntax.
 
 #### `--show-all-validation-errors`
 
-On validation errors, show all of the underlying errors which occurred.
-
-This is useful when a schema contains `oneOf` and `anyOf` clauses that make the
-default error message uninformative.
+Deprecated. Use `--verbose` instead.
 
 #### `--traceback-mode`
 

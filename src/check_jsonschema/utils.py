@@ -3,7 +3,6 @@ from __future__ import annotations
 import linecache
 import os
 import pathlib
-import sys
 import traceback
 import typing as t
 import urllib.parse
@@ -86,31 +85,27 @@ def filename2path(filename: str) -> pathlib.Path:
     return p.resolve()
 
 
-def print_shortened_error(
-    err: Exception, *, stream: t.TextIO = sys.stderr, indent: int = 0
-) -> None:
-    click.echo(indent * " " + f"{type(err).__name__}: {err}", file=stream)
+def print_shortened_error(err: Exception, *, indent: int = 0) -> None:
+    click.echo(indent * " " + f"{type(err).__name__}: {err}", err=True)
     if err.__traceback__ is not None:
         lineno = err.__traceback__.tb_lineno
         tb_frame = err.__traceback__.tb_frame
         filename = tb_frame.f_code.co_filename
         line = linecache.getline(filename, lineno)
-        click.echo((indent + 2) * " " + f'in "{filename}", line {lineno}', file=stream)
-        click.echo((indent + 2) * " " + ">>> " + line.strip(), file=stream)
+        click.echo((indent + 2) * " " + f'in "{filename}", line {lineno}', err=True)
+        click.echo((indent + 2) * " " + ">>> " + line.strip(), err=True)
 
 
-def print_shortened_trace(
-    caught_err: Exception, *, stream: t.TextIO = sys.stderr
-) -> None:
+def print_shortened_trace(caught_err: Exception) -> None:
     err_stack: list[Exception] = [caught_err]
     while err_stack[-1].__context__ is not None:
         err_stack.append(err_stack[-1].__context__)  # type: ignore[arg-type]
-    print_shortened_error(caught_err, stream=stream)
+    print_shortened_error(caught_err)
     indent = 0
     for err in err_stack[1:]:
         indent += 2
-        click.echo("\n" + indent * " " + "caused by\n", file=stream)
-        print_shortened_error(err, stream=stream, indent=indent)
+        click.echo("\n" + indent * " " + "caused by\n", err=True)
+        print_shortened_error(err, indent=indent)
 
 
 def print_error(err: Exception, mode: str = "short") -> None:
@@ -120,36 +115,9 @@ def print_error(err: Exception, mode: str = "short") -> None:
         traceback.print_exception(type(err), err, err.__traceback__)
 
 
-def format_validation_error_message(
-    err: jsonschema.ValidationError, filename: str | None = None
-) -> str:
-    error_loc = err.json_path
-    if filename:
-        error_loc = f"{filename}::{error_loc}"
-    return click.style(error_loc, fg="yellow") + f": {err.message}"
-
-
 def iter_validation_error(
     err: jsonschema.ValidationError,
 ) -> t.Iterator[jsonschema.ValidationError]:
     for e in err.context:
         yield e
         yield from iter_validation_error(e)
-
-
-def print_validation_error(
-    filename: str, err: jsonschema.ValidationError, show_all_errors: bool = False
-) -> None:
-    def _echo(s: str, *, n: int = 2):
-        click.echo(" " * n + s)
-
-    _echo(format_validation_error_message(err, filename=filename))
-    if err.context:
-        best_match = jsonschema.exceptions.best_match(err.context)
-        _echo("Underlying errors caused this.")
-        _echo("Best Match:")
-        _echo(format_validation_error_message(best_match), n=4)
-        if show_all_errors:
-            _echo("All Errors:")
-            for err in iter_validation_error(err):
-                _echo(format_validation_error_message(err), n=4)

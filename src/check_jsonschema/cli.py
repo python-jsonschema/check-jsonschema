@@ -16,6 +16,7 @@ from .loaders import (
     SchemaLoader,
     SchemaLoaderBase,
 )
+from .reporter import REPORTER_BY_NAME, Reporter
 from .transforms import TRANSFORM_LIBRARY, TransformT
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
@@ -54,8 +55,9 @@ class ParseResult:
         self.disable_format: bool = False
         self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
         # error and output controls
-        self.show_all_validation_errors: bool = False
+        self.verbosity: int = 1
         self.traceback_mode: str = "short"
+        self.output_format: str = "text"
 
     def set_schema(
         self, schemafile: str | None, builtin_schema: str | None, check_metaschema: bool
@@ -176,14 +178,6 @@ The '--builtin-schema' flag supports the following schema names:
     type=click.Choice(("json", "yaml"), case_sensitive=True),
 )
 @click.option(
-    "--show-all-validation-errors",
-    is_flag=True,
-    help=(
-        "On validation errors, show all of the underlying errors which occurred. "
-        "These may be useful when oneOf or anyOf is used in the schema."
-    ),
-)
-@click.option(
     "--traceback-mode",
     help=(
         "Set the mode of presentation for error traces. "
@@ -199,6 +193,34 @@ The '--builtin-schema' flag supports the following schema names:
         "they are checked."
     ),
     type=click.Choice(tuple(TRANSFORM_LIBRARY.keys())),
+)
+@click.option(
+    "-o",
+    "--output-format",
+    help="Which output format to use",
+    type=click.Choice(tuple(REPORTER_BY_NAME.keys()), case_sensitive=False),
+    default="text",
+)
+@click.option(
+    "-v",
+    "--verbose",
+    help=(
+        "Increase output verbosity. On validation errors, this may be especially "
+        "useful when oneOf or anyOf is used in the schema."
+    ),
+    count=True,
+)
+@click.option(
+    "-q",
+    "--quiet",
+    help="Reduce output verbosity",
+    count=True,
+)
+@click.option(
+    # TODO: remove in v0.15.1 or later
+    "--show-all-validation-errors",
+    is_flag=True,
+    hidden=True,
 )
 @click.argument("instancefiles", required=True, nargs=-1)
 @click.pass_context
@@ -216,6 +238,9 @@ def main(
     show_all_validation_errors: bool,
     traceback_mode: str,
     data_transform: str | None,
+    output_format: str,
+    verbose: int,
+    quiet: int,
     instancefiles: tuple[str, ...],
 ):
     args = ParseResult()
@@ -233,8 +258,13 @@ def main(
         args.default_filetype = default_filetype
     if data_transform is not None:
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
-    args.show_all_validation_errors = show_all_validation_errors
+    # verbosity behavior:
+    # - default is 1
+    # - count '-v' with a min of 1 if --show-all-validation-errors was given
+    # - subtract count of '-q'
+    args.verbosity = 1 + max(verbose, 1 if show_all_validation_errors else 0) - quiet
     args.traceback_mode = traceback_mode
+    args.output_format = output_format
 
     execute(args)
 
@@ -263,21 +293,25 @@ def build_instance_loader(args: ParseResult) -> InstanceLoader:
     )
 
 
+def build_reporter(args: ParseResult) -> Reporter:
+    cls = REPORTER_BY_NAME[args.output_format]
+    return cls(verbosity=args.verbosity)
+
+
 def build_checker(args: ParseResult) -> SchemaChecker:
     schema_loader = build_schema_loader(args)
     instance_loader = build_instance_loader(args)
+    reporter = build_reporter(args)
     return SchemaChecker(
         schema_loader,
         instance_loader,
+        reporter,
         format_opts=args.format_opts,
         traceback_mode=args.traceback_mode,
-        show_all_errors=args.show_all_validation_errors,
     )
 
 
 def execute(args: ParseResult) -> None:
     checker = build_checker(args)
     ret = checker.run()
-    if ret == 0:
-        click.echo("ok -- validation done", err=True)
     click.get_current_context().exit(ret)
