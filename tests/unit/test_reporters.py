@@ -20,7 +20,7 @@ def test_text_format_success(capsys, verbosity):
 
 @pytest.mark.parametrize("verbosity", (0, 1))
 def test_json_format_success(capsys, verbosity):
-    reporter = JsonReporter(verbosity=verbosity)
+    reporter = JsonReporter(verbosity=verbosity, pretty=False)
     reporter.report_success()
     captured = capsys.readouterr()
     assert captured.err == ""

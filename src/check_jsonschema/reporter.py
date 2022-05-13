@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import abc
 import json
-import sys
 import typing as t
 
 import click
@@ -95,10 +94,10 @@ class TextReporter(Reporter):
 
 
 class JsonReporter(Reporter):
-    def __init__(self, *, verbosity: int, pretty: bool | None = None) -> None:
+    def __init__(self, *, verbosity: int, pretty: bool = True) -> None:
         super().__init__(verbosity=verbosity)
-        # default to pretty output if stdout is a tty and compact output if not
-        self.pretty: bool = pretty if pretty is not None else sys.stdout.isatty()
+        # default to pretty output, can add a switch to disable this in the future
+        self.pretty = pretty
 
     def _dump(self, data: t.Any) -> None:
         if self.pretty:
