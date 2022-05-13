@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/Microsoft/azure-pipelines-vscode/blob/main/service-schema.json",
-  "$comment": "v1.202.0",
+  "$comment": "v1.203.0",
   "title": "Pipeline schema",
   "description": "A pipeline definition",
   "oneOf": [
@@ -4512,11 +4512,20 @@
               ]
             },
             {
-              "description": "Configure NuGet tools to authenticate with Azure Artifacts and other NuGet repositories. Requires NuGet >= 4.8.5385, dotnet >= 2.1.400, or MSBuild >= 15.8.166.59604",
-              "doNotSuggest": false,
+              "description": "This version of the task is deprecated, use NuGetAuthenticateV1 instead. Configure NuGet tools to authenticate with Azure Artifacts and other NuGet repositories. Requires NuGet >= 4.8.5385, dotnet >= 2.1.400, or MSBuild >= 15.8.166.59604.",
+              "deprecationMessage": "NuGetAuthenticate is deprecated - This version of the task is deprecated, use NuGetAuthenticateV1 instead. Configure NuGet tools to authenticate with Azure Artifacts and other NuGet repositories. Requires NuGet >= 4.8.5385, dotnet >= 2.1.400, or MSBuild >= 15.8.166.59604.",
+              "doNotSuggest": true,
               "ignoreCase": "value",
               "enum": [
                 "NuGetAuthenticate@0"
+              ]
+            },
+            {
+              "description": "Configure NuGet tools to authenticate with Azure Artifacts and other NuGet repositories. Requires NuGet >= 4.8.5385, dotnet >= 6, or MSBuild >= 15.8.166.59604",
+              "doNotSuggest": false,
+              "ignoreCase": "value",
+              "enum": [
+                "NuGetAuthenticate@1"
               ]
             },
             {
@@ -4913,19 +4922,19 @@
               ]
             },
             {
-              "description": "Restore, pack, or push NuGet packages, or run a NuGet command. Supports NuGet.org and authenticated feeds like Azure Artifacts and MyGet. Uses NuGet.exe and works with .NET Framework apps. For .NET Core and .NET Standard apps, use the .NET Core task.",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "NuGetCommand@2"
-              ]
-            },
-            {
               "description": "Installs or restores missing NuGet packages. Use NuGetAuthenticate@0 task for latest capabilities.",
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
                 "NuGetInstaller@0"
+              ]
+            },
+            {
+              "description": "Restore, pack, or push NuGet packages, or run a NuGet command. Supports NuGet.org and authenticated feeds like Azure Artifacts and MyGet. Uses NuGet.exe and works with .NET Framework apps. For .NET Core and .NET Standard apps, use the .NET Core task.",
+              "doNotSuggest": false,
+              "ignoreCase": "value",
+              "enum": [
+                "NuGetCommand@2"
               ]
             },
             {
@@ -5093,7 +5102,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "NuGetToolInstaller@1"
+                "NuGetToolInstaller@0"
               ]
             },
             {
@@ -5101,7 +5110,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "NuGetToolInstaller@0"
+                "NuGetToolInstaller@1"
               ]
             },
             {
@@ -10987,9 +10996,43 @@
         {
           "properties": {
             "task": {
-              "description": "NuGet authenticate\n\nConfigure NuGet tools to authenticate with Azure Artifacts and other NuGet repositories. Requires NuGet >= 4.8.5385, dotnet >= 2.1.400, or MSBuild >= 15.8.166.59604",
+              "description": "NuGet authenticate\n\nThis version of the task is deprecated, use NuGetAuthenticateV1 instead. Configure NuGet tools to authenticate with Azure Artifacts and other NuGet repositories. Requires NuGet >= 4.8.5385, dotnet >= 2.1.400, or MSBuild >= 15.8.166.59604.",
               "ignoreCase": "value",
               "pattern": "^NuGetAuthenticate@0$"
+            },
+            "inputs": {
+              "description": "NuGet authenticate inputs",
+              "properties": {
+                "nuGetServiceConnections": {
+                  "type": "string",
+                  "description": "Service connection credentials for feeds outside this organization",
+                  "ignoreCase": "key"
+                },
+                "forceReinstallCredentialProvider": {
+                  "type": "boolean",
+                  "description": "Reinstall the credential provider even if already installed",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "deprecationMessage": "NuGetAuthenticate is deprecated - This version of the task is deprecated, use NuGetAuthenticateV1 instead. Configure NuGet tools to authenticate with Azure Artifacts and other NuGet repositories. Requires NuGet >= 4.8.5385, dotnet >= 2.1.400, or MSBuild >= 15.8.166.59604.",
+          "doNotSuggest": true,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "NuGet authenticate\n\nConfigure NuGet tools to authenticate with Azure Artifacts and other NuGet repositories. Requires NuGet >= 4.8.5385, dotnet >= 6, or MSBuild >= 15.8.166.59604",
+              "ignoreCase": "value",
+              "pattern": "^NuGetAuthenticate@1$"
             },
             "inputs": {
               "description": "NuGet authenticate inputs",
@@ -15813,6 +15856,82 @@
         {
           "properties": {
             "task": {
+              "description": "NuGet Installer\n\nInstalls or restores missing NuGet packages. Use NuGetAuthenticate@0 task for latest capabilities.",
+              "ignoreCase": "value",
+              "pattern": "^NuGetInstaller@0$"
+            },
+            "inputs": {
+              "description": "NuGet Installer inputs",
+              "properties": {
+                "solution": {
+                  "type": "string",
+                  "description": "Path to solution or packages.config",
+                  "ignoreCase": "key"
+                },
+                "nugetConfigPath": {
+                  "type": "string",
+                  "description": "Path to NuGet.config",
+                  "ignoreCase": "key"
+                },
+                "restoreMode": {
+                  "description": "Installation type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "restore",
+                    "install"
+                  ]
+                },
+                "noCache": {
+                  "type": "boolean",
+                  "description": "Disable local cache",
+                  "ignoreCase": "key"
+                },
+                "nuGetRestoreArgs": {
+                  "type": "string",
+                  "description": "NuGet arguments",
+                  "ignoreCase": "key"
+                },
+                "verbosity": {
+                  "description": "Verbosity",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "-",
+                    "Quiet",
+                    "Normal",
+                    "Detailed"
+                  ]
+                },
+                "nuGetVersion": {
+                  "description": "NuGet Version",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "3.3.0",
+                    "3.5.0.1829",
+                    "4.0.0.2283",
+                    "custom"
+                  ]
+                },
+                "nuGetPath": {
+                  "type": "string",
+                  "description": "Path to NuGet.exe",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
               "description": "NuGet\n\nRestore, pack, or push NuGet packages, or run a NuGet command. Supports NuGet.org and authenticated feeds like Azure Artifacts and MyGet. Uses NuGet.exe and works with .NET Framework apps. For .NET Core and .NET Standard apps, use the .NET Core task.",
               "ignoreCase": "value",
               "pattern": "^NuGetCommand@2$"
@@ -16061,82 +16180,6 @@
                 "arguments": {
                   "type": "string",
                   "description": "Command and arguments",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": "NuGet Installer\n\nInstalls or restores missing NuGet packages. Use NuGetAuthenticate@0 task for latest capabilities.",
-              "ignoreCase": "value",
-              "pattern": "^NuGetInstaller@0$"
-            },
-            "inputs": {
-              "description": "NuGet Installer inputs",
-              "properties": {
-                "solution": {
-                  "type": "string",
-                  "description": "Path to solution or packages.config",
-                  "ignoreCase": "key"
-                },
-                "nugetConfigPath": {
-                  "type": "string",
-                  "description": "Path to NuGet.config",
-                  "ignoreCase": "key"
-                },
-                "restoreMode": {
-                  "description": "Installation type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "restore",
-                    "install"
-                  ]
-                },
-                "noCache": {
-                  "type": "boolean",
-                  "description": "Disable local cache",
-                  "ignoreCase": "key"
-                },
-                "nuGetRestoreArgs": {
-                  "type": "string",
-                  "description": "NuGet arguments",
-                  "ignoreCase": "key"
-                },
-                "verbosity": {
-                  "description": "Verbosity",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "-",
-                    "Quiet",
-                    "Normal",
-                    "Detailed"
-                  ]
-                },
-                "nuGetVersion": {
-                  "description": "NuGet Version",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "3.3.0",
-                    "3.5.0.1829",
-                    "4.0.0.2283",
-                    "custom"
-                  ]
-                },
-                "nuGetPath": {
-                  "type": "string",
-                  "description": "Path to NuGet.exe",
                   "ignoreCase": "key"
                 }
               },
@@ -17344,6 +17387,11 @@
                 "CompressSymbols": {
                   "type": "boolean",
                   "description": "Compress symbols",
+                  "ignoreCase": "key"
+                },
+                "SymbolExpirationInDays": {
+                  "type": "string",
+                  "description": "Symbol Expiration (in days)",
                   "ignoreCase": "key"
                 },
                 "IndexableFileFormats": {
@@ -18816,7 +18864,7 @@
             "task": {
               "description": "NuGet tool installer\n\nAcquires a specific version of NuGet from the internet or the tools cache and adds it to the PATH. Use this task to change the version of NuGet used in the NuGet tasks.",
               "ignoreCase": "value",
-              "pattern": "^NuGetToolInstaller@1$"
+              "pattern": "^NuGetToolInstaller@0$"
             },
             "inputs": {
               "description": "NuGet tool installer inputs",
@@ -18828,7 +18876,7 @@
                 },
                 "checkLatest": {
                   "type": "boolean",
-                  "description": "Always check for new versions",
+                  "description": "Always download the latest matching version",
                   "ignoreCase": "key"
                 }
               },
@@ -18849,7 +18897,7 @@
             "task": {
               "description": "NuGet tool installer\n\nAcquires a specific version of NuGet from the internet or the tools cache and adds it to the PATH. Use this task to change the version of NuGet used in the NuGet tasks.",
               "ignoreCase": "value",
-              "pattern": "^NuGetToolInstaller@0$"
+              "pattern": "^NuGetToolInstaller@1$"
             },
             "inputs": {
               "description": "NuGet tool installer inputs",
@@ -18861,7 +18909,7 @@
                 },
                 "checkLatest": {
                   "type": "boolean",
-                  "description": "Always download the latest matching version",
+                  "description": "Always check for new versions",
                   "ignoreCase": "key"
                 }
               },

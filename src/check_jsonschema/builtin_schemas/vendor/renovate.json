@@ -558,7 +558,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)docker-compose[^/]*\\.ya?ml$"
+          "(^|/)(?:docker-)?compose[^/]*\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -2070,9 +2070,7 @@
     "python": {
       "description": "Configuration object for Python.",
       "type": "object",
-      "default": {
-        "versioning": "pep440"
-      },
+      "default": {},
       "$ref": "#"
     },
     "rangeStrategy": {
