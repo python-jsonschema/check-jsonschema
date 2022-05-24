@@ -17,8 +17,11 @@ class NoSuchSchemaError(ValueError):
 
 def _get(package: str, resource: str, name: str) -> dict[str, t.Any]:
     try:
-        return json.loads(
-            importlib_resources.files(package).joinpath(resource).read_bytes()
+        return t.cast(
+            "dict[str, t.Any]",
+            json.loads(
+                importlib_resources.files(package).joinpath(resource).read_bytes()
+            ),
         )
     except (FileNotFoundError, ModuleNotFoundError):
         raise NoSuchSchemaError(f"no builtin schema named {name} was found")

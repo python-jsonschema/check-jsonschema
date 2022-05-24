@@ -23,15 +23,15 @@ MISSING_SUPPORT_MESSAGES: dict[str, str] = {
 class InstanceLoader:
     def __init__(
         self,
-        filenames,
+        filenames: t.Sequence[str],
         default_filetype: str | None = None,
         data_transform: TransformT | None = None,
-    ):
+    ) -> None:
         self._filenames = filenames
         self._default_ft = default_filetype.lower() if default_filetype else None
         self._data_transform = data_transform
 
-    def get_loadfunc(self, filename):
+    def get_loadfunc(self, filename: str) -> t.Callable:
         tags = identify.tags_from_path(filename)
         for (tag, loadfunc) in LOAD_FUNC_BY_TAG.items():
             if tag in tags:
@@ -50,7 +50,7 @@ class InstanceLoader:
             + ",".join(LOAD_FUNC_BY_TAG.keys())
         )
 
-    def iter_files(self):
+    def iter_files(self) -> t.Iterator[tuple[str, t.Any]]:
         for fn in self._filenames:
             loadfunc = self.get_loadfunc(fn)
 

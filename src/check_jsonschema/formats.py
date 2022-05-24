@@ -2,18 +2,19 @@ from __future__ import annotations
 
 import enum
 import re
+import typing as t
 
 import jsonschema
 
 
-def _regex_check(instance):
+def _regex_check(instance: t.Any) -> bool:
     if not isinstance(instance, str):
         return True
     re.compile(instance)
     return True
 
 
-def _gated_regex_check(instance):
+def _gated_regex_check(instance: t.Any) -> bool:
     if not isinstance(instance, str):
         return True
     if re.search(r"\(\?[^!=]", instance):
@@ -34,7 +35,7 @@ class FormatOptions:
         *,
         enabled: bool = True,
         regex_behavior: RegexFormatBehavior = RegexFormatBehavior.default,
-    ):
+    ) -> None:
         self.enabled = enabled
         self.regex_behavior = regex_behavior
 

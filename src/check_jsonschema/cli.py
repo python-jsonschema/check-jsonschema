@@ -242,7 +242,7 @@ def main(
     verbose: int,
     quiet: int,
     instancefiles: tuple[str, ...],
-):
+) -> None:
     args = ParseResult()
     evaluate_environment_settings(ctx)
 

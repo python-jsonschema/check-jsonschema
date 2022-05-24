@@ -16,7 +16,7 @@ from .utils import iter_validation_error
 
 
 class Reporter(abc.ABC):
-    def __init__(self, *, verbosity: int, **kwargs):
+    def __init__(self, *, verbosity: int, **kwargs: t.Any) -> None:
         self.verbosity = verbosity
         super().__init__(**kwargs)
 
@@ -44,7 +44,7 @@ class TextReporter(Reporter):
         self.stream = stream
         self.color = color
 
-    def _echo(self, s: str, *, indent: int = 0):
+    def _echo(self, s: str, *, indent: int = 0) -> None:
         click.echo(" " * indent + s, file=self.stream)
 
     def report_success(self) -> None:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import typing as t
 
 import identify
 import ruamel.yaml
@@ -13,7 +14,7 @@ from ..errors import SchemaParseError
 yaml = ruamel.yaml.YAML(typ="safe")
 
 
-def _json_load_schema(schema_location: str, fp) -> dict:
+def _json_load_schema(schema_location: str, fp: t.IO) -> dict:
     try:
         schema = json.load(fp)
     except ValueError:
@@ -23,7 +24,7 @@ def _json_load_schema(schema_location: str, fp) -> dict:
     return schema
 
 
-def _yaml_load_schema(schema_location: str, fp) -> dict:
+def _yaml_load_schema(schema_location: str, fp: t.IO) -> dict:
     try:
         schema = yaml.load(fp)
     except ruamel.yaml.error.YAMLError:
@@ -41,7 +42,7 @@ class LocalSchemaReader:
     def get_ref_base(self) -> str:
         return self.path.as_uri()
 
-    def read_schema(self):
+    def read_schema(self) -> dict:
         tags = identify.identify.tags_from_path(self.filename)
         with self.path.open(mode="rb") as f:
             if "yaml" in tags:
@@ -67,6 +68,6 @@ class HttpSchemaReader:
     def get_ref_base(self) -> str:
         return self.url
 
-    def read_schema(self):
+    def read_schema(self) -> dict:
         with self.downloader.open() as fp:
             return _json_load_schema(self.url, fp)

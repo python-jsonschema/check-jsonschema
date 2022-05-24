@@ -20,7 +20,7 @@ class SchemaLoaderBase:
         instance_filename: str,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
-    ):
+    ) -> jsonschema.Validator:
         raise NotImplementedError
 
 
@@ -30,7 +30,7 @@ class SchemaLoader(SchemaLoaderBase):
         schemafile: str,
         cache_filename: str | None = None,
         disable_cache: bool = False,
-    ):
+    ) -> None:
         # record input parameters (these are not to be modified)
         self.schemafile = schemafile
         self.cache_filename = cache_filename
@@ -45,7 +45,7 @@ class SchemaLoader(SchemaLoaderBase):
         self._reader: LocalSchemaReader | HttpSchemaReader | None = None
 
         # setup a location to store the validator so that it is only built once by default
-        self._validator = None
+        self._validator: jsonschema.Validator | None = None
 
     @property
     def reader(self) -> LocalSchemaReader | HttpSchemaReader:
@@ -75,7 +75,7 @@ class SchemaLoader(SchemaLoaderBase):
     def get_schema(self) -> dict[str, t.Any]:
         return self.reader.read_schema()
 
-    def make_validator(self, format_opts: FormatOptions):
+    def make_validator(self, format_opts: FormatOptions) -> jsonschema.Validator:
         schema_uri = self.get_schema_ref_base()
         schema = self.get_schema()
 
@@ -98,14 +98,14 @@ class SchemaLoader(SchemaLoaderBase):
             resolver=ref_resolver,
             format_checker=format_checker,
         )
-        return validator
+        return t.cast(jsonschema.Validator, validator)
 
     def get_validator(
         self,
         instance_filename: str,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
-    ):
+    ) -> jsonschema.Validator:
         self._validator = self.make_validator(format_opts)
         return self._validator
 
@@ -127,6 +127,6 @@ class MetaSchemaLoader(SchemaLoaderBase):
         instance_filename: str,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
-    ):
+    ) -> jsonschema.Validator:
         validator = jsonschema.validators.validator_for(instance_doc)
-        return validator(validator.META_SCHEMA)
+        return t.cast(jsonschema.Validator, validator(validator.META_SCHEMA))

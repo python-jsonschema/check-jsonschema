@@ -37,11 +37,11 @@ class AzurePipelinesDataError(ValueError):
         super().__init__(f"azure-pipelines transform: {message}")
 
 
-def is_expression(s: str):
+def is_expression(s: str) -> bool:
     return s.startswith("${{") and s.endswith("}}")
 
 
-def traverse_data(data: t.Any):
+def traverse_data(data: t.Any) -> t.Any:
     if isinstance(data, dict):
         return traverse_dict(data)
     if isinstance(data, list):

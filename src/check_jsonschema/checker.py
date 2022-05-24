@@ -45,7 +45,9 @@ class SchemaChecker:
             utils.print_error(err, mode=self._traceback_mode)
         raise _Exit(1)
 
-    def get_validator(self, filename: str, doc: dict[str, t.Any]):
+    def get_validator(
+        self, filename: str, doc: dict[str, t.Any]
+    ) -> jsonschema.Validator:
         try:
             return self._schema_loader.get_validator(filename, doc, self._format_opts)
         except SchemaParseError as e:
@@ -57,8 +59,8 @@ class SchemaChecker:
         except Exception as e:
             self._fail("Error: Unexpected Error building schema validator", e)
 
-    def _build_error_map(self):
-        errors = {}
+    def _build_error_map(self) -> dict:
+        errors: dict[str, list[jsonschema.ValidationError]] = {}
         for filename, doc in self._instance_loader.iter_files():
             validator = self.get_validator(filename, doc)
             for err in validator.iter_errors(doc):
