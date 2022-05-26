@@ -3,7 +3,11 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
-- Update vendored schemas (2022-05-26)
+
+## 0.15.1
+
+- Update vendored schemas: bamboo-spec, dependabot, github-actions,
+  github-workflows, gitlab-ci, readthedocs, renovate, travis (2022-05-26)
 - Add `check-dependabot` to supported hooks
 
 ## 0.15.0
