@@ -385,7 +385,7 @@
     "commitMessageExtra": {
       "description": "Extra description used after the commit message topic - typically the version.",
       "type": "string",
-      "default": "to {{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}"
+      "default": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}"
     },
     "commitMessagePrefix": {
       "description": "Prefix to add to start of commit messages and PR titles. Uses a semantic prefix if `semanticCommits` is enabled.",
@@ -583,7 +583,7 @@
       "default": {
         "fileMatch": [
           "(^|/|\\.)Dockerfile$",
-          "(^|/)Dockerfile\\.[^/]*$"
+          "(^|/)Dockerfile[^/]*$"
         ]
       },
       "$ref": "#"
@@ -2224,9 +2224,14 @@
       "default": "disabled"
     },
     "requireConfig": {
-      "description": "Set to `false` if it is optional for repositories to contain a config.",
-      "type": "boolean",
-      "default": true
+      "description": "Controls Renovate's behavior regarding repository config files such as `renovate.json`.",
+      "type": "string",
+      "enum": [
+        "required",
+        "optional",
+        "ignored"
+      ],
+      "default": "required"
     },
     "respectLatest": {
       "description": "Ignore versions newer than npm \"latest\" version.",
@@ -2538,6 +2543,16 @@
       "description": "Username for authentication.",
       "type": "string"
     },
+    "velaci": {
+      "description": "Configuration object for the velaci manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/).vela.ya?ml$"
+        ]
+      },
+      "$ref": "#"
+    },
     "versioning": {
       "description": "Versioning to use for filtering and comparisons.",
       "type": "string",
@@ -2546,6 +2561,7 @@
         "cargo",
         "composer",
         "conan",
+        "debian",
         "docker",
         "git",
         "gradle",
