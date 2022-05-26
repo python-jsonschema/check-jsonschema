@@ -4,6 +4,7 @@
 
 <!-- vendor-insert-here -->
 - Update vendored schemas (2022-05-26)
+- Add `check-dependabot` to supported hooks
 
 ## 0.15.0
 

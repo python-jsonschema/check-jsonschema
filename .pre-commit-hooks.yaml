@@ -34,6 +34,14 @@
   files: ^bamboo-specs/.*\.(yml|yaml)$
   types: [yaml]
 
+- id: check-dependabot
+  name: Validate Dependabot Config (v2)
+  description: 'Validate Dependabot Config (v2) against the schema provided by SchemaStore'
+  entry: check-jsonschema --builtin-schema vendor.dependabot
+  language: python
+  files: ^\.github/dependabot.yml$
+  types: [yaml]
+
 - id: check-github-actions
   name: Validate GitHub Actions
   description: 'Validate GitHub Actions against the schema provided by SchemaStore'

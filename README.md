@@ -33,6 +33,9 @@ SchemaStore and other sources:
 - `check-bamboo-spec`:
     Validate Bamboo Specs against the schema provided by SchemaStore
 
+- `check-dependabot`:
+    Validate Dependabot Config (v2) against the schema provided by SchemaStore
+
 - `check-github-actions`:
     Validate GitHub Actions against the schema provided by SchemaStore
 
@@ -129,6 +132,7 @@ SchemaStore and other sources:
 <!-- vendored-schema-list-start -->
 - `vendor.azure-pipelines`
 - `vendor.bamboo-spec`
+- `vendor.dependabot`
 - `vendor.github-actions`
 - `vendor.github-workflows`
 - `vendor.gitlab-ci`

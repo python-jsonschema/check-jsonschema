@@ -38,6 +38,14 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "dependabot": {
+        "url": "https://json.schemastore.org/dependabot-2.0.json",
+        "hook_config": {
+            "name": "Validate Dependabot Config (v2)",
+            "files": r"^\.github/dependabot.yml$",
+            "types": "yaml",
+        },
+    },
     "github-actions": {
         "url": "https://json.schemastore.org/github-action",
         "hook_config": {
