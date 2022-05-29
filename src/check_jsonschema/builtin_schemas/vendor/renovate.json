@@ -253,6 +253,11 @@
       "type": "string",
       "default": "renovate/"
     },
+    "branchPrefixOld": {
+      "description": "Old Prefix to check for existing PRs.",
+      "type": "string",
+      "default": "renovate/"
+    },
     "branchTopic": {
       "description": "Branch topic.",
       "type": "string",
