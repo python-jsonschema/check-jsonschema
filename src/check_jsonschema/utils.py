@@ -118,6 +118,7 @@ def print_error(err: Exception, mode: str = "short") -> None:
 def iter_validation_error(
     err: jsonschema.ValidationError,
 ) -> t.Iterator[jsonschema.ValidationError]:
-    for e in err.context:
-        yield e
-        yield from iter_validation_error(e)
+    if err.context:
+        for e in err.context:
+            yield e
+            yield from iter_validation_error(e)

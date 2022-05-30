@@ -50,12 +50,17 @@ def make_format_checker(
     formats.remove("regex")
     checker = jsonschema.FormatChecker(formats=formats)
 
+    # FIXME: type-ignore comments to handle incorrect annotation
+    # fixed in https://github.com/python/typeshed/pull/7990
+    # once available, remove the ignores
     if opts.regex_behavior == RegexFormatBehavior.disabled:
         pass
     elif opts.regex_behavior == RegexFormatBehavior.default:
-        checker.checks("regex", raises=re.error)(_gated_regex_check)
+        checker.checks("regex", raises=re.error)(  # type: ignore[arg-type]
+            _gated_regex_check
+        )
     elif opts.regex_behavior == RegexFormatBehavior.python:
-        checker.checks("regex", raises=re.error)(_regex_check)
+        checker.checks("regex", raises=re.error)(_regex_check)  # type: ignore[arg-type]
     else:  # pragma: no cover
         raise NotImplementedError
 
