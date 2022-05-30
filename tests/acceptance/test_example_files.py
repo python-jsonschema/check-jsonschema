@@ -5,6 +5,7 @@ import pytest
 import ruamel.yaml
 
 from check_jsonschema.loaders.instance.json5 import ENABLED as JSON5_ENABLED
+from check_jsonschema.loaders.instance.toml import ENABLED as TOML_ENABLED
 
 yaml = ruamel.yaml.YAML(typ="safe")
 
@@ -47,14 +48,20 @@ def _get_explicit_cases(category):
     return res
 
 
+def _check_case_skip(case_name):
+    if case_name.endswith("json5") and not JSON5_ENABLED:
+        pytest.skip("cannot check json5 support without json5 enabled")
+    if case_name.endswith("toml") and not TOML_ENABLED:
+        pytest.skip("cannot check toml support without toml enabled")
+
+
 POSITIVE_HOOK_CASES = _build_hook_cases("positive")
 NEGATIVE_HOOK_CASES = _build_hook_cases("negative")
 
 
 @pytest.mark.parametrize("case_name", POSITIVE_HOOK_CASES.keys())
 def test_hook_positive_examples(case_name, run_line):
-    if case_name.endswith("json5") and not JSON5_ENABLED:
-        pytest.skip("cannot check json5 support without json5 enabled")
+    _check_case_skip(case_name)
 
     hook_id = POSITIVE_HOOK_CASES[case_name]
     ret = run_line(HOOK_CONFIG[hook_id] + [str(EXAMPLE_HOOK_FILES / case_name)])
@@ -63,6 +70,7 @@ def test_hook_positive_examples(case_name, run_line):
 
 @pytest.mark.parametrize("case_name", NEGATIVE_HOOK_CASES.keys())
 def test_hook_negative_examples(case_name, run_line):
+    _check_case_skip(case_name)
     hook_id = NEGATIVE_HOOK_CASES[case_name]
     ret = run_line(HOOK_CONFIG[hook_id] + [str(EXAMPLE_HOOK_FILES / case_name)])
     assert ret.exit_code == 1
@@ -70,11 +78,14 @@ def test_hook_negative_examples(case_name, run_line):
 
 @pytest.mark.parametrize("case_name", _get_explicit_cases("positive"))
 def test_explicit_positive_examples(case_name, run_line):
+    _check_case_skip(case_name)
     casedir = EXAMPLE_EXPLICIT_FILES / "positive" / case_name
 
     instance = casedir / "instance.json"
     if not instance.exists():
         instance = casedir / "instance.yaml"
+    if not instance.exists():
+        instance = casedir / "instance.toml"
     if not instance.exists():
         raise Exception("could not find an instance file for test case")
 

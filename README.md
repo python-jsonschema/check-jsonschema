@@ -272,3 +272,22 @@ For example,
     - id: check-renovate
       additional_dependencies: ['pyjson5']
 ```
+
+### TOML
+
+In order to support TOML files, the `tomli` package must be installed.
+
+In `pre-commit-config.yaml`, this can be done with `additional_dependencies`.
+For example,
+
+```yaml
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.15.1
+  hooks:
+    - id: check-jsonschema
+      name: 'Check GitHub Workflows'
+      files: ^mydata/
+      types: [toml]
+      args: ['--schemafile', 'schemas/toml-data.json']
+      additional_dependencies: ['tomli']
+```

@@ -4,6 +4,9 @@
 
 <!-- vendor-insert-here -->
 - Update vendored schemas (2022-05-29)
+- Add support for TOML instance files using `tomli`. See documentation on
+  optional parsers for details
+- Instance files are now read in binary mode, not UTF-8 encoded
 
 ## 0.15.1
 

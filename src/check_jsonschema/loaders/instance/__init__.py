@@ -7,7 +7,7 @@ from identify import identify
 
 from ...transforms import TransformT
 from ..errors import BadFileTypeError
-from . import json5, yaml
+from . import json5, toml, yaml
 
 LOAD_FUNC_BY_TAG: dict[str, t.Callable] = {
     "json": json.load,
@@ -15,8 +15,11 @@ LOAD_FUNC_BY_TAG: dict[str, t.Callable] = {
 }
 if json5.ENABLED:
     LOAD_FUNC_BY_TAG["json5"] = json5.load  # type: ignore[assignment]
+if toml.ENABLED:
+    LOAD_FUNC_BY_TAG["toml"] = toml.load  # type: ignore[assignment]
 MISSING_SUPPORT_MESSAGES: dict[str, str] = {
     "json5": json5.MISSING_SUPPORT_MESSAGE,
+    "toml": toml.MISSING_SUPPORT_MESSAGE,
 }
 
 
@@ -54,7 +57,7 @@ class InstanceLoader:
         for fn in self._filenames:
             loadfunc = self.get_loadfunc(fn)
 
-            with open(fn, encoding="utf-8") as fp:
+            with open(fn, "rb") as fp:
                 data = loadfunc(fp)
                 if self._data_transform:
                     data = self._data_transform(data)
