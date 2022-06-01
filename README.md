@@ -291,3 +291,10 @@ For example,
       args: ['--schemafile', 'schemas/toml-data.json']
       additional_dependencies: ['tomli']
 ```
+
+The TOML format has support for dates and times as first-class types, meaning
+that they are parsed as part of the data format.
+`check-jsonschema` will convert the parsed data back into strings so that they
+can be checked by a schema. In general, the string conversion should be
+checkable using `"format": "date-time"`, `"format": "date"`, and
+`"format": "time"`.

@@ -1,0 +1,97 @@
+[object]
+# Comment
+
+string = "I'm a string."
+multiline_string = '''I\'m
+a multiline
+string'''
+
+integer_1 = 1
+integer_2 = +1
+integer_3 = -1
+
+float_1 = +1.0
+float_2 = 3.1415
+float_3 = -0.01
+float_4 = 5e+22
+float_5 = 1e06
+float_6 = -2E-2
+float_7 = 6.626e-34
+float_8 = 224_617.445_991_228
+
+infinite_1 = inf
+infinite_2 = +inf
+infinite_3 = -inf
+
+not_a_number_1 = nan
+not_a_number_2 = +nan
+not_a_number_3 = -nan
+
+hexadecimal_1 = 0xDEADBEEF
+hexadecimal_2 = 0xdeadbeef
+hexadecimal_3 = 0xdead_beef
+
+octal_1 = 0o01234567
+octal_2 = 0o755
+
+binary = 0b11010110
+
+# The null doesn't exists in TOML, but getting a value from an object
+# using a non existent key will be validated against the "null" type
+# null = Nil   # https://github.com/toml-lang/toml/issues/30
+
+boolean_1 = true
+boolean_2 = false
+
+# tomli converts dates to datetime objects, so check-jsonschema must convert
+# back to strings to check against date-time -- similar for date and time types
+# See https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.7.3.1
+offset_datetime_1 = 1979-05-27T07:32:00Z
+offset_datetime_2 = 1979-05-27T00:32:00-07:00
+offset_datetime_3 = 1979-05-27T00:32:00.999999-07:00
+offset_datetime_4 = '1979-05-27T07:32:00Z'
+offset_datetime_5 = '1979-05-27T00:32:00-07:00'
+offset_datetime_6 = '1979-05-27T00:32:00.999999-07:00'
+
+naive_datetime_1 = 1979-05-27T07:32:00
+local_datetime_2 = 1979-05-27T00:32:00.999999
+
+# these are invalid strings under the RFC because they lack the offset|Z
+# local_datetime_3 = '1979-05-27T07:32:00'
+# local_datetime_4 = '1979-05-27T00:32:00.999999'
+
+local_date_1 = 1979-05-27
+local_date_2 = '1979-05-27'
+
+local_time_1 = 07:32:00
+local_time_2 = 00:32:00.999999
+# these are invalid strings under the RFC because they lack the offset|Z
+# local_time_3 = '07:32:00'
+# local_time_4 = '00:32:00.999999'
+
+# TOML does not have a native duration type which translates to
+# datetime.timedelta under tomli
+# so ISO durations can only be represented as strings
+duration_1 = "P1D"
+
+array_1 = ["a", 2, true]
+array_2 = [
+    "b",
+    3.1,
+    false,
+]
+
+  [nested_object_1]
+  foo = "bar"
+
+nested_object_2 = { foo = "bar" }
+
+[[array_of_objects_1]]
+foo = "bar"
+[[array_of_objects_1]]
+foo = "bar"
+
+    [[nested_array_of_objects_1]]
+    foo = "bar"
+    [[nested_array_of_objects_1]]
+    foo = "bar"
