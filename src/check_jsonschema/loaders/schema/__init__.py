@@ -79,12 +79,10 @@ class SchemaLoader(SchemaLoaderBase):
         schema_uri = self.get_schema_ref_base()
         schema = self.get_schema()
 
-        schema_attr = schema.get("$schema")
-        if schema_attr is not None and not isinstance(schema_attr, str):
-            schema_attr = None
+        schema_dialect = schema.get("$schema")
 
         # format checker (which may be None)
-        format_checker = make_format_checker(format_opts, schema_attr)
+        format_checker = make_format_checker(format_opts, schema_dialect)
 
         # ref resolver which may be built from the schema path
         # if the location is a URL, there's no change, but if it's a file path

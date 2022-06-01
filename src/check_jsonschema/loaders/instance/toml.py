@@ -32,11 +32,16 @@ def _normalize(data: t.Any) -> t.Any:
     elif isinstance(data, list):
         return [_normalize(x) for x in data]
     else:
-        if isinstance(data, datetime.datetime):
-            if data.tzinfo is None:
-                return data.isoformat() + "Z"
-            return data.isoformat()
-        elif isinstance(data, datetime.time):
+        # python's datetime will format to an ISO partial time when handling a naive
+        # time/datetime , but JSON Schema format validation specifies that date-time is
+        # taken from RFC3339, which defines "date-time" as including 'Z|offset'
+        # the specification for "time" is less clear because JSON Schema does not specify
+        # which RFC3339 definition should be used, and the RFC has no format named "time",
+        # only "full-time" (with Z|offset) and "partial-time" (no offset)
+        #
+        # rfc3339_validator (used by 'jsonschema') requires the offset, so we will do the
+        # same
+        if isinstance(data, datetime.datetime) or isinstance(data, datetime.time):
             if data.tzinfo is None:
                 return data.isoformat() + "Z"
             return data.isoformat()
@@ -47,7 +52,7 @@ def _normalize(data: t.Any) -> t.Any:
 
 if has_toml:
 
-    def load(stream: t.TextIO) -> t.Any:
+    def load(stream: t.BinaryIO) -> t.Any:
         data = tomli.load(stream)
         return _normalize(data)
 

@@ -1,5 +1,6 @@
 [run]
 parallel = True
+omit = src/check_jsonschema/__main__.py
 
 [report]
 show_missing = True

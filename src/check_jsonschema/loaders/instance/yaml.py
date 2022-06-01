@@ -22,6 +22,6 @@ def _normalize(data: t.Any) -> t.Any:
         return data
 
 
-def load(stream: t.TextIO) -> t.Any:
+def load(stream: t.BinaryIO) -> t.Any:
     data = _yaml.load(stream)
     return _normalize(data)
