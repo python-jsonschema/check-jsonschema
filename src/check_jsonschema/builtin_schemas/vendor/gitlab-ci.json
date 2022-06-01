@@ -566,11 +566,11 @@
       "markdownDescription": "Defines environment variables for specific jobs. Job level property overrides global variables. If a job sets `variables: {}`, all global variables are turned off. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#rulesvariables).",
       "anyOf": [
         {
-          "type": "object",   
+          "type": "object",
           "additionalProperties": {
             "type": ["string", "integer", "array"]
           }
-        }, 
+        },
         {
           "type": "array",
           "items": {
