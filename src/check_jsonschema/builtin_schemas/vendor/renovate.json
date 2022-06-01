@@ -131,6 +131,23 @@
       "type": "string",
       "default": "automergeComment"
     },
+    "automergeSchedule": {
+      "description": "Limit automerge to these times of day or week.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "default": [
+        "at any time"
+      ]
+    },
     "automergeStrategy": {
       "description": "The merge strategy to use when automerging PRs. Used only if `automergeType=pr`.",
       "type": "string",
