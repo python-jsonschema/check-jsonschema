@@ -43,8 +43,8 @@ binary = 0b11010110
 boolean_1 = true
 boolean_2 = false
 
-# FIXME: dates can't be validated against { "type": "string", "format": "date" }
-# because tomli converts them to datetime objects, must be defined as strings
+# tomli converts dates to datetime objects, so check-jsonschema must convert
+# back to strings to check against date-time -- similar for date and time types
 # See https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.7.3.1
 offset_datetime_1 = 1979-05-27T07:32:00Z
 offset_datetime_2 = 1979-05-27T00:32:00-07:00
@@ -53,18 +53,26 @@ offset_datetime_4 = '1979-05-27T07:32:00Z'
 offset_datetime_5 = '1979-05-27T00:32:00-07:00'
 offset_datetime_6 = '1979-05-27T00:32:00.999999-07:00'
 
-local_datetime_1 = 1979-05-27T07:32:00
+naive_datetime_1 = 1979-05-27T07:32:00
 local_datetime_2 = 1979-05-27T00:32:00.999999
-local_datetime_3 = '1979-05-27T07:32:00'
-local_datetime_4 = '1979-05-27T00:32:00.999999'
+
+# these are invalid strings under the RFC because they lack the offset|Z
+# local_datetime_3 = '1979-05-27T07:32:00'
+# local_datetime_4 = '1979-05-27T00:32:00.999999'
 
 local_date_1 = 1979-05-27
 local_date_2 = '1979-05-27'
 
 local_time_1 = 07:32:00
 local_time_2 = 00:32:00.999999
-local_time_3 = '07:32:00'
-local_time_4 = '00:32:00.999999'
+# these are invalid strings under the RFC because they lack the offset|Z
+# local_time_3 = '07:32:00'
+# local_time_4 = '00:32:00.999999'
+
+# TOML does not have a native duration type which translates to
+# datetime.timedelta under tomli
+# so ISO durations can only be represented as strings
+duration_1 = "P1D"
 
 array_1 = ["a", 2, true]
 array_2 = [
