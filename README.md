@@ -287,7 +287,7 @@ For example,
     - id: check-jsonschema
       name: 'Check GitHub Workflows'
       files: ^mydata/
-      types: [toml]
+      types_or: [toml]
       args: ['--schemafile', 'schemas/toml-data.json']
       additional_dependencies: ['tomli']
 ```
