@@ -71,6 +71,22 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "pre-commit-config": {
+        "url": "https://json.schemastore.org/pre-commit-config",
+        "hook_config": {
+            "name": "Validate .pre-comit-config.yaml",
+            "files": r"^\.pre-commit-config\.ya?ml$",
+            "types": "yaml",
+        },
+    },
+    "pre-commit-hooks": {
+        "url": "https://json.schemastore.org/pre-commit-hooks",
+        "hook_config": {
+            "name": "Validate .pre-comit-hooks.yaml",
+            "files": r"^\.pre-commit-hooks\.ya?ml$",
+            "types": "yaml",
+        },
+    },
     "readthedocs": {
         "url": _githubusercontent_url(
             "readthedocs",
@@ -85,22 +101,6 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "files": r"^\.readthedocs.(yml|yaml)$",
             "types": "yaml",
         },
-    },
-    "pre-commit-config": {
-        "url": "https://json.schemastore.org/pre-commit-config",
-        "hook_config": {
-            "name": "Validate .pre-comit-config.yaml",
-            "files": r"^\.pre-commit-config\.ya?ml$",
-            "types": "yaml"
-        }
-    },
-    "pre-commit-hooks": {
-        "url": "https://json.schemastore.org/pre-commit-hooks",
-        "hook_config": {
-            "name": "Validate .pre-comit-hooks.yaml",
-            "files": r"^\.pre-commit-hooks\.ya?ml$",
-            "types": "yaml"
-        }
     },
     "renovate": {
         "url": "https://docs.renovatebot.com/renovate-schema.json",
