@@ -3,7 +3,7 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
-- Update vendored schemas (2022-06-01)
+- Update vendored schemas (2022-06-05)
 - Add support for TOML instance files using `tomli`. See documentation on
   optional parsers for details.
   Thanks to [@mondeja](https://github.com/mondeja) for the request and test
