@@ -1,15 +1,13 @@
 repos:
 # dogfood
-- repo: https://github.com/mondeja/check-jsonschema
-  rev: pre-commit-schemas
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.15.1
   hooks:
     - id: check-github-workflows
     - id: check-jsonschema
       name: Validate Vendored Schemas
       args: ["--check-metaschema"]
       files: ^src/check_jsonschema/builtin_schemas/vendor/.*\.json$
-    - id: check-pre-commit-config
-    - id: check-pre-commit-hooks
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
   rev: v4.2.0
   hooks:
