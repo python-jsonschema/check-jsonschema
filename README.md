@@ -48,6 +48,12 @@ SchemaStore and other sources:
 - `check-readthedocs`:
     Validate ReadTheDocs config against the schema provided by ReadTheDocs
 
+- `check-pre-commit-config`:
+    Validate .pre-comit-config.yaml against the schema provided by SchemaStore
+
+- `check-pre-commit-hooks`:
+    Validate .pre-comit-hooks.yaml against the schema provided by SchemaStore
+
 - `check-renovate`:
     Validate Renovate config against the schema provided by Renovate (does not support renovate config in package.json)
 
@@ -137,6 +143,8 @@ SchemaStore and other sources:
 - `vendor.github-workflows`
 - `vendor.gitlab-ci`
 - `vendor.readthedocs`
+- `vendor.pre-commit-config`
+- `vendor.pre-commit-hooks`
 - `vendor.renovate`
 - `vendor.travis`
 <!-- vendored-schema-list-end -->

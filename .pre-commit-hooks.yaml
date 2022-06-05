@@ -78,6 +78,22 @@
   files: ^\.readthedocs.(yml|yaml)$
   types: [yaml]
 
+- id: check-pre-commit-config
+  name: Validate .pre-comit-config.yaml
+  description: 'Validate .pre-comit-config.yaml against the schema provided by SchemaStore'
+  entry: check-jsonschema --builtin-schema vendor.pre-commit-config
+  language: python
+  files: ^\.pre-commit-config\.ya?ml$
+  types: [yaml]
+
+- id: check-pre-commit-hooks
+  name: Validate .pre-comit-hooks.yaml
+  description: 'Validate .pre-comit-hooks.yaml against the schema provided by SchemaStore'
+  entry: check-jsonschema --builtin-schema vendor.pre-commit-hooks
+  language: python
+  files: ^\.pre-commit-hooks\.ya?ml$
+  types: [yaml]
+
 - id: check-renovate
   name: Validate Renovate Config
   description: 'Validate Renovate config against the schema provided by Renovate (does not support renovate config in package.json)'
