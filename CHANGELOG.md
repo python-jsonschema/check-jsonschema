@@ -3,15 +3,18 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
-- Update vendored schemas (2022-06-06)
+
+## 0.16.0
+
+- Update vendored schemas: gitlab-ci, renovate (2022-06-06)
 - Add support for TOML instance files using `tomli`. See documentation on
   optional parsers for details.
   Thanks to [@mondeja](https://github.com/mondeja) for the request and test
   data!
 - Instance files are now read in binary mode, not UTF-8 encoded
 - The behavior of format checkers is now more draft-specific, as
-  `check-jsonschema` will now use the appropriate checker for athe schema's
-  draft as detected via the `$schema` attribute
+  `check-jsonschema` will now use the appropriate checker for the schema's
+  dialect as detected via the `$schema` attribute
 
 ## 0.15.1
 
