@@ -1,5 +1,6 @@
 [run]
 parallel = True
+source = src/
 omit = src/check_jsonschema/__main__.py
 
 [report]
