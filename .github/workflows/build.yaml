@@ -27,7 +27,7 @@ jobs:
       - name: install requirements
         run: python -m pip install tox
       - name: test
-        run: python -m tox -e py{,-json5,-pyjson5,-tomli}{,-format}
+        run: python -m tox -e "py{,-json5,-pyjson5,-tomli}{,-format}"
       - name: twine-check
         run: python -m tox -e twine-check
 
