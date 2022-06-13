@@ -22,16 +22,6 @@
         "type": "string"
       }
     },
-    "aliases": {
-      "description": "Aliases for registries, package manager specific.",
-      "type": "object",
-      "default": {},
-      "additionalProperties": {
-        "type": "string",
-        "format": "uri"
-      },
-      "$ref": "#"
-    },
     "allowCustomCrateRegistries": {
       "description": "Set this to `true` if custom crate registries are allowed.",
       "type": "boolean",
@@ -956,7 +946,7 @@
       "description": "Configuration object for the helm-requirements manager",
       "type": "object",
       "default": {
-        "aliases": {
+        "registryAliases": {
           "stable": "https://charts.helm.sh/stable"
         },
         "commitMessageTopic": "helm chart {{depName}}",
@@ -982,7 +972,7 @@
       "description": "Configuration object for the helmfile manager",
       "type": "object",
       "default": {
-        "aliases": {
+        "registryAliases": {
           "stable": "https://charts.helm.sh/stable"
         },
         "commitMessageTopic": "helm chart {{depName}}",
@@ -1004,7 +994,7 @@
       "description": "Configuration object for the helmv3 manager",
       "type": "object",
       "default": {
-        "aliases": {
+        "registryAliases": {
           "stable": "https://charts.helm.sh/stable"
         },
         "commitMessageTopic": "helm chart {{depName}}",
@@ -2210,6 +2200,16 @@
       },
       "default": []
     },
+    "registryAliases": {
+      "description": "Aliases for registries.",
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "type": "string",
+        "format": "uri"
+      },
+      "$ref": "#"
+    },
     "registryUrls": {
       "description": "List of URLs to try for dependency lookup. Package manager specific.",
       "type": "array",
@@ -2614,6 +2614,7 @@
         "groupName": null,
         "schedule": [],
         "dependencyDashboardApproval": false,
+        "stabilityDays": 0,
         "rangeStrategy": "update-lockfile",
         "commitMessageSuffix": "[SECURITY]",
         "branchTopic": "{{{datasource}}}-{{{depName}}}-vulnerability",
