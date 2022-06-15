@@ -669,7 +669,7 @@
       "default": false
     },
     "extends": {
-      "description": "Configuration presets to use or extend. Note: This config option does not work if you use a `config.js` file.",
+      "description": "Configuration presets to use or extend.",
       "oneOf": [
         {
           "type": "array",
