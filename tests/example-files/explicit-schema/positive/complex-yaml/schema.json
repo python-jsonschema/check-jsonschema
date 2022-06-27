@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "object": {
+      "type": "object",
+      "properties": {
+        "string": { "type": "string" },
+        "multiline_string": { "type": "string" },
+        "integer_1": { "type": "integer" },
+        "integer_2": { "type": "integer" },
+        "integer_3": { "type": "integer" },
+        "float_1": { "type": "number" },
+        "float_2": { "type": "number" },
+        "float_3": { "type": "number" },
+        "float_4": { "type": "number" },
+        "float_5": { "type": "number" },
+        "float_6": { "type": "number" },
+        "float_7": { "type": "number" },
+        "float_8": { "type": "number" },
+        "infinite_1": { "type": "number" },
+        "infinite_2": { "type": "number" },
+        "infinite_3": { "type": "number" },
+        "not_a_number_1": { "type": "number" },
+        "not_a_number_2": { "type": "number" },
+        "not_a_number_3": { "type": "number" },
+        "hexadecimal_1": { "type": "number" },
+        "hexadecimal_2": { "type": "number" },
+        "hexadecimal_3": { "type": "number" },
+        "octal_1": { "type": "number" },
+        "octal_2": { "type": "number" },
+        "binary": { "type": "number" },
+        "null_1": { "type": "null" },
+        "null_2": { "type": "null" },
+        "boolean_1": { "type": "boolean" },
+        "boolean_2": { "type": "boolean" },
+        "boolean_3": { "type": "boolean" },
+        "boolean_4": { "type": "boolean" },
+        "boolean_5": { "type": "boolean" },
+        "boolean_6": { "type": "boolean" },
+        "offset_datetime_1": { "type": "string", "format": "date-time" },
+        "offset_datetime_2": { "type": "string", "format": "date-time" },
+        "offset_datetime_3": { "type": "string", "format": "date-time" },
+        "offset_datetime_4": { "type": "string", "format": "date-time" },
+        "offset_datetime_5": { "type": "string", "format": "date-time" },
+        "offset_datetime_6": { "type": "string", "format": "date-time" },
+        "datetime_1": { "type": "string", "format": "date-time" },
+        "datetime_2": { "type": "string", "format": "date-time" },
+        "local_date_1": { "type": "string", "format": "date" },
+        "local_date_2": { "type": "string", "format": "date" },
+        "time_1": { "type": "string", "format": "time" },
+        "time_2": { "type": "string", "format": "time" },
+        "duration_1": { "type": "string", "format": "duration" },
+        "array_1": { "type": "array" },
+        "array_2": { "type": "array" },
+        "nested_object_1": {
+          "type": "object",
+          "properties": { "foo": { "type": "string" } }
+        },
+        "nested_object_2": {
+          "type": "object",
+          "properties": { "foo": { "type": "string" } }
+        },
+        "array_of_objects_1": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": { "foo": { "type": "string" } }
+          }
+        },
+        "nested_array_of_objects_1": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": { "foo": { "type": "string" } }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+# Comment
+object:
+  string: "I'm a string."
+  multiline_string: |
+    I'm
+    a multiline
+    string
+
+  integer_1: 1
+  integer_2: +1
+  integer_3: -1
+
+  float_1: +1.0
+  float_2: 3.1415
+  float_3: -0.01
+  float_4: 5e+22
+  float_5: 1e06
+  float_6: -2E-2
+  float_7: 6.626e-34
+  float_8: 224_617.445_991_228
+
+  infinite_1: .inf
+  infinite_2: +.inf
+  infinite_3: -.inf
+
+  not_a_number_1: .nan
+  not_a_number_2: .NaN
+  not_a_number_3: .NAN
+
+  hexadecimal_1: 0xDEADBEEF
+  hexadecimal_2: 0xdeadbeef
+  hexadecimal_3: 0xdead_beef
+
+  octal_1: 0o01234567
+  octal_2: 0o755
+
+  binary: 0b11010110
+
+  null_1: null
+  null_2: ~
+
+  boolean_1: true
+  boolean_2: false
+  boolean_3: True
+  boolean_4: False
+  boolean_5: TRUE
+  boolean_6: FALSE
+
+  # ruamel.yaml by default converts dates to datetime objects, so check-jsonschema parses
+  # as strings
+  offset_datetime_1: 1979-05-27T07:32:00Z
+  offset_datetime_2: 1979-05-27T00:32:00-07:00
+  offset_datetime_3: 1979-05-27T00:32:00.999999-07:00
+  offset_datetime_4: '1979-05-27T07:32:00Z'
+  offset_datetime_5: '1979-05-27T00:32:00-07:00'
+  offset_datetime_6: '1979-05-27T00:32:00.999999-07:00'
+
+  datetime_1: 1979-05-27T07:32:00Z
+  datetime_2: 1979-05-27T00:32:00.999999z
+
+  local_date_1: 1979-05-27
+  local_date_2: '1979-05-27'
+
+  time_1: 07:32:00Z
+  time_2: 00:32:00.999999z
+
+  # YAML does not have a native duration type which translates to
+  # datetime.timedelta under ruamel.yaml
+  # so ISO durations can only be represented as strings
+  duration_1: "P1D"
+
+  array_1: ["a", 2, true]
+  array_2: [
+      "b",
+      3.1,
+      false,
+  ]
+
+  nested_object_1:
+    foo: "bar"
+
+  nested_object_2: { foo: "bar" }
+
+  array_of_objects_1:
+  - foo: "bar"
+  - foo: "bar"
+
+  nested_array_of_objects_1:
+    - foo: "bar"
+    - foo: "bar"
