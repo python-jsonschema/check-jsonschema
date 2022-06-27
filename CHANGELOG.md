@@ -3,15 +3,18 @@
 ## Unreleased
 
 <!-- vendor-insert-here -->
-- Update vendored schemas (2022-06-27)
 
-## 0.16.1
+## 0.16.2
 
-- Update vendored schemas: github-workflows, gitlab-ci, renovate (2022-06-21)
+- Update vendored schemas: github-workflows, gitlab-ci, renovate (2022-06-27)
 - Fix the behavior of unquoted datetime strings in YAML documents to always
   parse as strings, not `datetime.datetime`. Thanks to
   [@tgillbe](https://github.com/tgillbe) for the fix!
   ([#116](https://github.com/python-jsonschema/check-jsonschema/issues/116))
+
+## 0.16.1
+
+- Update vendored schemas: github-workflows, gitlab-ci, renovate (2022-06-21)
 
 ## 0.16.0
 
