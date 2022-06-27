@@ -300,7 +300,8 @@
       "enum": [
         "major",
         "minor",
-        "patch"
+        "patch",
+        "prerelease"
       ]
     },
     "bundler": {
@@ -533,7 +534,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)deps\\.edn$"
+          "(^|/)(?:deps|bb)\\.edn$"
         ],
         "versioning": "maven"
       },
@@ -2029,7 +2030,7 @@
       "$ref": "#"
     },
     "printConfig": {
-      "description": "If enabled, Renovate logs the fullly resolved config for each repo, plus the fully resolved presets.",
+      "description": "If enabled, Renovate logs the fully resolved config for each repo, plus the fully resolved presets.",
       "type": "boolean",
       "default": false
     },
