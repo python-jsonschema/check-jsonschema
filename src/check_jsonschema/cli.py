@@ -3,6 +3,7 @@ from __future__ import annotations
 import enum
 import os
 import textwrap
+import warnings
 
 import click
 
@@ -25,6 +26,13 @@ BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
 BUILTIN_SCHEMA_CHOICES = (
     BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + CUSTOM_SCHEMA_NAMES
 )
+
+SHOWALL_DEPRECATION_MSG = """
+
+  '--show-all-validation-errors' is deprecated and will be removed in a future version.
+
+  Update your usage to use '-v/--verbose' instead.
+"""
 
 
 def evaluate_environment_settings(ctx: click.Context) -> None:
@@ -258,6 +266,9 @@ def main(
         args.default_filetype = default_filetype
     if data_transform is not None:
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
+    if show_all_validation_errors:
+        warnings.warn(SHOWALL_DEPRECATION_MSG)
+
     # verbosity behavior:
     # - default is 1
     # - count '-v' with a min of 1 if --show-all-validation-errors was given
