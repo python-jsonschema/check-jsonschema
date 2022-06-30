@@ -5,7 +5,7 @@ import typing as t
 
 from identify import identify
 
-from ...transforms import TransformT
+from ...transforms import Transform
 from ..errors import BadFileTypeError
 from . import json5, toml, yaml
 
@@ -28,11 +28,21 @@ class InstanceLoader:
         self,
         filenames: t.Sequence[str],
         default_filetype: str | None = None,
-        data_transform: TransformT | None = None,
+        data_transform: Transform | None = None,
     ) -> None:
         self._filenames = filenames
         self._default_ft = default_filetype.lower() if default_filetype else None
         self._data_transform = data_transform
+
+        if self._data_transform and self._data_transform.on_init is not None:
+            self._data_transform.on_init()
+
+    def _apply_data_transform(self, data: t.Any) -> t.Any:
+        if self._data_transform is None:
+            return data
+        if self._data_transform.on_data is None:
+            return data
+        return self._data_transform.on_data(data)
 
     def get_loadfunc(self, filename: str) -> t.Callable:
         tags = identify.tags_from_path(filename)
@@ -59,6 +69,5 @@ class InstanceLoader:
 
             with open(fn, "rb") as fp:
                 data = loadfunc(fp)
-                if self._data_transform:
-                    data = self._data_transform(data)
+                data = self._apply_data_transform(data)
                 yield (fn, data)

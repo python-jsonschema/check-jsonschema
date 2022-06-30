@@ -1,0 +1,13 @@
+include:
+  - local: setup.yml
+
+.teardown:
+  after_script:
+    - echo deleting environment
+
+test:
+  script:
+    - !reference [.setup, script]
+    - echo running my own command
+  after_script:
+    - !reference [.teardown, after_script]

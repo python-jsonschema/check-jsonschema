@@ -18,7 +18,7 @@ from .loaders import (
     SchemaLoaderBase,
 )
 from .reporter import REPORTER_BY_NAME, Reporter
-from .transforms import TRANSFORM_LIBRARY, TransformT
+from .transforms import TRANSFORM_LIBRARY, Transform
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
     f"custom.{k}" for k in CUSTOM_SCHEMA_NAMES
@@ -58,7 +58,7 @@ class ParseResult:
         # filetype detection (JSON vs YAML)
         self.default_filetype: str | None = None
         # data-transform (for Azure Pipelines and potentially future transforms)
-        self.data_transform: TransformT | None = None
+        self.data_transform: Transform | None = None
         # regex format options
         self.disable_format: bool = False
         self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default

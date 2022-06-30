@@ -182,6 +182,12 @@ checked. The following transforms are supported:
     for the purposes of validation. This transformation is based on Microsoft's
     lanaguage-server for VSCode and how it handles expressions
 
+- `gitlab-ci`:
+    Handle `!reference` tags in YAML data for gitlab-ci files. This transform
+    has no effect if the data is not being loaded from YAML, and it does not
+    interpret `!reference` usages -- it only expands them to lists of strings
+    to pass schema validation
+
 ### `-v`, `--verbose`
 
 Request more output.

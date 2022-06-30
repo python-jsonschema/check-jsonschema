@@ -67,6 +67,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "/editor/schema/ci.json",
         "hook_config": {
             "name": "Validate GitLab CI config",
+            "add_args": ["--data-transform", "gitlab-ci"],
             "files": r"^.*\.gitlab-ci.yml$",
             "types": "yaml",
         },

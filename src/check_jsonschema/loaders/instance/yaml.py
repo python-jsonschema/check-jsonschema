@@ -1,14 +1,18 @@
+from __future__ import annotations
+
 import typing as t
 
 import ruamel.yaml
 
-_yaml = ruamel.yaml.YAML(typ="safe")
+YAML_IMPL = ruamel.yaml.YAML(typ="safe")
 
-# ruamel.yaml parses timestamp values into datetime.datetime values which differs from
-# JSON which parses timestamps as strings. Turn off this feature.
-_yaml.constructor.yaml_constructors[
+# ruamel.yaml parses timestamp values into datetime.datetime values
+# however, JSON does not support native datetimes, so JSON Schema formats for
+# dates apply to strings
+# Turn off this feature, instructing the parser to load datetimes as strings
+YAML_IMPL.constructor.yaml_constructors[
     "tag:yaml.org,2002:timestamp"
-] = _yaml.constructor.yaml_constructors["tag:yaml.org,2002:str"]
+] = YAML_IMPL.constructor.yaml_constructors["tag:yaml.org,2002:str"]
 
 
 def _normalize(data: t.Any) -> t.Any:
@@ -29,5 +33,5 @@ def _normalize(data: t.Any) -> t.Any:
 
 
 def load(stream: t.BinaryIO) -> t.Any:
-    data = _yaml.load(stream)
+    data = YAML_IMPL.load(stream)
     return _normalize(data)
