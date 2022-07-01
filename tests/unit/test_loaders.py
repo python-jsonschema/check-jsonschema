@@ -2,6 +2,7 @@ import os
 import pathlib
 
 import pytest
+import ruamel.yaml.composer
 
 from check_jsonschema.loaders import BadFileTypeError, InstanceLoader, SchemaLoader
 from check_jsonschema.loaders.instance.json5 import ENABLED as JSON5_ENABLED
@@ -55,11 +56,11 @@ properties:
   a:
     type: object
     properties:
-      b: &anchor
+      b:
         type: array
         items:
           type: integer
-      c: &anchor
+      c:
         type: string
 """
     )
@@ -78,6 +79,38 @@ properties:
             },
         },
     }
+
+
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "schema.yaml",
+    ],
+)
+@pytest.mark.filterwarnings("ignore:ReusedAnchorWarning")
+def test_schemaloader_local_yaml_dup_anchor(tmp_path, filename):
+    f = tmp_path / filename
+    f.write_text(
+        """
+---
+"$schema": https://json-schema.org/draft/2020-12/schema
+type: object
+properties:
+  a:
+    type: object
+    properties:
+      b: &anchor
+        type: array
+        items:
+          type: integer
+      c: &anchor
+        type: string
+"""
+    )
+    try:
+        SchemaLoader(str(f))
+    except ruamel.yaml.composer.ComposerError as e:
+        raise AssertionError(f"YAML loader does not support duplicate anchors {e}")
 
 
 @pytest.mark.parametrize(
@@ -130,15 +163,40 @@ def test_instanceloader_yaml_data(tmp_path, filename, default_ft):
     f.write_text(
         """\
 a:
+  b:
+   - 1
+   - 2
+  c: d
+"""
+    )
+    loader = InstanceLoader([str(f)], default_filetype=default_ft)
+    data = list(loader.iter_files())
+    assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
+
+
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "foo.yaml",
+    ],
+)
+@pytest.mark.filterwarnings("ignore:ReusedAnchorWarning")
+def test_instanceloader_yaml_dup_anchor(tmp_path, filename):
+    f = tmp_path / filename
+    f.write_text(
+        """\
+a:
   b: &anchor
    - 1
    - 2
   c: &anchor d
 """
     )
-    loader = InstanceLoader([str(f)], default_filetype=default_ft)
-    data = list(loader.iter_files())
-    assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
+    loader = InstanceLoader([str(f)])
+    try:
+        list(loader.iter_files())
+    except ruamel.yaml.composer.ComposerError as e:
+        raise AssertionError(f"YAML loader does not support duplicate anchors {e}")
 
 
 def test_instanceloader_unknown_type(tmp_path):
