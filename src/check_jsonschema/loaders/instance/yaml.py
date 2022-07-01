@@ -1,8 +1,12 @@
 import typing as t
+import warnings
 
 import ruamel.yaml
+from ruamel.yaml.error import ReusedAnchorWarning
 
-_yaml = ruamel.yaml.YAML(typ="safe")
+warnings.simplefilter("ignore", ReusedAnchorWarning)
+
+_yaml = ruamel.yaml.YAML(typ="safe", pure=True)
 
 # ruamel.yaml parses timestamp values into datetime.datetime values which differs from
 # JSON which parses timestamps as strings. Turn off this feature.

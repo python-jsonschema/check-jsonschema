@@ -2,16 +2,20 @@ from __future__ import annotations
 
 import json
 import typing as t
+import warnings
 
 import identify
 import ruamel.yaml
+from ruamel.yaml.error import ReusedAnchorWarning
 
 from check_jsonschema import utils
 
 from ...cachedownloader import CacheDownloader
 from ..errors import SchemaParseError
 
-yaml = ruamel.yaml.YAML(typ="safe")
+warnings.simplefilter("ignore", ReusedAnchorWarning)
+
+yaml = ruamel.yaml.YAML(typ="safe", pure=True)
 
 
 def _json_load_schema(schema_location: str, fp: t.IO) -> dict:

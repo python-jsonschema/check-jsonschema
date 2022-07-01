@@ -55,11 +55,11 @@ properties:
   a:
     type: object
     properties:
-      b:
+      b: &anchor
         type: array
         items:
           type: integer
-      c:
+      c: &anchor
         type: string
 """
     )
@@ -130,10 +130,10 @@ def test_instanceloader_yaml_data(tmp_path, filename, default_ft):
     f.write_text(
         """\
 a:
-  b:
+  b: &anchor
    - 1
    - 2
-  c: d
+  c: &anchor d
 """
     )
     loader = InstanceLoader([str(f)], default_filetype=default_ft)
