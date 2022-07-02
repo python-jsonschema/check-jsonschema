@@ -3,14 +3,14 @@ from __future__ import annotations
 import datetime
 import typing as t
 
+from ...transforms import Transform
+
 try:
     import tomli
 
     has_toml = True
 except ImportError:
     has_toml = False
-
-    load: t.Callable | None = None
 
 
 def _normalize(data: t.Any) -> t.Any:
@@ -50,15 +50,21 @@ def _normalize(data: t.Any) -> t.Any:
         return data
 
 
+# present a bool for detecting that it's enabled
+ENABLED = has_toml
+
+
 if has_toml:
 
-    def load(stream: t.BinaryIO) -> t.Any:
+    def load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
         data = tomli.load(stream)
-        return _normalize(data)
+        data = _normalize(data)
+        return data_transform(data)
 
+else:
 
-# present a bool for detecting that it's enabled
-ENABLED = load is not None
+    def load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
+        raise NotImplementedError
 
 
 MISSING_SUPPORT_MESSAGE = """

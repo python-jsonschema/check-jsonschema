@@ -4,15 +4,21 @@ import typing as t
 
 import ruamel.yaml
 
-YAML_IMPL = ruamel.yaml.YAML(typ="safe")
+from ...transforms import Transform
 
-# ruamel.yaml parses timestamp values into datetime.datetime values
-# however, JSON does not support native datetimes, so JSON Schema formats for
-# dates apply to strings
-# Turn off this feature, instructing the parser to load datetimes as strings
-YAML_IMPL.constructor.yaml_constructors[
-    "tag:yaml.org,2002:timestamp"
-] = YAML_IMPL.constructor.yaml_constructors["tag:yaml.org,2002:str"]
+
+def _construct_yaml_implementation() -> ruamel.yaml.YAML:
+    implementation = ruamel.yaml.YAML(typ="safe")
+
+    # ruamel.yaml parses timestamp values into datetime.datetime values
+    # however, JSON does not support native datetimes, so JSON Schema formats for
+    # dates apply to strings
+    # Turn off this feature, instructing the parser to load datetimes as strings
+    implementation.constructor.yaml_constructors[
+        "tag:yaml.org,2002:timestamp"
+    ] = implementation.constructor.yaml_constructors["tag:yaml.org,2002:str"]
+
+    return implementation
 
 
 def _normalize(data: t.Any) -> t.Any:
@@ -32,6 +38,17 @@ def _normalize(data: t.Any) -> t.Any:
         return data
 
 
-def load(stream: t.BinaryIO) -> t.Any:
-    data = YAML_IMPL.load(stream)
-    return _normalize(data)
+_YAML_IMPLEMENTATION_CACHE: dict[Transform, ruamel.yaml.YAML] = {}
+
+
+def load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
+    if data_transform in _YAML_IMPLEMENTATION_CACHE:
+        implementation = _YAML_IMPLEMENTATION_CACHE[data_transform]
+    else:
+        implementation = _construct_yaml_implementation()
+        data_transform.modify_yaml_implementation(implementation)
+        _YAML_IMPLEMENTATION_CACHE[data_transform] = implementation
+
+    data = implementation.load(stream)
+    data = _normalize(data)
+    return data_transform(data)

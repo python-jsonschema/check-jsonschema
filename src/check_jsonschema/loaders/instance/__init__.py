@@ -9,14 +9,20 @@ from ...transforms import Transform
 from ..errors import BadFileTypeError
 from . import json5, toml, yaml
 
+
+def _json_load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
+    data = json.load(stream)
+    return data_transform(data)
+
+
 LOAD_FUNC_BY_TAG: dict[str, t.Callable] = {
-    "json": json.load,
+    "json": _json_load,
     "yaml": yaml.load,
 }
 if json5.ENABLED:
-    LOAD_FUNC_BY_TAG["json5"] = json5.load  # type: ignore[assignment]
+    LOAD_FUNC_BY_TAG["json5"] = json5.load
 if toml.ENABLED:
-    LOAD_FUNC_BY_TAG["toml"] = toml.load  # type: ignore[assignment]
+    LOAD_FUNC_BY_TAG["toml"] = toml.load
 MISSING_SUPPORT_MESSAGES: dict[str, str] = {
     "json5": json5.MISSING_SUPPORT_MESSAGE,
     "toml": toml.MISSING_SUPPORT_MESSAGE,
@@ -32,17 +38,9 @@ class InstanceLoader:
     ) -> None:
         self._filenames = filenames
         self._default_ft = default_filetype.lower() if default_filetype else None
-        self._data_transform = data_transform
-
-        if self._data_transform and self._data_transform.on_init is not None:
-            self._data_transform.on_init()
-
-    def _apply_data_transform(self, data: t.Any) -> t.Any:
-        if self._data_transform is None:
-            return data
-        if self._data_transform.on_data is None:
-            return data
-        return self._data_transform.on_data(data)
+        self._data_transform = (
+            data_transform if data_transform is not None else Transform()
+        )
 
     def get_loadfunc(self, filename: str) -> t.Callable:
         tags = identify.tags_from_path(filename)
@@ -68,6 +66,5 @@ class InstanceLoader:
             loadfunc = self.get_loadfunc(fn)
 
             with open(fn, "rb") as fp:
-                data = loadfunc(fp)
-                data = self._apply_data_transform(data)
+                data = loadfunc(fp, data_transform=self._data_transform)
                 yield (fn, data)

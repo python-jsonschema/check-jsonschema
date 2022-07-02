@@ -31,6 +31,8 @@ from __future__ import annotations
 
 import typing as t
 
+from .base import Transform
+
 
 class AzurePipelinesDataError(ValueError):
     def __init__(self, message: str) -> None:
@@ -107,3 +109,6 @@ def azure_main(data: dict | list) -> dict | list:
             "this transform requires that the data be an object, got list"
         )
     return traverse_dict(data)
+
+
+AZURE_TRANSFORM = Transform(on_data=azure_main)
