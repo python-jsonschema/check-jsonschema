@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import typing as t
 
-from ...transforms import Transform
-
 # try to import pyjson5 first
 # this is the CPython implementation and therefore preferred for its speec
 try:
@@ -25,13 +23,12 @@ ENABLED = _load is not None
 if _load is not None:
     _load_concrete: t.Callable = _load
 
-    def load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
-        data = _load_concrete(stream)
-        return data_transform(data)
+    def load(stream: t.BinaryIO) -> t.Any:
+        return _load_concrete(stream)
 
 else:
 
-    def load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
+    def load(stream: t.BinaryIO) -> t.Any:
         raise NotImplementedError
 
 

@@ -9,24 +9,48 @@ from ...transforms import Transform
 from ..errors import BadFileTypeError
 from . import json5, toml, yaml
 
-
-def _json_load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
-    data = json.load(stream)
-    return data_transform(data)
-
-
-LOAD_FUNC_BY_TAG: dict[str, t.Callable] = {
-    "json": _json_load,
-    "yaml": yaml.load,
+DEFAULT_LOAD_FUNC_BY_TAG: dict[str, t.Callable[[t.BinaryIO], t.Any]] = {
+    "json": json.load,
 }
 if json5.ENABLED:
-    LOAD_FUNC_BY_TAG["json5"] = json5.load
+    DEFAULT_LOAD_FUNC_BY_TAG["json5"] = json5.load
 if toml.ENABLED:
-    LOAD_FUNC_BY_TAG["toml"] = toml.load
+    DEFAULT_LOAD_FUNC_BY_TAG["toml"] = toml.load
 MISSING_SUPPORT_MESSAGES: dict[str, str] = {
     "json5": json5.MISSING_SUPPORT_MESSAGE,
     "toml": toml.MISSING_SUPPORT_MESSAGE,
 }
+
+
+class ParserSet:
+    def __init__(self, transform: Transform):
+        yaml_impl = yaml.construct_yaml_implementation()
+        transform.modify_yaml_implementation(yaml_impl)
+        self._by_tag = {
+            "yaml": yaml.impl2loader(yaml_impl),
+            **DEFAULT_LOAD_FUNC_BY_TAG,
+        }
+
+    def get(
+        self, filename: str, default_ft: str | None
+    ) -> t.Callable[[t.BinaryIO], t.Any]:
+        tags = identify.tags_from_path(filename)
+        for (tag, loadfunc) in self._by_tag.items():
+            if tag in tags:
+                return loadfunc
+        if default_ft in self._by_tag:
+            return self._by_tag[default_ft]
+
+        for tag in tags:
+            if tag in MISSING_SUPPORT_MESSAGES:
+                raise BadFileTypeError(
+                    f"cannot check {filename} because support is missing for {tag}\n"
+                    + MISSING_SUPPORT_MESSAGES[tag]
+                )
+        raise BadFileTypeError(
+            f"cannot check {filename} as it is not one of the supported filetypes: "
+            + ",".join(self._by_tag.keys())
+        )
 
 
 class InstanceLoader:
@@ -42,29 +66,13 @@ class InstanceLoader:
             data_transform if data_transform is not None else Transform()
         )
 
-    def get_loadfunc(self, filename: str) -> t.Callable:
-        tags = identify.tags_from_path(filename)
-        for (tag, loadfunc) in LOAD_FUNC_BY_TAG.items():
-            if tag in tags:
-                return loadfunc
-        if self._default_ft in LOAD_FUNC_BY_TAG:
-            return LOAD_FUNC_BY_TAG[self._default_ft]
-
-        for tag in tags:
-            if tag in MISSING_SUPPORT_MESSAGES:
-                raise BadFileTypeError(
-                    f"cannot check {filename} because support is missing for {tag}\n"
-                    + MISSING_SUPPORT_MESSAGES[tag]
-                )
-        raise BadFileTypeError(
-            f"cannot check {filename} as it is not one of the supported filetypes: "
-            + ",".join(LOAD_FUNC_BY_TAG.keys())
-        )
+        self._parsers = ParserSet(self._data_transform)
 
     def iter_files(self) -> t.Iterator[tuple[str, t.Any]]:
         for fn in self._filenames:
-            loadfunc = self.get_loadfunc(fn)
+            loadfunc = self._parsers.get(fn, self._default_ft)
 
             with open(fn, "rb") as fp:
-                data = loadfunc(fp, data_transform=self._data_transform)
+                data = loadfunc(fp)
+                data = self._data_transform(data)
                 yield (fn, data)

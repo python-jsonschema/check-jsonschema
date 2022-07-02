@@ -4,10 +4,8 @@ import typing as t
 
 import ruamel.yaml
 
-from ...transforms import Transform
 
-
-def _construct_yaml_implementation() -> ruamel.yaml.YAML:
+def construct_yaml_implementation() -> ruamel.yaml.YAML:
     implementation = ruamel.yaml.YAML(typ="safe")
 
     # ruamel.yaml parses timestamp values into datetime.datetime values
@@ -38,17 +36,12 @@ def _normalize(data: t.Any) -> t.Any:
         return data
 
 
-_YAML_IMPLEMENTATION_CACHE: dict[Transform, ruamel.yaml.YAML] = {}
+def impl2loader(impl: ruamel.yaml.YAML) -> t.Callable[[t.BinaryIO], t.Any]:
+    def load(stream: t.BinaryIO) -> t.Any:
+        data = impl.load(stream)
+        return _normalize(data)
+
+    return load
 
 
-def load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
-    if data_transform in _YAML_IMPLEMENTATION_CACHE:
-        implementation = _YAML_IMPLEMENTATION_CACHE[data_transform]
-    else:
-        implementation = _construct_yaml_implementation()
-        data_transform.modify_yaml_implementation(implementation)
-        _YAML_IMPLEMENTATION_CACHE[data_transform] = implementation
-
-    data = implementation.load(stream)
-    data = _normalize(data)
-    return data_transform(data)
+load = impl2loader(construct_yaml_implementation())

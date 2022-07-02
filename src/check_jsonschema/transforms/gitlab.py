@@ -20,7 +20,7 @@ class GitLabReference:
     @classmethod
     def from_yaml(
         cls, constructor: ruamel.yaml.BaseConstructor, node: ruamel.yaml.Node
-    ) -> list:
+    ) -> list[str]:
         if not isinstance(node.value, list):
             raise GitLabReferenceExpectationViolation("non-list value", node)
         return [item.value for item in node.value]

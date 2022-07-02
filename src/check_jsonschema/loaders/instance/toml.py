@@ -3,8 +3,6 @@ from __future__ import annotations
 import datetime
 import typing as t
 
-from ...transforms import Transform
-
 try:
     import tomli
 
@@ -56,14 +54,13 @@ ENABLED = has_toml
 
 if has_toml:
 
-    def load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
+    def load(stream: t.BinaryIO) -> t.Any:
         data = tomli.load(stream)
-        data = _normalize(data)
-        return data_transform(data)
+        return _normalize(data)
 
 else:
 
-    def load(stream: t.BinaryIO, *, data_transform: Transform) -> t.Any:
+    def load(stream: t.BinaryIO) -> t.Any:
         raise NotImplementedError
 
 
