@@ -8,6 +8,13 @@ import ruamel.yaml
 def construct_yaml_implementation() -> ruamel.yaml.YAML:
     implementation = ruamel.yaml.YAML(typ="safe")
 
+    # workaround global state
+    # see: https://sourceforge.net/p/ruamel-yaml/tickets/341/
+    class GeneratedSafeConstructor(ruamel.yaml.SafeConstructor):
+        pass
+
+    implementation.Constructor = GeneratedSafeConstructor
+
     # ruamel.yaml parses timestamp values into datetime.datetime values
     # however, JSON does not support native datetimes, so JSON Schema formats for
     # dates apply to strings
