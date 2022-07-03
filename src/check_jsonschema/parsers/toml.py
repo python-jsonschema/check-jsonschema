@@ -65,7 +65,7 @@ else:
 
 
 MISSING_SUPPORT_MESSAGE = """
-check-jsonschema can only check TOML files when a TOML parser is installed
+check-jsonschema can only parse TOML files when a TOML parser is installed
 
 If you are running check-jsonschema as an installed python package, add support with
     pip install tomli

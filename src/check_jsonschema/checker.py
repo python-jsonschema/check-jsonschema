@@ -7,14 +7,10 @@ import jsonschema
 
 from . import utils
 from .formats import FormatOptions
-from .loaders import (
-    BadFileTypeError,
-    InstanceLoader,
-    SchemaLoaderBase,
-    SchemaParseError,
-    UnsupportedUrlScheme,
-)
+from .instance_loader import InstanceLoader
+from .parsers import BadFileTypeError
 from .reporter import Reporter
+from .schema_loader import SchemaLoaderBase, SchemaParseError, UnsupportedUrlScheme
 
 
 class _Exit(Exception):

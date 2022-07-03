@@ -10,14 +10,14 @@ import click
 from .catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from .checker import SchemaChecker
 from .formats import FormatOptions, RegexFormatBehavior
-from .loaders import (
+from .instance_loader import InstanceLoader
+from .reporter import REPORTER_BY_NAME, Reporter
+from .schema_loader import (
     BuiltinSchemaLoader,
-    InstanceLoader,
     MetaSchemaLoader,
     SchemaLoader,
     SchemaLoaderBase,
 )
-from .reporter import REPORTER_BY_NAME, Reporter
 from .transforms import TRANSFORM_LIBRARY, Transform
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [

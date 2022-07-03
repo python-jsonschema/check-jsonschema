@@ -1,6 +1,6 @@
 import pytest
 
-from check_jsonschema.loaders.instance.yaml import construct_yaml_implementation
+from check_jsonschema.parsers.yaml import construct_yaml_implementation
 from check_jsonschema.transforms.gitlab import (
     GITLAB_TRANSFORM,
     GitLabReferenceExpectationViolation,

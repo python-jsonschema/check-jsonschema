@@ -1,7 +1,3 @@
-class BadFileTypeError(ValueError):
-    pass
-
-
 class SchemaParseError(ValueError):
     pass
 

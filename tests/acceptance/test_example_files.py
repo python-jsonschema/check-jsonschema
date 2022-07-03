@@ -4,8 +4,8 @@ from pathlib import Path
 import pytest
 import ruamel.yaml
 
-from check_jsonschema.loaders.instance.json5 import ENABLED as JSON5_ENABLED
-from check_jsonschema.loaders.instance.toml import ENABLED as TOML_ENABLED
+from check_jsonschema.parsers.json5 import ENABLED as JSON5_ENABLED
+from check_jsonschema.parsers.toml import ENABLED as TOML_ENABLED
 
 yaml = ruamel.yaml.YAML(typ="safe")
 

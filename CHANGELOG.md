@@ -7,6 +7,11 @@
 - Add support for `--data-transform gitlab-ci`, which enables expansion of the
   `!reference` tag in gitlab CI YAML files. This is now enabled by default on
   the gitlab-ci pre-commit hook.
+- Support for various file formats has been refactored to share code between
+  the instance and schema loaders. Schema loading can now support the same
+  formats as instances with minimal effort.
+- Support loading schemas from JSON5 files. Like YAML schemas, this is only
+  supported for local files and warns if refs to other JSON5 files are used.
 
 ## 0.16.2
 

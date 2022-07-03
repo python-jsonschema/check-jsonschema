@@ -33,7 +33,7 @@ else:
 
 
 MISSING_SUPPORT_MESSAGE = """
-check-jsonschema can only check json5 files when a json5 parser is installed
+check-jsonschema can only parse json5 files when a json5 parser is installed
 
 If you are running check-jsonschema as an installed python package, either
     pip install json5

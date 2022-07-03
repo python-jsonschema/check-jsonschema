@@ -6,10 +6,10 @@ import urllib.parse
 
 import jsonschema
 
-from ...builtin_schemas import get_builtin_schema
-from ...formats import FormatOptions, make_format_checker
-from ...utils import is_url_ish
-from ..errors import UnsupportedUrlScheme
+from ..builtin_schemas import get_builtin_schema
+from ..formats import FormatOptions, make_format_checker
+from ..utils import is_url_ish
+from .errors import UnsupportedUrlScheme
 from .readers import HttpSchemaReader, LocalSchemaReader
 from .resolver import make_ref_resolver
 

@@ -18,6 +18,16 @@ This is not supported by check-jsonschema and may result in errors.
                 err=True,
                 fg="yellow",
             )
+        elif uri.endswith(".json5"):
+            click.secho(
+                """\
+WARNING: You appear to be using a schema which references a JSON5 file.
+
+This is not supported by check-jsonschema and may result in errors.
+""",
+                err=True,
+                fg="yellow",
+            )
         return super().resolve_remote(uri)
 
 
