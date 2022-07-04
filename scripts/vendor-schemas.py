@@ -13,7 +13,7 @@ from check_jsonschema.catalog import SCHEMA_CATALOG
 
 TODAY = datetime.datetime.today().strftime("%Y-%m-%d")
 
-VENDOR_SLUG = "\n<!-- vendor-insert-here -->\n"
+VENDOR_SLUG = "\n.. vendor-insert-here\n\n"
 
 EXISTING_CHANGELINE_PATTERN = re.compile(
     re.escape(f"{VENDOR_SLUG}- Update vendored schemas")
@@ -115,7 +115,7 @@ def check_changes_made() -> bool:
 
 def update_changelog() -> None:
     print("changes were made, updating changelog")
-    with open("CHANGELOG.md", encoding="utf-8") as fp:
+    with open("CHANGELOG.rst", encoding="utf-8") as fp:
         content = fp.read()
     new_slug = VENDOR_SLUG + f"- Update vendored schemas ({TODAY})\n"
 
@@ -123,7 +123,7 @@ def update_changelog() -> None:
         content = EXISTING_CHANGELINE_PATTERN.sub(new_slug, content)
     else:
         content = content.replace(VENDOR_SLUG, new_slug)
-    with open("CHANGELOG.md", "w", encoding="utf-8") as fp:
+    with open("CHANGELOG.rst", "w", encoding="utf-8") as fp:
         fp.write(content)
 
 
