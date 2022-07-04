@@ -23,11 +23,11 @@ def replace_version(filename, prefix, old_version, new_version):
 
 
 def update_changelog(new_version):
-    print("updating CHANGELOG.md")
-    with open("CHANGELOG.md") as fp:
+    print("updating CHANGELOG.rst")
+    with open("CHANGELOG.rst") as fp:
         content = fp.read()
 
-    vendor_marker = "<!-- vendor-insert-here -->"
+    vendor_marker = ".. vendor-insert-here"
 
     content = re.sub(
         r"\#\#\s+Unreleased(\s*\n)+" + re.escape(vendor_marker),
@@ -40,7 +40,7 @@ def update_changelog(new_version):
 """,
         content,
     )
-    with open("CHANGELOG.md", "w") as fp:
+    with open("CHANGELOG.rst", "w") as fp:
         fp.write(content)
 
 
