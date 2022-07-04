@@ -30,13 +30,19 @@ def update_changelog(new_version):
     vendor_marker = ".. vendor-insert-here"
 
     content = re.sub(
-        r"\#\#\s+Unreleased(\s*\n)+" + re.escape(vendor_marker),
-        f"""\
-## Unreleased
+        r"""
+Unreleased
+----------
+(\s*\n)+"""
+        + re.escape(vendor_marker),
+        f"""
+Unreleased
+----------
 
 {vendor_marker}
 
-## {new_version}
+{new_version}
+{"-" * len(new_version)}
 """,
         content,
     )

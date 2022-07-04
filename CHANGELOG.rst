@@ -8,6 +8,9 @@ CHANGELOG
 Unreleased
 ----------
 
+0.17.0
+------
+
 .. vendor-insert-here
 
 - Update vendored schemas: renovate, travis (2022-06-29)
