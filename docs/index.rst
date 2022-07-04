@@ -1,9 +1,10 @@
 check-jsonschema
 ================
 
-A JSON Schema CLI and [pre-commit](https://pre-commit.com/) hook built on [jsonschema](https://github.com/python-jsonschema/jsonschema/).
-The schema may be specified as a local or remote (HTTP or HTTPS) file.
+A JSON Schema CLI and `pre-commit <https://pre-commit.com/>`_ hook built on
+`jsonschema <https://github.com/python-jsonschema/jsonschema/>`_.
 
+The schema may be specified as a local or remote (HTTP or HTTPS) file.
 Remote files are automatically downloaded and cached if possible.
 
 .. toctree::

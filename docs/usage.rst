@@ -16,31 +16,22 @@ Detailed helptext is always available interactively via
 
     check-jsonschema --help
 
-Basic Options
--------------
-
 .. list-table:: Basic Options
-   :widths: 15 10 30
+   :widths: 15 30
    :header-rows: 1
 
    * - Option
-     - Values
      - Description
    * - ``--schemafile``
-     -
      - The path or URL for a file containing a schema to use.
    * - ``-v``, ``--verbose``
-     -
      - Request more output.
    * - ``-q``, ``--quiet``
-     -
      - Request less output.
-   * - ``-o``, ``--output-format``
-     - ``TEXT``, ``JSON``
+   * - ``-o [TEXT|JSON]``, ``--output-format [TEXT|JSON]``
      - Use this option to choose how the output is presented. Either as ``TEXT`` (the
        default) or ``JSON``, as in ``-o JSON``.
-   * - ``--traceback-mode``
-     - ``short``, ``full``
+   * - ``--traceback-mode [short|full]``
      - By default, when an error is encountered, ``check-jsonschema`` will pretty-print
        the error and exit. Use ``--traceback-mode full`` to request the full traceback
        be printed, for debugging and troubleshooting.
@@ -55,10 +46,22 @@ to ``--schemafile``, but at least one of them must be used.
 
 These options are mutually exclusive, so exactly one must be used.
 
-``--builtin-schema``
-~~~~~~~~~~~~~~~~~~~~
+.. list-table:: Schema Options
+   :widths: 15 30
+   :header-rows: 1
 
-The name of a builtin schema from `check-jsonschema` to use.
+   * - Option
+     - Description
+   * - ``--schemafile``
+     - The path or URL for a file containing a schema to use.
+   * - ``--builtin-schema``
+     - The name of a builtin schema from ``check-jsonschema`` to use.
+   * - ``--check-metaschema``
+     - Validate each instancefile as a JSON Schema, using the relevant metaschema
+       defined in ``"$schema"``.
+
+``--builtin-schema`` Choices
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following values are valid and refer to vendored copies schemas from
 SchemaStore and other sources:
@@ -83,41 +86,39 @@ The following values refer to custom schemas:
   workflow explicitly sets ``timeout-minutes`` on all jobs. (The default value
   for this is 6 hours.)
 
-``--check-metaschema``
-~~~~~~~~~~~~~~~~~~~~~~
-
-Validate each instancefile as a JSON Schema, using the relevant metaschema
-defined in ``"$schema"``.
-
-Downloading and Caching Options
--------------------------------
+Downloading and Caching
+-----------------------
 
 By default, when ``--schemafile`` is used to refer to an ``http://`` or
 ``https://`` location, the schema is downloaded and cached based on the
 schema's Last-Modified time.
 The following options control caching behaviors.
 
-``--no-cache``
-~~~~~~~~~~~~~~
+.. list-table:: Caching Options
+   :widths: 15 30
+   :header-rows: 1
 
-Disable caching.
-
-``--cache-filename``
-~~~~~~~~~~~~~~~~~~~~
-
-The name to use for caching a remote schema.
-
-Defaults to using the last slash-delimited part of the URI.
+   * - Option
+     - Description
+   * - ``--no-cache``
+     - Disable caching.
+   * - ``--cache-filename``
+     - The name to use for caching a remote schema.
+       Defaults to using the last slash-delimited part of the URI.
 
 Environment Variables
 ---------------------
 
 The following environment variables are supported.
 
-``NO_COLOR``
-~~~~~~~~~~~~
+.. list-table:: Caching Options
+   :widths: 15 30
+   :header-rows: 1
 
-Set ``NO_COLOR=1`` to explicitly turn off colorized output.
+   * - Name
+     - Description
+   * - ``NO_COLOR``
+     - Set ``NO_COLOR=1`` to explicitly turn off colorized output.
 
 Parsing Options
 ---------------
@@ -176,7 +177,7 @@ Set a mode for handling of the ``"regex"`` value for ``"format"``. The modes are
 follows:
 
 .. list-table:: Basic Options
-   :widths: 10 30
+   :widths: 15 30
    :header-rows: 1
 
    * - mode

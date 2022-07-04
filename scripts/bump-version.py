@@ -65,6 +65,8 @@ def main():
 
     replace_version("setup.cfg", "version = ", old_version, new_version)
     replace_version("README.md", "rev: ", old_version, new_version)
+    replace_version("docs/precommit_usage.rst", "rev: ", old_version, new_version)
+    replace_version("docs/optional_parsers.rst", "rev: ", old_version, new_version)
     update_changelog(new_version)
 
 

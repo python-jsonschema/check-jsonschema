@@ -20,8 +20,8 @@ are maintained by the CPython team.
 
 It is only tested on cpython but should work on other interpreters as well.
 
-Do not use `pip install --user`
--------------------------------
+Do not use ``pip install --user``
+---------------------------------
 
 If installing with ``pip``, make sure you use a virtualenv to isolate the
 installation from the rest of your system.
