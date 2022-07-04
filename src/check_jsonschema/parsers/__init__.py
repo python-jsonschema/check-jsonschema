@@ -30,9 +30,8 @@ class ParserSet:
     def __init__(
         self,
         *,
-        modify_yaml_implementation: t.Callable[[ruamel.yaml.YAML], ruamel.yaml.YAML]
-        | None = None,
-        supported_formats: t.Sequence[str, ...] | None = None,
+        modify_yaml_implementation: t.Callable[[ruamel.yaml.YAML], None] | None = None,
+        supported_formats: t.Sequence[str] | None = None,
     ) -> None:
         yaml_impl = yaml.construct_yaml_implementation()
         failover_yaml_impl = yaml.construct_yaml_implementation(pure=True)
@@ -75,7 +74,7 @@ class ParserSet:
         self,
         path: str | pathlib.Path,
         default_ft: str | None,
-    ):
+    ) -> t.Any:
         loadfunc = self.get(
             str(path) if isinstance(path, pathlib.Path) else path, default_ft
         )

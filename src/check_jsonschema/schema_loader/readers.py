@@ -25,7 +25,7 @@ def _run_load_callback(schema_location: str, callback: t.Callable) -> dict:
 
 
 class LocalSchemaReader:
-    FORMATS = {"json", "json5", "yaml"}
+    FORMATS = ("json", "json5", "yaml")
 
     def __init__(self, filename: str) -> None:
         self.path = filename2path(filename)
