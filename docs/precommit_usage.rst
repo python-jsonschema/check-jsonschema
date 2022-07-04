@@ -178,6 +178,11 @@ Example Usages
 Reimplement check-github-workflows
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. note::
+
+   This behaves slightly differently from ``check-github-workflows`` and is not
+   recommended. It is here only to demonstrate how ``--schemafile`` can be used.
+
 The ``check-jsonschema`` hook can run any JSON Schema against a
 file or set of files. For example, to implement the GitHub workflow check
 manually, you could do this:
@@ -192,11 +197,6 @@ manually, you could do this:
           files: ^\.github/workflows/
           types: [yaml]
           args: ["--schemafile", "https://json.schemastore.org/github-workflow"]
-
-.. note::
-
-   This behaves slightly differently from `check-github-workflows` nd is not
-   recommended.
 
 Check a builtin schema
 ~~~~~~~~~~~~~~~~~~~~~~
