@@ -35,10 +35,12 @@ class ParserSet:
         supported_formats: t.Sequence[str, ...] | None = None,
     ) -> None:
         yaml_impl = yaml.construct_yaml_implementation()
+        failover_yaml_impl = yaml.construct_yaml_implementation(pure=True)
         if modify_yaml_implementation:
             modify_yaml_implementation(yaml_impl)
+            modify_yaml_implementation(failover_yaml_impl)
         base_by_tag = {
-            "yaml": yaml.impl2loader(yaml_impl),
+            "yaml": yaml.impl2loader(yaml_impl, failover_yaml_impl),
             **DEFAULT_LOAD_FUNC_BY_TAG,
         }
         if supported_formats is None:

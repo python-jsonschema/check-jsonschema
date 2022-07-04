@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import typing as t
+import warnings
 
 import ruamel.yaml
 
 
-def construct_yaml_implementation() -> ruamel.yaml.YAML:
-    implementation = ruamel.yaml.YAML(typ="safe")
+def construct_yaml_implementation(
+    typ: str = "safe", pure: bool = False
+) -> ruamel.yaml.YAML:
+    implementation = ruamel.yaml.YAML(typ=typ, pure=pure)
 
     # workaround global state
     # see: https://sourceforge.net/p/ruamel-yaml/tickets/341/
@@ -43,12 +46,27 @@ def _normalize(data: t.Any) -> t.Any:
         return data
 
 
-def impl2loader(impl: ruamel.yaml.YAML) -> t.Callable[[t.BinaryIO], t.Any]:
+_data_sentinel = object()
+
+
+def impl2loader(
+    primary: ruamel.yaml.YAML, *fallbacks: ruamel.yaml.YAML
+) -> t.Callable[[t.BinaryIO], t.Any]:
     def load(stream: t.BinaryIO) -> t.Any:
-        data = impl.load(stream)
+        stream_bytes = stream.read()
+        lasterr: ruamel.yaml.YAMLError | None = None
+        data: t.Any = _data_sentinel
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", ruamel.yaml.error.ReusedAnchorWarning)
+            for impl in [primary] + list(fallbacks):
+                try:
+                    data = impl.load(stream_bytes)
+                except ruamel.yaml.YAMLError as e:
+                    lasterr = e
+                else:
+                    break
+        if data is _data_sentinel and lasterr is not None:
+            raise lasterr
         return _normalize(data)
 
     return load
-
-
-load = impl2loader(construct_yaml_implementation())

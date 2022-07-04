@@ -32,7 +32,6 @@ foo:
 
     with pytest.raises(Exception):
         data = impl.load(rawdata)
-        print(data)
 
     GITLAB_TRANSFORM.modify_yaml_implementation(impl)
     data = impl.load(rawdata)

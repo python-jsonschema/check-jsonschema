@@ -1,6 +1,7 @@
 import os
 
 import pytest
+import ruamel.yaml
 
 from check_jsonschema.instance_loader import InstanceLoader
 from check_jsonschema.parsers import BadFileTypeError
@@ -109,3 +110,31 @@ def test_instanceloader_optional_format_handling(
         err = excinfo.value
         # error message should be instructive
         assert expect_error_message in str(err)
+
+
+def test_instanceloader_yaml_dup_anchor(tmp_path):
+    f = tmp_path / "foo.yaml"
+    f.write_text(
+        """\
+a:
+  b: &anchor
+   - 1
+   - 2
+  c: &anchor d
+"""
+    )
+    loader = InstanceLoader([str(f)])
+    data = list(loader.iter_files())
+    assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
+
+
+def test_instanceloader_invalid_yaml_data(tmp_path):
+    f = tmp_path / "foo.yaml"
+    f.write_text(
+        """\
+a: {b
+"""
+    )
+    loader = InstanceLoader([str(f)])
+    with pytest.raises(ruamel.yaml.YAMLError):
+        list(loader.iter_files())

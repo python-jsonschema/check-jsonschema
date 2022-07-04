@@ -3,7 +3,7 @@ import pathlib
 
 import pytest
 
-from check_jsonschema.schema_loader import SchemaLoader
+from check_jsonschema.schema_loader import SchemaLoader, SchemaParseError
 from check_jsonschema.schema_loader.readers import HttpSchemaReader, LocalSchemaReader
 
 
@@ -89,3 +89,51 @@ def test_schemaloader_remote_path(schemafile):
     sl = SchemaLoader(schemafile)
     assert isinstance(sl.reader, HttpSchemaReader)
     assert sl.reader.url == schemafile
+
+
+def test_schemaloader_local_yaml_dup_anchor(tmp_path):
+    f = tmp_path / "schema.yaml"
+    f.write_text(
+        """
+---
+"$schema": https://json-schema.org/draft/2020-12/schema
+type: object
+properties:
+  a:
+    type: object
+    properties:
+      b: &anchor
+        type: array
+        items:
+          type: integer
+      c: &anchor
+        type: string
+"""
+    )
+    sl = SchemaLoader(str(f))
+    schema = sl.get_schema()
+    assert schema == {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "a": {
+                "type": "object",
+                "properties": {
+                    "b": {"type": "array", "items": {"type": "integer"}},
+                    "c": {"type": "string"},
+                },
+            },
+        },
+    }
+
+
+def test_schemaloader_invalid_yaml_data(tmp_path):
+    f = tmp_path / "foo.yaml"
+    f.write_text(
+        """\
+a: {b
+"""
+    )
+    sl = SchemaLoader(str(f))
+    with pytest.raises(SchemaParseError):
+        sl.get_schema()
