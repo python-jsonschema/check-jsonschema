@@ -2615,6 +2615,7 @@
         "nuget",
         "pep440",
         "poetry",
+        "redhat",
         "regex",
         "rez",
         "ruby",

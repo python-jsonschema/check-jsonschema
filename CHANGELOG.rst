@@ -13,6 +13,7 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas (2022-07-06)
 - Update vendored schemas: renovate, travis (2022-06-29)
 - Add support for ``--data-transform gitlab-ci``, which enables expansion of the
   ``!reference`` tag in gitlab CI YAML files. This is now enabled by default on
