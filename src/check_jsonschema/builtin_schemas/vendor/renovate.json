@@ -2606,6 +2606,7 @@
         "gradle",
         "hashicorp",
         "helm",
+        "hermit",
         "hex",
         "ivy",
         "loose",
