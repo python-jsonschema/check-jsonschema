@@ -2615,6 +2615,7 @@
         "npm",
         "nuget",
         "pep440",
+        "perl",
         "poetry",
         "redhat",
         "regex",
