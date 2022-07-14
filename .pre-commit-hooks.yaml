@@ -59,7 +59,7 @@
   description: 'Validate GitHub Workflows against the schema provided by SchemaStore'
   entry: check-jsonschema --builtin-schema vendor.github-workflows
   language: python
-  files: ^\.github/workflows/
+  files: ^\.github/workflows/[^/]+$
   types: [yaml]
 
 - id: check-gitlab-ci

@@ -194,7 +194,7 @@ manually, you could do this:
       hooks:
         - id: check-jsonschema
           name: "Check GitHub Workflows"
-          files: ^\.github/workflows/
+          files: ^\.github/workflows/[^/]+$
           types: [yaml]
           args: ["--schemafile", "https://json.schemastore.org/github-workflow"]
 
@@ -213,6 +213,6 @@ To check with the builtin schema that a GitHub workflow sets
       hooks:
         - id: check-jsonschema
           name: "Check GitHub Workflows set timeout-minutes"
-          files: ^\.github/workflows/
+          files: ^\.github/workflows/[^/]+$
           types: [yaml]
           args: ["--builtin-schema", "github-workflows-require-timeout"]

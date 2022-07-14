@@ -8,12 +8,14 @@ CHANGELOG
 Unreleased
 ----------
 
+.. vendor-insert-here
+- Update vendored schemas (2022-07-13)
+- Update check-github-worfklows match rule to exclude subdirectories of the
+  `.github/workflows/` directory. (:issue:`113`)
+
 0.17.0
 ------
 
-.. vendor-insert-here
-
-- Update vendored schemas (2022-07-13)
 - Update vendored schemas: renovate, travis (2022-06-29)
 - Add support for ``--data-transform gitlab-ci``, which enables expansion of the
   ``!reference`` tag in gitlab CI YAML files. This is now enabled by default on

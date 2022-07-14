@@ -58,7 +58,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "url": "https://json.schemastore.org/github-workflow",
         "hook_config": {
             "name": "Validate GitHub Workflows",
-            "files": r"^\.github/workflows/",
+            "files": r"^\.github/workflows/[^/]+$",
             "types": "yaml",
         },
     },
