@@ -13,7 +13,7 @@ Unreleased
 0.17.1
 ------
 
-- Update vendored schemas (2022-07-13)
+- Update vendored schemas: renovate (2022-07-13)
 - Update check-github-worfklows match rule to exclude subdirectories of the
   `.github/workflows/` directory. (:issue:`113`)
 
