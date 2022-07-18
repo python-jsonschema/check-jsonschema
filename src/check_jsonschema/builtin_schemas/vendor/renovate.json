@@ -2085,6 +2085,16 @@
       },
       "$ref": "#"
     },
+    "puppet": {
+      "description": "Configuration object for the puppet manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|\\/)Puppetfile$"
+        ]
+      },
+      "$ref": "#"
+    },
     "pyenv": {
       "description": "Configuration object for the pyenv manager",
       "type": "object",
