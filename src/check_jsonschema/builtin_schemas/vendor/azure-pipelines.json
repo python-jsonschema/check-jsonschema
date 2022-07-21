@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/Microsoft/azure-pipelines-vscode/blob/main/service-schema.json",
-  "$comment": "v1.203.0",
+  "$comment": "v1.206.0",
   "title": "Pipeline schema",
   "description": "A pipeline definition",
   "oneOf": [
@@ -4238,7 +4238,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "AzureRmWebAppDeployment@3"
+                "AzureRmWebAppDeployment@4"
               ]
             },
             {
@@ -4246,7 +4246,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "AzureRmWebAppDeployment@4"
+                "AzureRmWebAppDeployment@3"
               ]
             },
             {
@@ -4922,14 +4922,6 @@
               ]
             },
             {
-              "description": "Installs or restores missing NuGet packages. Use NuGetAuthenticate@0 task for latest capabilities.",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "NuGetInstaller@0"
-              ]
-            },
-            {
               "description": "Restore, pack, or push NuGet packages, or run a NuGet command. Supports NuGet.org and authenticated feeds like Azure Artifacts and MyGet. Uses NuGet.exe and works with .NET Framework apps. For .NET Core and .NET Standard apps, use the .NET Core task.",
               "doNotSuggest": false,
               "ignoreCase": "value",
@@ -4943,6 +4935,14 @@
               "ignoreCase": "value",
               "enum": [
                 "NuGetRestore@1"
+              ]
+            },
+            {
+              "description": "Installs or restores missing NuGet packages. Use NuGetAuthenticate@0 task for latest capabilities.",
+              "doNotSuggest": false,
+              "ignoreCase": "value",
+              "enum": [
+                "NuGetInstaller@0"
               ]
             },
             {
@@ -5046,7 +5046,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "Gradle@2"
+                "Gradle@3"
               ]
             },
             {
@@ -5054,7 +5054,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "Gradle@3"
+                "Gradle@2"
               ]
             },
             {
@@ -5102,7 +5102,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "NuGetToolInstaller@0"
+                "NuGetToolInstaller@1"
               ]
             },
             {
@@ -5110,7 +5110,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "NuGetToolInstaller@1"
+                "NuGetToolInstaller@0"
               ]
             },
             {
@@ -5240,7 +5240,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "Kubernetes@0"
+                "Kubernetes@1"
               ]
             },
             {
@@ -5248,7 +5248,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "Kubernetes@1"
+                "Kubernetes@0"
               ]
             },
             {
@@ -5334,19 +5334,19 @@
               ]
             },
             {
-              "description": "Run tests with Visual Studio test runner",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "VSTest@1"
-              ]
-            },
-            {
               "description": "Run unit and functional tests (Selenium, Appium, Coded UI test, etc.) using the Visual Studio Test (VsTest) runner. Test frameworks that have a Visual Studio test adapter such as MsTest, xUnit, NUnit, Chutzpah (for JavaScript tests using QUnit, Mocha and Jasmine), etc. can be run. Tests can be distributed on multiple agents using this task (version 2).",
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
                 "VSTest@2"
+              ]
+            },
+            {
+              "description": "Run tests with Visual Studio test runner",
+              "doNotSuggest": false,
+              "ignoreCase": "value",
+              "enum": [
+                "VSTest@1"
               ]
             },
             {
@@ -5441,6 +5441,14 @@
             },
             {
               "description": "Acquire a specific version of the .NET Core SDK from the internet or local cache and add it to the PATH",
+              "doNotSuggest": false,
+              "ignoreCase": "value",
+              "enum": [
+                "DotNetCoreInstaller@0"
+              ]
+            },
+            {
+              "description": "Acquire a specific version of the .NET Core SDK from the internet or local cache and add it to the PATH",
               "deprecationMessage": "DotNetCoreInstaller is deprecated - Acquire a specific version of the .NET Core SDK from the internet or local cache and add it to the PATH",
               "doNotSuggest": true,
               "ignoreCase": "value",
@@ -5454,14 +5462,6 @@
               "ignoreCase": "value",
               "enum": [
                 "UseDotNet@2"
-              ]
-            },
-            {
-              "description": "Acquire a specific version of the .NET Core SDK from the internet or local cache and add it to the PATH",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "DotNetCoreInstaller@0"
               ]
             },
             {
@@ -5579,19 +5579,19 @@
               ]
             },
             {
-              "description": "Archive files using compression formats such as .7z, .rar, .tar.gz, and .zip.",
-              "doNotSuggest": false,
-              "ignoreCase": "value",
-              "enum": [
-                "ArchiveFiles@1"
-              ]
-            },
-            {
               "description": "Compress files into .7z, .tar.gz, or .zip",
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
                 "ArchiveFiles@2"
+              ]
+            },
+            {
+              "description": "Archive files using compression formats such as .7z, .rar, .tar.gz, and .zip.",
+              "doNotSuggest": false,
+              "ignoreCase": "value",
+              "enum": [
+                "ArchiveFiles@1"
               ]
             },
             {
@@ -5712,7 +5712,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "DownloadBuildArtifacts@0"
+                "DownloadBuildArtifacts@1"
               ]
             },
             {
@@ -5720,7 +5720,7 @@
               "doNotSuggest": false,
               "ignoreCase": "value",
               "enum": [
-                "DownloadBuildArtifacts@1"
+                "DownloadBuildArtifacts@0"
               ]
             },
             {
@@ -7278,6 +7278,39 @@
                   "aliases": [
                     "findbugsAnalysisEnabled"
                   ]
+                },
+                "spotBugsRunAnalysis": {
+                  "type": "boolean",
+                  "description": "Run SpotBugs analysis",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "spotBugsAnalysisEnabled"
+                  ]
+                },
+                "spotBugsVersion": {
+                  "type": "string",
+                  "description": "Version number",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "spotBugsMavenPluginVersion"
+                  ]
+                },
+                "spotBugsGoal": {
+                  "description": "The goal for the spotbugs plugin",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "spotbugs",
+                    "check"
+                  ]
+                },
+                "failWhenBugsFound": {
+                  "type": "boolean",
+                  "description": "Fail when bugs are found with spotbugs:check",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "spotBugsFailWhenBugsFound",
+                    "sbFailWhenBugsFound"
+                  ]
                 }
               },
               "additionalProperties": false,
@@ -8126,6 +8159,252 @@
             "task": {
               "description": "Azure App Service deploy\n\nDeploy to Azure App Service a web, mobile, or API app using Docker, Java, .NET, .NET Core, Node.js, PHP, Python, or Ruby",
               "ignoreCase": "value",
+              "pattern": "^AzureRmWebAppDeployment@4$"
+            },
+            "inputs": {
+              "description": "Azure App Service deploy inputs",
+              "properties": {
+                "ConnectionType": {
+                  "description": "Connection type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "AzureRM",
+                    "PublishProfile"
+                  ]
+                },
+                "azureSubscription": {
+                  "type": "string",
+                  "description": "Azure subscription",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "ConnectedServiceName"
+                  ]
+                },
+                "PublishProfilePath": {
+                  "type": "string",
+                  "description": "Publish profile path",
+                  "ignoreCase": "key"
+                },
+                "PublishProfilePassword": {
+                  "type": "string",
+                  "description": "Publish profile password",
+                  "ignoreCase": "key"
+                },
+                "appType": {
+                  "description": "App Service type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "webApp",
+                    "webAppLinux",
+                    "webAppContainer",
+                    "functionApp",
+                    "functionAppLinux",
+                    "functionAppContainer",
+                    "apiApp",
+                    "mobileApp"
+                  ],
+                  "aliases": [
+                    "WebAppKind"
+                  ]
+                },
+                "WebAppName": {
+                  "type": "string",
+                  "description": "App Service name",
+                  "ignoreCase": "key"
+                },
+                "deployToSlotOrASE": {
+                  "type": "boolean",
+                  "description": "Deploy to Slot or App Service Environment",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "DeployToSlotOrASEFlag"
+                  ]
+                },
+                "ResourceGroupName": {
+                  "type": "string",
+                  "description": "Resource group",
+                  "ignoreCase": "key"
+                },
+                "SlotName": {
+                  "type": "string",
+                  "description": "Slot",
+                  "ignoreCase": "key"
+                },
+                "DockerNamespace": {
+                  "type": "string",
+                  "description": "Registry or Namespace",
+                  "ignoreCase": "key"
+                },
+                "DockerRepository": {
+                  "type": "string",
+                  "description": "Image",
+                  "ignoreCase": "key"
+                },
+                "DockerImageTag": {
+                  "type": "string",
+                  "description": "Tag",
+                  "ignoreCase": "key"
+                },
+                "VirtualApplication": {
+                  "type": "string",
+                  "description": "Virtual application",
+                  "ignoreCase": "key"
+                },
+                "packageForLinux": {
+                  "type": "string",
+                  "description": "Package or folder",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "Package"
+                  ]
+                },
+                "RuntimeStack": {
+                  "type": "string",
+                  "description": "Runtime Stack",
+                  "ignoreCase": "key"
+                },
+                "RuntimeStackFunction": {
+                  "description": "Runtime Stack",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "DOTNET|2.2",
+                    "DOTNET|3.1",
+                    "JAVA|8",
+                    "JAVA|11",
+                    "NODE|8",
+                    "NODE|10",
+                    "NODE|12",
+                    "NODE|14",
+                    "PYTHON|3.6",
+                    "PYTHON|3.7",
+                    "PYTHON|3.8"
+                  ]
+                },
+                "StartupCommand": {
+                  "type": "string",
+                  "description": "Startup command ",
+                  "ignoreCase": "key"
+                },
+                "ScriptType": {
+                  "description": "Deployment script type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "",
+                    "Inline Script",
+                    "File Path"
+                  ]
+                },
+                "InlineScript": {
+                  "type": "string",
+                  "description": "Inline Script",
+                  "ignoreCase": "key"
+                },
+                "ScriptPath": {
+                  "type": "string",
+                  "description": "Deployment script path",
+                  "ignoreCase": "key"
+                },
+                "WebConfigParameters": {
+                  "type": "string",
+                  "description": "Generate web.config parameters for Python, Node.js, Go and Java apps",
+                  "ignoreCase": "key"
+                },
+                "AppSettings": {
+                  "type": "string",
+                  "description": "App settings",
+                  "ignoreCase": "key"
+                },
+                "ConfigurationSettings": {
+                  "type": "string",
+                  "description": "Configuration settings",
+                  "ignoreCase": "key"
+                },
+                "enableCustomDeployment": {
+                  "type": "boolean",
+                  "description": "Select deployment method",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "UseWebDeploy"
+                  ]
+                },
+                "DeploymentType": {
+                  "description": "Deployment method",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "webDeploy",
+                    "zipDeploy",
+                    "runFromZip"
+                  ]
+                },
+                "TakeAppOfflineFlag": {
+                  "type": "boolean",
+                  "description": "Take App Offline",
+                  "ignoreCase": "key"
+                },
+                "SetParametersFile": {
+                  "type": "string",
+                  "description": "SetParameters file",
+                  "ignoreCase": "key"
+                },
+                "RemoveAdditionalFilesFlag": {
+                  "type": "boolean",
+                  "description": "Remove additional files at destination",
+                  "ignoreCase": "key"
+                },
+                "ExcludeFilesFromAppDataFlag": {
+                  "type": "boolean",
+                  "description": "Exclude files from the App_Data folder",
+                  "ignoreCase": "key"
+                },
+                "AdditionalArguments": {
+                  "type": "string",
+                  "description": "Additional arguments",
+                  "ignoreCase": "key"
+                },
+                "RenameFilesFlag": {
+                  "type": "boolean",
+                  "description": "Rename locked files",
+                  "ignoreCase": "key"
+                },
+                "enableXmlTransform": {
+                  "type": "boolean",
+                  "description": "XML transformation",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "XmlTransformation"
+                  ]
+                },
+                "enableXmlVariableSubstitution": {
+                  "type": "boolean",
+                  "description": "XML variable substitution",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "XmlVariableSubstitution"
+                  ]
+                },
+                "JSONFiles": {
+                  "type": "string",
+                  "description": "JSON variable substitution",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "Azure App Service deploy\n\nDeploy to Azure App Service a web, mobile, or API app using Docker, Java, .NET, .NET Core, Node.js, PHP, Python, or Ruby",
+              "ignoreCase": "value",
               "pattern": "^AzureRmWebAppDeployment@3$"
             },
             "inputs": {
@@ -8385,252 +8664,6 @@
           "required": [
             "task",
             "inputs"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": "Azure App Service deploy\n\nDeploy to Azure App Service a web, mobile, or API app using Docker, Java, .NET, .NET Core, Node.js, PHP, Python, or Ruby",
-              "ignoreCase": "value",
-              "pattern": "^AzureRmWebAppDeployment@4$"
-            },
-            "inputs": {
-              "description": "Azure App Service deploy inputs",
-              "properties": {
-                "ConnectionType": {
-                  "description": "Connection type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "AzureRM",
-                    "PublishProfile"
-                  ]
-                },
-                "azureSubscription": {
-                  "type": "string",
-                  "description": "Azure subscription",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "ConnectedServiceName"
-                  ]
-                },
-                "PublishProfilePath": {
-                  "type": "string",
-                  "description": "Publish profile path",
-                  "ignoreCase": "key"
-                },
-                "PublishProfilePassword": {
-                  "type": "string",
-                  "description": "Publish profile password",
-                  "ignoreCase": "key"
-                },
-                "appType": {
-                  "description": "App Service type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "webApp",
-                    "webAppLinux",
-                    "webAppContainer",
-                    "functionApp",
-                    "functionAppLinux",
-                    "functionAppContainer",
-                    "apiApp",
-                    "mobileApp"
-                  ],
-                  "aliases": [
-                    "WebAppKind"
-                  ]
-                },
-                "WebAppName": {
-                  "type": "string",
-                  "description": "App Service name",
-                  "ignoreCase": "key"
-                },
-                "deployToSlotOrASE": {
-                  "type": "boolean",
-                  "description": "Deploy to Slot or App Service Environment",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "DeployToSlotOrASEFlag"
-                  ]
-                },
-                "ResourceGroupName": {
-                  "type": "string",
-                  "description": "Resource group",
-                  "ignoreCase": "key"
-                },
-                "SlotName": {
-                  "type": "string",
-                  "description": "Slot",
-                  "ignoreCase": "key"
-                },
-                "DockerNamespace": {
-                  "type": "string",
-                  "description": "Registry or Namespace",
-                  "ignoreCase": "key"
-                },
-                "DockerRepository": {
-                  "type": "string",
-                  "description": "Image",
-                  "ignoreCase": "key"
-                },
-                "DockerImageTag": {
-                  "type": "string",
-                  "description": "Tag",
-                  "ignoreCase": "key"
-                },
-                "VirtualApplication": {
-                  "type": "string",
-                  "description": "Virtual application",
-                  "ignoreCase": "key"
-                },
-                "packageForLinux": {
-                  "type": "string",
-                  "description": "Package or folder",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "Package"
-                  ]
-                },
-                "RuntimeStack": {
-                  "type": "string",
-                  "description": "Runtime Stack",
-                  "ignoreCase": "key"
-                },
-                "RuntimeStackFunction": {
-                  "description": "Runtime Stack",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "DOTNET|2.2",
-                    "DOTNET|3.1",
-                    "JAVA|8",
-                    "JAVA|11",
-                    "NODE|8",
-                    "NODE|10",
-                    "NODE|12",
-                    "NODE|14",
-                    "PYTHON|3.6",
-                    "PYTHON|3.7",
-                    "PYTHON|3.8"
-                  ]
-                },
-                "StartupCommand": {
-                  "type": "string",
-                  "description": "Startup command ",
-                  "ignoreCase": "key"
-                },
-                "ScriptType": {
-                  "description": "Deployment script type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "",
-                    "Inline Script",
-                    "File Path"
-                  ]
-                },
-                "InlineScript": {
-                  "type": "string",
-                  "description": "Inline Script",
-                  "ignoreCase": "key"
-                },
-                "ScriptPath": {
-                  "type": "string",
-                  "description": "Deployment script path",
-                  "ignoreCase": "key"
-                },
-                "WebConfigParameters": {
-                  "type": "string",
-                  "description": "Generate web.config parameters for Python, Node.js, Go and Java apps",
-                  "ignoreCase": "key"
-                },
-                "AppSettings": {
-                  "type": "string",
-                  "description": "App settings",
-                  "ignoreCase": "key"
-                },
-                "ConfigurationSettings": {
-                  "type": "string",
-                  "description": "Configuration settings",
-                  "ignoreCase": "key"
-                },
-                "enableCustomDeployment": {
-                  "type": "boolean",
-                  "description": "Select deployment method",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "UseWebDeploy"
-                  ]
-                },
-                "DeploymentType": {
-                  "description": "Deployment method",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "webDeploy",
-                    "zipDeploy",
-                    "runFromZip"
-                  ]
-                },
-                "TakeAppOfflineFlag": {
-                  "type": "boolean",
-                  "description": "Take App Offline",
-                  "ignoreCase": "key"
-                },
-                "SetParametersFile": {
-                  "type": "string",
-                  "description": "SetParameters file",
-                  "ignoreCase": "key"
-                },
-                "RemoveAdditionalFilesFlag": {
-                  "type": "boolean",
-                  "description": "Remove additional files at destination",
-                  "ignoreCase": "key"
-                },
-                "ExcludeFilesFromAppDataFlag": {
-                  "type": "boolean",
-                  "description": "Exclude files from the App_Data folder",
-                  "ignoreCase": "key"
-                },
-                "AdditionalArguments": {
-                  "type": "string",
-                  "description": "Additional arguments",
-                  "ignoreCase": "key"
-                },
-                "RenameFilesFlag": {
-                  "type": "boolean",
-                  "description": "Rename locked files",
-                  "ignoreCase": "key"
-                },
-                "enableXmlTransform": {
-                  "type": "boolean",
-                  "description": "XML transformation",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "XmlTransformation"
-                  ]
-                },
-                "enableXmlVariableSubstitution": {
-                  "type": "boolean",
-                  "description": "XML variable substitution",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "XmlVariableSubstitution"
-                  ]
-                },
-                "JSONFiles": {
-                  "type": "string",
-                  "description": "JSON variable substitution",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
           ]
         },
         {
@@ -11350,7 +11383,7 @@
                 },
                 "appName": {
                   "type": "string",
-                  "description": "App name",
+                  "description": "Azure Functions App name",
                   "ignoreCase": "key"
                 },
                 "deployToSlotOrASE": {
@@ -11379,15 +11412,18 @@
                   "enum": [
                     "DOTNET|2.2",
                     "DOTNET|3.1",
+                    "DOTNET|6.0",
                     "JAVA|8",
                     "JAVA|11",
                     "NODE|8",
                     "NODE|10",
                     "NODE|12",
                     "NODE|14",
+                    "NODE|16",
                     "PYTHON|3.6",
                     "PYTHON|3.7",
-                    "PYTHON|3.8"
+                    "PYTHON|3.8",
+                    "PYTHON|3.9"
                   ]
                 },
                 "startUpCommand": {
@@ -15856,82 +15892,6 @@
         {
           "properties": {
             "task": {
-              "description": "NuGet Installer\n\nInstalls or restores missing NuGet packages. Use NuGetAuthenticate@0 task for latest capabilities.",
-              "ignoreCase": "value",
-              "pattern": "^NuGetInstaller@0$"
-            },
-            "inputs": {
-              "description": "NuGet Installer inputs",
-              "properties": {
-                "solution": {
-                  "type": "string",
-                  "description": "Path to solution or packages.config",
-                  "ignoreCase": "key"
-                },
-                "nugetConfigPath": {
-                  "type": "string",
-                  "description": "Path to NuGet.config",
-                  "ignoreCase": "key"
-                },
-                "restoreMode": {
-                  "description": "Installation type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "restore",
-                    "install"
-                  ]
-                },
-                "noCache": {
-                  "type": "boolean",
-                  "description": "Disable local cache",
-                  "ignoreCase": "key"
-                },
-                "nuGetRestoreArgs": {
-                  "type": "string",
-                  "description": "NuGet arguments",
-                  "ignoreCase": "key"
-                },
-                "verbosity": {
-                  "description": "Verbosity",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "-",
-                    "Quiet",
-                    "Normal",
-                    "Detailed"
-                  ]
-                },
-                "nuGetVersion": {
-                  "description": "NuGet Version",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "3.3.0",
-                    "3.5.0.1829",
-                    "4.0.0.2283",
-                    "custom"
-                  ]
-                },
-                "nuGetPath": {
-                  "type": "string",
-                  "description": "Path to NuGet.exe",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
               "description": "NuGet\n\nRestore, pack, or push NuGet packages, or run a NuGet command. Supports NuGet.org and authenticated feeds like Azure Artifacts and MyGet. Uses NuGet.exe and works with .NET Framework apps. For .NET Core and .NET Standard apps, use the .NET Core task.",
               "ignoreCase": "value",
               "pattern": "^NuGetCommand@2$"
@@ -16252,6 +16212,82 @@
                     "Normal",
                     "Detailed"
                   ]
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "NuGet Installer\n\nInstalls or restores missing NuGet packages. Use NuGetAuthenticate@0 task for latest capabilities.",
+              "ignoreCase": "value",
+              "pattern": "^NuGetInstaller@0$"
+            },
+            "inputs": {
+              "description": "NuGet Installer inputs",
+              "properties": {
+                "solution": {
+                  "type": "string",
+                  "description": "Path to solution or packages.config",
+                  "ignoreCase": "key"
+                },
+                "nugetConfigPath": {
+                  "type": "string",
+                  "description": "Path to NuGet.config",
+                  "ignoreCase": "key"
+                },
+                "restoreMode": {
+                  "description": "Installation type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "restore",
+                    "install"
+                  ]
+                },
+                "noCache": {
+                  "type": "boolean",
+                  "description": "Disable local cache",
+                  "ignoreCase": "key"
+                },
+                "nuGetRestoreArgs": {
+                  "type": "string",
+                  "description": "NuGet arguments",
+                  "ignoreCase": "key"
+                },
+                "verbosity": {
+                  "description": "Verbosity",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "-",
+                    "Quiet",
+                    "Normal",
+                    "Detailed"
+                  ]
+                },
+                "nuGetVersion": {
+                  "description": "NuGet Version",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "3.3.0",
+                    "3.5.0.1829",
+                    "4.0.0.2283",
+                    "custom"
+                  ]
+                },
+                "nuGetPath": {
+                  "type": "string",
+                  "description": "Path to NuGet.exe",
+                  "ignoreCase": "key"
                 }
               },
               "additionalProperties": false,
@@ -17414,6 +17450,11 @@
                   "description": "Warn if not indexed",
                   "ignoreCase": "key"
                 },
+                "UseNetCoreClientTool": {
+                  "type": "boolean",
+                  "description": "Use NetCore client tool",
+                  "ignoreCase": "key"
+                },
                 "SymbolsMaximumWaitTime": {
                   "type": "string",
                   "description": "Max wait time (min)",
@@ -17555,6 +17596,11 @@
                   "description": "Clean target folder",
                   "ignoreCase": "key"
                 },
+                "cleanHiddenFilesInTarget": {
+                  "type": "boolean",
+                  "description": "Remove hidden files in target folder",
+                  "ignoreCase": "key"
+                },
                 "readyTimeout": {
                   "type": "string",
                   "description": "SSH handshake timeout",
@@ -17596,7 +17642,7 @@
             "task": {
               "description": "Gradle\n\nBuild using a Gradle wrapper script",
               "ignoreCase": "value",
-              "pattern": "^Gradle@2$"
+              "pattern": "^Gradle@3$"
             },
             "inputs": {
               "description": "Gradle inputs",
@@ -17830,7 +17876,7 @@
             "task": {
               "description": "Gradle\n\nBuild using a Gradle wrapper script",
               "ignoreCase": "value",
-              "pattern": "^Gradle@3$"
+              "pattern": "^Gradle@2$"
             },
             "inputs": {
               "description": "Gradle inputs",
@@ -18864,7 +18910,7 @@
             "task": {
               "description": "NuGet tool installer\n\nAcquires a specific version of NuGet from the internet or the tools cache and adds it to the PATH. Use this task to change the version of NuGet used in the NuGet tasks.",
               "ignoreCase": "value",
-              "pattern": "^NuGetToolInstaller@0$"
+              "pattern": "^NuGetToolInstaller@1$"
             },
             "inputs": {
               "description": "NuGet tool installer inputs",
@@ -18876,7 +18922,7 @@
                 },
                 "checkLatest": {
                   "type": "boolean",
-                  "description": "Always download the latest matching version",
+                  "description": "Always check for new versions",
                   "ignoreCase": "key"
                 }
               },
@@ -18897,7 +18943,7 @@
             "task": {
               "description": "NuGet tool installer\n\nAcquires a specific version of NuGet from the internet or the tools cache and adds it to the PATH. Use this task to change the version of NuGet used in the NuGet tasks.",
               "ignoreCase": "value",
-              "pattern": "^NuGetToolInstaller@1$"
+              "pattern": "^NuGetToolInstaller@0$"
             },
             "inputs": {
               "description": "NuGet tool installer inputs",
@@ -18909,7 +18955,7 @@
                 },
                 "checkLatest": {
                   "type": "boolean",
-                  "description": "Always check for new versions",
+                  "description": "Always download the latest matching version",
                   "ignoreCase": "key"
                 }
               },
@@ -20199,194 +20245,6 @@
             "task": {
               "description": "Kubectl\n\nDeploy, configure, update a Kubernetes cluster in Azure Container Service by running kubectl commands",
               "ignoreCase": "value",
-              "pattern": "^Kubernetes@0$"
-            },
-            "inputs": {
-              "description": "Kubectl inputs",
-              "properties": {
-                "kubernetesServiceConnection": {
-                  "type": "string",
-                  "description": "Kubernetes service connection",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "kubernetesServiceEndpoint"
-                  ]
-                },
-                "namespace": {
-                  "type": "string",
-                  "description": "Namespace",
-                  "ignoreCase": "key"
-                },
-                "command": {
-                  "description": "Command",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "apply",
-                    "create",
-                    "delete",
-                    "exec",
-                    "expose",
-                    "get",
-                    "logs",
-                    "run",
-                    "set",
-                    "top"
-                  ]
-                },
-                "useConfigurationFile": {
-                  "type": "boolean",
-                  "description": "Use Configuration files",
-                  "ignoreCase": "key"
-                },
-                "configuration": {
-                  "type": "string",
-                  "description": "Configuration file",
-                  "ignoreCase": "key"
-                },
-                "arguments": {
-                  "type": "string",
-                  "description": "Arguments",
-                  "ignoreCase": "key"
-                },
-                "secretType": {
-                  "description": "Type of secret",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "dockerRegistry",
-                    "generic"
-                  ]
-                },
-                "secretArguments": {
-                  "type": "string",
-                  "description": "Arguments",
-                  "ignoreCase": "key"
-                },
-                "containerRegistryType": {
-                  "description": "Container Registry type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "Azure Container Registry",
-                    "Container Registry"
-                  ]
-                },
-                "dockerRegistryConnection": {
-                  "type": "string",
-                  "description": "Docker Registry service connection",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "dockerRegistryEndpoint"
-                  ]
-                },
-                "azureSubscription": {
-                  "type": "string",
-                  "description": "Azure subscription",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "azureSubscriptionEndpoint"
-                  ]
-                },
-                "azureContainerRegistry": {
-                  "type": "string",
-                  "description": "Azure Container Registry",
-                  "ignoreCase": "key"
-                },
-                "secretName": {
-                  "type": "string",
-                  "description": "Secret name",
-                  "ignoreCase": "key"
-                },
-                "forceUpdate": {
-                  "type": "boolean",
-                  "description": "Force update secret",
-                  "ignoreCase": "key"
-                },
-                "configMapName": {
-                  "type": "string",
-                  "description": "ConfigMap name",
-                  "ignoreCase": "key"
-                },
-                "forceUpdateConfigMap": {
-                  "type": "boolean",
-                  "description": "Force update configmap",
-                  "ignoreCase": "key"
-                },
-                "useConfigMapFile": {
-                  "type": "boolean",
-                  "description": "Use file",
-                  "ignoreCase": "key"
-                },
-                "configMapFile": {
-                  "type": "string",
-                  "description": "ConfigMap file",
-                  "ignoreCase": "key"
-                },
-                "configMapArguments": {
-                  "type": "string",
-                  "description": "Arguments",
-                  "ignoreCase": "key"
-                },
-                "versionOrLocation": {
-                  "description": "Kubectl",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "version",
-                    "location"
-                  ]
-                },
-                "versionSpec": {
-                  "type": "string",
-                  "description": "Version spec",
-                  "ignoreCase": "key"
-                },
-                "checkLatest": {
-                  "type": "boolean",
-                  "description": "Check for latest version",
-                  "ignoreCase": "key"
-                },
-                "specifyLocation": {
-                  "type": "string",
-                  "description": "Path to Kubectl",
-                  "ignoreCase": "key"
-                },
-                "workingDirectory": {
-                  "type": "string",
-                  "description": "Working directory",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "cwd"
-                  ]
-                },
-                "outputFormat": {
-                  "description": "Output format",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "json",
-                    "yaml"
-                  ]
-                },
-                "kubectlOutput": {
-                  "type": "string",
-                  "description": "Output variable name",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": "Kubectl\n\nDeploy, configure, update a Kubernetes cluster in Azure Container Service by running kubectl commands",
-              "ignoreCase": "value",
               "pattern": "^Kubernetes@1$"
             },
             "inputs": {
@@ -20587,6 +20445,194 @@
                     "yaml",
                     "none"
                   ]
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "Kubectl\n\nDeploy, configure, update a Kubernetes cluster in Azure Container Service by running kubectl commands",
+              "ignoreCase": "value",
+              "pattern": "^Kubernetes@0$"
+            },
+            "inputs": {
+              "description": "Kubectl inputs",
+              "properties": {
+                "kubernetesServiceConnection": {
+                  "type": "string",
+                  "description": "Kubernetes service connection",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "kubernetesServiceEndpoint"
+                  ]
+                },
+                "namespace": {
+                  "type": "string",
+                  "description": "Namespace",
+                  "ignoreCase": "key"
+                },
+                "command": {
+                  "description": "Command",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "apply",
+                    "create",
+                    "delete",
+                    "exec",
+                    "expose",
+                    "get",
+                    "logs",
+                    "run",
+                    "set",
+                    "top"
+                  ]
+                },
+                "useConfigurationFile": {
+                  "type": "boolean",
+                  "description": "Use Configuration files",
+                  "ignoreCase": "key"
+                },
+                "configuration": {
+                  "type": "string",
+                  "description": "Configuration file",
+                  "ignoreCase": "key"
+                },
+                "arguments": {
+                  "type": "string",
+                  "description": "Arguments",
+                  "ignoreCase": "key"
+                },
+                "secretType": {
+                  "description": "Type of secret",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "dockerRegistry",
+                    "generic"
+                  ]
+                },
+                "secretArguments": {
+                  "type": "string",
+                  "description": "Arguments",
+                  "ignoreCase": "key"
+                },
+                "containerRegistryType": {
+                  "description": "Container Registry type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "Azure Container Registry",
+                    "Container Registry"
+                  ]
+                },
+                "dockerRegistryConnection": {
+                  "type": "string",
+                  "description": "Docker Registry service connection",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "dockerRegistryEndpoint"
+                  ]
+                },
+                "azureSubscription": {
+                  "type": "string",
+                  "description": "Azure subscription",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "azureSubscriptionEndpoint"
+                  ]
+                },
+                "azureContainerRegistry": {
+                  "type": "string",
+                  "description": "Azure Container Registry",
+                  "ignoreCase": "key"
+                },
+                "secretName": {
+                  "type": "string",
+                  "description": "Secret name",
+                  "ignoreCase": "key"
+                },
+                "forceUpdate": {
+                  "type": "boolean",
+                  "description": "Force update secret",
+                  "ignoreCase": "key"
+                },
+                "configMapName": {
+                  "type": "string",
+                  "description": "ConfigMap name",
+                  "ignoreCase": "key"
+                },
+                "forceUpdateConfigMap": {
+                  "type": "boolean",
+                  "description": "Force update configmap",
+                  "ignoreCase": "key"
+                },
+                "useConfigMapFile": {
+                  "type": "boolean",
+                  "description": "Use file",
+                  "ignoreCase": "key"
+                },
+                "configMapFile": {
+                  "type": "string",
+                  "description": "ConfigMap file",
+                  "ignoreCase": "key"
+                },
+                "configMapArguments": {
+                  "type": "string",
+                  "description": "Arguments",
+                  "ignoreCase": "key"
+                },
+                "versionOrLocation": {
+                  "description": "Kubectl",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "version",
+                    "location"
+                  ]
+                },
+                "versionSpec": {
+                  "type": "string",
+                  "description": "Version spec",
+                  "ignoreCase": "key"
+                },
+                "checkLatest": {
+                  "type": "boolean",
+                  "description": "Check for latest version",
+                  "ignoreCase": "key"
+                },
+                "specifyLocation": {
+                  "type": "string",
+                  "description": "Path to Kubectl",
+                  "ignoreCase": "key"
+                },
+                "workingDirectory": {
+                  "type": "string",
+                  "description": "Working directory",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "cwd"
+                  ]
+                },
+                "outputFormat": {
+                  "description": "Output format",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "json",
+                    "yaml"
+                  ]
+                },
+                "kubectlOutput": {
+                  "type": "string",
+                  "description": "Output variable name",
+                  "ignoreCase": "key"
                 }
               },
               "additionalProperties": false,
@@ -21389,6 +21435,21 @@
                   "description": "Version spec",
                   "ignoreCase": "key"
                 },
+                "disableDownloadFromRegistry": {
+                  "type": "boolean",
+                  "description": "Disable downloading releases from the GitHub registry",
+                  "ignoreCase": "key"
+                },
+                "allowUnstable": {
+                  "type": "boolean",
+                  "description": "Allow downloading unstable releases",
+                  "ignoreCase": "key"
+                },
+                "githubToken": {
+                  "type": "string",
+                  "description": "GitHub token for GitHub Actions python registry",
+                  "ignoreCase": "key"
+                },
                 "addToPath": {
                   "type": "boolean",
                   "description": "Add to PATH",
@@ -21470,111 +21531,6 @@
           "required": [
             "task",
             "inputs"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": "Visual Studio Test\n\nRun tests with Visual Studio test runner",
-              "ignoreCase": "value",
-              "pattern": "^VSTest@1$"
-            },
-            "inputs": {
-              "description": "Visual Studio Test inputs",
-              "properties": {
-                "testAssembly": {
-                  "type": "string",
-                  "description": "Test Assembly",
-                  "ignoreCase": "key"
-                },
-                "testFiltercriteria": {
-                  "type": "string",
-                  "description": "Test Filter criteria",
-                  "ignoreCase": "key"
-                },
-                "runSettingsFile": {
-                  "type": "string",
-                  "description": "Run Settings File",
-                  "ignoreCase": "key"
-                },
-                "overrideTestrunParameters": {
-                  "type": "string",
-                  "description": "Override TestRun Parameters",
-                  "ignoreCase": "key"
-                },
-                "codeCoverageEnabled": {
-                  "type": "boolean",
-                  "description": "Code Coverage Enabled",
-                  "ignoreCase": "key"
-                },
-                "runInParallel": {
-                  "type": "boolean",
-                  "description": "Run In Parallel",
-                  "ignoreCase": "key"
-                },
-                "vstestLocationMethod": {
-                  "description": "VSTest",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "version",
-                    "location"
-                  ]
-                },
-                "vsTestVersion": {
-                  "description": "VSTest version",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "latest",
-                    "14.0",
-                    "12.0"
-                  ]
-                },
-                "vstestLocation": {
-                  "type": "string",
-                  "description": "Path to vstest.console.exe",
-                  "ignoreCase": "key"
-                },
-                "pathtoCustomTestAdapters": {
-                  "type": "string",
-                  "description": "Path to Custom Test Adapters",
-                  "ignoreCase": "key"
-                },
-                "otherConsoleOptions": {
-                  "type": "string",
-                  "description": "Other console options",
-                  "ignoreCase": "key"
-                },
-                "testRunTitle": {
-                  "type": "string",
-                  "description": "Test Run Title",
-                  "ignoreCase": "key"
-                },
-                "platform": {
-                  "type": "string",
-                  "description": "Platform",
-                  "ignoreCase": "key"
-                },
-                "configuration": {
-                  "type": "string",
-                  "description": "Configuration",
-                  "ignoreCase": "key"
-                },
-                "publishRunAttachments": {
-                  "type": "boolean",
-                  "description": "Upload Test Attachments",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
           ]
         },
         {
@@ -21820,6 +21776,111 @@
                 "rerunMaxAttempts": {
                   "type": "string",
                   "description": "Maximum # of attempts",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "Visual Studio Test\n\nRun tests with Visual Studio test runner",
+              "ignoreCase": "value",
+              "pattern": "^VSTest@1$"
+            },
+            "inputs": {
+              "description": "Visual Studio Test inputs",
+              "properties": {
+                "testAssembly": {
+                  "type": "string",
+                  "description": "Test Assembly",
+                  "ignoreCase": "key"
+                },
+                "testFiltercriteria": {
+                  "type": "string",
+                  "description": "Test Filter criteria",
+                  "ignoreCase": "key"
+                },
+                "runSettingsFile": {
+                  "type": "string",
+                  "description": "Run Settings File",
+                  "ignoreCase": "key"
+                },
+                "overrideTestrunParameters": {
+                  "type": "string",
+                  "description": "Override TestRun Parameters",
+                  "ignoreCase": "key"
+                },
+                "codeCoverageEnabled": {
+                  "type": "boolean",
+                  "description": "Code Coverage Enabled",
+                  "ignoreCase": "key"
+                },
+                "runInParallel": {
+                  "type": "boolean",
+                  "description": "Run In Parallel",
+                  "ignoreCase": "key"
+                },
+                "vstestLocationMethod": {
+                  "description": "VSTest",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "version",
+                    "location"
+                  ]
+                },
+                "vsTestVersion": {
+                  "description": "VSTest version",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "latest",
+                    "14.0",
+                    "12.0"
+                  ]
+                },
+                "vstestLocation": {
+                  "type": "string",
+                  "description": "Path to vstest.console.exe",
+                  "ignoreCase": "key"
+                },
+                "pathtoCustomTestAdapters": {
+                  "type": "string",
+                  "description": "Path to Custom Test Adapters",
+                  "ignoreCase": "key"
+                },
+                "otherConsoleOptions": {
+                  "type": "string",
+                  "description": "Other console options",
+                  "ignoreCase": "key"
+                },
+                "testRunTitle": {
+                  "type": "string",
+                  "description": "Test Run Title",
+                  "ignoreCase": "key"
+                },
+                "platform": {
+                  "type": "string",
+                  "description": "Platform",
+                  "ignoreCase": "key"
+                },
+                "configuration": {
+                  "type": "string",
+                  "description": "Configuration",
+                  "ignoreCase": "key"
+                },
+                "publishRunAttachments": {
+                  "type": "boolean",
+                  "description": "Upload Test Attachments",
                   "ignoreCase": "key"
                 }
               },
@@ -22657,6 +22718,42 @@
         {
           "properties": {
             "task": {
+              "description": ".NET Core SDK/runtime installer\n\nAcquire a specific version of the .NET Core SDK from the internet or local cache and add it to the PATH",
+              "ignoreCase": "value",
+              "pattern": "^DotNetCoreInstaller@0$"
+            },
+            "inputs": {
+              "description": ".NET Core SDK/runtime installer inputs",
+              "properties": {
+                "packageType": {
+                  "description": "Package to install",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "runtime",
+                    "sdk"
+                  ]
+                },
+                "version": {
+                  "type": "string",
+                  "description": "Version",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
               "description": ".NET Core sdk/runtime installer\n\nAcquire a specific version of the .NET Core SDK from the internet or local cache and add it to the PATH",
               "ignoreCase": "value",
               "pattern": "^DotNetCoreInstaller@1$"
@@ -22757,42 +22854,6 @@
                 "performMultiLevelLookup": {
                   "type": "boolean",
                   "description": "Perform Multi Level Lookup",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": ".NET Core SDK/runtime installer\n\nAcquire a specific version of the .NET Core SDK from the internet or local cache and add it to the PATH",
-              "ignoreCase": "value",
-              "pattern": "^DotNetCoreInstaller@0$"
-            },
-            "inputs": {
-              "description": ".NET Core SDK/runtime installer inputs",
-              "properties": {
-                "packageType": {
-                  "description": "Package to install",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "runtime",
-                    "sdk"
-                  ]
-                },
-                "version": {
-                  "type": "string",
-                  "description": "Version",
                   "ignoreCase": "key"
                 }
               },
@@ -24048,69 +24109,6 @@
         {
           "properties": {
             "task": {
-              "description": "Archive Files\n\nArchive files using compression formats such as .7z, .rar, .tar.gz, and .zip.",
-              "ignoreCase": "value",
-              "pattern": "^ArchiveFiles@1$"
-            },
-            "inputs": {
-              "description": "Archive Files inputs",
-              "properties": {
-                "rootFolder": {
-                  "type": "string",
-                  "description": "Root folder (or file) to archive",
-                  "ignoreCase": "key"
-                },
-                "includeRootFolder": {
-                  "type": "boolean",
-                  "description": "Prefix root folder name to archive paths",
-                  "ignoreCase": "key"
-                },
-                "archiveType": {
-                  "description": "Archive type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "default",
-                    "7z",
-                    "tar",
-                    "wim"
-                  ]
-                },
-                "tarCompression": {
-                  "description": "Tar compression",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "gz",
-                    "bz2",
-                    "xz",
-                    "none"
-                  ]
-                },
-                "archiveFile": {
-                  "type": "string",
-                  "description": "Archive file to create",
-                  "ignoreCase": "key"
-                },
-                "replaceExistingArchive": {
-                  "type": "boolean",
-                  "description": "Replace existing archive",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
               "description": "Archive files\n\nCompress files into .7z, .tar.gz, or .zip",
               "ignoreCase": "value",
               "pattern": "^ArchiveFiles@2$"
@@ -24178,6 +24176,69 @@
                 "quiet": {
                   "type": "boolean",
                   "description": "Force quiet output",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "Archive Files\n\nArchive files using compression formats such as .7z, .rar, .tar.gz, and .zip.",
+              "ignoreCase": "value",
+              "pattern": "^ArchiveFiles@1$"
+            },
+            "inputs": {
+              "description": "Archive Files inputs",
+              "properties": {
+                "rootFolder": {
+                  "type": "string",
+                  "description": "Root folder (or file) to archive",
+                  "ignoreCase": "key"
+                },
+                "includeRootFolder": {
+                  "type": "boolean",
+                  "description": "Prefix root folder name to archive paths",
+                  "ignoreCase": "key"
+                },
+                "archiveType": {
+                  "description": "Archive type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "default",
+                    "7z",
+                    "tar",
+                    "wim"
+                  ]
+                },
+                "tarCompression": {
+                  "description": "Tar compression",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "gz",
+                    "bz2",
+                    "xz",
+                    "none"
+                  ]
+                },
+                "archiveFile": {
+                  "type": "string",
+                  "description": "Archive file to create",
+                  "ignoreCase": "key"
+                },
+                "replaceExistingArchive": {
+                  "type": "boolean",
+                  "description": "Replace existing archive",
                   "ignoreCase": "key"
                 }
               },
@@ -24663,6 +24724,11 @@
                 "skip_api_build": {
                   "type": "boolean",
                   "description": "Skip api build",
+                  "ignoreCase": "key"
+                },
+                "is_static_export": {
+                  "type": "boolean",
+                  "description": "Set static export",
                   "ignoreCase": "key"
                 },
                 "verbose": {
@@ -25287,6 +25353,122 @@
             "task": {
               "description": "Download build artifacts\n\nDownload files that were saved as artifacts of a completed build",
               "ignoreCase": "value",
+              "pattern": "^DownloadBuildArtifacts@1$"
+            },
+            "inputs": {
+              "description": "Download build artifacts inputs",
+              "properties": {
+                "buildType": {
+                  "description": "Download artifacts produced by",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "current",
+                    "specific"
+                  ]
+                },
+                "project": {
+                  "type": "string",
+                  "description": "Project",
+                  "ignoreCase": "key"
+                },
+                "pipeline": {
+                  "type": "string",
+                  "description": "Build pipeline",
+                  "ignoreCase": "key",
+                  "aliases": [
+                    "definition"
+                  ]
+                },
+                "specificBuildWithTriggering": {
+                  "type": "boolean",
+                  "description": "When appropriate, download artifacts from the triggering build.",
+                  "ignoreCase": "key"
+                },
+                "buildVersionToDownload": {
+                  "description": "Build version to download",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "latest",
+                    "latestFromBranch",
+                    "specific"
+                  ]
+                },
+                "allowPartiallySucceededBuilds": {
+                  "type": "boolean",
+                  "description": "Download artifacts even from partially succeeded builds.",
+                  "ignoreCase": "key"
+                },
+                "branchName": {
+                  "type": "string",
+                  "description": "Branch name",
+                  "ignoreCase": "key"
+                },
+                "buildId": {
+                  "type": "string",
+                  "description": "Build",
+                  "ignoreCase": "key"
+                },
+                "tags": {
+                  "type": "string",
+                  "description": "Build Tags",
+                  "ignoreCase": "key"
+                },
+                "downloadType": {
+                  "description": "Download type",
+                  "ignoreCase": "all",
+                  "enum": [
+                    "single",
+                    "specific"
+                  ]
+                },
+                "artifactName": {
+                  "type": "string",
+                  "description": "Artifact name",
+                  "ignoreCase": "key"
+                },
+                "itemPattern": {
+                  "type": "string",
+                  "description": "Matching pattern",
+                  "ignoreCase": "key"
+                },
+                "downloadPath": {
+                  "type": "string",
+                  "description": "Destination directory",
+                  "ignoreCase": "key"
+                },
+                "parallelizationLimit": {
+                  "type": "string",
+                  "description": "Parallelization limit",
+                  "ignoreCase": "key"
+                },
+                "checkDownloadedFiles": {
+                  "type": "boolean",
+                  "description": "Check downloaded files",
+                  "ignoreCase": "key"
+                },
+                "retryDownloadCount": {
+                  "type": "string",
+                  "description": "Retry count",
+                  "ignoreCase": "key"
+                }
+              },
+              "additionalProperties": false,
+              "required": []
+            }
+          },
+          "doNotSuggest": false,
+          "firstProperty": [
+            "task"
+          ],
+          "required": [
+            "task"
+          ]
+        },
+        {
+          "properties": {
+            "task": {
+              "description": "Download build artifacts\n\nDownload files that were saved as artifacts of a completed build",
+              "ignoreCase": "value",
               "pattern": "^DownloadBuildArtifacts@0$"
             },
             "inputs": {
@@ -25393,122 +25575,6 @@
                 "extractTars": {
                   "type": "boolean",
                   "description": "Extract all files that are stored inside tar archives",
-                  "ignoreCase": "key"
-                }
-              },
-              "additionalProperties": false,
-              "required": []
-            }
-          },
-          "doNotSuggest": false,
-          "firstProperty": [
-            "task"
-          ],
-          "required": [
-            "task"
-          ]
-        },
-        {
-          "properties": {
-            "task": {
-              "description": "Download build artifacts\n\nDownload files that were saved as artifacts of a completed build",
-              "ignoreCase": "value",
-              "pattern": "^DownloadBuildArtifacts@1$"
-            },
-            "inputs": {
-              "description": "Download build artifacts inputs",
-              "properties": {
-                "buildType": {
-                  "description": "Download artifacts produced by",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "current",
-                    "specific"
-                  ]
-                },
-                "project": {
-                  "type": "string",
-                  "description": "Project",
-                  "ignoreCase": "key"
-                },
-                "pipeline": {
-                  "type": "string",
-                  "description": "Build pipeline",
-                  "ignoreCase": "key",
-                  "aliases": [
-                    "definition"
-                  ]
-                },
-                "specificBuildWithTriggering": {
-                  "type": "boolean",
-                  "description": "When appropriate, download artifacts from the triggering build.",
-                  "ignoreCase": "key"
-                },
-                "buildVersionToDownload": {
-                  "description": "Build version to download",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "latest",
-                    "latestFromBranch",
-                    "specific"
-                  ]
-                },
-                "allowPartiallySucceededBuilds": {
-                  "type": "boolean",
-                  "description": "Download artifacts even from partially succeeded builds.",
-                  "ignoreCase": "key"
-                },
-                "branchName": {
-                  "type": "string",
-                  "description": "Branch name",
-                  "ignoreCase": "key"
-                },
-                "buildId": {
-                  "type": "string",
-                  "description": "Build",
-                  "ignoreCase": "key"
-                },
-                "tags": {
-                  "type": "string",
-                  "description": "Build Tags",
-                  "ignoreCase": "key"
-                },
-                "downloadType": {
-                  "description": "Download type",
-                  "ignoreCase": "all",
-                  "enum": [
-                    "single",
-                    "specific"
-                  ]
-                },
-                "artifactName": {
-                  "type": "string",
-                  "description": "Artifact name",
-                  "ignoreCase": "key"
-                },
-                "itemPattern": {
-                  "type": "string",
-                  "description": "Matching pattern",
-                  "ignoreCase": "key"
-                },
-                "downloadPath": {
-                  "type": "string",
-                  "description": "Destination directory",
-                  "ignoreCase": "key"
-                },
-                "parallelizationLimit": {
-                  "type": "string",
-                  "description": "Parallelization limit",
-                  "ignoreCase": "key"
-                },
-                "checkDownloadedFiles": {
-                  "type": "boolean",
-                  "description": "Check downloaded files",
-                  "ignoreCase": "key"
-                },
-                "retryDownloadCount": {
-                  "type": "string",
-                  "description": "Retry count",
                   "ignoreCase": "key"
                 }
               },
