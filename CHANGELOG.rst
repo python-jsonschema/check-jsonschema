@@ -10,7 +10,7 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2022-07-18)
+- Update vendored schemas (2022-07-21)
 
 0.17.1
 ------
