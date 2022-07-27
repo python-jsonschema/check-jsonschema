@@ -730,6 +730,16 @@
       "type": "boolean",
       "default": false
     },
+    "fleet": {
+      "description": "Configuration object for the fleet manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)fleet.ya?ml"
+        ]
+      },
+      "$ref": "#"
+    },
     "flux": {
       "description": "Configuration object for the flux manager",
       "type": "object",
@@ -1222,6 +1232,16 @@
           "(^|/)jsonnetfile.json$"
         ],
         "datasource": "git-tags"
+      },
+      "$ref": "#"
+    },
+    "kotlin-script": {
+      "description": "Configuration object for the kotlin-script manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "^.+\\.main\\.kts$"
+        ]
       },
       "$ref": "#"
     },
