@@ -1031,6 +1031,20 @@
       },
       "$ref": "#"
     },
+    "hermit": {
+      "description": "Configuration object for the hermit manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)bin/hermit$"
+        ],
+        "excludeCommitPaths": [
+          "**/bin/hermit"
+        ],
+        "versioning": "hermit"
+      },
+      "$ref": "#"
+    },
     "homebrew": {
       "description": "Configuration object for the homebrew manager",
       "type": "object",
