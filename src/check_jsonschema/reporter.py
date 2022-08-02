@@ -78,8 +78,8 @@ class TextReporter(Reporter):
             self._echo(self._format_validation_error_message(best_match), indent=4)
             if self.verbosity > 1:
                 self._echo("All Errors:", indent=2)
-                for err in iter_validation_error(err):
-                    self._echo(self._format_validation_error_message(err), indent=4)
+                for e in iter_validation_error(err):
+                    self._echo(self._format_validation_error_message(e), indent=4)
 
     def report_validation_errors(
         self,
