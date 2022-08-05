@@ -606,11 +606,33 @@
       "markdownDescription": "Expression to evaluate whether additional attributes should be provided to the job. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#rulesif)."
     },
     "changes": {
-      "type": "array",
       "markdownDescription": "Additional attributes will be provided to job if any of the provided paths matches a modified file. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#ruleschanges).",
-      "items": {
-        "type": "string"
-      }
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["paths"],
+          "properties": {
+            "paths": {
+              "type": "array",
+              "description": "List of file paths.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "compare_to": {
+              "type": "string",
+              "description": "Ref for comparing changes."
+            }
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
     },
     "exists": {
       "type": "array",
