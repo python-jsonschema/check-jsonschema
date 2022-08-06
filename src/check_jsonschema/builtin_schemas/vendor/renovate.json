@@ -242,7 +242,8 @@
       "enum": [
         "global",
         "docker",
-        "install"
+        "install",
+        "hermit"
       ],
       "default": "global"
     },
