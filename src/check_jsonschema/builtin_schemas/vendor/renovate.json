@@ -291,7 +291,7 @@
           "\\.buildkite/.+\\.ya?ml$"
         ],
         "commitMessageTopic": "buildkite plugin {{depName}}",
-        "commitMessageExtra": "to {{#if isMajor}}v{{{newMajor}}}{{else}}{{{newValue}}}{{/if}}"
+        "commitMessageExtra": "to {{#if isMajor}}{{{prettyNewMajor}}}{{else}}{{{newValue}}}{{/if}}"
       },
       "$ref": "#"
     },
@@ -336,7 +336,7 @@
       "default": {
         "commitMessageTopic": "Rust crate {{depName}}",
         "fileMatch": [
-          "(^|/)Cargo.toml$"
+          "(^|/)Cargo\\.toml$"
         ],
         "versioning": "cargo",
         "rangeStrategy": "bump"
@@ -357,7 +357,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/).circleci/config.yml$"
+          "(^|/)\\.circleci/config\\.yml$"
         ]
       },
       "$ref": "#"
@@ -372,7 +372,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)cloudbuild.ya?ml"
+          "(^|/)cloudbuild\\.ya?ml"
         ]
       },
       "$ref": "#"
@@ -410,7 +410,7 @@
     "commitMessageExtra": {
       "description": "Extra description used after the commit message topic - typically the version.",
       "type": "string",
-      "default": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}"
+      "default": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}"
     },
     "commitMessagePrefix": {
       "description": "Prefix to add to start of commit messages and PR titles. Uses a semantic prefix if `semanticCommits` is enabled.",
@@ -430,7 +430,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)([\\w-]*)composer.json$"
+          "(^|/)([\\w-]*)composer\\.json$"
         ],
         "versioning": "composer"
       },
@@ -634,7 +634,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/).drone.yml$"
+          "(^|/)\\.drone\\.yml$"
         ]
       },
       "$ref": "#"
@@ -736,7 +736,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)fleet.ya?ml"
+          "(^|/)fleet\\.ya?ml"
         ]
       },
       "$ref": "#"
@@ -793,7 +793,7 @@
         "enabled": false,
         "versioning": "git",
         "fileMatch": [
-          "(^|/).gitmodules$"
+          "(^|/)\\.gitmodules$"
         ]
       },
       "$ref": "#"
@@ -915,7 +915,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)go.mod$"
+          "(^|/)go\\.mod$"
         ]
       },
       "$ref": "#"
@@ -940,7 +940,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)gradle/wrapper/gradle-wrapper.properties$"
+          "(^|/)gradle/wrapper/gradle-wrapper\\.properties$"
         ],
         "versioning": "gradle"
       },
@@ -990,7 +990,7 @@
       "default": {
         "commitMessageTopic": "helm values {{depName}}",
         "fileMatch": [
-          "(^|/)values.yaml$"
+          "(^|/)values\\.yaml$"
         ],
         "pinDigests": false
       },
@@ -1005,7 +1005,7 @@
         },
         "commitMessageTopic": "helm chart {{depName}}",
         "fileMatch": [
-          "(^|/)helmfile.yaml$"
+          "(^|/)helmfile\\.yaml$"
         ]
       },
       "$ref": "#"
@@ -1027,7 +1027,7 @@
         },
         "commitMessageTopic": "helm chart {{depName}}",
         "fileMatch": [
-          "(^|/)Chart.yaml$"
+          "(^|/)Chart\\.yaml$"
         ]
       },
       "$ref": "#"
@@ -1244,7 +1244,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)jsonnetfile.json$"
+          "(^|/)jsonnetfile\\.json$"
         ],
         "datasource": "git-tags"
       },
@@ -1355,7 +1355,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)package.js$"
+          "(^|/)package\\.js$"
         ]
       },
       "$ref": "#"
@@ -1399,7 +1399,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/).node-version$"
+          "(^|/)\\.node-version$"
         ],
         "versioning": "node"
       },
@@ -1410,7 +1410,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)package.json$"
+          "(^|/)package\\.json$"
         ],
         "rollbackPrs": true,
         "versioning": "npm",
@@ -1853,7 +1853,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)setup.py$"
+          "(^|/)setup\\.py$"
         ]
       },
       "$ref": "#"
@@ -2135,7 +2135,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/).python-version$"
+          "(^|/)\\.python-version$"
         ],
         "versioning": "docker"
       },
@@ -2286,7 +2286,7 @@
       "default": {
         "branchTopic": "{{{depNameSanitized}}}-replacement",
         "commitMessageAction": "Replace",
-        "commitMessageExtra": "with {{newName}} {{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
+        "commitMessageExtra": "with {{newName}} {{#if isMajor}}{{{prettyNewMajor}}}{{else}}{{#if isSingleVersion}}{{{prettyNewVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
         "prBodyNotes": [
           "This is a special PR that replaces `{{{depNameSanitized}}}` with the community suggested minimal stable replacement version."
         ]
@@ -2572,7 +2572,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "^.travis.yml$"
+          "^\\.travis\\.yml$"
         ],
         "major": {
           "enabled": false
@@ -2632,7 +2632,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/).vela.ya?ml$"
+          "(^|/)\\.vela\\.ya?ml$"
         ]
       },
       "$ref": "#"
