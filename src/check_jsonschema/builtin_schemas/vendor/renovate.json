@@ -2662,6 +2662,7 @@
         "pep440",
         "perl",
         "poetry",
+        "python",
         "redhat",
         "regex",
         "rez",
