@@ -267,6 +267,11 @@
       "type": "string",
       "default": "{{{branchPrefix}}}{{{additionalBranchPrefix}}}{{{branchTopic}}}"
     },
+    "branchNameStrict": {
+      "description": "Whether to be strict about the use of special characters within the branch name.",
+      "type": "boolean",
+      "default": false
+    },
     "branchPrefix": {
       "description": "Prefix to use for all branch names.",
       "type": "string",
@@ -2307,6 +2312,11 @@
       ],
       "default": "disabled"
     },
+    "repositoryCacheType": {
+      "description": "Set the type of renovate repository cache if repositoryCache is not disabled.",
+      "type": "string",
+      "default": "local"
+    },
     "requireConfig": {
       "description": "Controls Renovate's behavior regarding repository config files such as `renovate.json`.",
       "type": "string",
@@ -2509,7 +2519,7 @@
       "description": "Configuration object for the terraform manager",
       "type": "object",
       "default": {
-        "commitMessageTopic": "Terraform {{managerData.terraformDependencyType}} {{depName}}",
+        "commitMessageTopic": "Terraform {{depName}}",
         "fileMatch": [
           "\\.tf$"
         ],
