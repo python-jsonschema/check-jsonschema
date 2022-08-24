@@ -1522,6 +1522,10 @@
                 "description": "A version range or regex pattern capturing allowed versions for dependencies.",
                 "type": "string"
               },
+              "customChangelogUrl": {
+                "description": "If set, Renovate will use this url to fetch changelogs for a matched dependency. Valid only within a `packageRules` object.",
+                "type": "string"
+              },
               "excludePackageNames": {
                 "description": "Package names to exclude. Valid only within a `packageRules` object.",
                 "oneOf": [
