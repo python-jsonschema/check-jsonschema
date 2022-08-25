@@ -53,12 +53,14 @@ ENABLED = has_toml
 
 
 if has_toml:
+    ParseError: Exception = tomli.TOMLDecodeError
 
     def load(stream: t.BinaryIO) -> t.Any:
         data = tomli.load(stream)
         return _normalize(data)
 
 else:
+    ParseError = ValueError
 
     def load(stream: t.BinaryIO) -> t.Any:
         raise NotImplementedError

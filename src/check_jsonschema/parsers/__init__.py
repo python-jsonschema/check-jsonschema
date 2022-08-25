@@ -9,20 +9,28 @@ from identify import identify
 
 from . import json5, toml, yaml
 
+_PARSER_ERRORS: set[type[Exception]] = {json.JSONDecodeError, yaml.ParseError}
 DEFAULT_LOAD_FUNC_BY_TAG: dict[str, t.Callable[[t.BinaryIO], t.Any]] = {
     "json": json.load,
 }
 if json5.ENABLED:
     DEFAULT_LOAD_FUNC_BY_TAG["json5"] = json5.load
+    _PARSER_ERRORS.add(json5.ParseError)
 if toml.ENABLED:
     DEFAULT_LOAD_FUNC_BY_TAG["toml"] = toml.load
+    _PARSER_ERRORS.add(toml.ParseError)
 MISSING_SUPPORT_MESSAGES: dict[str, str] = {
     "json5": json5.MISSING_SUPPORT_MESSAGE,
     "toml": toml.MISSING_SUPPORT_MESSAGE,
 }
+LOADING_FAILURE_ERROR_TYPES: tuple[type[Exception]] = tuple(_PARSER_ERRORS)
 
 
 class BadFileTypeError(ValueError):
+    pass
+
+
+class FailedFileLoadError(ValueError):
     pass
 
 
@@ -78,5 +86,8 @@ class ParserSet:
         loadfunc = self.get(
             str(path) if isinstance(path, pathlib.Path) else path, default_ft
         )
-        with open(path, "rb") as fp:
-            return loadfunc(fp)
+        try:
+            with open(path, "rb") as fp:
+                return loadfunc(fp)
+        except LOADING_FAILURE_ERROR_TYPES as e:
+            raise FailedFileLoadError(f"Failed to parse {path}") from e

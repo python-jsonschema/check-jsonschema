@@ -7,14 +7,18 @@ import typing as t
 try:
     import pyjson5
 
+    ParseError: Exception = pyjson5.Json5DecoderException
     _load: t.Callable | None = pyjson5.load
 except ImportError:
     # if pyjson5 was not available, try to import 'json5', the pure-python implementation
     try:
         import json5
 
+        # json5 doesn't define a custom decoding error class
+        ParseError = ValueError
         _load = json5.load
     except ImportError:
+        ParseError = ValueError
         _load = None
 
 # present a bool for detecting that it's enabled

@@ -1,10 +1,9 @@
 import os
 
 import pytest
-import ruamel.yaml
 
 from check_jsonschema.instance_loader import InstanceLoader
-from check_jsonschema.parsers import BadFileTypeError
+from check_jsonschema.parsers import BadFileTypeError, FailedFileLoadError
 from check_jsonschema.parsers.json5 import ENABLED as JSON5_ENABLED
 from check_jsonschema.parsers.toml import ENABLED as TOML_ENABLED
 
@@ -128,13 +127,23 @@ a:
     assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
 
 
-def test_instanceloader_invalid_yaml_data(tmp_path):
-    f = tmp_path / "foo.yaml"
-    f.write_text(
-        """\
-a: {b
-"""
-    )
+@pytest.mark.parametrize(
+    "file_format, filename, content",
+    [
+        ("json", "foo.json", '{"a":\n'),
+        ("yaml", "foo.yaml", "a: {b\n"),
+        ("json5", "foo.json5", '{"a":\n'),
+        ("toml", "foo.toml", "abc\n"),
+    ],
+)
+def test_instanceloader_invalid_data(tmp_path, file_format, filename, content):
+    if file_format == "json5" and not JSON5_ENABLED:
+        pytest.skip("test requires 'json5' support")
+    if file_format == "toml" and not TOML_ENABLED:
+        pytest.skip("test requires 'toml' support")
+
+    f = tmp_path / filename
+    f.write_text(content)
     loader = InstanceLoader([str(f)])
-    with pytest.raises(ruamel.yaml.YAMLError):
+    with pytest.raises(FailedFileLoadError):
         list(loader.iter_files())

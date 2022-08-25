@@ -8,7 +8,7 @@ import jsonschema
 from . import utils
 from .formats import FormatOptions
 from .instance_loader import InstanceLoader
-from .parsers import BadFileTypeError
+from .parsers import BadFileTypeError, FailedFileLoadError
 from .reporter import Reporter
 from .schema_loader import SchemaLoaderBase, SchemaParseError, UnsupportedUrlScheme
 
@@ -71,6 +71,8 @@ class SchemaChecker:
         except jsonschema.RefResolutionError as e:
             self._fail("Failure resolving $ref within schema\n", e)
         except BadFileTypeError as e:
+            self._fail("Failure while loading instance files\n", e)
+        except FailedFileLoadError as e:
             self._fail("Failure while loading instance files\n", e)
 
         if errors:

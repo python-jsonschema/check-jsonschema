@@ -5,6 +5,8 @@ import warnings
 
 import ruamel.yaml
 
+ParseError = ruamel.yaml.parser.ParserError
+
 
 def construct_yaml_implementation(
     typ: str = "safe", pure: bool = False
