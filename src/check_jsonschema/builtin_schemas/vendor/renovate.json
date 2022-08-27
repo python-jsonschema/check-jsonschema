@@ -484,6 +484,10 @@
       "default": {},
       "$ref": "#"
     },
+    "containerbaseDir": {
+      "description": "The directory where Renovate stores its containerbase cache. If left empty, Renovate creates a subdirectory within the `cacheDir`.",
+      "type": "string"
+    },
     "customEnvVariables": {
       "description": "Custom environment variables for child processes and sidecar Docker containers.",
       "type": "object",
@@ -2668,6 +2672,7 @@
         "hermit",
         "hex",
         "ivy",
+        "kubernetes-api",
         "loose",
         "maven",
         "node",
