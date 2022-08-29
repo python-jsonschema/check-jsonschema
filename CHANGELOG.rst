@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.18.1
+------
+
 - Fix erroneous type annotations
 
 0.18.0
