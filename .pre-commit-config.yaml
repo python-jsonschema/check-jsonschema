@@ -1,7 +1,7 @@
 repos:
 # dogfood
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.17.1
+  rev: 0.18.1
   hooks:
     - id: check-github-workflows
     - id: check-readthedocs
