@@ -42,8 +42,7 @@ Unreleased
 {vendor_marker}
 
 {new_version}
-{"-" * len(new_version)}
-""",
+{"-" * len(new_version)}""",
         content,
     )
     with open("CHANGELOG.rst", "w") as fp:

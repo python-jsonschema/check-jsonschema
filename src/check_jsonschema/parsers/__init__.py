@@ -23,7 +23,7 @@ MISSING_SUPPORT_MESSAGES: dict[str, str] = {
     "json5": json5.MISSING_SUPPORT_MESSAGE,
     "toml": toml.MISSING_SUPPORT_MESSAGE,
 }
-LOADING_FAILURE_ERROR_TYPES: tuple[type[Exception]] = tuple(_PARSER_ERRORS)
+LOADING_FAILURE_ERROR_TYPES: tuple[type[Exception], ...] = tuple(_PARSER_ERRORS)
 
 
 class ParseError(ValueError):

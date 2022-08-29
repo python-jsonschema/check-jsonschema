@@ -111,9 +111,9 @@ class TextReporter(Reporter):
                     self._show_parse_error(filename, err)
         if result.validation_errors:
             self._echo("Schema validation errors were encountered.")
-            for filename, errors in result.validation_errors.items():
-                for err in errors:
-                    self._show_validation_error(filename, err)
+            for filename, parse_errors in result.validation_errors.items():
+                for parse_err in parse_errors:
+                    self._show_validation_error(filename, parse_err)
 
 
 class JsonReporter(Reporter):

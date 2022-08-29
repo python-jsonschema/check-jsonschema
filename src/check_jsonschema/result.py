@@ -4,7 +4,7 @@ from .parsers import ParseError
 
 
 class CheckResult:
-    def __init__(self):
+    def __init__(self) -> None:
         self.validation_errors: dict[str, list[jsonschema.ValidationError]] = {}
         self.parse_errors: dict[str, list[ParseError]] = {}
 

@@ -7,7 +7,7 @@ import typing as t
 try:
     import pyjson5
 
-    ParseError: Exception = pyjson5.Json5DecoderException
+    ParseError: type[Exception] = pyjson5.Json5DecoderException
     _load: t.Callable | None = pyjson5.load
 except ImportError:
     # if pyjson5 was not available, try to import 'json5', the pure-python implementation

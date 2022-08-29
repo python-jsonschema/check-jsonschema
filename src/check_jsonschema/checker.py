@@ -56,7 +56,7 @@ class SchemaChecker:
         except Exception as e:
             self._fail("Error: Unexpected Error building schema validator", e)
 
-    def _build_result(self) -> dict:
+    def _build_result(self) -> CheckResult:
         result = CheckResult()
         for filename, data in self._instance_loader.iter_files():
             if isinstance(data, ParseError):
