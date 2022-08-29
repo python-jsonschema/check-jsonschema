@@ -111,7 +111,7 @@ Environment Variables
 
 The following environment variables are supported.
 
-.. list-table:: Caching Options
+.. list-table:: Environment Variables
    :widths: 15 30
    :header-rows: 1
 
@@ -176,7 +176,7 @@ fail with ``check-jsonschema`` if ``--disable-format`` is not set.
 Set a mode for handling of the ``"regex"`` value for ``"format"``. The modes are as
 follows:
 
-.. list-table:: Basic Options
+.. list-table:: Regex Options
    :widths: 15 30
    :header-rows: 1
 
