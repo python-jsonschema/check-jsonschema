@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Fix handling of certain YAML parsing errors on bad inputs
+
 0.18.1
 ------
 

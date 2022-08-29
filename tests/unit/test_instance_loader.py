@@ -139,6 +139,7 @@ a:
     [
         ("json", "foo.json", '{"a":\n'),
         ("yaml", "foo.yaml", "a: {b\n"),
+        ("yaml", "foo.yaml", "a: b\nc\n"),
         ("json5", "foo.json5", '{"a":\n'),
         ("toml", "foo.toml", "abc\n"),
     ],

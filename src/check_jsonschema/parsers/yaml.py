@@ -5,7 +5,7 @@ import warnings
 
 import ruamel.yaml
 
-ParseError = ruamel.yaml.parser.ParserError
+ParseError = ruamel.yaml.YAMLError
 
 
 def construct_yaml_implementation(
