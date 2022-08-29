@@ -67,9 +67,13 @@ def test_instanceloader_unknown_type(tmp_path):
     f = tmp_path / "foo"  # no extension here
     f.write_text("{}")  # json data (could be detected as either)
     loader = InstanceLoader([str(f)])
-    # at iteration time, the file should error
-    with pytest.raises(BadFileTypeError):
-        list(loader.iter_files())
+    # at iteration time, the file should error and be reported as such
+    data = list(loader.iter_files())
+    assert len(data) == 1
+    assert isinstance(data[0], tuple)
+    assert len(data[0]) == 2
+    assert data[0][0] == str(f)
+    assert isinstance(data[0][1], BadFileTypeError)
 
 
 @pytest.mark.parametrize(
@@ -103,12 +107,15 @@ def test_instanceloader_optional_format_handling(
         assert data == [(str(f), expect_data)]
     else:
         # at iteration time, an error should be raised
-        with pytest.raises(BadFileTypeError) as excinfo:
-            list(loader.iter_files())
+        data = list(loader.iter_files())
+        assert len(data) == 1
+        assert isinstance(data[0], tuple)
+        assert len(data[0]) == 2
+        assert data[0][0] == str(f)
+        assert isinstance(data[0][1], BadFileTypeError)
 
-        err = excinfo.value
         # error message should be instructive
-        assert expect_error_message in str(err)
+        assert expect_error_message in str(data[0])
 
 
 def test_instanceloader_yaml_dup_anchor(tmp_path):
@@ -145,5 +152,32 @@ def test_instanceloader_invalid_data(tmp_path, file_format, filename, content):
     f = tmp_path / filename
     f.write_text(content)
     loader = InstanceLoader([str(f)])
-    with pytest.raises(FailedFileLoadError):
-        list(loader.iter_files())
+    data = list(loader.iter_files())
+    assert len(data) == 1
+    assert isinstance(data[0], tuple)
+    assert len(data[0]) == 2
+    assert data[0][0] == str(f)
+    assert isinstance(data[0][1], FailedFileLoadError)
+
+
+def test_instanceloader_invalid_data_mixed_with_valid_data(tmp_path):
+    a = tmp_path / "a.json"
+    b = tmp_path / "b.json"
+    c = tmp_path / "c.json"
+    a.write_text("{}")
+    b.write_text("{")
+    c.write_text('{"c":true}')
+
+    loader = InstanceLoader([str(a), str(b), str(c)])
+
+    data = list(loader.iter_files())
+    assert len(data) == 3
+
+    assert data[0] == (str(a), {})
+
+    assert isinstance(data[1], tuple)
+    assert len(data[1]) == 2
+    assert data[1][0] == str(b)
+    assert isinstance(data[1][1], FailedFileLoadError)
+
+    assert data[2] == (str(c), {"c": True})

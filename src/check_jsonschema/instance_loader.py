@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing as t
 
-from .parsers import ParserSet
+from .parsers import ParseError, ParserSet
 from .transforms import Transform
 
 
@@ -23,8 +23,12 @@ class InstanceLoader:
             modify_yaml_implementation=self._data_transform.modify_yaml_implementation
         )
 
-    def iter_files(self) -> t.Iterator[tuple[str, t.Any]]:
+    def iter_files(self) -> t.Iterator[tuple[str, ParseError | t.Any]]:
         for fn in self._filenames:
-            data = self._parsers.parse_file(fn, self._default_ft)
-            data = self._data_transform(data)
+            try:
+                data: t.Any = self._parsers.parse_file(fn, self._default_ft)
+            except ParseError as err:
+                data = err
+            else:
+                data = self._data_transform(data)
             yield (fn, data)

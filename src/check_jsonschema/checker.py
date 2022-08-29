@@ -8,8 +8,9 @@ import jsonschema
 from . import utils
 from .formats import FormatOptions
 from .instance_loader import InstanceLoader
-from .parsers import BadFileTypeError, FailedFileLoadError
+from .parsers import ParseError
 from .reporter import Reporter
+from .result import CheckResult
 from .schema_loader import SchemaLoaderBase, SchemaParseError, UnsupportedUrlScheme
 
 
@@ -55,31 +56,26 @@ class SchemaChecker:
         except Exception as e:
             self._fail("Error: Unexpected Error building schema validator", e)
 
-    def _build_error_map(self) -> dict:
-        errors: dict[str, list[jsonschema.ValidationError]] = {}
-        for filename, doc in self._instance_loader.iter_files():
-            validator = self.get_validator(filename, doc)
-            for err in validator.iter_errors(doc):
-                if filename not in errors:
-                    errors[filename] = []
-                errors[filename].append(err)
-        return errors
+    def _build_result(self) -> dict:
+        result = CheckResult()
+        for filename, data in self._instance_loader.iter_files():
+            if isinstance(data, ParseError):
+                result.record_parse_error(filename, data)
+            else:
+                validator = self.get_validator(filename, data)
+                for err in validator.iter_errors(data):
+                    result.record_validation_error(filename, err)
+        return result
 
     def _run(self) -> None:
         try:
-            errors = self._build_error_map()
+            result = self._build_result()
         except jsonschema.RefResolutionError as e:
             self._fail("Failure resolving $ref within schema\n", e)
-        except BadFileTypeError as e:
-            self._fail("Failure while loading instance files\n", e)
-        except FailedFileLoadError as e:
-            self._fail("Failure while loading instance files\n", e)
 
-        if errors:
-            self._reporter.report_validation_errors(errors)
+        self._reporter.report_result(result)
+        if not result.success:
             raise _Exit(1)
-
-        self._reporter.report_success()
 
     def run(self) -> int:
         try:

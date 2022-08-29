@@ -4,12 +4,21 @@ import pytest
 from jsonschema import Draft7Validator
 
 from check_jsonschema.reporter import JsonReporter, TextReporter
+from check_jsonschema.result import CheckResult
+
+
+def _make_success_result():
+    return CheckResult()
 
 
 @pytest.mark.parametrize("verbosity", (0, 1, 2))
-def test_text_format_success(capsys, verbosity):
+@pytest.mark.parametrize("use_report_result_path", (False, True))
+def test_text_format_success(capsys, verbosity, use_report_result_path):
     reporter = TextReporter(color=False, verbosity=verbosity)
-    reporter.report_success()
+    if use_report_result_path:
+        reporter.report_result(_make_success_result())
+    else:
+        reporter.report_success()
     captured = capsys.readouterr()
     assert captured.err == ""
     if verbosity == 0:
@@ -19,9 +28,13 @@ def test_text_format_success(capsys, verbosity):
 
 
 @pytest.mark.parametrize("verbosity", (0, 1))
-def test_json_format_success(capsys, verbosity):
+@pytest.mark.parametrize("use_report_result_path", (False, True))
+def test_json_format_success(capsys, verbosity, use_report_result_path):
     reporter = JsonReporter(verbosity=verbosity, pretty=False)
-    reporter.report_success()
+    if use_report_result_path:
+        reporter.report_result(_make_success_result())
+    else:
+        reporter.report_success()
     captured = capsys.readouterr()
     assert captured.err == ""
     if verbosity == 0:
@@ -88,8 +101,11 @@ def test_text_print_validation_error_nested(capsys, verbosity):
     )
     err = next(validator.iter_errors({"foo": {}, "bar": {"baz": "buzz"}}))
 
+    result = CheckResult()
+    result.record_validation_error("foo.json", err)
+
     text_reporter = TextReporter(color=False, verbosity=verbosity)
-    text_reporter.report_validation_errors({"foo.json": [err]})
+    text_reporter.report_result(result)
     captured = capsys.readouterr()
     # nothing to stderr
     assert captured.err == ""
@@ -146,8 +162,11 @@ def test_json_format_validation_error_nested(capsys, pretty_json, verbosity):
     )
     err = next(validator.iter_errors({"foo": {}, "bar": {"baz": "buzz"}}))
 
+    result = CheckResult()
+    result.record_validation_error("foo.json", err)
+
     json_reporter = JsonReporter(pretty=pretty_json, verbosity=verbosity)
-    json_reporter.report_validation_errors({"foo.json": [err]})
+    json_reporter.report_result(result)
     captured = capsys.readouterr()
     # nothing to stderr
     assert captured.err == ""

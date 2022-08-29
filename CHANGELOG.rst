@@ -11,6 +11,10 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2022-08-27)
+- When an instancefile is invalid and cannot be parsed, validation is still run
+  on all other files. The run will be marked as failed, but a more detailed
+  report will be output, including validation failures on other files
+  (:issue:`141`)
 
 0.17.1
 ------

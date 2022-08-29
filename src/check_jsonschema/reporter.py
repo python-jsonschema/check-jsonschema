@@ -7,12 +7,15 @@ from __future__ import annotations
 
 import abc
 import json
+import textwrap
 import typing as t
 
 import click
 import jsonschema
 
-from .utils import iter_validation_error
+from .parsers import ParseError
+from .result import CheckResult
+from .utils import format_error, iter_validation_error
 
 
 class Reporter(abc.ABC):
@@ -25,11 +28,14 @@ class Reporter(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def report_validation_errors(
-        self,
-        error_map: dict[str, list[jsonschema.ValidationError]],
-    ) -> None:
+    def report_errors(self, result: CheckResult) -> None:
         raise NotImplementedError
+
+    def report_result(self, result: CheckResult) -> None:
+        if result.success:
+            self.report_success()
+        else:
+            self.report_errors(result)
 
 
 class TextReporter(Reporter):
@@ -47,10 +53,16 @@ class TextReporter(Reporter):
     def _echo(self, s: str, *, indent: int = 0) -> None:
         click.echo(" " * indent + s, file=self.stream)
 
+    def _style(self, s: str, *, fg: str | None = None) -> str:
+        if self.color:
+            return click.style(s, fg=fg)
+        else:
+            return s
+
     def report_success(self) -> None:
         if self.verbosity < 1:
             return
-        ok = click.style("ok", fg="green") if self.color else "ok"
+        ok = self._style("ok", fg="green")
         self._echo(f"{ok} -- validation done")
 
     def _format_validation_error_message(
@@ -60,7 +72,7 @@ class TextReporter(Reporter):
         if filename:
             error_loc = f"{filename}::{error_loc}"
         if self.color:
-            error_loc = click.style(error_loc, fg="yellow")
+            error_loc = self._style(error_loc, fg="yellow")
         return f"{error_loc}: {err.message}"
 
     def _show_validation_error(
@@ -81,16 +93,27 @@ class TextReporter(Reporter):
                 for e in iter_validation_error(err):
                     self._echo(self._format_validation_error_message(e), indent=4)
 
-    def report_validation_errors(
-        self,
-        error_map: dict[str, list[jsonschema.ValidationError]],
-    ) -> None:
+    def _show_parse_error(self, filename: str, err: ParseError) -> None:
+        if self.verbosity < 2:
+            self._echo(self._style(str(err), fg="yellow"), indent=2)
+        elif self.verbosity < 3:
+            self._echo(textwrap.indent(format_error(err, mode="short"), "  "))
+        else:
+            self._echo(textwrap.indent(format_error(err, mode="full"), "  "))
+
+    def report_errors(self, result: CheckResult) -> None:
         if self.verbosity < 1:
             return
-        self._echo("Schema validation errors were encountered.")
-        for filename, errors in error_map.items():
-            for err in errors:
-                self._show_validation_error(filename, err)
+        if result.parse_errors:
+            self._echo("Several files failed to parse.")
+            for filename, errors in result.parse_errors.items():
+                for err in errors:
+                    self._show_parse_error(filename, err)
+        if result.validation_errors:
+            self._echo("Schema validation errors were encountered.")
+            for filename, errors in result.validation_errors.items():
+                for err in errors:
+                    self._show_validation_error(filename, err)
 
 
 class JsonReporter(Reporter):
@@ -137,13 +160,24 @@ class JsonReporter(Reporter):
 
                 yield item
 
-    def report_validation_errors(
+    def _dump_parse_errors(
         self,
-        error_map: dict[str, list[jsonschema.ValidationError]],
-    ) -> None:
+        error_map: dict[str, list[ParseError]],
+    ) -> t.Iterator[dict]:
+        for filename, errors in error_map.items():
+            for err in errors:
+                yield {
+                    "filename": filename,
+                    "message": str(err),
+                }
+
+    def report_errors(self, result: CheckResult) -> None:
         report_obj: dict[str, t.Any] = {"status": "fail"}
         if self.verbosity > 0:
-            report_obj["errors"] = list(self._dump_error_map(error_map))
+            report_obj["errors"] = list(self._dump_error_map(result.validation_errors))
+            report_obj["parse_errors"] = list(
+                self._dump_parse_errors(result.parse_errors)
+            )
         self._dump(report_obj)
 
 

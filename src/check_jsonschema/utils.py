@@ -85,34 +85,42 @@ def filename2path(filename: str) -> pathlib.Path:
     return p.resolve()
 
 
-def print_shortened_error(err: Exception, *, indent: int = 0) -> None:
-    click.echo(indent * " " + f"{type(err).__name__}: {err}", err=True)
+def format_shortened_error(err: Exception, *, indent: int = 0) -> str:
+    lines = []
+    lines.append(indent * " " + f"{type(err).__name__}: {err}")
     if err.__traceback__ is not None:
         lineno = err.__traceback__.tb_lineno
         tb_frame = err.__traceback__.tb_frame
         filename = tb_frame.f_code.co_filename
         line = linecache.getline(filename, lineno)
-        click.echo((indent + 2) * " " + f'in "{filename}", line {lineno}', err=True)
-        click.echo((indent + 2) * " " + ">>> " + line.strip(), err=True)
+        lines.append((indent + 2) * " " + f'in "{filename}", line {lineno}')
+        lines.append((indent + 2) * " " + ">>> " + line.strip())
+    return "\n".join(lines)
 
 
-def print_shortened_trace(caught_err: Exception) -> None:
+def format_shortened_trace(caught_err: Exception) -> str:
     err_stack: list[Exception] = [caught_err]
     while err_stack[-1].__context__ is not None:
         err_stack.append(err_stack[-1].__context__)  # type: ignore[arg-type]
-    print_shortened_error(caught_err)
+
+    parts = [format_shortened_error(caught_err)]
     indent = 0
     for err in err_stack[1:]:
         indent += 2
-        click.echo("\n" + indent * " " + "caused by\n", err=True)
-        print_shortened_error(err, indent=indent)
+        parts.append("\n" + indent * " " + "caused by\n")
+        parts.append(format_shortened_error(err, indent=indent))
+    return "\n".join(parts)
+
+
+def format_error(err: Exception, mode: str = "short") -> str:
+    if mode == "short":
+        return format_shortened_trace(err)
+    else:
+        return "".join(traceback.format_exception(type(err), err, err.__traceback__))
 
 
 def print_error(err: Exception, mode: str = "short") -> None:
-    if mode == "short":
-        print_shortened_trace(err)
-    else:
-        traceback.print_exception(type(err), err, err.__traceback__)
+    click.echo(format_error(err, mode=mode), err=True)
 
 
 def iter_validation_error(

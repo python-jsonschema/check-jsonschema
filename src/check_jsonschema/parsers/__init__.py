@@ -26,11 +26,15 @@ MISSING_SUPPORT_MESSAGES: dict[str, str] = {
 LOADING_FAILURE_ERROR_TYPES: tuple[type[Exception]] = tuple(_PARSER_ERRORS)
 
 
-class BadFileTypeError(ValueError):
+class ParseError(ValueError):
     pass
 
 
-class FailedFileLoadError(ValueError):
+class BadFileTypeError(ParseError):
+    pass
+
+
+class FailedFileLoadError(ParseError):
     pass
 
 
