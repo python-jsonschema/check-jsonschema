@@ -1096,6 +1096,11 @@
                 "type": "integer",
                 "default": null
               },
+              "dnsCache": {
+                "description": "Enable got dns cache",
+                "type": "boolean",
+                "default": false
+              },
               "enableHttp2": {
                 "description": "Enable got HTTP/2 support.",
                 "type": "boolean",
