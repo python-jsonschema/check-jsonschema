@@ -1087,7 +1087,7 @@
                 "default": false
               },
               "authType": {
-                "description": "Authentication type for http header. e.g. `\"Bearer\"` or `\"Basic\"`. Use `\"Token-Only\"` to use only the token without an authorization type.",
+                "description": "Authentication type for HTTP header. e.g. `\"Bearer\"` or `\"Basic\"`. Use `\"Token-Only\"` to use only the token without an authorization type.",
                 "type": "string",
                 "default": "Bearer"
               },
@@ -1097,7 +1097,7 @@
                 "default": null
               },
               "dnsCache": {
-                "description": "Enable got dns cache",
+                "description": "Enable got DNS cache.",
                 "type": "boolean",
                 "default": false
               },
@@ -1113,6 +1113,11 @@
               "insecureRegistry": {
                 "description": "Explicitly turn on insecure Docker registry access (HTTP).",
                 "type": "boolean"
+              },
+              "keepalive": {
+                "description": "Enable HTTP keepalives for hosts.",
+                "type": "boolean",
+                "default": false
               },
               "matchHost": {
                 "description": "A domain name, host name or base URL to match against.",
@@ -1387,6 +1392,16 @@
       "description": "Configuration to apply when an update type is `minor`.",
       "type": "object",
       "default": {},
+      "$ref": "#"
+    },
+    "mint": {
+      "description": "Configuration object for the mint manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|\\/)Mintfile$"
+        ]
+      },
       "$ref": "#"
     },
     "mix": {
@@ -2528,6 +2543,14 @@
       },
       "$ref": "#"
     },
+    "tekton": {
+      "description": "Configuration object for the tekton manager",
+      "type": "object",
+      "default": {
+        "fileMatch": []
+      },
+      "$ref": "#"
+    },
     "terraform": {
       "description": "Configuration object for the terraform manager",
       "type": "object",
@@ -2709,6 +2732,16 @@
         "commitMessageSuffix": "[SECURITY]",
         "branchTopic": "{{{datasource}}}-{{{depName}}}-vulnerability",
         "prCreation": "immediate"
+      },
+      "$ref": "#"
+    },
+    "woodpecker": {
+      "description": "Configuration object for the woodpecker manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|\\/)\\.woodpecker[^/]*\\.ya?ml$"
+        ]
       },
       "$ref": "#"
     },
