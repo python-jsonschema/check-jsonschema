@@ -2030,7 +2030,7 @@
     "prBodyTemplate": {
       "description": "Pull Request body template. Controls which sections are rendered in the body.",
       "type": "string",
-      "default": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{configDescription}}}{{{controls}}}{{{footer}}}"
+      "default": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}{{{configDescription}}}{{{controls}}}{{{footer}}}"
     },
     "prCommitsPerRunLimit": {
       "description": "Set the maximum number of commits per Renovate run. By default there is no limit.",
