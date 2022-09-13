@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2022-09-13)
+0.18.3
+------
+
+- Update vendored schemas: github-actions, github-workflows, renovate, travis
+  (2022-09-13)
 
 0.18.2
 ------
