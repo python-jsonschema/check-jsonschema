@@ -79,6 +79,16 @@
       },
       "$ref": "#"
     },
+    "asdf": {
+      "description": "Configuration object for the asdf manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.tool-versions$"
+        ]
+      },
+      "$ref": "#"
+    },
     "assignAutomerge": {
       "description": "Assign reviewers and assignees even if the PR is to be automerged.",
       "type": "boolean",
@@ -2539,7 +2549,8 @@
           "(^|/)Package\\.swift"
         ],
         "versioning": "swift",
-        "rangeStrategy": "bump"
+        "rangeStrategy": "bump",
+        "pinDigests": false
       },
       "$ref": "#"
     },
