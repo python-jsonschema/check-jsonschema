@@ -8,15 +8,15 @@ import typing as t
 import jsonschema
 
 CHECKERS_BY_DIALECT = {
-    "http://json-schema.org/draft-03/schema#": jsonschema.draft3_format_checker,
-    "http://json-schema.org/draft-04/schema#": jsonschema.draft4_format_checker,
-    "http://json-schema.org/draft-06/schema#": jsonschema.draft6_format_checker,
-    "http://json-schema.org/draft-07/schema#": jsonschema.draft7_format_checker,
+    "http://json-schema.org/draft-03/schema#": jsonschema.Draft3Validator.FORMAT_CHECKER,
+    "http://json-schema.org/draft-04/schema#": jsonschema.Draft4Validator.FORMAT_CHECKER,
+    "http://json-schema.org/draft-06/schema#": jsonschema.Draft6Validator.FORMAT_CHECKER,
+    "http://json-schema.org/draft-07/schema#": jsonschema.Draft7Validator.FORMAT_CHECKER,
     "http://json-schema.org/draft-2019-09/schema": (
-        jsonschema.draft201909_format_checker
+        jsonschema.Draft201909Validator.FORMAT_CHECKER
     ),
     "http://json-schema.org/draft-2020-12/schema": (
-        jsonschema.draft202012_format_checker
+        jsonschema.Draft202012Validator.FORMAT_CHECKER
     ),
 }
 LATEST_DIALECT = "http://json-schema.org/draft-2020-12/schema"
@@ -78,17 +78,12 @@ def make_format_checker(
     # remove the regex check
     del checker.checkers["regex"]
 
-    # FIXME: type-ignore comments to handle incorrect annotation
-    # fixed in https://github.com/python/typeshed/pull/7990
-    # once available, remove the ignores
     if opts.regex_behavior == RegexFormatBehavior.disabled:
         pass
     elif opts.regex_behavior == RegexFormatBehavior.default:
-        checker.checks("regex", raises=re.error)(  # type: ignore[arg-type]
-            _gated_regex_check
-        )
+        checker.checks("regex", raises=re.error)(_gated_regex_check)
     elif opts.regex_behavior == RegexFormatBehavior.python:
-        checker.checks("regex", raises=re.error)(_regex_check)  # type: ignore[arg-type]
+        checker.checks("regex", raises=re.error)(_regex_check)
     else:  # pragma: no cover
         raise NotImplementedError
 

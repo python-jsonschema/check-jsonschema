@@ -11,6 +11,8 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2022-10-04)
+- Tweak format checker usage to avoid deprecation warning from ``jsonschema``
+
 0.18.3
 ------
 
