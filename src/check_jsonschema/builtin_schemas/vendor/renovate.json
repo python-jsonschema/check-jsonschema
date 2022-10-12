@@ -2615,6 +2615,18 @@
       },
       "$ref": "#"
     },
+    "tflint-plugin": {
+      "description": "Configuration object for the tflint-plugin manager",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "TFLint plugin {{depName}}",
+        "fileMatch": [
+          "\\.tflint\\.hcl$"
+        ],
+        "extractVersion": "^v(?<version>.*)$"
+      },
+      "$ref": "#"
+    },
     "timezone": {
       "description": "[IANA Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)",
       "type": "string"
