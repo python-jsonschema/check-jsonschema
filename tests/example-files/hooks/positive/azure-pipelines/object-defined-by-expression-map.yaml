@@ -1,0 +1,15 @@
+parameters:
+  - name: env
+    default:
+      - key: FOO
+        value: foo
+      - key: BAR
+        value: bar
+
+jobs:
+  - job: echo-foo-bar
+    steps:
+      - bash: 'echo "$FOO-$BAR"'
+        env:
+          ${{ each pair in parameters.env }}:
+            ${{ pair.key }}: ${{ pair.value }}

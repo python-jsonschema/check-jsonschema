@@ -85,19 +85,39 @@ def traverse_dict(data: dict) -> dict:
         if is_expression(key):
             # WARNING -- correctness unclear
             #
-            # in the case that an expression in a dict does not map to a dict, the
-            # azure-pipelines-language server will drop it from the data:
-            # https://github.com/microsoft/azure-pipelines-language-server/blob/71b20f92874c02dfe82ad2cc2dcc7fa64996be91/language-service/src/parser/yamlParser.ts#L185
+            # "lift" any dict by moving its attributes up into the object being evaluated
             #
-            # instead, we'll raise an error
+            # e.g.
+            #    parent:
+            #      ${{ each x in xs }}:
+            #        - k: v-${{ x }}
+            #
+            # becomes
+            #
+            #    parent:
+            #      - k: v-${{ x }}
             if isinstance(newvalue, dict):
                 for add_k, add_v in newvalue.items():
                     newdata[add_k] = add_v
+            # In all other cases, drop the content from the data. This is based on the
+            # azure-pipelines-language server behavior:
+            # https://github.com/microsoft/azure-pipelines-language-server/blob/71b20f92874c02dfe82ad2cc2dcc7fa64996be91/language-service/src/parser/yamlParser.ts#L185
+            #
+            # earlier versions would raise an error here, but this caused issues with
+            # data in which expressions were mapped to simple strings
+            #
+            # e.g.
+            #
+            #    parent:
+            #      ${{ x }}: ${{ y }}
+            #
+            # which occurs naturally *after* a lifting operation, as in
+            #
+            #    parent:
+            #      ${{ each x, y in attrs }}:
+            #        ${{ x }}: ${{ y }}
             else:
-                raise AzurePipelinesDataError(
-                    "found non-object data under an expression in an object, "
-                    f"expression={key}"
-                )
+                continue
         else:
             newdata[key] = newvalue
     return newdata
