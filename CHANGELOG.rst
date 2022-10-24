@@ -13,7 +13,8 @@ Unreleased
 0.18.4
 ------
 
-- Update vendored schemas (2022-10-20)
+- Update vendored schemas: bamboo-spec, dependabot, github-workflows,
+  gitlab-ci, renovate (2022-10-20)
 - Tweak format checker usage to avoid deprecation warning from ``jsonschema``
 - The Azure Pipelines data transform is now more permissive, which should allow
   it to handle a wider variety of pipelines files (:issue:`162`)
