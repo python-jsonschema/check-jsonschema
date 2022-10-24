@@ -10,7 +10,7 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2022-10-20)
+- Update vendored schemas (2022-10-24)
 - Tweak format checker usage to avoid deprecation warning from ``jsonschema``
 - The Azure Pipelines data transform is now more permissive, which should allow
   it to handle a wider variety of pipelines files (:issue:`162`)
