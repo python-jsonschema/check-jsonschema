@@ -118,7 +118,17 @@
     },
     "autodiscoverFilter": {
       "description": "Filter the list of autodiscovered repositories.",
-      "type": "string",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ],
       "default": null
     },
     "automerge": {
@@ -176,7 +186,8 @@
       "default": {
         "fileMatch": [
           "azure.*pipelines?.*\\.ya?ml$"
-        ]
+        ],
+        "enabled": false
       },
       "$ref": "#"
     },
@@ -255,7 +266,7 @@
         "install",
         "hermit"
       ],
-      "default": "global"
+      "default": "install"
     },
     "bitbucket-pipelines": {
       "description": "Configuration object for the bitbucket-pipelines manager",
@@ -280,7 +291,7 @@
     "branchNameStrict": {
       "description": "Whether to be strict about the use of special characters within the branch name.",
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "branchPrefix": {
       "description": "Prefix to use for all branch names.",
@@ -784,15 +795,9 @@
       "type": "boolean",
       "default": true
     },
-    "forkMode": {
-      "description": "Set to `true` to fork the source repository and create branches there instead.",
-      "type": "boolean",
-      "default": false
-    },
     "forkToken": {
-      "description": "Will be used on GitHub when `forkMode` is set to `true` to clone the repositories.",
-      "type": "string",
-      "default": ""
+      "description": "Set a personal access token here to enable \"fork mode\".",
+      "type": "string"
     },
     "fvm": {
       "description": "Configuration object for the fvm manager",
@@ -1210,9 +1215,9 @@
       ]
     },
     "ignoreScripts": {
-      "description": "Set this to `true` if `allowScripts=true` but you wish to skip running scripts when updating lock files.",
+      "description": "Set this to `false` if `allowScripts=true` and you wish to run scripts when updating lock files.",
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "ignoreTests": {
       "description": "Set to `true` to enable automerging without tests.",
@@ -1244,7 +1249,7 @@
         "flexible",
         "none"
       ],
-      "default": "none"
+      "default": "strict"
     },
     "java": {
       "description": "Configuration object for all Java package managers.",
@@ -1922,6 +1927,7 @@
         "azure",
         "bitbucket",
         "bitbucket-server",
+        "codecommit",
         "gitea",
         "github",
         "gitlab"
