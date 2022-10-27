@@ -291,7 +291,7 @@
     "branchNameStrict": {
       "description": "Whether to be strict about the use of special characters within the branch name.",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "branchPrefix": {
       "description": "Prefix to use for all branch names.",
@@ -1137,6 +1137,11 @@
               "matchHost": {
                 "description": "A domain name, host name or base URL to match against.",
                 "type": "string"
+              },
+              "maxRequestsPerSecond": {
+                "description": "Limit requests rate per host.",
+                "type": "integer",
+                "default": 0
               },
               "timeout": {
                 "description": "Timeout (in milliseconds) for queries to external endpoints.",
