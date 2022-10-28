@@ -11,6 +11,17 @@ Install with ``pip`` or ``pipx``:
     # or pipx
     pipx install check-jsonschema
 
+You may also want to install additional packages that ``jsonschema`` uses to `validate
+specific string formats <https://python-jsonschema.readthedocs.io/en/stable/validate/?highlight=rfc3986#validating-formats>`_:
+
+.. code-block:: bash
+
+    pip install check-jsonschema rfc3986-validator
+
+    # or pipx
+    pipx install check-jsonschema
+    pipx inject rfc3986-validator
+
 
 Supported Pythons
 -----------------
