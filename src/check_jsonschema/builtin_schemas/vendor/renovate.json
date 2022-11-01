@@ -776,7 +776,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)flux-system/gotk-components\\.yaml$"
+          "(^|\\/)flux-system\\/(?:.+\\/)?gotk-components\\.yaml$"
         ]
       },
       "$ref": "#"
