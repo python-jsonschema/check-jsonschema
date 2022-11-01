@@ -16,7 +16,7 @@ specific string formats <https://python-jsonschema.readthedocs.io/en/stable/#ext
 
 .. code-block:: bash
 
-    pip install check-jsonschema 'jsonschema[format]' 
+    pip install check-jsonschema 'jsonschema[format]'
 
     # or pipx
     pipx install check-jsonschema
