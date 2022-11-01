@@ -11,6 +11,17 @@ Install with ``pip`` or ``pipx``:
     # or pipx
     pipx install check-jsonschema
 
+You may also want to install additional packages that ``jsonschema`` uses to `validate
+specific string formats <https://python-jsonschema.readthedocs.io/en/stable/#extras>`_:
+
+.. code-block:: bash
+
+    pip install check-jsonschema 'jsonschema[format]'
+
+    # or pipx
+    pipx install check-jsonschema
+    pipx inject check-jsonschema 'jsonschema[format]'
+
 
 Supported Pythons
 -----------------
