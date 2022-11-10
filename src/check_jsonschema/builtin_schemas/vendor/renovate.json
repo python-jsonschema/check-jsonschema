@@ -2741,6 +2741,7 @@
         "kubernetes-api",
         "loose",
         "maven",
+        "nixpkgs",
         "node",
         "npm",
         "nuget",
