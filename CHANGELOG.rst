@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.19.1
+------
+
 - Fix handling of file descriptors created using the ``/proc/self/fd/``
   mechanism (:issue:`176`)
 
