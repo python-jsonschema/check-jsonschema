@@ -11,6 +11,7 @@ from .catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from .checker import SchemaChecker
 from .formats import FormatOptions, RegexFormatBehavior
 from .instance_loader import InstanceLoader
+from .parsers import SUPPORTED_FILE_FORMATS
 from .reporter import REPORTER_BY_NAME, Reporter
 from .schema_loader import (
     BuiltinSchemaLoader,
@@ -55,8 +56,8 @@ class ParseResult:
         # cache controls
         self.disable_cache: bool = False
         self.cache_filename: str | None = None
-        # filetype detection (JSON vs YAML)
-        self.default_filetype: str | None = None
+        # filetype detection (JSON, YAML, TOML, etc)
+        self.default_filetype: str = "json"
         # data-transform (for Azure Pipelines and potentially future transforms)
         self.data_transform: Transform | None = None
         # regex format options
@@ -182,8 +183,10 @@ The '--builtin-schema' flag supports the following schema names:
 )
 @click.option(
     "--default-filetype",
-    help="A default filetype to assume when a file is not detected as JSON or YAML",
-    type=click.Choice(("json", "yaml"), case_sensitive=True),
+    help="A default filetype to assume when a file's type is not detected",
+    default="json",
+    show_default=True,
+    type=click.Choice(SUPPORTED_FILE_FORMATS, case_sensitive=True),
 )
 @click.option(
     "--traceback-mode",
@@ -242,7 +245,7 @@ def main(
     cache_filename: str | None,
     disable_format: bool,
     format_regex: str,
-    default_filetype: str | None,
+    default_filetype: str,
     show_all_validation_errors: bool,
     traceback_mode: str,
     data_transform: str | None,
@@ -260,10 +263,9 @@ def main(
     args.disable_format = disable_format
     args.format_regex = RegexFormatBehavior(format_regex)
     args.disable_cache = no_cache
+    args.default_filetype = default_filetype
     if cache_filename is not None:
         args.cache_filename = cache_filename
-    if default_filetype is not None:
-        args.default_filetype = default_filetype
     if data_transform is not None:
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
     if show_all_validation_errors:

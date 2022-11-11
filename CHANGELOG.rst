@@ -11,6 +11,10 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2022-11-10)
+- Improve the behaviors of filetype detection. ``--default-filetype`` now
+  defaults to ``json``, and can be passed ``toml`` or ``json5`` if those
+  parsers are installed. Detection is now only done by suffix mapping and will
+  not attempt to read files.
 
 0.18.4
 ------

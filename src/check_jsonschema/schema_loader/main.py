@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pathlib
 import typing as t
 import urllib.error
 import urllib.parse
@@ -17,7 +18,7 @@ from .resolver import make_ref_resolver
 class SchemaLoaderBase:
     def get_validator(
         self,
-        instance_filename: str,
+        path: pathlib.Path,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
     ) -> jsonschema.Validator:
@@ -104,7 +105,7 @@ class SchemaLoader(SchemaLoaderBase):
 
     def get_validator(
         self,
-        instance_filename: str,
+        path: pathlib.Path,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
     ) -> jsonschema.Validator:
@@ -126,7 +127,7 @@ class BuiltinSchemaLoader(SchemaLoader):
 class MetaSchemaLoader(SchemaLoaderBase):
     def get_validator(
         self,
-        instance_filename: str,
+        path: pathlib.Path,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
     ) -> jsonschema.Validator:

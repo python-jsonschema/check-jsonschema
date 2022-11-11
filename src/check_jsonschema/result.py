@@ -1,3 +1,5 @@
+import pathlib
+
 import jsonschema
 
 from .parsers import ParseError
@@ -13,13 +15,15 @@ class CheckResult:
         return not (bool(self.parse_errors) or bool(self.validation_errors))
 
     def record_validation_error(
-        self, filename: str, err: jsonschema.ValidationError
+        self, path: pathlib.Path, err: jsonschema.ValidationError
     ) -> None:
+        filename = str(path)
         if filename not in self.validation_errors:
             self.validation_errors[filename] = []
         self.validation_errors[filename].append(err)
 
-    def record_parse_error(self, filename: str, err: ParseError) -> None:
+    def record_parse_error(self, path: pathlib.Path, err: ParseError) -> None:
+        filename = str(path)
         if filename not in self.parse_errors:
             self.parse_errors[filename] = []
         self.parse_errors[filename].append(err)

@@ -5,18 +5,21 @@ import pathlib
 import typing as t
 
 import ruamel.yaml
-from identify import identify
 
+from ..identify_filetype import path_to_type
 from . import json5, toml, yaml
 
 _PARSER_ERRORS: set[type[Exception]] = {json.JSONDecodeError, yaml.ParseError}
 DEFAULT_LOAD_FUNC_BY_TAG: dict[str, t.Callable[[t.BinaryIO], t.Any]] = {
     "json": json.load,
 }
+SUPPORTED_FILE_FORMATS = ["json", "yaml"]
 if json5.ENABLED:
+    SUPPORTED_FILE_FORMATS.append("json5")
     DEFAULT_LOAD_FUNC_BY_TAG["json5"] = json5.load
     _PARSER_ERRORS.add(json5.ParseError)
 if toml.ENABLED:
+    SUPPORTED_FILE_FORMATS.append("toml")
     DEFAULT_LOAD_FUNC_BY_TAG["toml"] = toml.load
     _PARSER_ERRORS.add(toml.ParseError)
 MISSING_SUPPORT_MESSAGES: dict[str, str] = {
@@ -62,34 +65,25 @@ class ParserSet:
             }
 
     def get(
-        self, filename: str, default_ft: str | None
+        self, path: pathlib.Path, default_filetype: str
     ) -> t.Callable[[t.BinaryIO], t.Any]:
-        tags = identify.tags_from_path(filename)
-        for (tag, loadfunc) in self._by_tag.items():
-            if tag in tags:
-                return loadfunc
-        if default_ft in self._by_tag:
-            return self._by_tag[default_ft]
+        filetype = path_to_type(path, default_type=default_filetype)
 
-        for tag in tags:
-            if tag in MISSING_SUPPORT_MESSAGES:
-                raise BadFileTypeError(
-                    f"cannot parse {filename} because support is missing for {tag}\n"
-                    + MISSING_SUPPORT_MESSAGES[tag]
-                )
+        if filetype in self._by_tag:
+            return self._by_tag[filetype]
+
+        if filetype in MISSING_SUPPORT_MESSAGES:
+            raise BadFileTypeError(
+                f"cannot parse {path} because support is missing for {filetype}\n"
+                + MISSING_SUPPORT_MESSAGES[filetype]
+            )
         raise BadFileTypeError(
-            f"cannot parse {filename} as it is not one of the supported filetypes: "
+            f"cannot parse {path} as it is not one of the supported filetypes: "
             + ",".join(self._by_tag.keys())
         )
 
-    def parse_file(
-        self,
-        path: str | pathlib.Path,
-        default_ft: str | None,
-    ) -> t.Any:
-        loadfunc = self.get(
-            str(path) if isinstance(path, pathlib.Path) else path, default_ft
-        )
+    def parse_file(self, path: pathlib.Path, default_filetype: str) -> t.Any:
+        loadfunc = self.get(path, default_filetype)
         try:
             with open(path, "rb") as fp:
                 return loadfunc(fp)

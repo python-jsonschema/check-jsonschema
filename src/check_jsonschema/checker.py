@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pathlib
 import typing as t
 
 import click
@@ -43,10 +44,10 @@ class SchemaChecker:
         raise _Exit(1)
 
     def get_validator(
-        self, filename: str, doc: dict[str, t.Any]
+        self, path: pathlib.Path, doc: dict[str, t.Any]
     ) -> jsonschema.Validator:
         try:
-            return self._schema_loader.get_validator(filename, doc, self._format_opts)
+            return self._schema_loader.get_validator(path, doc, self._format_opts)
         except SchemaParseError as e:
             self._fail("Error: schemafile could not be parsed as JSON", e)
         except jsonschema.SchemaError as e:
@@ -58,13 +59,13 @@ class SchemaChecker:
 
     def _build_result(self) -> CheckResult:
         result = CheckResult()
-        for filename, data in self._instance_loader.iter_files():
+        for path, data in self._instance_loader.iter_files():
             if isinstance(data, ParseError):
-                result.record_parse_error(filename, data)
+                result.record_parse_error(path, data)
             else:
-                validator = self.get_validator(filename, data)
+                validator = self.get_validator(path, data)
                 for err in validator.iter_errors(data):
-                    result.record_validation_error(filename, err)
+                    result.record_validation_error(path, err)
         return result
 
     def _run(self) -> None:

@@ -36,7 +36,7 @@ class LocalSchemaReader:
         return self.path.as_uri()
 
     def _read_impl(self) -> t.Any:
-        return self.parsers.parse_file(self.path, default_ft="json")
+        return self.parsers.parse_file(self.path, default_filetype="json")
 
     def read_schema(self) -> dict:
         return _run_load_callback(self.filename, self._read_impl)
