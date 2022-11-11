@@ -3,6 +3,7 @@ from __future__ import annotations
 import linecache
 import os
 import pathlib
+import re
 import traceback
 import typing as t
 import urllib.parse
@@ -13,6 +14,7 @@ import jsonschema
 
 WINDOWS = os.name == "nt"
 
+PROC_FD_PATH_PATTERN = re.compile(r"/proc/(self|\d+)/fd/\d+")
 
 # this is a short list of schemes which will be recognized as being
 # schemes at all; anything else will not even be reported as an
@@ -82,6 +84,11 @@ def filename2path(filename: str) -> pathlib.Path:
 
         p = pathlib.Path(filename)
 
+    # if passed a file descriptor object, do not try to resolve it
+    # the resolution behavior when using zsh `<()` redirection seems to result in
+    # an incorrect path being used
+    if PROC_FD_PATH_PATTERN.fullmatch(filename):
+        return p
     return p.resolve()
 
 
