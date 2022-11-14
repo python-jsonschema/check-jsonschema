@@ -1435,6 +1435,19 @@
       },
       "$ref": "#"
     },
+    "nix": {
+      "description": "Configuration object for the nix manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|\\/)flake\\.nix$"
+        ],
+        "commitMessageTopic": "nixpkgs",
+        "commitMessageExtra": "to {{newValue}}",
+        "enabled": false
+      },
+      "$ref": "#"
+    },
     "node": {
       "description": "Configuration object for Node version renovation.",
       "type": "object",
