@@ -4,6 +4,9 @@ import sys
 import threading
 
 import pytest
+import responses
+
+from check_jsonschema import cachedownloader
 
 
 @pytest.mark.skipif(
@@ -73,3 +76,41 @@ def test_schema_and_instance_in_fifos(tmp_path, run_line, check_succeeds):
     finally:
         schema_thread.join(timeout=0.1)
         instance_thread.join(timeout=0.1)
+
+
+@pytest.mark.parametrize("check_passes", (True, False))
+def test_remote_schema_requiring_retry(run_line, check_passes, tmp_path, monkeypatch):
+    """
+    a "remote schema" (meaning HTTPS) with bad data, therefore requiring that a retry
+    fires in order to parse
+    """
+
+    def _fake_compute_default_cache_dir(self):
+        return str(tmp_path)
+
+    monkeypatch.setattr(
+        cachedownloader.CacheDownloader,
+        "_compute_default_cache_dir",
+        _fake_compute_default_cache_dir,
+    )
+
+    schema_loc = "https://example.com/schema1.json"
+    responses.add("GET", schema_loc, body="", match_querystring=None)
+    responses.add(
+        "GET",
+        schema_loc,
+        headers={"Last-Modified": "Sun, 01 Jan 2000 00:00:01 GMT"},
+        json={"type": "integer"},
+        match_querystring=None,
+    )
+
+    instance_path = tmp_path / "instance.json"
+    instance_path.write_text("42" if check_passes else '"foo"')
+
+    result = run_line(
+        ["check-jsonschema", "--schemafile", schema_loc, str(instance_path)]
+    )
+    if check_passes:
+        assert result.exit_code == 0
+    else:
+        assert result.exit_code == 1

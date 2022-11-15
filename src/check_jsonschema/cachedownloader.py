@@ -32,11 +32,13 @@ class CacheDownloader:
         filename: str | None = None,
         cache_dir: str | None = None,
         disable_cache: bool = False,
+        validation_callback: t.Callable[[bytes], t.Any] | None = None,
     ):
         self._file_url = file_url
         self._filename = filename or file_url.split("/")[-1]
         self._cache_dir = cache_dir or self._compute_default_cache_dir()
         self._disable_cache = disable_cache
+        self._validation_callback = validation_callback
 
     def _compute_default_cache_dir(self) -> str | None:
         sysname = platform.system()
@@ -67,6 +69,11 @@ class CacheDownloader:
             for _attempt in range(3):
                 r = requests.get(self._file_url, stream=True)
                 if r.ok:
+                    if self._validation_callback is not None:
+                        try:
+                            self._validation_callback(r.content)
+                        except ValueError:
+                            continue
                     return r
             assert r is not None
             raise FailedDownloadError(

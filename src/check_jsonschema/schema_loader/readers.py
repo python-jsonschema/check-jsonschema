@@ -51,7 +51,10 @@ class HttpSchemaReader:
     ) -> None:
         self.url = url
         self.downloader = CacheDownloader(
-            url, cache_filename, disable_cache=disable_cache
+            url,
+            cache_filename,
+            disable_cache=disable_cache,
+            validation_callback=json.loads,
         )
 
     def get_ref_base(self) -> str:
