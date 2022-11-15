@@ -1,3 +1,4 @@
+import json
 import os
 import platform
 import time
@@ -176,3 +177,31 @@ def test_cachedownloader_e2e(tmp_path, mode, failures):
                 pass
         assert not (tmp_path / "schema1.json").exists()
         assert not f.exists()
+
+
+@pytest.mark.parametrize("disable_cache", (True, False))
+def test_cachedownloader_retries_on_bad_data(tmp_path, disable_cache):
+    responses.add(
+        "GET",
+        "https://example.com/schema1.json",
+        status=200,
+        body="{",
+        match_querystring=None,
+    )
+    add_default_response()
+    f = tmp_path / "schema1.json"
+    cd = CacheDownloader(
+        "https://example.com/schema1.json",
+        filename=str(f),
+        cache_dir=str(tmp_path),
+        disable_cache=disable_cache,
+        validation_callback=json.loads,
+    )
+
+    with cd.open() as fp:
+        assert fp.read() == b"{}"
+
+    if disable_cache:
+        assert not f.exists()
+    else:
+        assert f.exists()
