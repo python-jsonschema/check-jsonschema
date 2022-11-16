@@ -13,6 +13,7 @@ Unreleased
 - Update vendored schemas (2022-11-14)
 - Downloads of schemas from remote (http/https) locations will now retry if the
   downloaded data is not valid JSON (:issue:`183`)
+- Remove the deprecated `--show-all-validation-errors` option
 
 0.19.1
 ------

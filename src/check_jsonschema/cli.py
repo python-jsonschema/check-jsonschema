@@ -3,7 +3,6 @@ from __future__ import annotations
 import enum
 import os
 import textwrap
-import warnings
 
 import click
 
@@ -27,13 +26,6 @@ BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
 BUILTIN_SCHEMA_CHOICES = (
     BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + CUSTOM_SCHEMA_NAMES
 )
-
-SHOWALL_DEPRECATION_MSG = """
-
-  '--show-all-validation-errors' is deprecated and will be removed in a future version.
-
-  Update your usage to use '-v/--verbose' instead.
-"""
 
 
 def evaluate_environment_settings(ctx: click.Context) -> None:
@@ -227,12 +219,6 @@ The '--builtin-schema' flag supports the following schema names:
     help="Reduce output verbosity",
     count=True,
 )
-@click.option(
-    # TODO: remove in v0.15.1 or later
-    "--show-all-validation-errors",
-    is_flag=True,
-    hidden=True,
-)
 @click.argument("instancefiles", required=True, nargs=-1)
 @click.pass_context
 def main(
@@ -246,7 +232,6 @@ def main(
     disable_format: bool,
     format_regex: str,
     default_filetype: str,
-    show_all_validation_errors: bool,
     traceback_mode: str,
     data_transform: str | None,
     output_format: str,
@@ -268,14 +253,12 @@ def main(
         args.cache_filename = cache_filename
     if data_transform is not None:
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
-    if show_all_validation_errors:
-        warnings.warn(SHOWALL_DEPRECATION_MSG)
 
     # verbosity behavior:
     # - default is 1
-    # - count '-v' with a min of 1 if --show-all-validation-errors was given
+    # - count '-v'
     # - subtract count of '-q'
-    args.verbosity = 1 + max(verbose, 1 if show_all_validation_errors else 0) - quiet
+    args.verbosity = 1 + verbose - quiet
     args.traceback_mode = traceback_mode
     args.output_format = output_format
 
