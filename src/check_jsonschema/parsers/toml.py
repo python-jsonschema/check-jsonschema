@@ -1,14 +1,19 @@
 from __future__ import annotations
 
 import datetime
+import sys
 import typing as t
 
-try:
-    import tomli
+if sys.version_info < (3, 11):
+    try:
+        import tomli as toml_implementation
 
+        has_toml = True
+    except ImportError:
+        has_toml = False
+else:
     has_toml = True
-except ImportError:
-    has_toml = False
+    import tomllib as toml_implementation
 
 
 def _normalize(data: t.Any) -> t.Any:
@@ -53,10 +58,10 @@ ENABLED = has_toml
 
 
 if has_toml:
-    ParseError: type[Exception] = tomli.TOMLDecodeError
+    ParseError: type[Exception] = toml_implementation.TOMLDecodeError
 
     def load(stream: t.BinaryIO) -> t.Any:
-        data = tomli.load(stream)
+        data = toml_implementation.load(stream)
         return _normalize(data)
 
 else:

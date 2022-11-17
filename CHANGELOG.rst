@@ -13,7 +13,8 @@ Unreleased
 - Update vendored schemas (2022-11-14)
 - Downloads of schemas from remote (http/https) locations will now retry if the
   downloaded data is not valid JSON (:issue:`183`)
-- Remove the deprecated `--show-all-validation-errors` option
+- Remove the deprecated ``--show-all-validation-errors`` option
+- Add support for Python 3.11, and ``tomllib`` as an alternative to ``tomli``
 
 0.19.1
 ------
