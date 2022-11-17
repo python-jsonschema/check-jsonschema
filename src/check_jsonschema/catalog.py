@@ -50,7 +50,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "url": "https://json.schemastore.org/github-action",
         "hook_config": {
             "name": "Validate GitHub Actions",
-            "files": ["action.(yml|yaml)", r"\.github/actions/.*"],
+            "files": ["action.(yml|yaml)", r"\.github/actions/(.+/)?action.(yml|yaml)"],
             "types": "yaml",
         },
     },

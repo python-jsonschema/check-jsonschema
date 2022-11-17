@@ -15,6 +15,9 @@ Unreleased
   downloaded data is not valid JSON (:issue:`183`)
 - Remove the deprecated ``--show-all-validation-errors`` option
 - Add support for Python 3.11, and ``tomllib`` as an alternative to ``tomli``
+- The github-actions hook now requires a filename of ``action.yml`` or
+  ``action.yaml`` for action definitions in ``.github/actions/``, in accordance
+  with the GitHub Documentation (:pr:`186`)
 
 0.19.1
 ------

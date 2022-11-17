@@ -50,7 +50,7 @@
   files: >
     (?x)^(
       action.(yml|yaml)|
-      \.github/actions/action.(yml|yaml)
+      \.github/actions/(.+/)?action.(yml|yaml)
     )$
   types: [yaml]
 
