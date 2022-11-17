@@ -13,7 +13,7 @@ Unreleased
 0.19.2
 ------
 
-- Update vendored schemas (2022-11-14)
+- Update vendored schemas: gitlab-ci, renovate (2022-11-14)
 - Downloads of schemas from remote (http/https) locations will now retry if the
   downloaded data is not valid JSON (:issue:`183`)
 - Remove the deprecated ``--show-all-validation-errors`` option
