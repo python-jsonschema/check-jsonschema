@@ -146,7 +146,7 @@ The '--builtin-schema' flag supports the following schema names:
     is_flag=True,
     help=(
         "Instead of validating the instances against a schema, treat each file as a "
-        "schema and validate them under ther matching metaschemas."
+        "schema and validate them under their matching metaschemas."
     ),
 )
 @click.option(

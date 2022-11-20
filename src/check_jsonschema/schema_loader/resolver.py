@@ -38,5 +38,5 @@ def make_ref_resolver(
         return None
 
     base_uri = schema.get("$id", schema_uri)
-    # FIXME: temporary type-ignore beause typeshed has the type wrong
+    # FIXME: temporary type-ignore because typeshed has the type wrong
     return _CliRefResolver(base_uri, schema)  # type: ignore[arg-type]
