@@ -2556,13 +2556,14 @@
       "items": {
         "type": "string",
         "enum": [
-          "prIgnoreNotification",
-          "branchAutomergeFailure",
-          "lockFileErrors",
           "artifactErrors",
+          "branchAutomergeFailure",
+          "configErrorIssue",
           "deprecationWarningIssues",
+          "lockFileErrors",
           "onboardingClose",
-          "configErrorIssue"
+          "prEditedNotification",
+          "prIgnoreNotification"
         ]
       },
       "default": [
