@@ -1580,7 +1580,7 @@
                 "type": "string"
               },
               "customChangelogUrl": {
-                "description": "If set, Renovate will use this url to fetch changelogs for a matched dependency. Valid only within a `packageRules` object.",
+                "description": "If set, Renovate will use this URL to fetch changelogs for a matched dependency. Valid only within a `packageRules` object.",
                 "type": "string"
               },
               "excludePackageNames": {
@@ -2599,7 +2599,6 @@
         "fileMatch": [
           "\\.tf$"
         ],
-        "versioning": "hashicorp",
         "pinDigests": false
       },
       "$ref": "#"
