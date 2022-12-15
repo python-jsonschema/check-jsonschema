@@ -952,7 +952,9 @@
           "\\.gradle(\\.kts)?$",
           "(^|\\/)gradle\\.properties$",
           "(^|\\/)gradle\\/.+\\.toml$",
-          "\\.versions\\.toml$"
+          "\\.versions\\.toml$",
+          "(^|\\/)versions.props$",
+          "(^|\\/)versions.lock$"
         ],
         "timeout": 600,
         "versioning": "gradle"
