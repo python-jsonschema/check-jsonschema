@@ -152,6 +152,22 @@ checked. The following transforms are supported:
     interpret ``!reference`` usages -- it only expands them to lists of strings
     to pass schema validation
 
+``--fill-defaults``
+-------------------
+
+JSON Schema specifies the ``"default"`` keyword as potentially meaningful for
+consumers of schemas, but not for validators. Therefore, the default behavior
+for ``check-jsonschema`` is to ignore ``"default"``.
+
+``--fill-defaults`` changes this behavior, filling in ``"default"`` values
+whenever they are encountered prior to validation.
+
+.. warning::
+
+    There are many schemas which make the meaning of ``"default"`` unclear.
+    In particular, the behavior of ``check-jsonschema`` is undefined when multiple
+    defaults are specified via ``anyOf``, ``oneOf``, or other forms of polymorphism.
+
 "format" Validation Options
 ---------------------------
 

@@ -29,6 +29,7 @@ class SchemaChecker:
         *,
         format_opts: FormatOptions | None = None,
         traceback_mode: str = "short",
+        fill_defaults: bool = False,
     ):
         self._schema_loader = schema_loader
         self._instance_loader = instance_loader
@@ -36,6 +37,7 @@ class SchemaChecker:
 
         self._format_opts = format_opts if format_opts is not None else FormatOptions()
         self._traceback_mode = traceback_mode
+        self._fill_defaults = fill_defaults
 
     def _fail(self, msg: str, err: Exception | None = None) -> t.NoReturn:
         click.echo(msg, err=True)
@@ -47,7 +49,9 @@ class SchemaChecker:
         self, path: pathlib.Path, doc: dict[str, t.Any]
     ) -> jsonschema.Validator:
         try:
-            return self._schema_loader.get_validator(path, doc, self._format_opts)
+            return self._schema_loader.get_validator(
+                path, doc, self._format_opts, self._fill_defaults
+            )
         except SchemaParseError as e:
             self._fail("Error: schemafile could not be parsed as JSON", e)
         except jsonschema.SchemaError as e:
