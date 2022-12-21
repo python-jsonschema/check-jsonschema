@@ -1569,6 +1569,16 @@
       "type": "boolean",
       "default": false
     },
+    "osgi": {
+      "description": "Configuration object for the osgi manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)src/main/features/.+\\.json$"
+        ]
+      },
+      "$ref": "#"
+    },
     "packageRules": {
       "description": "Rules for matching package names.",
       "type": "array",
@@ -2747,6 +2757,7 @@
         "debian",
         "docker",
         "git",
+        "go-mod-directive",
         "gradle",
         "hashicorp",
         "helm",
