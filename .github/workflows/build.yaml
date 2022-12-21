@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
       - run: python -m pip install tox
-      - run: python -m tox -e mypy
+      - run: python -m tox run -e mypy
 
   test:
     strategy:
@@ -27,9 +27,9 @@ jobs:
       - name: install requirements
         run: python -m pip install tox
       - name: test
-        run: python -m tox -e "py{,-json5,-pyjson5,-tomli}{,-format}"
+        run: python -m tox run -m ci
       - name: twine-check
-        run: python -m tox -e twine-check
+        run: python -m tox run -e twine-check
 
   self-check:
     name: "Self-Check"
