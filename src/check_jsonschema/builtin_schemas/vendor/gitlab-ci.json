@@ -703,7 +703,10 @@
       }
     },
     "rules": {
-      "type": "array",
+      "type": [
+        "array",
+        "null"
+      ],
       "markdownDescription": "Rules allows for an array of individual rule objects to be evaluated in order, until one matches and dynamically provides attributes to the job. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#rules).",
       "items": {
         "anyOf": [
@@ -993,6 +996,11 @@
             "push",
             "pull-push"
           ]
+        },
+        "unprotect": {
+          "type": "boolean",
+          "markdownDescription": "Use `unprotect: true` to set a cache to be shared between protected and unprotected branches.",
+          "default": false
         },
         "untracked": {
           "type": "boolean",
