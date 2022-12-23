@@ -7,9 +7,24 @@ jobs:
   mypy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: get date for caching
+        id: get-week-number
+        run: echo "cachedate=$(/bin/date -u "+%U")" >>$GITHUB_OUTPUT
+        shell: bash
+
+      - name: cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: pip-os-${{ runner.os }}-weeknum-${{ steps.get-week-number.outputs.cachedate }}-job-${{ github.job }}
+
       - run: python -m pip install tox
+
       - run: python -m tox run -e mypy
 
   test:
@@ -20,12 +35,30 @@ jobs:
     name: "Run Tests on ${{ matrix.os }}, py${{ matrix.py }}"
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.py }}
-      - name: install requirements
-        run: python -m pip install tox
+
+      - name: get date for caching
+        id: get-week-number
+        run: echo "cachedate=$(/bin/date -u "+%U")" >>$GITHUB_OUTPUT
+        shell: bash
+
+      - name: cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: pip-os-${{ runner.os }}-weeknum-${{ steps.get-week-number.outputs.cachedate }}-job-${{ github.job }}
+
+      - run: python -m pip install tox
+
+      - name: cache tox virtualenvs
+        uses: actions/cache@v3
+        with:
+          path: .tox
+          key: tox-os-${{ runner.os }}-py${{ matrix.py }}-weeknum-${{ steps.get-week-number.outputs.cachedate }}-job-${{ github.job }}-hash-${{ hashFiles('tox.ini', 'setup.cfg') }}
+
       - name: test
         run: python -m tox run -m ci
       - name: twine-check
@@ -35,15 +68,30 @@ jobs:
     name: "Self-Check"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.x'
+
+      - name: get date for caching
+        id: get-week-number
+        run: echo "cachedate=$(/bin/date -u "+%U")" >>$GITHUB_OUTPUT
+        shell: bash
+
+      - name: cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: pip-os-${{ runner.os }}-weeknum-${{ steps.get-week-number.outputs.cachedate }}-job-${{ github.job }}
+
       - name: install from source
         run: |
           python -m pip install -U pip setuptools
           python -m pip install .
+
       - name: run on own workflows via HTTPS schema
         run: check-jsonschema  --schemafile "https://json.schemastore.org/github-workflow" .github/workflows/*.yaml
+
       - name: run on own workflows via vendored schema
         run: check-jsonschema  --builtin-schema vendor.github-workflows .github/workflows/*.yaml
