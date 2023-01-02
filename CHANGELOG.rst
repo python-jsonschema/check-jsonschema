@@ -11,6 +11,9 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2023-01-02)
+- Add ``--fill-defaults`` argument which eagerly populates ``"default"``
+  values whenever they are encountered and a value is not already present
+  (:issue:`200`)
 
 0.19.2
 ------

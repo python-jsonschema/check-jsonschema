@@ -15,12 +15,41 @@ from .readers import HttpSchemaReader, LocalSchemaReader
 from .resolver import make_ref_resolver
 
 
+def _extend_with_default(
+    validator_class: type[jsonschema.Validator],
+) -> type[jsonschema.Validator]:
+    validate_properties = validator_class.VALIDATORS["properties"]
+
+    def set_defaults_then_validate(
+        validator: jsonschema.Validator,
+        properties: dict[str, dict[str, t.Any]],
+        instance: dict[str, t.Any],
+        schema: dict[str, t.Any],
+    ) -> t.Iterator[jsonschema.ValidationError]:
+        for property_name, subschema in properties.items():
+            if "default" in subschema and property_name not in instance:
+                instance[property_name] = subschema["default"]
+
+        yield from validate_properties(
+            validator,
+            properties,
+            instance,
+            schema,
+        )
+
+    return jsonschema.validators.extend(
+        validator_class,
+        {"properties": set_defaults_then_validate},
+    )
+
+
 class SchemaLoaderBase:
     def get_validator(
         self,
         path: pathlib.Path,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
+        fill_defaults: bool,
     ) -> jsonschema.Validator:
         raise NotImplementedError
 
@@ -76,7 +105,9 @@ class SchemaLoader(SchemaLoaderBase):
     def get_schema(self) -> dict[str, t.Any]:
         return self.reader.read_schema()
 
-    def make_validator(self, format_opts: FormatOptions) -> jsonschema.Validator:
+    def make_validator(
+        self, format_opts: FormatOptions, fill_defaults: bool
+    ) -> jsonschema.Validator:
         schema_uri = self.get_schema_ref_base()
         schema = self.get_schema()
 
@@ -95,6 +126,10 @@ class SchemaLoader(SchemaLoaderBase):
         validator_cls = jsonschema.validators.validator_for(schema)
         validator_cls.check_schema(schema)
 
+        # extend the validator class with default-filling behavior if appropriate
+        if fill_defaults:
+            validator_cls = _extend_with_default(validator_cls)
+
         # now that we know it's safe to try to create the validator instance, do it
         validator = validator_cls(
             schema,
@@ -108,8 +143,9 @@ class SchemaLoader(SchemaLoaderBase):
         path: pathlib.Path,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
+        fill_defaults: bool,
     ) -> jsonschema.Validator:
-        self._validator = self.make_validator(format_opts)
+        self._validator = self.make_validator(format_opts, fill_defaults)
         return self._validator
 
 
@@ -130,6 +166,7 @@ class MetaSchemaLoader(SchemaLoaderBase):
         path: pathlib.Path,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
+        fill_defaults: bool,
     ) -> jsonschema.Validator:
         validator = jsonschema.validators.validator_for(instance_doc)
         return t.cast(jsonschema.Validator, validator(validator.META_SCHEMA))

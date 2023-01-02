@@ -52,6 +52,8 @@ class ParseResult:
         self.default_filetype: str = "json"
         # data-transform (for Azure Pipelines and potentially future transforms)
         self.data_transform: Transform | None = None
+        # fill default values on instances during validation
+        self.fill_defaults: bool = False
         # regex format options
         self.disable_format: bool = False
         self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
@@ -198,6 +200,11 @@ The '--builtin-schema' flag supports the following schema names:
     type=click.Choice(tuple(TRANSFORM_LIBRARY.keys())),
 )
 @click.option(
+    "--fill-defaults",
+    help="Autofill 'default' values prior to validation.",
+    is_flag=True,
+)
+@click.option(
     "-o",
     "--output-format",
     help="Which output format to use",
@@ -234,6 +241,7 @@ def main(
     default_filetype: str,
     traceback_mode: str,
     data_transform: str | None,
+    fill_defaults: bool,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -249,6 +257,7 @@ def main(
     args.format_regex = RegexFormatBehavior(format_regex)
     args.disable_cache = no_cache
     args.default_filetype = default_filetype
+    args.fill_defaults = fill_defaults
     if cache_filename is not None:
         args.cache_filename = cache_filename
     if data_transform is not None:
@@ -304,6 +313,7 @@ def build_checker(args: ParseResult) -> SchemaChecker:
         reporter,
         format_opts=args.format_opts,
         traceback_mode=args.traceback_mode,
+        fill_defaults=args.fill_defaults,
     )
 
 
