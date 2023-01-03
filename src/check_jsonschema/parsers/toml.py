@@ -4,12 +4,14 @@ import datetime
 import sys
 import typing as t
 
+from check_jsonschema._testing import FORCE_TOML_DISABLED
+
 if sys.version_info < (3, 11):
     try:
         import tomli as toml_implementation
 
         has_toml = True
-    except ImportError:
+    except ImportError:  # pragma: no cover
         has_toml = False
 else:
     has_toml = True
@@ -54,10 +56,10 @@ def _normalize(data: t.Any) -> t.Any:
 
 
 # present a bool for detecting that it's enabled
-ENABLED = has_toml
+ENABLED = has_toml and not FORCE_TOML_DISABLED
 
 
-if has_toml:
+if ENABLED:
     ParseError: type[Exception] = toml_implementation.TOMLDecodeError
 
     def load(stream: t.BinaryIO) -> t.Any:

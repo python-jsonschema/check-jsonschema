@@ -60,7 +60,9 @@ jobs:
           key: tox-os-${{ runner.os }}-py${{ matrix.py }}-weeknum-${{ steps.get-week-number.outputs.cachedate }}-job-${{ github.job }}-hash-${{ hashFiles('tox.ini', 'setup.cfg') }}
 
       - name: test
-        run: python -m tox run -m ci
+        run: |
+          python -m tox run-parallel -m ci
+          python -m tox run -e cov
       - name: twine-check
         run: python -m tox run -e twine-check
 
