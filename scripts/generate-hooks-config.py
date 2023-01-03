@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.metadata
+import typing as t
 
 from check_jsonschema.catalog import SCHEMA_CATALOG
 
@@ -40,10 +41,21 @@ def update_hook_config(new_config: str) -> None:
         fp.write(content)
 
 
-def format_hook(config) -> str:
+def generate_hook_lines(config) -> t.Iterator[str]:
+    yield f"- id: {config['id']}"
+    yield f"  name: {config['name']}"
+    yield f"  description: '{config['description']}'"
+
     add_args = " ".join(config.get("add_args", []))
     if add_args:
         add_args = " " + add_args
+    yield (
+        "  entry: check-jsonschema --builtin-schema "
+        f"vendor.{config['schema_name']}{add_args}"
+    )
+
+    yield "  language: python"
+
     if isinstance(config["files"], list):
         config[
             "files"
@@ -54,23 +66,23 @@ def format_hook(config) -> str:
             "|\n      ".join(config["files"])
         )
 
-    config_str = f"""\
-- id: {config["id"]}
-  name: {config["name"]}
-  description: '{config["description"]}'
-  entry: check-jsonschema --builtin-schema vendor.{config["schema_name"]}{add_args}
-  language: python
-  files: {config["files"]}
-"""
+    yield f"  files: {config['files']}"
+
     if "types" in config:
-        config_str += f"""\
-  types: [{','.join(config['types'])}]
-"""
-    return config_str
+        yield f"  types: [{','.join(config['types'])}]"
+    if "types_or" in config:
+        yield f"  types_or: [{','.join(config['types_or'])}]"
+
+    yield ""
 
 
-def generate_hook_config() -> str:
-    return "\n".join(format_hook(h) for h in iter_catalog_hooks())
+def generate_all_hook_config_lines() -> t.Iterator[str]:
+    for hook_config in iter_catalog_hooks():
+        yield from generate_hook_lines(hook_config)
+
+
+def format_all_hook_config() -> str:
+    return "\n".join(generate_all_hook_config_lines())
 
 
 def update_usage_list_schemas() -> None:
@@ -139,7 +151,7 @@ def update_docs() -> None:
 
 
 def main() -> None:
-    update_hook_config(generate_hook_config())
+    update_hook_config(format_all_hook_config())
     update_docs()
 
 

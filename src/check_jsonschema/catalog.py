@@ -38,6 +38,24 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "buildkite": {
+        "url": _githubusercontent_url(
+            "buildkite", "pipeline-schema", "main", "schema.json"
+        ),
+        "hook_config": {
+            "name": "Validate Buildkite Pipelines",
+            "description": (
+                "Validate Buildkite Pipelines against the schema provided by Buildkite"
+            ),
+            "files": [
+                r"buildkite\.(yml|yaml|json)",
+                r"buildkite\.(.+)\.(yml|yaml|json)",
+                r"(.*/)?\.buildkite/pipeline\.(yml|yaml|json)",
+                r"(.*/)?\.buildkite/pipeline\.(.+)\.(yml|yaml|json)",
+            ],
+            "types_or": ["json", "yaml"],
+        },
+    },
     "dependabot": {
         "url": "https://json.schemastore.org/dependabot-2.0.json",
         "hook_config": {
