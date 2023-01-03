@@ -50,6 +50,11 @@ def load_old_hashes() -> None:
                 OLD_HASHES[name] = fp.read().strip()
 
 
+def normalize_schema_contents(data: bytes) -> bytes:
+    lines = data.split(b"\n")
+    return b"\n".join(line.rstrip(b" ") for line in lines)
+
+
 def download_schemas() -> None:
     print("downloading schemas to check for updates")
     session = requests.Session()
@@ -59,17 +64,18 @@ def download_schemas() -> None:
 
         print(f"  {schema_name} ({schema_url})")
         res = session.get(schema_url)
+        new_content = normalize_schema_contents(res.content)
+
         sha = hashlib.sha256()
-        sha.update(res.content)
+        sha.update(new_content)
         new_digest = sha.hexdigest()
 
         # early abort if downloaded content matches old hash
         if new_digest == OLD_HASHES.get(schema_name):
             continue
 
-        print("    content changed")
         with open(schema2filename(schema_name), "wb") as fp:
-            fp.write(res.content)
+            fp.write(new_content)
         UPDATED_SCHEMAS.add(schema_name)
 
 
@@ -105,7 +111,7 @@ def save_new_hashes() -> None:
             _save_new_hash(name, digest)
 
         # if the existing hash does not match the new hash, save the new one
-        if digest != OLD_HASHES[name]:
+        elif digest != OLD_HASHES[name]:
             _save_new_hash(name, digest)
 
 

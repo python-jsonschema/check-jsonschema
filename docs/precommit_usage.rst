@@ -71,6 +71,20 @@ Validate Bamboo Specs against the schema provided by SchemaStore
         - id: check-bamboo-spec
 
 
+``check-buildkite``
+~~~~~~~~~~~~~~~~~~~
+
+Validate Buildkite Pipelines against the schema provided by Buildkite
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.19.2
+      hooks:
+        - id: check-buildkite
+
+
 ``check-dependabot``
 ~~~~~~~~~~~~~~~~~~~~
 

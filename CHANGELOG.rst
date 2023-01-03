@@ -14,6 +14,7 @@ Unreleased
 - Add ``--fill-defaults`` argument which eagerly populates ``"default"``
   values whenever they are encountered and a value is not already present
   (:issue:`200`)
+- Add Buildkite schema and pre-commit hook (:issue:`198`)
 
 0.19.2
 ------

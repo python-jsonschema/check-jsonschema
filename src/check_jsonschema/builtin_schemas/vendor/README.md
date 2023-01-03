@@ -29,3 +29,8 @@ renovatebot
 The GitLab CI schema is provided by GitLab and licensed under the license for
 the public gitlab repo. In particular, it falls under the "MIT Expat" portion
 of the license for that repo.
+
+### Buildkite
+
+The Buildkite schema is provided by Buildkite and licensed under the license
+for their 'pipeline-schema' repo.

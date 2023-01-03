@@ -70,6 +70,7 @@ SchemaStore and other sources:
 
 - ``vendor.azure-pipelines``
 - ``vendor.bamboo-spec``
+- ``vendor.buildkite``
 - ``vendor.dependabot``
 - ``vendor.github-actions``
 - ``vendor.github-workflows``

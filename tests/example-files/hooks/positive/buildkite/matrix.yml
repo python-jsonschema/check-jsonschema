@@ -1,0 +1,57 @@
+# this example copied from the buildkite pipeline-schema repo
+# it is therefore licensed under the existing buildkite MIT license
+# see src/check_jsonschema/builtin_schemas/vendor/ for license details
+
+steps:
+  - command: "echo {{matrix}}"
+    label: "{{matrix}}"
+    matrix:
+      - one
+      - two
+
+  - command: "echo {{matrix}}"
+    label: "{{matrix}}"
+    matrix:
+      setup:
+        - one
+        - two
+      adjustments:
+        - with: ["three"]
+          skip: true
+
+  - command: "echo {{matrix.color}} {{matrix.shape}}"
+    label: "{{matrix.color}} {{matrix.shape}}"
+    matrix:
+      setup:
+        color:
+          - green
+          - blue
+        shape:
+          - triangle
+          - hexagon
+      adjustments:
+        - with: {color: blue, shape: triangle}
+          skip: true
+        - with: {color: green, shape: triangle}
+          skip: "look, hexagons are just better"
+        - with: {color: purple, shape: octagon}
+
+
+  - group: matrices
+    steps:
+      - command: "echo {{matrix}}"
+        label: "{{matrix}}"
+        matrix:
+          - one
+          - two
+
+      - command: "echo {{matrix.color}} {{matrix.shape}}"
+        label: "{{matrix.color}} {{matrix.shape}}"
+        matrix:
+          setup:
+            color:
+              - green
+              - blue
+            shape:
+              - triangle
+              - hexagon

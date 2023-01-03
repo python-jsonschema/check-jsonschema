@@ -34,6 +34,20 @@
   files: ^bamboo-specs/.*\.(yml|yaml)$
   types: [yaml]
 
+- id: check-buildkite
+  name: Validate Buildkite Pipelines
+  description: 'Validate Buildkite Pipelines against the schema provided by Buildkite'
+  entry: check-jsonschema --builtin-schema vendor.buildkite
+  language: python
+  files: >
+    (?x)^(
+      buildkite\.(yml|yaml|json)|
+      buildkite\.(.+)\.(yml|yaml|json)|
+      (.*/)?\.buildkite/pipeline\.(yml|yaml|json)|
+      (.*/)?\.buildkite/pipeline\.(.+)\.(yml|yaml|json)
+    )$
+  types_or: [json,yaml]
+
 - id: check-dependabot
   name: Validate Dependabot Config (v2)
   description: 'Validate Dependabot Config (v2) against the schema provided by SchemaStore'
