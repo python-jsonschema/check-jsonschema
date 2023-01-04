@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-01-03)
+0.20.0
+------
+
+- Update vendored schemas: bamboo-spec, buildkite, dependabot, github-actions,
+  github-workflows, gitlab-ci, readthedocs, renovate, travis (2023-01-03)
 - Add ``--fill-defaults`` argument which eagerly populates ``"default"``
   values whenever they are encountered and a value is not already present
   (:issue:`200`)
