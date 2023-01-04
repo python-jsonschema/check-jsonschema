@@ -19,4 +19,4 @@ release:
 
 .PHONY: clean
 clean:
-	rm -rf dist build *.egg-info .tox
+	rm -rf dist build *.egg-info .tox .coverage.*
