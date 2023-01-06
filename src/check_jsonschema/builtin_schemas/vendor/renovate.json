@@ -2865,7 +2865,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|\\/)\\.woodpecker[^/]*\\.ya?ml$"
+          "^\\.woodpecker(?:\\/[^/]+)?\\.ya?ml$"
         ]
       },
       "$ref": "#"
