@@ -68,7 +68,6 @@ class ParserSet:
         self, path: pathlib.Path, default_filetype: str
     ) -> t.Callable[[t.BinaryIO], t.Any]:
         filetype = path_to_type(path, default_type=default_filetype)
-
         if filetype in self._by_tag:
             return self._by_tag[filetype]
 

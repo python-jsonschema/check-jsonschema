@@ -64,6 +64,15 @@ def impl2loader(
                 try:
                     data = impl.load(stream_bytes)
                 except ruamel.yaml.YAMLError as e:
+                    if isinstance(
+                        e, ruamel.yaml.composer.ComposerError
+                    ) and "expected a single document in the stream" in str(e):
+                        try:
+                            data = impl.load_all(stream_bytes)
+                        except ruamel.yaml.YAMLError as e:
+                            lasterr = e
+                        else:
+                            break
                     lasterr = e
                 else:
                     break

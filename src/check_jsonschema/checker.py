@@ -67,9 +67,11 @@ class SchemaChecker:
             if isinstance(data, ParseError):
                 result.record_parse_error(path, data)
             else:
-                validator = self.get_validator(path, data)
-                for err in validator.iter_errors(data):
-                    result.record_validation_error(path, err)
+                data_list = data if isinstance(data, list) else [data]
+                for data in data_list:
+                    validator = self.get_validator(path, data)
+                    for err in validator.iter_errors(data):
+                        result.record_validation_error(path, err)
         return result
 
     def _run(self) -> None:

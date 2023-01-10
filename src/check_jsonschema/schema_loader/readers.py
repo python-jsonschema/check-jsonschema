@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import types
 import typing as t
 
 import ruamel.yaml
@@ -19,7 +20,9 @@ def _run_load_callback(schema_location: str, callback: t.Callable) -> dict:
     # only local loads can raise the YAMLError, but catch for both cases for simplicity
     except (ValueError, ruamel.yaml.error.YAMLError) as e:
         raise SchemaParseError(schema_location) from e
-    if not isinstance(schema, dict):
+    if isinstance(schema, types.GeneratorType):
+        schema = list(schema)
+    if not isinstance(schema, dict) and not isinstance(schema, list):
         raise SchemaParseError(schema_location)
     return schema
 
