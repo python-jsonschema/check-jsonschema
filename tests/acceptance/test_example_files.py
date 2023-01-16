@@ -36,7 +36,7 @@ def _build_hook_cases(category):
         example_dir = EXAMPLE_HOOK_FILES / category / hookid
         if example_dir.exists():
             for example in example_dir.iterdir():
-                res[str(example.relative_to(EXAMPLE_HOOK_FILES))] = hookid
+                res[str(example.relative_to(EXAMPLE_HOOK_FILES / category))] = hookid
     return res
 
 
@@ -64,7 +64,9 @@ def test_hook_positive_examples(case_name, run_line):
     _check_case_skip(case_name)
 
     hook_id = POSITIVE_HOOK_CASES[case_name]
-    ret = run_line(HOOK_CONFIG[hook_id] + [str(EXAMPLE_HOOK_FILES / case_name)])
+    ret = run_line(
+        HOOK_CONFIG[hook_id] + [str(EXAMPLE_HOOK_FILES / "positive" / case_name)]
+    )
     assert ret.exit_code == 0
 
 
@@ -72,7 +74,9 @@ def test_hook_positive_examples(case_name, run_line):
 def test_hook_negative_examples(case_name, run_line):
     _check_case_skip(case_name)
     hook_id = NEGATIVE_HOOK_CASES[case_name]
-    ret = run_line(HOOK_CONFIG[hook_id] + [str(EXAMPLE_HOOK_FILES / case_name)])
+    ret = run_line(
+        HOOK_CONFIG[hook_id] + [str(EXAMPLE_HOOK_FILES / "negative" / case_name)]
+    )
     assert ret.exit_code == 1
 
 
