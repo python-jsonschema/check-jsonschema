@@ -74,9 +74,6 @@ class SchemaLoader(SchemaLoaderBase):
         # setup a schema reader lazily, when needed
         self._reader: LocalSchemaReader | HttpSchemaReader | None = None
 
-        # setup a location to store the validator so that it is only built once by default
-        self._validator: jsonschema.Validator | None = None
-
     @property
     def reader(self) -> LocalSchemaReader | HttpSchemaReader:
         if self._reader is None:
@@ -105,8 +102,12 @@ class SchemaLoader(SchemaLoaderBase):
     def get_schema(self) -> dict[str, t.Any]:
         return self.reader.read_schema()
 
-    def make_validator(
-        self, format_opts: FormatOptions, fill_defaults: bool
+    def get_validator(
+        self,
+        path: pathlib.Path,
+        instance_doc: dict[str, t.Any],
+        format_opts: FormatOptions,
+        fill_defaults: bool,
     ) -> jsonschema.Validator:
         schema_uri = self.get_schema_ref_base()
         schema = self.get_schema()
@@ -137,16 +138,6 @@ class SchemaLoader(SchemaLoaderBase):
             format_checker=format_checker,
         )
         return t.cast(jsonschema.Validator, validator)
-
-    def get_validator(
-        self,
-        path: pathlib.Path,
-        instance_doc: dict[str, t.Any],
-        format_opts: FormatOptions,
-        fill_defaults: bool,
-    ) -> jsonschema.Validator:
-        self._validator = self.make_validator(format_opts, fill_defaults)
-        return self._validator
 
 
 class BuiltinSchemaLoader(SchemaLoader):
