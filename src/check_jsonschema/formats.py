@@ -58,6 +58,8 @@ class FormatOptions:
 def get_base_format_checker(schema_dialect: str | None) -> jsonschema.FormatChecker:
     # map a schema's `$schema` attribute (the dialect / JSON Schema version) to a matching
     # format checker
+    if schema_dialect.startswith("https"):
+        schema_dialect = f"http{schema_dialect[5:]}"
     # default to the latest draft
     if schema_dialect is None or schema_dialect not in CHECKERS_BY_DIALECT:
         return CHECKERS_BY_DIALECT[LATEST_DIALECT]
