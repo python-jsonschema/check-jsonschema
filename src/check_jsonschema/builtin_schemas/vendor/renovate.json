@@ -346,6 +346,11 @@
       "description": "The directory where Renovate stores its cache. If left empty, Renovate creates a subdirectory within the `baseDir`.",
       "type": "string"
     },
+    "cacheHardTtlMinutes": {
+      "description": "Maximum duration in minutes to keep datasource cache entries.",
+      "type": "integer",
+      "default": 0
+    },
     "cake": {
       "description": "Configuration object for the cake manager",
       "type": "object",
@@ -1564,6 +1569,11 @@
       "type": "string",
       "default": "Configure Renovate"
     },
+    "onboardingRebaseCheckbox": {
+      "description": "Set to enable rebase/retry markdown checkbox for onboarding PRs.",
+      "type": "boolean",
+      "default": false
+    },
     "optimizeForDisabled": {
       "description": "Set to `true` to perform a check for disabled config prior to cloning.",
       "type": "boolean",
@@ -2694,8 +2704,7 @@
         "commitMessageTopic": "Terragrunt dependency {{depName}}",
         "fileMatch": [
           "(^|/)terragrunt\\.hcl$"
-        ],
-        "versioning": "hashicorp"
+        ]
       },
       "$ref": "#"
     },
