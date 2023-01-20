@@ -1,0 +1,37 @@
+{
+  "$comment": "An internal schema used to check the testsuite _config.yaml files.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "spec": {
+      "type": "object",
+      "properties": {
+        "requires_packages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "add_args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "files": {
+      "type": "object",
+      "patternProperties": {
+        "^.+\\.(json|yml|yaml|json5|toml)$": {
+          "$ref": "#/$defs/spec"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

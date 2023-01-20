@@ -6,10 +6,13 @@ repos:
     - id: check-dependabot
     - id: check-github-workflows
     - id: check-readthedocs
-    - id: check-jsonschema
+    - id: check-metaschema
       name: Validate Vendored Schemas
-      args: ["--check-metaschema"]
       files: ^src/check_jsonschema/builtin_schemas/vendor/.*\.json$
+    - id: check-jsonschema
+      name: Validate Test Configs
+      args: ["--schemafile", "tests/example-files/config_schema.json"]
+      files: ^tests/example-files/.*/_config.yaml$
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
   rev: v4.4.0
   hooks:

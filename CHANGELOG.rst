@@ -11,6 +11,10 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2023-01-18)
+- Fix a bug in which `--check-metaschema` was not building validators correctly.
+  The metaschema's schema dialect is chosen correctly now, and metaschema
+  formats are now checked by default. This can be disabled with
+  `--disable-format`.
 
 0.20.0
 ------

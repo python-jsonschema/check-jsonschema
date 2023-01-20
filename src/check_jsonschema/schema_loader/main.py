@@ -74,9 +74,6 @@ class SchemaLoader(SchemaLoaderBase):
         # setup a schema reader lazily, when needed
         self._reader: LocalSchemaReader | HttpSchemaReader | None = None
 
-        # setup a location to store the validator so that it is only built once by default
-        self._validator: jsonschema.Validator | None = None
-
     @property
     def reader(self) -> LocalSchemaReader | HttpSchemaReader:
         if self._reader is None:
@@ -105,8 +102,12 @@ class SchemaLoader(SchemaLoaderBase):
     def get_schema(self) -> dict[str, t.Any]:
         return self.reader.read_schema()
 
-    def make_validator(
-        self, format_opts: FormatOptions, fill_defaults: bool
+    def get_validator(
+        self,
+        path: pathlib.Path,
+        instance_doc: dict[str, t.Any],
+        format_opts: FormatOptions,
+        fill_defaults: bool,
     ) -> jsonschema.Validator:
         schema_uri = self.get_schema_ref_base()
         schema = self.get_schema()
@@ -138,16 +139,6 @@ class SchemaLoader(SchemaLoaderBase):
         )
         return t.cast(jsonschema.Validator, validator)
 
-    def get_validator(
-        self,
-        path: pathlib.Path,
-        instance_doc: dict[str, t.Any],
-        format_opts: FormatOptions,
-        fill_defaults: bool,
-    ) -> jsonschema.Validator:
-        self._validator = self.make_validator(format_opts, fill_defaults)
-        return self._validator
-
 
 class BuiltinSchemaLoader(SchemaLoader):
     def __init__(self, schema_name: str) -> None:
@@ -168,5 +159,16 @@ class MetaSchemaLoader(SchemaLoaderBase):
         format_opts: FormatOptions,
         fill_defaults: bool,
     ) -> jsonschema.Validator:
-        validator = jsonschema.validators.validator_for(instance_doc)
-        return t.cast(jsonschema.Validator, validator(validator.META_SCHEMA))
+        schema_validator = jsonschema.validators.validator_for(instance_doc)
+        meta_validator_class = jsonschema.validators.validator_for(
+            schema_validator.META_SCHEMA, default=schema_validator
+        )
+
+        # format checker (which may be None)
+        meta_schema_dialect = schema_validator.META_SCHEMA.get("$schema")
+        format_checker = make_format_checker(format_opts, meta_schema_dialect)
+
+        meta_validator = meta_validator_class(
+            schema_validator.META_SCHEMA, format_checker=format_checker
+        )
+        return meta_validator
