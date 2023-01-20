@@ -28,11 +28,6 @@ BUILTIN_SCHEMA_CHOICES = (
 )
 
 
-def evaluate_environment_settings(ctx: click.Context) -> None:
-    if os.getenv("NO_COLOR") is not None:
-        ctx.color = False
-
-
 class SchemaLoadingMode(enum.Enum):
     filepath = "filepath"
     builtin = "builtin"
@@ -58,6 +53,7 @@ class ParseResult:
         self.disable_format: bool = False
         self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
         # error and output controls
+        self.color: bool | None = True
         self.verbosity: int = 1
         self.traceback_mode: str = "short"
         self.output_format: str = "text"
@@ -212,6 +208,12 @@ The '--builtin-schema' flag supports the following schema names:
     default="text",
 )
 @click.option(
+    "--color",
+    help="Whether the output should be colorful",
+    default="auto",
+    type=click.Choice(("auto", "always", "never")),
+)
+@click.option(
     "-v",
     "--verbose",
     help=(
@@ -227,9 +229,7 @@ The '--builtin-schema' flag supports the following schema names:
     count=True,
 )
 @click.argument("instancefiles", required=True, nargs=-1)
-@click.pass_context
 def main(
-    ctx: click.Context,
     *,
     schemafile: str | None,
     builtin_schema: str | None,
@@ -243,12 +243,12 @@ def main(
     data_transform: str | None,
     fill_defaults: bool,
     output_format: str,
+    color: str,
     verbose: int,
     quiet: int,
     instancefiles: tuple[str, ...],
 ) -> None:
     args = ParseResult()
-    evaluate_environment_settings(ctx)
 
     args.set_schema(schemafile, builtin_schema, check_metaschema)
     args.instancefiles = instancefiles
@@ -270,6 +270,14 @@ def main(
     args.verbosity = 1 + verbose - quiet
     args.traceback_mode = traceback_mode
     args.output_format = output_format
+    if "NO_COLOR" in os.environ:
+        args.color = False
+    else:
+        args.color = {
+            "auto": None,
+            "always": True,
+            "never": False,
+        }[color]
 
     execute(args)
 
@@ -300,7 +308,7 @@ def build_instance_loader(args: ParseResult) -> InstanceLoader:
 
 def build_reporter(args: ParseResult) -> Reporter:
     cls = REPORTER_BY_NAME[args.output_format]
-    return cls(verbosity=args.verbosity)
+    return cls(color=args.color, verbosity=args.verbosity)
 
 
 def build_checker(args: ParseResult) -> SchemaChecker:

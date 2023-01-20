@@ -44,20 +44,17 @@ class TextReporter(Reporter):
         *,
         verbosity: int,
         stream: t.TextIO | None = None,  # default stream is stdout (None)
-        color: bool = True,
+        color: bool | None = None,
     ) -> None:
         super().__init__(verbosity=verbosity)
         self.stream = stream
         self.color = color
 
     def _echo(self, s: str, *, indent: int = 0) -> None:
-        click.echo(" " * indent + s, file=self.stream)
+        click.echo(" " * indent + s, file=self.stream, color=self.color)
 
     def _style(self, s: str, *, fg: str | None = None) -> str:
-        if self.color:
-            return click.style(s, fg=fg)
-        else:
-            return s
+        return s if self.color is False else click.style(s, fg=fg)
 
     def report_success(self) -> None:
         if self.verbosity < 1:
@@ -71,8 +68,7 @@ class TextReporter(Reporter):
         error_loc = err.json_path
         if filename:
             error_loc = f"{filename}::{error_loc}"
-        if self.color:
-            error_loc = self._style(error_loc, fg="yellow")
+        error_loc = self._style(error_loc, fg="yellow")
         return f"{error_loc}: {err.message}"
 
     def _show_validation_error(
@@ -117,7 +113,7 @@ class TextReporter(Reporter):
 
 
 class JsonReporter(Reporter):
-    def __init__(self, *, verbosity: int, pretty: bool = True) -> None:
+    def __init__(self, *, verbosity: int, pretty: bool = True, **kwargs: t.Any) -> None:
         super().__init__(verbosity=verbosity)
         # default to pretty output, can add a switch to disable this in the future
         self.pretty = pretty

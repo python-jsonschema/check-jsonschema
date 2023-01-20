@@ -4,11 +4,7 @@ import pytest
 from click.testing import CliRunner
 
 from check_jsonschema import main as cli_main
-from check_jsonschema.cli import (
-    ParseResult,
-    SchemaLoadingMode,
-    evaluate_environment_settings,
-)
+from check_jsonschema.cli import ParseResult, SchemaLoadingMode
 
 
 @pytest.fixture
@@ -141,14 +137,34 @@ def test_supports_common_option(runner, cmd_args):
 @pytest.mark.parametrize(
     "setting,expect_value", [(None, None), ("1", False), ("0", False)]
 )
-def test_no_color_env_var(monkeypatch, setting, expect_value):
-    mock_ctx = mock.Mock()
-    mock_ctx.color = None
-
+def test_no_color_env_var(
+    runner, monkeypatch, setting, expect_value, mock_parse_result
+):
     if setting is None:
         monkeypatch.delenv("NO_COLOR", raising=False)
     else:
         monkeypatch.setenv("NO_COLOR", setting)
 
-    evaluate_environment_settings(mock_ctx)
-    assert mock_ctx.color == expect_value
+    runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
+
+    assert mock_parse_result.color == expect_value
+
+
+@pytest.mark.parametrize(
+    "setting,expected_value",
+    [(None, None), ("auto", None), ("always", True), ("never", False)],
+)
+def test_color_cli_option(runner, setting, expected_value, mock_parse_result):
+    args = ["--schemafile", "schema.json", "foo.json"]
+    if setting:
+        args.extend(("--color", setting))
+    runner.invoke(cli_main, args)
+    assert mock_parse_result.color == expected_value
+
+
+def test_no_color_env_var_overrides_cli_option(runner, monkeypatch, mock_parse_result):
+    monkeypatch.setenv("NO_COLOR", "1")
+    runner.invoke(
+        cli_main, ["--color=always", "--schemafile", "schema.json", "foo.json"]
+    )
+    assert mock_parse_result.color == False
