@@ -51,7 +51,7 @@ class TextReporter(Reporter):
         self.color = color
 
     def _echo(self, s: str, *, indent: int = 0) -> None:
-        click.echo(" " * indent + s, file=self.stream)
+        click.echo(" " * indent + s, file=self.stream, color=self.color)
 
     def _style(self, s: str, *, fg: str | None = None) -> str:
         if self.color:
