@@ -159,5 +159,16 @@ class MetaSchemaLoader(SchemaLoaderBase):
         format_opts: FormatOptions,
         fill_defaults: bool,
     ) -> jsonschema.Validator:
-        validator = jsonschema.validators.validator_for(instance_doc)
-        return t.cast(jsonschema.Validator, validator(validator.META_SCHEMA))
+        schema_validator = jsonschema.validators.validator_for(instance_doc)
+        meta_validator_class = jsonschema.validators.validator_for(
+            schema_validator.META_SCHEMA, default=schema_validator
+        )
+
+        # format checker (which may be None)
+        meta_schema_dialect = schema_validator.META_SCHEMA.get("$schema")
+        format_checker = make_format_checker(format_opts, meta_schema_dialect)
+
+        meta_validator = meta_validator_class(
+            schema_validator.META_SCHEMA, format_checker=format_checker
+        )
+        return meta_validator

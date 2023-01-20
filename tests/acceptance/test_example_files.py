@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+import dataclasses
+import importlib.util
 import shlex
 from pathlib import Path
 
@@ -36,6 +40,8 @@ def _build_hook_cases(category):
         example_dir = EXAMPLE_HOOK_FILES / category / hookid
         if example_dir.exists():
             for example in example_dir.iterdir():
+                if example.name == "_config.yaml":
+                    continue
                 res[str(example.relative_to(EXAMPLE_HOOK_FILES / category))] = hookid
     return res
 
@@ -48,41 +54,31 @@ def _get_explicit_cases(category):
     return res
 
 
-def _check_case_skip(case_name):
-    if case_name.endswith("json5") and not JSON5_ENABLED:
-        pytest.skip("cannot check json5 support without json5 enabled")
-    if case_name.endswith("toml") and not TOML_ENABLED:
-        pytest.skip("cannot check toml support without toml enabled")
-
-
 POSITIVE_HOOK_CASES = _build_hook_cases("positive")
 NEGATIVE_HOOK_CASES = _build_hook_cases("negative")
 
 
 @pytest.mark.parametrize("case_name", POSITIVE_HOOK_CASES.keys())
 def test_hook_positive_examples(case_name, run_line):
-    _check_case_skip(case_name)
+    rcase = ResolvedCase.load_positive(case_name)
 
     hook_id = POSITIVE_HOOK_CASES[case_name]
-    ret = run_line(
-        HOOK_CONFIG[hook_id] + [str(EXAMPLE_HOOK_FILES / "positive" / case_name)]
-    )
+    ret = run_line(HOOK_CONFIG[hook_id] + [rcase.path] + rcase.add_args)
     assert ret.exit_code == 0
 
 
 @pytest.mark.parametrize("case_name", NEGATIVE_HOOK_CASES.keys())
 def test_hook_negative_examples(case_name, run_line):
-    _check_case_skip(case_name)
+    rcase = ResolvedCase.load_negative(case_name)
+
     hook_id = NEGATIVE_HOOK_CASES[case_name]
-    ret = run_line(
-        HOOK_CONFIG[hook_id] + [str(EXAMPLE_HOOK_FILES / "negative" / case_name)]
-    )
+    ret = run_line(HOOK_CONFIG[hook_id] + [rcase.path] + rcase.add_args)
     assert ret.exit_code == 1
 
 
 @pytest.mark.parametrize("case_name", _get_explicit_cases("positive"))
 def test_explicit_positive_examples(case_name, run_line):
-    _check_case_skip(case_name)
+    _check_file_format_skip(case_name)
     casedir = EXAMPLE_EXPLICIT_FILES / "positive" / case_name
 
     instance = casedir / "instance.json"
@@ -108,3 +104,66 @@ def test_explicit_positive_examples(case_name, run_line):
         ]
     )
     assert ret.exit_code == 0
+
+
+def _check_file_format_skip(case_name):
+    if case_name.endswith("json5") and not JSON5_ENABLED:
+        pytest.skip("cannot check json5 support without json5 enabled")
+    if case_name.endswith("toml") and not TOML_ENABLED:
+        pytest.skip("cannot check toml support without toml enabled")
+
+
+@dataclasses.dataclass
+class ResolvedCase:
+    category: str
+    path: str
+    add_args: list[str]
+    config: dict
+
+    def check_skip(self) -> None:
+        if "requires_packages" in self.config:
+            for pkg in self.config["requires_packages"]:
+                if _package_is_installed(pkg):
+                    continue
+                pytest.skip(f"cannot check because '{pkg}' is not installed")
+
+    def __post_init__(self) -> None:
+        self.check_skip()
+
+    @classmethod
+    def load_positive(cls: type[ResolvedCase], case_name: str) -> ResolvedCase:
+        return cls._load("positive", case_name)
+
+    @classmethod
+    def load_negative(cls: type[ResolvedCase], case_name: str) -> ResolvedCase:
+        return cls._load("negative", case_name)
+
+    @classmethod
+    def _load(cls: type[ResolvedCase], category: str, case_name: str) -> ResolvedCase:
+        _check_file_format_skip(case_name)
+
+        path = EXAMPLE_HOOK_FILES / category / case_name
+        config = cls._load_file_config(path.parent / "_config.yaml", path.name)
+
+        return cls(
+            category=category,
+            path=str(path),
+            add_args=config.get("add_args", []),
+            config=config,
+        )
+
+    @staticmethod
+    def _load_file_config(config_path, name):
+        if not config_path.is_file():
+            return {}
+        with open(config_path) as fp:
+            loaded_conf = yaml.load(fp)
+        files_section = loaded_conf.get("files", {})
+        return files_section.get(name, {})
+
+
+def _package_is_installed(pkg: str) -> bool:
+    spec = importlib.util.find_spec(pkg)
+    if spec is None:
+        return False
+    return True
