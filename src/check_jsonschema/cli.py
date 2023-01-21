@@ -53,7 +53,6 @@ class ParseResult:
         self.disable_format: bool = False
         self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
         # error and output controls
-        self.color: bool | None = True
         self.verbosity: int = 1
         self.traceback_mode: str = "short"
         self.output_format: str = "text"
@@ -89,6 +88,17 @@ class ParseResult:
         return FormatOptions(
             enabled=not self.disable_format, regex_behavior=self.format_regex
         )
+
+
+def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
+    if "NO_COLOR" in os.environ:
+        ctx.color = False
+    else:
+        ctx.color = {
+            "auto": None,
+            "always": True,
+            "never": False,
+        }[value]
 
 
 @click.command(
@@ -209,9 +219,11 @@ The '--builtin-schema' flag supports the following schema names:
 )
 @click.option(
     "--color",
-    help="Whether the output should be colorful",
+    help="Force or disable colorized output. Defaults to autodetection.",
     default="auto",
     type=click.Choice(("auto", "always", "never")),
+    callback=set_color_mode,
+    expose_value=False,
 )
 @click.option(
     "-v",
@@ -243,7 +255,6 @@ def main(
     data_transform: str | None,
     fill_defaults: bool,
     output_format: str,
-    color: str,
     verbose: int,
     quiet: int,
     instancefiles: tuple[str, ...],
@@ -270,14 +281,6 @@ def main(
     args.verbosity = 1 + verbose - quiet
     args.traceback_mode = traceback_mode
     args.output_format = output_format
-    if "NO_COLOR" in os.environ:
-        args.color = False
-    else:
-        args.color = {
-            "auto": None,
-            "always": True,
-            "never": False,
-        }[color]
 
     execute(args)
 
@@ -308,7 +311,7 @@ def build_instance_loader(args: ParseResult) -> InstanceLoader:
 
 def build_reporter(args: ParseResult) -> Reporter:
     cls = REPORTER_BY_NAME[args.output_format]
-    return cls(color=args.color, verbosity=args.verbosity)
+    return cls(verbosity=args.verbosity)
 
 
 def build_checker(args: ParseResult) -> SchemaChecker:

@@ -44,22 +44,17 @@ class TextReporter(Reporter):
         *,
         verbosity: int,
         stream: t.TextIO | None = None,  # default stream is stdout (None)
-        color: bool | None = None,
     ) -> None:
         super().__init__(verbosity=verbosity)
         self.stream = stream
-        self.color = color
 
     def _echo(self, s: str, *, indent: int = 0) -> None:
-        click.echo(" " * indent + s, file=self.stream, color=self.color)
-
-    def _style(self, s: str, *, fg: str | None = None) -> str:
-        return s if self.color is False else click.style(s, fg=fg)
+        click.echo(" " * indent + s, file=self.stream)
 
     def report_success(self) -> None:
         if self.verbosity < 1:
             return
-        ok = self._style("ok", fg="green")
+        ok = click.style("ok", fg="green")
         self._echo(f"{ok} -- validation done")
 
     def _format_validation_error_message(
@@ -68,7 +63,7 @@ class TextReporter(Reporter):
         error_loc = err.json_path
         if filename:
             error_loc = f"{filename}::{error_loc}"
-        error_loc = self._style(error_loc, fg="yellow")
+        error_loc = click.style(error_loc, fg="yellow")
         return f"{error_loc}: {err.message}"
 
     def _show_validation_error(
@@ -91,7 +86,7 @@ class TextReporter(Reporter):
 
     def _show_parse_error(self, filename: str, err: ParseError) -> None:
         if self.verbosity < 2:
-            self._echo(self._style(str(err), fg="yellow"), indent=2)
+            self._echo(click.style(str(err), fg="yellow"), indent=2)
         elif self.verbosity < 3:
             self._echo(textwrap.indent(format_error(err, mode="short"), "  "))
         else:
@@ -113,7 +108,7 @@ class TextReporter(Reporter):
 
 
 class JsonReporter(Reporter):
-    def __init__(self, *, verbosity: int, pretty: bool = True, **kwargs: t.Any) -> None:
+    def __init__(self, *, verbosity: int, pretty: bool = True) -> None:
         super().__init__(verbosity=verbosity)
         # default to pretty output, can add a switch to disable this in the future
         self.pretty = pretty
