@@ -167,4 +167,4 @@ def test_no_color_env_var_overrides_cli_option(runner, monkeypatch, mock_parse_r
     runner.invoke(
         cli_main, ["--color=always", "--schemafile", "schema.json", "foo.json"]
     )
-    assert mock_parse_result.color == False
+    assert not mock_parse_result.color
