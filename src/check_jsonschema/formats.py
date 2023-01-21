@@ -6,20 +6,7 @@ import re
 import typing as t
 
 import jsonschema
-
-CHECKERS_BY_DIALECT = {
-    "http://json-schema.org/draft-03/schema#": jsonschema.Draft3Validator.FORMAT_CHECKER,
-    "http://json-schema.org/draft-04/schema#": jsonschema.Draft4Validator.FORMAT_CHECKER,
-    "http://json-schema.org/draft-06/schema#": jsonschema.Draft6Validator.FORMAT_CHECKER,
-    "http://json-schema.org/draft-07/schema#": jsonschema.Draft7Validator.FORMAT_CHECKER,
-    "http://json-schema.org/draft-2019-09/schema": (
-        jsonschema.Draft201909Validator.FORMAT_CHECKER
-    ),
-    "http://json-schema.org/draft-2020-12/schema": (
-        jsonschema.Draft202012Validator.FORMAT_CHECKER
-    ),
-}
-LATEST_DIALECT = "http://json-schema.org/draft-2020-12/schema"
+import jsonschema.validators
 
 
 def _regex_check(instance: t.Any) -> bool:
@@ -56,12 +43,13 @@ class FormatOptions:
 
 
 def get_base_format_checker(schema_dialect: str | None) -> jsonschema.FormatChecker:
-    # map a schema's `$schema` attribute (the dialect / JSON Schema version) to a matching
-    # format checker
+    # resolve the dialect, if given, to a validator class
     # default to the latest draft
-    if schema_dialect is None or schema_dialect not in CHECKERS_BY_DIALECT:
-        return CHECKERS_BY_DIALECT[LATEST_DIALECT]
-    return CHECKERS_BY_DIALECT[schema_dialect]
+    validator_class = jsonschema.validators.validator_for(
+        {} if schema_dialect is None else {"$schema": schema_dialect},
+        default=jsonschema.Draft202012Validator,
+    )
+    return validator_class.FORMAT_CHECKER
 
 
 def make_format_checker(
