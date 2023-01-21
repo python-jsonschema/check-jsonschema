@@ -15,6 +15,7 @@ Unreleased
   The metaschema's schema dialect is chosen correctly now, and metaschema
   formats are now checked by default. This can be disabled with
   `--disable-format`.
+- Fix the resolution of `$schema` dialect to format checker classes
 
 0.20.0
 ------
