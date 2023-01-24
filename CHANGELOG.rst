@@ -10,7 +10,10 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-01-24)
+0.21.0
+------
+
+- Update vendored schemas: github-workflows, gitlab-ci, renovate (2023-01-24)
 - Fix a bug in which ``--check-metaschema`` was not building validators correctly.
   The metaschema's schema dialect is chosen correctly now, and metaschema
   formats are now checked by default. This can be disabled with
