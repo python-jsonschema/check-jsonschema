@@ -15,4 +15,5 @@ Remote files are automatically downloaded and cached if possible.
     usage
     precommit_usage
     optional_parsers
+    faq
     changelog
