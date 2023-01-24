@@ -31,6 +31,10 @@ Detailed helptext is always available interactively via
    * - ``-o [TEXT|JSON]``, ``--output-format [TEXT|JSON]``
      - Use this option to choose how the output is presented. Either as ``TEXT`` (the
        default) or ``JSON``, as in ``-o JSON``.
+   * - ``--color [always|never|auto]``
+     - Control colorization of output. ``auto`` (the default) autodetects if
+       the output is a terminal. ``always`` and ``never`` enable and disable
+       colorization.
    * - ``--traceback-mode [short|full]``
      - By default, when an error is encountered, ``check-jsonschema`` will pretty-print
        the error and exit. Use ``--traceback-mode full`` to request the full traceback

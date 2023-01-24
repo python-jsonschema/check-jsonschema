@@ -17,6 +17,8 @@ Unreleased
   ``--disable-format``.
 - Fix the resolution of `$schema` dialect to format checker classes
 - Fix package dependency lower bounds, including setting ``jsonschema>=4.5.1``
+- Output colorization can now be controlled with
+  ``--color [never|always|auto]``. Thanks :user:`WillDaSilva`!
 
 0.20.0
 ------

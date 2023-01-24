@@ -1,15 +1,22 @@
 from __future__ import annotations
 
-import typing as t
 from unittest import mock
 
 import click
 import pytest
 from click.testing import CliRunner
-from click.testing import Result as ClickResult
 
 from check_jsonschema import main as cli_main
 from check_jsonschema.cli import ParseResult, SchemaLoadingMode
+
+
+class BoxedContext:
+    ref = None
+
+
+@pytest.fixture
+def boxed_context():
+    return BoxedContext()
 
 
 @pytest.fixture
@@ -21,36 +28,17 @@ def mock_parse_result():
 
 
 @pytest.fixture(autouse=True)
-def mock_cli_exec():
-    with mock.patch("check_jsonschema.cli.execute") as m:
+def mock_cli_exec(boxed_context):
+    def get_ctx(*args):
+        boxed_context.ref = click.get_current_context()
+
+    with mock.patch("check_jsonschema.cli.execute", side_effect=get_ctx) as m:
         yield m
 
 
 @pytest.fixture
 def runner() -> CliRunner:
     return CliRunner(mix_stderr=False)
-
-
-def invoke_and_get_ctx(
-    runner: CliRunner,
-    cmd: click.Command,
-    args: t.Sequence[str],
-) -> tuple[ClickResult, click.Context]:
-    # There doesn't appear to be a good way to get the Click context used by a
-    # test invocation, so we replace the invoke method with a wrapper that
-    # calls `click.get_current_context` to extract the context object.
-
-    ctx = None
-
-    def extract_ctx(*args, **kwargs):
-        nonlocal ctx
-        ctx = click.get_current_context()
-        return click.Command.invoke(*args, **kwargs)
-
-    with mock.patch("click.Command.invoke", extract_ctx):
-        results = runner.invoke(cmd, args)
-
-    return results, ctx
 
 
 @pytest.mark.parametrize(
@@ -78,34 +66,34 @@ def test_parse_result_set_schema(
         assert args.schema_path is None
 
 
-def test_requires_some_args(runner: CliRunner):
+def test_requires_some_args(runner):
     result = runner.invoke(cli_main, [])
     assert result.exit_code == 2
 
 
-def test_schemafile_and_instancefile(runner: CliRunner, mock_parse_result: ParseResult):
+def test_schemafile_and_instancefile(runner, mock_parse_result):
     runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
     assert mock_parse_result.schema_mode == SchemaLoadingMode.filepath
     assert mock_parse_result.schema_path == "schema.json"
     assert mock_parse_result.instancefiles == ("foo.json",)
 
 
-def test_requires_at_least_one_instancefile(runner: CliRunner):
+def test_requires_at_least_one_instancefile(runner):
     result = runner.invoke(cli_main, ["--schemafile", "schema.json"])
     assert result.exit_code == 2
 
 
-def test_requires_schemafile(runner: CliRunner):
+def test_requires_schemafile(runner):
     result = runner.invoke(cli_main, ["foo.json"])
     assert result.exit_code == 2
 
 
-def test_no_cache_defaults_false(runner: CliRunner, mock_parse_result: ParseResult):
+def test_no_cache_defaults_false(runner, mock_parse_result):
     runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
     assert mock_parse_result.disable_cache is False
 
 
-def test_no_cache_flag_is_true(runner: CliRunner, mock_parse_result: ParseResult):
+def test_no_cache_flag_is_true(runner, mock_parse_result):
     runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json", "--no-cache"])
     assert mock_parse_result.disable_cache is True
 
@@ -142,7 +130,7 @@ def test_no_cache_flag_is_true(runner: CliRunner, mock_parse_result: ParseResult
         ],
     ],
 )
-def test_mutex_schema_opts(runner: CliRunner, cmd_args: list[str]):
+def test_mutex_schema_opts(runner, cmd_args):
     result = runner.invoke(cli_main, cmd_args)
     assert result.exit_code == 2
     assert "are mutually exclusive" in result.stderr
@@ -156,7 +144,7 @@ def test_mutex_schema_opts(runner: CliRunner, cmd_args: list[str]):
         ["-h"],
     ],
 )
-def test_supports_common_option(runner: CliRunner, cmd_args: list[str]):
+def test_supports_common_option(runner, cmd_args):
     result = runner.invoke(cli_main, cmd_args)
     assert result.exit_code == 0
 
@@ -164,57 +152,43 @@ def test_supports_common_option(runner: CliRunner, cmd_args: list[str]):
 @pytest.mark.parametrize(
     "setting,expect_value", [(None, None), ("1", False), ("0", False)]
 )
-def test_no_color_env_var(
-    runner: CliRunner,
-    monkeypatch: pytest.MonkeyPatch,
-    setting: str | None,
-    expect_value: bool | None,
-):
+def test_no_color_env_var(runner, monkeypatch, setting, expect_value, boxed_context):
     if setting is None:
         monkeypatch.delenv("NO_COLOR", raising=False)
     else:
         monkeypatch.setenv("NO_COLOR", setting)
 
-    _, ctx = invoke_and_get_ctx(
-        runner, cli_main, ["--schemafile", "schema.json", "foo.json"]
-    )
-    assert ctx.color == expect_value
+    runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
+    assert boxed_context.ref.color == expect_value
 
 
 @pytest.mark.parametrize(
     "setting,expected_value",
     [(None, None), ("auto", None), ("always", True), ("never", False)],
 )
-def test_color_cli_option(
-    runner: CliRunner,
-    setting: str | None,
-    expected_value: bool | None,
-):
+def test_color_cli_option(runner, setting, expected_value, boxed_context):
     args = ["--schemafile", "schema.json", "foo.json"]
     if setting:
         args.extend(("--color", setting))
-    _, ctx = invoke_and_get_ctx(runner, cli_main, args)
-    assert ctx.color == expected_value
+    runner.invoke(cli_main, args)
+    assert boxed_context.ref.color == expected_value
 
 
 def test_no_color_env_var_overrides_cli_option(
-    runner: CliRunner, monkeypatch: pytest.MonkeyPatch
+    runner, monkeypatch, mock_cli_exec, boxed_context
 ):
     monkeypatch.setenv("NO_COLOR", "1")
-
-    _, ctx = invoke_and_get_ctx(
-        runner, cli_main, ["--color=always", "--schemafile", "schema.json", "foo.json"]
+    runner.invoke(
+        cli_main, ["--color=always", "--schemafile", "schema.json", "foo.json"]
     )
-    assert ctx.color is False
+    assert boxed_context.ref.color is False
 
 
 @pytest.mark.parametrize(
     "setting,expected_value",
     [("auto", 0), ("always", 0), ("never", 0), ("anything_else", 2)],
 )
-def test_color_cli_option_is_choice(
-    runner: CliRunner, setting: str, expected_value: int
-):
+def test_color_cli_option_is_choice(runner, setting, expected_value):
     assert (
         runner.invoke(
             cli_main, ["--color", setting, "--schemafile", "schema.json", "foo.json"]
