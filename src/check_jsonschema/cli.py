@@ -28,11 +28,6 @@ BUILTIN_SCHEMA_CHOICES = (
 )
 
 
-def evaluate_environment_settings(ctx: click.Context) -> None:
-    if os.getenv("NO_COLOR") is not None:
-        ctx.color = False
-
-
 class SchemaLoadingMode(enum.Enum):
     filepath = "filepath"
     builtin = "builtin"
@@ -93,6 +88,17 @@ class ParseResult:
         return FormatOptions(
             enabled=not self.disable_format, regex_behavior=self.format_regex
         )
+
+
+def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
+    if "NO_COLOR" in os.environ:
+        ctx.color = False
+    else:
+        ctx.color = {
+            "auto": None,
+            "always": True,
+            "never": False,
+        }[value]
 
 
 @click.command(
@@ -212,6 +218,14 @@ The '--builtin-schema' flag supports the following schema names:
     default="text",
 )
 @click.option(
+    "--color",
+    help="Force or disable colorized output. Defaults to autodetection.",
+    default="auto",
+    type=click.Choice(("auto", "always", "never")),
+    callback=set_color_mode,
+    expose_value=False,
+)
+@click.option(
     "-v",
     "--verbose",
     help=(
@@ -227,9 +241,7 @@ The '--builtin-schema' flag supports the following schema names:
     count=True,
 )
 @click.argument("instancefiles", required=True, nargs=-1)
-@click.pass_context
 def main(
-    ctx: click.Context,
     *,
     schemafile: str | None,
     builtin_schema: str | None,
@@ -248,7 +260,6 @@ def main(
     instancefiles: tuple[str, ...],
 ) -> None:
     args = ParseResult()
-    evaluate_environment_settings(ctx)
 
     args.set_schema(schemafile, builtin_schema, check_metaschema)
     args.instancefiles = instancefiles

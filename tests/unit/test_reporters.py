@@ -14,7 +14,7 @@ def _make_success_result():
 @pytest.mark.parametrize("verbosity", (0, 1, 2))
 @pytest.mark.parametrize("use_report_result_path", (False, True))
 def test_text_format_success(capsys, verbosity, use_report_result_path):
-    reporter = TextReporter(color=False, verbosity=verbosity)
+    reporter = TextReporter(verbosity=verbosity)
     if use_report_result_path:
         reporter.report_result(_make_success_result())
     else:
@@ -58,14 +58,18 @@ def test_text_format_validation_error_message_simple():
     )
     err = next(validator.iter_errors({"foo": {"bar": 1}}))
 
-    text_reporter = TextReporter(color=False, verbosity=1)
+    text_reporter = TextReporter(verbosity=1)
     s1 = text_reporter._format_validation_error_message(err, filename="foo.json")
-    assert (
-        s1 == "foo.json::$.foo: {'bar': 1} is not valid under any of the given schemas"
+    assert s1 == (
+        "\x1b[33mfoo.json::$.foo\x1b[0m: {'bar': 1} "
+        "is not valid under any of the given schemas"
     )
 
     s2 = text_reporter._format_validation_error_message(err)
-    assert s2 == "$.foo: {'bar': 1} is not valid under any of the given schemas"
+    assert s2 == (
+        "\x1b[33m$.foo\x1b[0m: {'bar': 1} "
+        "is not valid under any of the given schemas"
+    )
 
 
 @pytest.mark.parametrize("verbosity", (0, 1, 2))
@@ -104,7 +108,7 @@ def test_text_print_validation_error_nested(capsys, verbosity):
     result = CheckResult()
     result.record_validation_error("foo.json", err)
 
-    text_reporter = TextReporter(color=False, verbosity=verbosity)
+    text_reporter = TextReporter(verbosity=verbosity)
     text_reporter.report_result(result)
     captured = capsys.readouterr()
     # nothing to stderr

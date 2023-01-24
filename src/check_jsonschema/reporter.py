@@ -44,25 +44,17 @@ class TextReporter(Reporter):
         *,
         verbosity: int,
         stream: t.TextIO | None = None,  # default stream is stdout (None)
-        color: bool = True,
     ) -> None:
         super().__init__(verbosity=verbosity)
         self.stream = stream
-        self.color = color
 
     def _echo(self, s: str, *, indent: int = 0) -> None:
         click.echo(" " * indent + s, file=self.stream)
 
-    def _style(self, s: str, *, fg: str | None = None) -> str:
-        if self.color:
-            return click.style(s, fg=fg)
-        else:
-            return s
-
     def report_success(self) -> None:
         if self.verbosity < 1:
             return
-        ok = self._style("ok", fg="green")
+        ok = click.style("ok", fg="green")
         self._echo(f"{ok} -- validation done")
 
     def _format_validation_error_message(
@@ -71,8 +63,7 @@ class TextReporter(Reporter):
         error_loc = err.json_path
         if filename:
             error_loc = f"{filename}::{error_loc}"
-        if self.color:
-            error_loc = self._style(error_loc, fg="yellow")
+        error_loc = click.style(error_loc, fg="yellow")
         return f"{error_loc}: {err.message}"
 
     def _show_validation_error(
@@ -95,7 +86,7 @@ class TextReporter(Reporter):
 
     def _show_parse_error(self, filename: str, err: ParseError) -> None:
         if self.verbosity < 2:
-            self._echo(self._style(str(err), fg="yellow"), indent=2)
+            self._echo(click.style(str(err), fg="yellow"), indent=2)
         elif self.verbosity < 3:
             self._echo(textwrap.indent(format_error(err, mode="short"), "  "))
         else:
