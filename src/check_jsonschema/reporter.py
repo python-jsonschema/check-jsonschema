@@ -17,6 +17,34 @@ from .parsers import ParseError
 from .result import CheckResult
 from .utils import format_error, iter_validation_error
 
+try:
+    import pygments
+
+    assert pygments
+    has_pygments = True
+except ImportError:
+    has_pygments = False
+
+
+def _pygmentize_json(data: t.Any) -> str:
+    from pygments import highlight
+    from pygments.formatters import TerminalFormatter
+    from pygments.lexers import JsonLexer
+
+    return highlight(json.dumps(data), JsonLexer(), TerminalFormatter()).rstrip("\n")
+
+
+def _get_instance(err: jsonschema.ValidationError):
+    if isinstance(err.instance, (str, int, float, list, dict)):
+        return err.instance
+    if err.message.endswith(" is not valid under any of the given schemas"):
+        raw_data = err.message[: -len(" is not valid under any of the given schemas")]
+        try:
+            return json.loads(raw_data)
+        except ValueError:
+            return None
+    return None
+
 
 class Reporter(abc.ABC):
     def __init__(self, *, verbosity: int, **kwargs: t.Any) -> None:
@@ -58,13 +86,22 @@ class TextReporter(Reporter):
         self._echo(f"{ok} -- validation done")
 
     def _format_validation_error_message(
-        self, err: jsonschema.ValidationError, filename: str | None = None
+        self,
+        err: jsonschema.ValidationError,
+        filename: str | None = None,
+        indent: int = 0,
     ) -> str:
         error_loc = err.json_path
         if filename:
             error_loc = f"{filename}::{error_loc}"
         error_loc = click.style(error_loc, fg="yellow")
-        return f"{error_loc}: {err.message}"
+        base_message = f'{" " * indent}{error_loc}: {err.message}'
+        if not has_pygments:
+            return base_message
+        err_instance = _get_instance(err)
+        if not err_instance:
+            return base_message
+        return base_message + f"\n{' ' * indent}  {_pygmentize_json(err_instance)}"
 
     def _show_validation_error(
         self,
@@ -72,17 +109,17 @@ class TextReporter(Reporter):
         err: jsonschema.ValidationError,
     ) -> None:
         self._echo(
-            self._format_validation_error_message(err, filename=filename), indent=2
+            self._format_validation_error_message(err, filename=filename, indent=2)
         )
         if err.context:
             best_match = jsonschema.exceptions.best_match(err.context)
             self._echo("Underlying errors caused this.", indent=2)
             self._echo("Best Match:", indent=2)
-            self._echo(self._format_validation_error_message(best_match), indent=4)
+            self._echo(self._format_validation_error_message(best_match, indent=4))
             if self.verbosity > 1:
                 self._echo("All Errors:", indent=2)
                 for e in iter_validation_error(err):
-                    self._echo(self._format_validation_error_message(e), indent=4)
+                    self._echo(self._format_validation_error_message(e, indent=4))
 
     def _show_parse_error(self, filename: str, err: ParseError) -> None:
         if self.verbosity < 2:
