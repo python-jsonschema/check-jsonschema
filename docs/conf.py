@@ -20,3 +20,8 @@ exclude_patterns = ["_build"]
 html_theme = "furo"
 pygments_style = "friendly"
 pygments_dark_style = "monokai"  # this is a furo-specific option
+html_theme_options = {
+    "source_repository": "https://github.com/python-jsonschema/check-jsonschema/",
+    "source_branch": "main",
+    "source_directory": "docs/",
+}
