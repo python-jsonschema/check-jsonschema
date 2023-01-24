@@ -1396,6 +1396,17 @@
       },
       "$ref": "#"
     },
+    "maven-wrapper": {
+      "description": "Configuration object for the maven-wrapper manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|\\/).mvn/wrapper/maven-wrapper.properties$"
+        ],
+        "versioning": "maven"
+      },
+      "$ref": "#"
+    },
     "meteor": {
       "description": "Configuration object for the meteor manager",
       "type": "object",
