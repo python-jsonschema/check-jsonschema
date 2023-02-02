@@ -1,6 +1,7 @@
 # config pulled from marshmallow-code/marshmallow 2022-01
 
 trigger:
+  batch: true
   branches:
     include: [dev, 2.x-line, test-me-*]
   tags:
