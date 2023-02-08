@@ -75,35 +75,29 @@ jobs:
 
       - name: test
         run: |
-          python -m tox run-parallel -m ci
+          python -m tox run-parallel -m ci -- --junitxml pytest.{envname}.xml
           python -m tox run -e cov
 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: pytest-report-py${{ matrix.py }}-${{ matrix.os }}
+          path: pytest.*.xml
+
   collate-tests:
+    needs: [ci-test-matrix]
     runs-on: ubuntu-latest
     name: "Collate results to check for skipped tests"
     steps:
       - uses: actions/checkout@v3
-
-      - name: get date for caching
-        run: /bin/date -u "+%U" > cachedate.txt
-        shell: bash
-
       - uses: actions/setup-python@v4
         with:
-          python-version: |
-            3.7
-            3.10
-            3.11
-          cache: "pip"
-          cache-dependency-path: |
-            .github/workflows/build.yaml
-            setup.cfg
-            tox.ini
-            cachedate.txt
-
-      - run: python -m pip install tox
-
-      - run: make collated-test-report
+          python-version: "3.x"
+      # download everything
+      - uses: actions/download-artifact@v3
+        with:
+          path: artifacts/
+      # collate and report
+      - run: python ./scripts/aggregate-pytest-reports.py artifacts/*/pytest.*.xml
 
   self-check:
     name: "Self-Check"
