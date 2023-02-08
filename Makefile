@@ -17,6 +17,11 @@ release:
 	-git push $(shell git rev-parse --abbrev-ref @{push} | cut -d '/' -f1) refs/tags/$(PKG_VERSION)
 	tox run -e publish-release
 
+.PHONY: collated-test-report
+collated-test-report:
+	tox p
+	python ./scripts/aggregate-pytest-reports.py .tox/*/pytest.xml
+
 .PHONY: clean
 clean:
 	rm -rf dist build *.egg-info .tox .coverage.*
