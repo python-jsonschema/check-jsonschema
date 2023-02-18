@@ -1226,6 +1226,13 @@
         }
       ]
     },
+    "ignoreReviewers": {
+      "description": "Reviewers to be ignored in PR reviewers presence (either username or email address depending on the platform).",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "ignoreScripts": {
       "description": "Set this to `false` if `allowScripts=true` and you wish to run scripts when updating lock files.",
       "type": "boolean",
@@ -1599,6 +1606,11 @@
         ]
       },
       "$ref": "#"
+    },
+    "osvVulnerabilityAlerts": {
+      "description": "Use vulnerability alerts from `osv.dev`.",
+      "type": "boolean",
+      "default": false
     },
     "packageRules": {
       "description": "Rules for matching package names.",
@@ -2834,6 +2846,7 @@
         "cargo",
         "composer",
         "conan",
+        "deb",
         "debian",
         "docker",
         "git",
