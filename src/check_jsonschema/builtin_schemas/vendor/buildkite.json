@@ -67,6 +67,28 @@
             "description": "The number of times this job can be retried",
             "minimum": 1,
             "maximum": 10
+          },
+          "signal": {
+            "description": "The exit signal, if any, that may be retried",
+            "type": "string",
+            "examples": [
+              "*",
+              "none",
+              "SIGKILL",
+              "term"
+            ]
+          },
+          "signal_reason": {
+            "description": "The exit signal reason, if any, that may be retried",
+            "type": "string",
+            "enum": [
+              "*",
+              "none",
+              "agent_refused",
+              "agent_stop",
+              "cancel",
+              "process_run_error"
+            ]
           }
         },
         "additionalProperties": false
@@ -86,6 +108,11 @@
           "master",
           [ "feature/*", "chore/*" ]
         ]
+      },
+      "cancelOnBuildFailing": {
+        "type": "boolean",
+        "description": "Whether to cancel the job as soon as the build is marked as failing",
+        "default": false
       },
       "dependsOn": {
         "description": "The step keys for a step to depend on",
@@ -284,7 +311,7 @@
                 "key": {
                   "type": "string",
                   "description": "The meta-data key that stores the field's input",
-                  "pattern": "^[a-zA-Z0-9-]+$",
+                  "pattern": "^[a-zA-Z0-9-_]+$",
                   "examples": [
                     "release-name"
                   ]
@@ -327,7 +354,7 @@
                 "key": {
                   "type": "string",
                   "description": "The meta-data key that stores the field's input",
-                  "pattern": "^[a-zA-Z0-9-]+$",
+                  "pattern": "^[a-zA-Z0-9-_]+$",
                   "examples": [
                     "release-stream"
                   ]
@@ -620,6 +647,9 @@
         },
         "branches": {
           "$ref": "#/definitions/commonOptions/branches"
+        },
+        "cancel_on_build_failing": {
+          "$ref": "#/definitions/commonOptions/cancelOnBuildFailing"
         },
         "command": {
           "description": "The commands to run on the agent",
