@@ -25,12 +25,10 @@ def _run_load_callback(schema_location: str, callback: t.Callable) -> dict:
 
 
 class LocalSchemaReader:
-    FORMATS = ("json", "json5", "yaml")
-
     def __init__(self, filename: str) -> None:
         self.path = filename2path(filename)
         self.filename = str(self.path)
-        self.parsers = ParserSet(supported_formats=self.FORMATS)
+        self.parsers = ParserSet()
 
     def get_ref_base(self) -> str:
         return self.path.as_uri()

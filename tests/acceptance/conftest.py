@@ -1,7 +1,19 @@
+import textwrap
+
 import pytest
 from click.testing import CliRunner
 
 from check_jsonschema import main as cli_main
+
+
+def _render_result(result):
+    return f"""
+output:
+{textwrap.indent(result.output, "  ")}
+
+stderr:
+{textwrap.indent(result.stderr, "  ")}
+"""
 
 
 @pytest.fixture
@@ -22,8 +34,14 @@ def run_line(cli_runner):
 
 @pytest.fixture
 def run_line_simple(run_line):
-    def func(cli_args, *args, **kwargs):
-        res = run_line(["check-jsonschema"] + cli_args, *args, **kwargs)
-        assert res.exit_code == 0
+    def func(cli_args, *args, full_traceback: bool = True, **kwargs):
+        res = run_line(
+            ["check-jsonschema"]
+            + (["--traceback-mode", "full"] if full_traceback else [])
+            + cli_args,
+            *args,
+            **kwargs,
+        )
+        assert res.exit_code == 0, _render_result(res)
 
     return func

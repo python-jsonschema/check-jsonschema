@@ -18,8 +18,11 @@ _EXTENSION_MAP = {
 }
 
 
-def path_to_type(path: pathlib.Path, *, default_type: str = "json") -> str:
-    ext = path.suffix.lstrip(".")
+def path_to_type(path: str | pathlib.Path, *, default_type: str = "json") -> str:
+    if isinstance(path, str):
+        ext = path.rpartition(".")[2]
+    else:
+        ext = path.suffix.lstrip(".")
 
     if ext in _EXTENSION_MAP:
         return _EXTENSION_MAP[ext]
