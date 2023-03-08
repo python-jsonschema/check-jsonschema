@@ -53,7 +53,7 @@
   description: 'Validate Dependabot Config (v2) against the schema provided by SchemaStore'
   entry: check-jsonschema --builtin-schema vendor.dependabot
   language: python
-  files: ^\.github/dependabot.yml$
+  files: ^\.github/dependabot.(yml|yaml)$
   types: [yaml]
 
 - id: check-github-actions
