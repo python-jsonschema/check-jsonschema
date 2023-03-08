@@ -99,6 +99,38 @@ jobs:
       # collate and report
       - run: python ./scripts/aggregate-pytest-reports.py artifacts/*/pytest.*.xml
 
+  # this job ensures that any changes to the hook config are reflected properly
+  # in hook config generation
+  # if it fails, please see the CONTRIBUTING.md for the repo and read the section titled
+  # "Adding new hooks"
+  ensure-catalog-matches-hook-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: get date for caching
+        run: /bin/date -u "+%U" > cachedate.txt
+        shell: bash
+
+      - uses: actions/setup-python@v4
+        id: setup-python
+        with:
+          python-version: "3.x"
+          cache: "pip"
+          cache-dependency-path: |
+            .github/workflows/build.yaml
+            setup.cfg
+            tox.ini
+            cachedate.txt
+
+      - run: python -m pip install tox
+
+      - name: regenerate hook config
+        run: tox run -e generate-hooks-config
+
+      - name: fail if .pre-commit-hooks.yaml changed
+        run: git diff --exit-code -- .pre-commit-hooks.yaml
+
   self-check:
     name: "Self-Check"
     runs-on: ubuntu-latest
