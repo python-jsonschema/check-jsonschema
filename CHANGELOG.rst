@@ -10,7 +10,7 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-02-18)
+- Update vendored schemas (2023-03-08)
 - The ``check-dependabot`` hook now also supports ``.github/dependabot.yaml``
   Thanks :user:`noorul`!
 - Fix a mistake in the dependency bound for ``jsonschema``, which was intended

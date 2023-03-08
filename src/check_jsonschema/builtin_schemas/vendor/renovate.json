@@ -202,8 +202,11 @@
       "default": 0
     },
     "baseBranches": {
-      "description": "An array of one or more custom base branches to be processed. If left empty, the default branch will be chosen.",
-      "type": "array"
+      "description": "List of one or more custom base branches defined as exact strings and/or via regex expressions.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "baseDir": {
       "description": "The base directory for Renovate to store local files, including repository files and cache. If left empty, Renovate will create its own temporary directory to use.",
@@ -799,6 +802,11 @@
       "description": "Decides if CLI configuration options are moved to the `force` config section.",
       "type": "boolean",
       "default": true
+    },
+    "forkModeDisallowMaintainerEdits": {
+      "description": "Disallow maintainers to push to Renovate pull requests when running in fork mode.",
+      "type": "boolean",
+      "default": false
     },
     "forkToken": {
       "description": "Set a personal access token here to enable \"fork mode\".",
@@ -1912,7 +1920,8 @@
                         "digest",
                         "lockFileMaintenance",
                         "rollback",
-                        "bump"
+                        "bump",
+                        "replacement"
                       ]
                     }
                   },
@@ -1927,7 +1936,8 @@
                       "digest",
                       "lockFileMaintenance",
                       "rollback",
-                      "bump"
+                      "bump",
+                      "replacement"
                     ]
                   }
                 ]
@@ -2563,7 +2573,8 @@
       "default": {
         "fileMatch": [
           "\\.sbt$",
-          "project/[^/]*.scala$"
+          "project/[^/]*\\.scala$",
+          "project/build\\.properties$"
         ],
         "versioning": "ivy"
       },
