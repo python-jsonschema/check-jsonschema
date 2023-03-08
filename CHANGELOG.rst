@@ -13,6 +13,8 @@ Unreleased
 - Update vendored schemas (2023-02-18)
 - The ``check-dependabot`` hook now also supports ``.github/dependabot.yaml``
   Thanks :user:`noorul`!
+- Fix a mistake in the dependency bound for ``jsonschema``, which was intended
+  to change in v0.21.0
 
 0.21.0
 ------
