@@ -3,12 +3,14 @@ from __future__ import annotations
 import enum
 import os
 import textwrap
+import typing as t
+import warnings
 
 import click
 
 from .catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from .checker import SchemaChecker
-from .formats import FormatOptions, RegexFormatBehavior
+from .formats import KNOWN_FORMATS, FormatOptions, RegexFormatBehavior
 from .instance_loader import InstanceLoader
 from .parsers import SUPPORTED_FILE_FORMATS
 from .reporter import REPORTER_BY_NAME, Reporter
@@ -50,7 +52,8 @@ class ParseResult:
         # fill default values on instances during validation
         self.fill_defaults: bool = False
         # regex format options
-        self.disable_format: bool = False
+        self.disable_all_formats: bool = False
+        self.disable_formats: tuple[str, ...] = ()
         self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
         # error and output controls
         self.verbosity: int = 1
@@ -86,7 +89,9 @@ class ParseResult:
     @property
     def format_opts(self) -> FormatOptions:
         return FormatOptions(
-            enabled=not self.disable_format, regex_behavior=self.format_regex
+            enabled=not self.disable_all_formats,
+            regex_behavior=self.format_regex,
+            disabled_formats=self.disable_formats,
         )
 
 
@@ -101,6 +106,25 @@ def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
         }[value]
 
 
+def deprecation_warning_callback(
+    optstring: str, *, is_flag: bool = False, append_message: str | None = None
+) -> t.Callable[[click.Context, click.Parameter, t.Any], t.Any]:
+    def callback(ctx: click.Context, param: click.Parameter, value: t.Any) -> t.Any:
+        if not value:
+            return value
+        if (is_flag and bool(value) is True) or (value is not None):
+            message = (
+                f"'{optstring}' is deprecated and will be removed in a future release."
+            )
+            if append_message is not None:
+                message += f" {append_message}"
+            warnings.warn(message)
+
+        return value
+
+    return callback
+
+
 @click.command(
     "check-jsonschema",
     help="""\
@@ -108,8 +132,9 @@ Check JSON and YAML files against a JSON Schema.
 
 The schema is specified either with '--schemafile' or with '--builtin-schema'.
 
-'check-jsonschema' supports and checks the following formats by default:
-    date, email, ipv4, regex, uuid
+'check-jsonschema' supports format checks with appropriate libraries installed,
+including the following formats by default:
+    date, email, ipv4, ipv6, regex, uuid
 
 \b
 For the "regex" format, there are multiple modes which can be specified with
@@ -170,13 +195,29 @@ The '--builtin-schema' flag supports the following schema names:
     ),
 )
 @click.option(
-    "--disable-format", is_flag=True, help="Disable all format checks in the schema."
+    "--disable-format",
+    is_flag=True,
+    help="{deprecated} Disable all format checks in the schema.",
+    callback=deprecation_warning_callback(
+        "--disable-format",
+        is_flag=True,
+        append_message="Users should now pass '--disable-formats \"*\"' for "
+        "the same functionality.",
+    ),
+)
+@click.option(
+    "--disable-formats",
+    multiple=True,
+    help="Disable specific format checks in the schema. "
+    "Pass '*' to disable all format checks.",
+    type=click.Choice(("*", *KNOWN_FORMATS)),
 )
 @click.option(
     "--format-regex",
     help=(
         "Set the mode of format validation for regexes. "
-        "If '--disable-format' is used, this option has no effect."
+        "If '--disable-format' or `--disable-formats regex` is used, "
+        "this option has no effect."
     ),
     default=RegexFormatBehavior.default.value,
     type=click.Choice([x.value for x in RegexFormatBehavior], case_sensitive=False),
@@ -249,6 +290,7 @@ def main(
     no_cache: bool,
     cache_filename: str | None,
     disable_format: bool,
+    disable_formats: tuple[str, ...],
     format_regex: str,
     default_filetype: str,
     traceback_mode: str,
@@ -264,7 +306,10 @@ def main(
     args.set_schema(schemafile, builtin_schema, check_metaschema)
     args.instancefiles = instancefiles
 
-    args.disable_format = disable_format
+    if disable_format or "*" in disable_formats:
+        args.disable_all_formats = True
+    else:
+        args.disable_formats = disable_formats
     args.format_regex = RegexFormatBehavior(format_regex)
     args.disable_cache = no_cache
     args.default_filetype = default_filetype

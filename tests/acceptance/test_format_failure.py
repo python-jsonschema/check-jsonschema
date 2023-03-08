@@ -54,7 +54,8 @@ def test_format_failure_ignore(run_line_simple, tmp_path):
 
     run_line_simple(
         [
-            "--disable-format",
+            "--disable-formats",
+            "*",
             "--schemafile",
             str(schemafile),
             str(doc1),
@@ -74,7 +75,8 @@ def test_format_failure_ignore_multidoc(run_line_simple, tmp_path):
 
     run_line_simple(
         [
-            "--disable-format",
+            "--disable-formats",
+            "*",
             "--schemafile",
             str(schemafile),
             str(doc1),
