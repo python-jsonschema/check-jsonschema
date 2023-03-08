@@ -11,6 +11,8 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2023-02-18)
+- The ``check-dependabot`` hook now also supports ``.github/dependabot.yaml``
+  Thanks :user:`noorul`!
 
 0.21.0
 ------

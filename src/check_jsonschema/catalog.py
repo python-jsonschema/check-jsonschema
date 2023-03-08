@@ -60,7 +60,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "url": "https://json.schemastore.org/dependabot-2.0.json",
         "hook_config": {
             "name": "Validate Dependabot Config (v2)",
-            "files": r"^\.github/dependabot.yml$",
+            "files": r"^\.github/dependabot.(yml|yaml)$",
             "types": "yaml",
         },
     },
