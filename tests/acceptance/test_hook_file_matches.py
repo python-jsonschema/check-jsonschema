@@ -64,8 +64,8 @@ _HOOKID_PATH_MAP = {
         ),
     },
     "check-dependabot": {
-        "good": (".github/dependabot.yml",),
-        "bad": (".github/dependabot.yaml", ".dependabot.yml"),
+        "good": (".github/dependabot.yml", ".github/dependabot.yaml"),
+        "bad": (".dependabot.yaml", ".dependabot.yml"),
     },
     "check-github-actions": {
         "good": (
