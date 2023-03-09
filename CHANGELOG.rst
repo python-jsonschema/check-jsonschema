@@ -13,7 +13,8 @@ Unreleased
 0.22.0
 ------
 
-- Update vendored schemas (2023-03-08)
+- Update vendored schemas: buildkite, github-workflows, gitlab-ci, renovate,
+  travis (2023-03-08)
 - The ``check-dependabot`` hook now also supports ``.github/dependabot.yaml``
   Thanks :user:`noorul`!
 - Fix a mistake in the dependency bound for ``jsonschema``, which was intended
