@@ -15,7 +15,7 @@ showvars:
 release:
 	git tag -s "$(PKG_VERSION)" -m "v$(PKG_VERSION)"
 	-git push $(shell git rev-parse --abbrev-ref @{push} | cut -d '/' -f1) refs/tags/$(PKG_VERSION)
-	tox run -e publish-release
+	# tox run -e publish-release
 
 .PHONY: collated-test-report
 collated-test-report:
