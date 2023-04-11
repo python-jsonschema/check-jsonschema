@@ -111,6 +111,11 @@
       "type": "integer",
       "default": null
     },
+    "autoReplaceGlobalMatch": {
+      "description": "Control whether replacement regular expressions are global matches or only the first match.",
+      "type": "boolean",
+      "default": true
+    },
     "autodiscover": {
       "description": "Autodiscover all repositories.",
       "type": "boolean",
@@ -249,7 +254,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|\\/)\\.bazelversion$"
+          "(^|/)\\.bazelversion$"
         ],
         "pinDigests": false
       },
@@ -259,6 +264,21 @@
       "description": "Use the default reviewers (Bitbucket only).",
       "type": "boolean",
       "default": true
+    },
+    "bbUseDevelopmentBranch": {
+      "description": "Use the repository's [development branch](https://support.atlassian.com/bitbucket-cloud/docs/branch-a-repository/#The-branching-model) as the repository's default branch.",
+      "type": "boolean",
+      "default": false
+    },
+    "bicep": {
+      "description": "Configuration object for the bicep manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.bicep$"
+        ]
+      },
+      "$ref": "#"
     },
     "binarySource": {
       "description": "Controls how third-party tools like npm or Gradle are called: directly, via Docker sidecar containers, or via dynamic install.",
@@ -352,7 +372,7 @@
     "cacheHardTtlMinutes": {
       "description": "Maximum duration in minutes to keep datasource cache entries.",
       "type": "integer",
-      "default": 0
+      "default": 1440
     },
     "cake": {
       "description": "Configuration object for the cake manager",
@@ -372,8 +392,7 @@
         "fileMatch": [
           "(^|/)Cargo\\.toml$"
         ],
-        "versioning": "cargo",
-        "rangeStrategy": "bump"
+        "versioning": "cargo"
       },
       "$ref": "#"
     },
@@ -487,7 +506,6 @@
         ],
         "datasource": "conan",
         "versioning": "conan",
-        "rangeStrategy": "bump",
         "enabled": false
       },
       "$ref": "#"
@@ -512,6 +530,15 @@
       "type": "object",
       "default": {},
       "$ref": "#"
+    },
+    "constraintsFiltering": {
+      "description": "Perform release filtering based on language constraints.",
+      "type": "string",
+      "enum": [
+        "none",
+        "strict"
+      ],
+      "default": "none"
     },
     "containerbaseDir": {
       "description": "The directory where Renovate stores its containerbase cache. If left empty, Renovate creates a subdirectory within the `cacheDir`.",
@@ -639,7 +666,7 @@
     "dockerImagePrefix": {
       "description": "Change this value to override the default Renovate Docker sidecar image name prefix.",
       "type": "string",
-      "default": "docker.io/renovate"
+      "default": "docker.io/containerbase"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -650,8 +677,8 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/|\\.)Dockerfile$",
-          "(^|/)Dockerfile[^/]*$"
+          "(^|/|\\.)(Docker|Container)file$",
+          "(^|/)(Docker|Container)file[^/]*$"
         ]
       },
       "$ref": "#"
@@ -693,7 +720,10 @@
     },
     "enabledManagers": {
       "description": "A list of package managers to enable. Only managers on the list are enabled.",
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "encrypted": {
       "description": "An object containing configuration encrypted with project key.",
@@ -784,7 +814,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|\\/)flux-system\\/(?:.+\\/)?gotk-components\\.yaml$"
+          "(^|/)flux-system/(?:.+/)?gotk-components\\.yaml$"
         ]
       },
       "$ref": "#"
@@ -808,6 +838,16 @@
       "type": "boolean",
       "default": false
     },
+    "forkProcessing": {
+      "description": "Whether to process forked repositories. By default, all forked repositories are skipped when in autodiscover mode.",
+      "type": "string",
+      "enum": [
+        "auto",
+        "enabled",
+        "disabled"
+      ],
+      "default": "auto"
+    },
     "forkToken": {
       "description": "Set a personal access token here to enable \"fork mode\".",
       "type": "string"
@@ -817,7 +857,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|\\/)\\.fvm\\/fvm_config\\.json$"
+          "(^|/)\\.fvm/fvm_config\\.json$"
         ],
         "versioning": "semver"
       },
@@ -901,8 +941,8 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "^(workflow-templates|\\.github\\/workflows)\\/[^/]+\\.ya?ml$",
-          "(^|\\/)action\\.ya?ml$"
+          "^(workflow-templates|\\.github/workflows)/[^/]+\\.ya?ml$",
+          "(^|/)action\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -963,11 +1003,11 @@
       "default": {
         "fileMatch": [
           "\\.gradle(\\.kts)?$",
-          "(^|\\/)gradle\\.properties$",
-          "(^|\\/)gradle\\/.+\\.toml$",
+          "(^|/)gradle\\.properties$",
+          "(^|/)gradle/.+\\.toml$",
           "\\.versions\\.toml$",
-          "(^|\\/)versions.props$",
-          "(^|\\/)versions.lock$"
+          "(^|/)versions.props$",
+          "(^|/)versions.lock$"
         ],
         "timeout": 600,
         "versioning": "gradle"
@@ -1255,11 +1295,6 @@
       "description": "Ignore versions with unstable SemVer.",
       "type": "boolean"
     },
-    "includeForks": {
-      "description": "Whether to process forked repositories. By default, all forked repositories are skipped.",
-      "type": "boolean",
-      "default": false
-    },
     "includePaths": {
       "description": "Include package files only within these defined paths.",
       "type": "array",
@@ -1267,6 +1302,11 @@
         "type": "string"
       },
       "default": []
+    },
+    "internalChecksAsSuccess": {
+      "description": "Whether to consider passing internal checks such as stabilityDays when determining branch status.",
+      "type": "boolean",
+      "default": false
     },
     "internalChecksFilter": {
       "description": "When and how to filter based on internal checks.",
@@ -1452,7 +1492,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|\\/)Mintfile$"
+          "(^|/)Mintfile$"
         ]
       },
       "$ref": "#"
@@ -1473,7 +1513,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|\\/)flake\\.nix$"
+          "(^|/)flake\\.nix$"
         ],
         "commitMessageTopic": "nixpkgs",
         "commitMessageExtra": "to {{newValue}}",
@@ -1540,8 +1580,8 @@
         "fileMatch": [
           "\\.(?:cs|fs|vb)proj$",
           "\\.(?:props|targets)$",
-          "(^|\\/)dotnet-tools\\.json$",
-          "(^|\\/)global\\.json$"
+          "(^|/)dotnet-tools\\.json$",
+          "(^|/)global\\.json$"
         ]
       },
       "$ref": "#"
@@ -1711,7 +1751,7 @@
                 ]
               },
               "matchBaseBranches": {
-                "description": "List of strings containing exact matches (e.g. `[\"main\"]`) and/or regex expressions (e.g. `[\"/^release\\/.*/\"]`). Valid only within a `packageRules` object.",
+                "description": "List of strings containing exact matches (e.g. `[\"main\"]`) and/or regex expressions (e.g. `[\"/^release/.*/\"]`). Valid only within a `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1721,6 +1761,32 @@
                   },
                   {
                     "type": "string"
+                  }
+                ]
+              },
+              "matchConfidence": {
+                "description": "Merge confidence levels to match against (`low`, `neutral`, `high`, `very high`). Valid only within `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "low",
+                        "neutral",
+                        "high",
+                        "very high"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "low",
+                      "neutral",
+                      "high",
+                      "very high"
+                    ]
                   }
                 ]
               },
@@ -1946,6 +2012,11 @@
                 "description": "The name of the new dependency that replaces the old deprecated dependency.",
                 "type": "string"
               },
+              "replacementNameTemplate": {
+                "description": "Controls what the replacement package name.",
+                "type": "string",
+                "default": "{{{packageName}}}"
+              },
               "replacementVersion": {
                 "description": "The version of the new dependency that replaces the old deprecated dependency.",
                 "type": "string"
@@ -2090,6 +2161,22 @@
     "postUpdateOptions": {
       "description": "Enable post-update options to be run after package/artifact updating.",
       "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "bundlerConservative",
+          "helmUpdateSubChartArchives",
+          "gomodMassage",
+          "gomodUpdateImportPaths",
+          "gomodTidy",
+          "gomodTidy1.17",
+          "gomodTidyE",
+          "npmDedupe",
+          "pnpmDedupe",
+          "yarnDedupeFewer",
+          "yarnDedupeHighest"
+        ]
+      },
       "default": []
     },
     "postUpgradeTasks": {
@@ -2181,7 +2268,7 @@
       "default": []
     },
     "prBodyTemplate": {
-      "description": "Pull Request body template. Controls which sections are rendered in the body.",
+      "description": "Pull Request body template. Controls which sections are rendered in the body of the pull request.",
       "type": "string",
       "default": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}{{{configDescription}}}{{{controls}}}{{{footer}}}"
     },
@@ -2191,9 +2278,9 @@
       "default": 0
     },
     "prConcurrentLimit": {
-      "description": "Limit to a maximum of x concurrent branches/PRs. 0 (default) means no limit.",
+      "description": "Limit to a maximum of x concurrent branches/PRs. 0 means no limit.",
       "type": "integer",
-      "default": 0
+      "default": 10
     },
     "prCreation": {
       "description": "When to create the PR for a branch.",
@@ -2216,9 +2303,9 @@
       "type": "string"
     },
     "prHourlyLimit": {
-      "description": "Rate limit PRs to maximum x created per hour. 0 (default) means no limit.",
+      "description": "Rate limit PRs to maximum x created per hour. 0 means no limit.",
       "type": "integer",
-      "default": 0
+      "default": 2
     },
     "prNotPendingHours": {
       "description": "Timeout in hours for when `prCreation=not-pending`.",
@@ -2311,7 +2398,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|\\/)Puppetfile$"
+          "(^|/)Puppetfile$"
         ]
       },
       "$ref": "#"
@@ -2345,7 +2432,7 @@
         "update-lockfile",
         "in-range-only"
       ],
-      "default": "replace"
+      "default": "auto"
     },
     "rebaseLabel": {
       "description": "Label to request a rebase from Renovate bot.",
@@ -2481,7 +2568,10 @@
     },
     "repositories": {
       "description": "List of Repositories.",
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "repositoryCache": {
       "description": "This option decides if Renovate uses a JSON cache to speed up extractions.",
@@ -2694,7 +2784,6 @@
           "(^|/)Package\\.swift"
         ],
         "versioning": "swift",
-        "rangeStrategy": "bump",
         "pinDigests": false
       },
       "$ref": "#"
@@ -2854,6 +2943,7 @@
       "type": "string",
       "enum": [
         "aws-machine-image",
+        "azure-rest-api",
         "cargo",
         "composer",
         "conan",
@@ -2909,7 +2999,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "^\\.woodpecker(?:\\/[^/]+)?\\.ya?ml$"
+          "^\\.woodpecker(?:/[^/]+)?\\.ya?ml$"
         ]
       },
       "$ref": "#"

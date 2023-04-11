@@ -1189,6 +1189,9 @@
         },
         "skip": {
           "$ref": "#/definitions/commonOptions/skip"
+        },
+        "soft_fail": {
+          "$ref": "#/definitions/commonOptions/softFail"
         }
       },
       "additionalProperties": false
