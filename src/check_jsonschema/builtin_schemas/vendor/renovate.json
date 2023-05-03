@@ -111,6 +111,11 @@
       "type": "integer",
       "default": null
     },
+    "autoApprove": {
+      "description": "Set to `true` to automatically approve PRs.",
+      "type": "boolean",
+      "default": false
+    },
     "autoReplaceGlobalMatch": {
       "description": "Control whether replacement regular expressions are global matches or only the first match.",
       "type": "boolean",
@@ -195,11 +200,6 @@
         "enabled": false
       },
       "$ref": "#"
-    },
-    "azureAutoApprove": {
-      "description": "Set to `true` to automatically approve Azure DevOps PRs.",
-      "type": "boolean",
-      "default": false
     },
     "azureWorkItemId": {
       "description": "The id of an existing work item on Azure Boards to link to each PR.",
@@ -404,6 +404,14 @@
         "versioning": "semver"
       },
       "$ref": "#"
+    },
+    "checkedBranches": {
+      "description": "A list of branch names to mark for creation or rebasing as if it was selected in the Dependency Dashboard issue.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
     },
     "circleci": {
       "description": "Configuration object for the circleci manager",
@@ -839,7 +847,7 @@
       "default": false
     },
     "forkProcessing": {
-      "description": "Whether to process forked repositories. By default, all forked repositories are skipped when in autodiscover mode.",
+      "description": "Whether to process forked repositories. By default, all forked repositories are skipped when in `autodiscover` mode.",
       "type": "string",
       "enum": [
         "auto",
@@ -978,6 +986,16 @@
       "items": {
         "type": "string"
       }
+    },
+    "goGetDirs": {
+      "description": "Directory pattern to run `go get` on",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "./..."
+      ]
     },
     "golang": {
       "description": "Configuration object for Go language.",
@@ -1156,6 +1174,17 @@
                 "type": "boolean",
                 "default": false
               },
+              "artifactAuth": {
+                "description": "A list of package managers to enable artifact auth. Only managers on the list are enabled. All are enabled if `null`",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "composer"
+                  ]
+                },
+                "default": null
+              },
               "authType": {
                 "description": "Authentication type for HTTP header. e.g. `\"Bearer\"` or `\"Basic\"`. Use `\"Token-Only\"` to use only the token without an authorization type.",
                 "type": "string",
@@ -1304,7 +1333,7 @@
       "default": []
     },
     "internalChecksAsSuccess": {
-      "description": "Whether to consider passing internal checks such as stabilityDays when determining branch status.",
+      "description": "Whether to consider passing internal checks such as `minimumReleaseAge` when determining branch status.",
       "type": "boolean",
       "default": false
     },
@@ -1480,6 +1509,11 @@
         "type": "string"
       },
       "$ref": "#"
+    },
+    "minimumReleaseAge": {
+      "description": "Time required before a new release is considered stable.",
+      "type": "string",
+      "default": null
     },
     "minor": {
       "description": "Configuration to apply when an update type is `minor`.",
@@ -2322,6 +2356,11 @@
       "type": "string",
       "default": null
     },
+    "prTitleStrict": {
+      "description": "Whether to bypass appending extra context to the Pull Request title.",
+      "type": "boolean",
+      "default": false
+    },
     "pre-commit": {
       "description": "Configuration object for the pre-commit manager",
       "type": "object",
@@ -2746,11 +2785,6 @@
       "type": "boolean",
       "default": null
     },
-    "stabilityDays": {
-      "description": "Number of days required before a new release is considered stable.",
-      "type": "integer",
-      "default": 0
-    },
     "stopUpdatingLabel": {
       "description": "Label to make Renovate stop updating a PR.",
       "type": "string",
@@ -2919,9 +2953,9 @@
       "type": "object",
       "default": {
         "ignoreTopic": "Renovate Ignore Notification",
-        "ignoreMajor": "As this PR has been closed unmerged, Renovate will ignore this upgrade and you will not receive PRs for *any* future {{{newMajor}}}.x releases. However, if you upgrade to {{{newMajor}}}.x manually then Renovate will reenable minor and patch updates automatically.",
-        "ignoreDigest": "As this PR has been closed unmerged, Renovate will ignore this upgrade and you will not receive PRs for the `{{{depName}}}` `{{{newDigestShort}}}` update again.",
-        "ignoreOther": "As this PR has been closed unmerged, Renovate will now ignore this update ({{{newValue}}}). You will still receive a PR once a newer version is released, so if you wish to permanently ignore this dependency, please add it to the `ignoreDeps` array of your renovate config."
+        "ignoreMajor": "Because you closed this PR without merging, Renovate will ignore this update. You will not get PRs for *any* future {{{newMajor}}}.x releases. But if you manually upgrade to {{{newMajor}}}.x then Renovate will re-enable `minor` and `patch` updates automatically.",
+        "ignoreDigest": "Because you closed this PR without merging, Renovate will ignore this update. You will not get PRs for the `{{{depName}}}` `{{{newDigestShort}}}` update again.",
+        "ignoreOther": "Because you closed this PR without merging, Renovate will ignore this update ({{{newValue}}}). You will get a PR once a newer version is released. To ignore this dependency forever, add it to the `ignoreDeps` array of your Renovate config."
       }
     },
     "username": {
@@ -2944,6 +2978,7 @@
       "enum": [
         "aws-machine-image",
         "azure-rest-api",
+        "bazel-module",
         "cargo",
         "composer",
         "conan",
@@ -2986,7 +3021,7 @@
         "groupName": null,
         "schedule": [],
         "dependencyDashboardApproval": false,
-        "stabilityDays": 0,
+        "minimumReleaseAge": null,
         "rangeStrategy": "update-lockfile",
         "commitMessageSuffix": "[SECURITY]",
         "branchTopic": "{{{datasource}}}-{{{depName}}}-vulnerability",
