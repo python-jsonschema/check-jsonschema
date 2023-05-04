@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-05-03)
+0.23.0
+------
+
+- Update vendored schemas: azure-pipelines, buildkite, dependabot,
+  github-workflows, gitlab-ci, renovate (2023-05-03)
 - A new option, ``--disable-formats`` replaces and enhances the
   ``--disable-format`` flag. ``--disable-formats`` takes a format to disable
   and may be passed multiple times, allowing users to opt out of any specific
