@@ -18,6 +18,7 @@ from ..schema_loader import (
     SchemaLoaderBase,
 )
 from ..transforms import TRANSFORM_LIBRARY
+from .param_types import CommaDelimitedList
 from .parse_result import ParseResult, SchemaLoadingMode
 from .warnings import deprecation_warning_callback
 
@@ -38,6 +39,20 @@ def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
             "always": True,
             "never": False,
         }[value]
+
+
+def pretty_helptext_list(values: list[str] | tuple[str, ...]) -> str:
+    return textwrap.indent(
+        "\n".join(
+            textwrap.wrap(
+                ", ".join(values),
+                width=75,
+                break_long_words=False,
+                break_on_hyphens=False,
+            ),
+        ),
+        "    ",
+    )
 
 
 @click.command(
@@ -61,17 +76,13 @@ For the "regex" format, there are multiple modes which can be specified with
 \b
 The '--builtin-schema' flag supports the following schema names:
 """
-    + textwrap.indent(
-        "\n".join(
-            textwrap.wrap(
-                ", ".join(BUILTIN_SCHEMA_NAMES),
-                width=75,
-                break_long_words=False,
-                break_on_hyphens=False,
-            ),
-        ),
-        "    ",
-    ),
+    + pretty_helptext_list(BUILTIN_SCHEMA_NAMES)
+    + """\
+
+\b
+The '--disable-formats' flag supports the following formats:
+"""
+    + pretty_helptext_list(KNOWN_FORMATS),
 )
 @click.help_option("-h", "--help")
 @click.version_option()
@@ -125,7 +136,8 @@ The '--builtin-schema' flag supports the following schema names:
     multiple=True,
     help="Disable specific format checks in the schema. "
     "Pass '*' to disable all format checks.",
-    type=click.Choice(("*", *KNOWN_FORMATS)),
+    type=CommaDelimitedList(choices=("*", *KNOWN_FORMATS)),
+    metavar="{*|FORMAT,FORMAT,...}",
 )
 @click.option(
     "--format-regex",
@@ -204,7 +216,7 @@ def main(
     no_cache: bool,
     cache_filename: str | None,
     disable_format: bool,
-    disable_formats: tuple[str, ...],
+    disable_formats: tuple[list[str], ...],
     format_regex: str,
     default_filetype: str,
     traceback_mode: str,
@@ -220,10 +232,13 @@ def main(
     args.set_schema(schemafile, builtin_schema, check_metaschema)
     args.instancefiles = instancefiles
 
-    if disable_format or "*" in disable_formats:
+    normalized_disable_formats: tuple[str, ...] = tuple(
+        f for sublist in disable_formats for f in sublist
+    )
+    if disable_format or "*" in normalized_disable_formats:
         args.disable_all_formats = True
     else:
-        args.disable_formats = disable_formats
+        args.disable_formats = normalized_disable_formats
     args.format_regex = RegexFormatBehavior(format_regex)
     args.disable_cache = no_cache
     args.default_filetype = default_filetype

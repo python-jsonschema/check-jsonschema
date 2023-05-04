@@ -205,18 +205,27 @@ def test_formats_default_to_enabled(runner, mock_parse_result):
     assert mock_parse_result.disable_formats == ()
 
 
-def test_disable_selected_formats(runner, mock_parse_result):
+@pytest.mark.parametrize(
+    "addargs",
+    (
+        [
+            "--disable-formats",
+            "uri-reference",
+            "--disable-formats",
+            "date-time",
+        ],
+        ["--disable-formats", "uri-reference,date-time"],
+    ),
+)
+def test_disable_selected_formats(runner, mock_parse_result, addargs):
     runner.invoke(
         cli_main,
         [
             "--schemafile",
             "schema.json",
             "foo.json",
-            "--disable-formats",
-            "uri-reference",
-            "--disable-formats",
-            "date-time",
-        ],
+        ]
+        + addargs,
     )
     assert mock_parse_result.disable_all_formats is False
     assert set(mock_parse_result.disable_formats) == {"uri-reference", "date-time"}
@@ -234,6 +243,7 @@ def test_disable_selected_formats(runner, mock_parse_result):
             "*",
         ],
         ["--disable-formats", "*"],
+        ["--disable-formats", "*,email"],
     ),
 )
 def test_disable_all_formats(runner, mock_parse_result, addargs):
