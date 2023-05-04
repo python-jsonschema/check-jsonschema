@@ -1,24 +1,26 @@
 from __future__ import annotations
 
-import enum
 import os
 import textwrap
 
 import click
 
-from .catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
-from .checker import SchemaChecker
-from .formats import FormatOptions, RegexFormatBehavior
-from .instance_loader import InstanceLoader
-from .parsers import SUPPORTED_FILE_FORMATS
-from .reporter import REPORTER_BY_NAME, Reporter
-from .schema_loader import (
+from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
+from ..checker import SchemaChecker
+from ..formats import KNOWN_FORMATS, RegexFormatBehavior
+from ..instance_loader import InstanceLoader
+from ..parsers import SUPPORTED_FILE_FORMATS
+from ..reporter import REPORTER_BY_NAME, Reporter
+from ..schema_loader import (
     BuiltinSchemaLoader,
     MetaSchemaLoader,
     SchemaLoader,
     SchemaLoaderBase,
 )
-from .transforms import TRANSFORM_LIBRARY, Transform
+from ..transforms import TRANSFORM_LIBRARY
+from .param_types import CommaDelimitedList
+from .parse_result import ParseResult, SchemaLoadingMode
+from .warnings import deprecation_warning_callback
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
     f"custom.{k}" for k in CUSTOM_SCHEMA_NAMES
@@ -26,68 +28,6 @@ BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
 BUILTIN_SCHEMA_CHOICES = (
     BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + CUSTOM_SCHEMA_NAMES
 )
-
-
-class SchemaLoadingMode(enum.Enum):
-    filepath = "filepath"
-    builtin = "builtin"
-    metaschema = "metaschema"
-
-
-class ParseResult:
-    def __init__(self) -> None:
-        # primary options: schema + instances
-        self.schema_mode: SchemaLoadingMode = SchemaLoadingMode.filepath
-        self.schema_path: str | None = None
-        self.instancefiles: tuple[str, ...] = ()
-        # cache controls
-        self.disable_cache: bool = False
-        self.cache_filename: str | None = None
-        # filetype detection (JSON, YAML, TOML, etc)
-        self.default_filetype: str = "json"
-        # data-transform (for Azure Pipelines and potentially future transforms)
-        self.data_transform: Transform | None = None
-        # fill default values on instances during validation
-        self.fill_defaults: bool = False
-        # regex format options
-        self.disable_format: bool = False
-        self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
-        # error and output controls
-        self.verbosity: int = 1
-        self.traceback_mode: str = "short"
-        self.output_format: str = "text"
-
-    def set_schema(
-        self, schemafile: str | None, builtin_schema: str | None, check_metaschema: bool
-    ) -> None:
-        mutex_arg_count = sum(
-            1 if x else 0 for x in (schemafile, builtin_schema, check_metaschema)
-        )
-        if mutex_arg_count == 0:
-            raise click.UsageError(
-                "Either --schemafile, --builtin-schema, or --check-metaschema "
-                "must be provided"
-            )
-        if mutex_arg_count > 1:
-            raise click.UsageError(
-                "--schemafile, --builtin-schema, and --check-metaschema "
-                "are mutually exclusive"
-            )
-
-        if schemafile:
-            self.schema_mode = SchemaLoadingMode.filepath
-            self.schema_path = schemafile
-        elif builtin_schema:
-            self.schema_mode = SchemaLoadingMode.builtin
-            self.schema_path = builtin_schema
-        else:
-            self.schema_mode = SchemaLoadingMode.metaschema
-
-    @property
-    def format_opts(self) -> FormatOptions:
-        return FormatOptions(
-            enabled=not self.disable_format, regex_behavior=self.format_regex
-        )
 
 
 def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
@@ -101,6 +41,20 @@ def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
         }[value]
 
 
+def pretty_helptext_list(values: list[str] | tuple[str, ...]) -> str:
+    return textwrap.indent(
+        "\n".join(
+            textwrap.wrap(
+                ", ".join(values),
+                width=75,
+                break_long_words=False,
+                break_on_hyphens=False,
+            ),
+        ),
+        "    ",
+    )
+
+
 @click.command(
     "check-jsonschema",
     help="""\
@@ -108,8 +62,9 @@ Check JSON and YAML files against a JSON Schema.
 
 The schema is specified either with '--schemafile' or with '--builtin-schema'.
 
-'check-jsonschema' supports and checks the following formats by default:
-    date, email, ipv4, regex, uuid
+'check-jsonschema' supports format checks with appropriate libraries installed,
+including the following formats by default:
+    date, email, ipv4, ipv6, regex, uuid
 
 \b
 For the "regex" format, there are multiple modes which can be specified with
@@ -121,17 +76,13 @@ For the "regex" format, there are multiple modes which can be specified with
 \b
 The '--builtin-schema' flag supports the following schema names:
 """
-    + textwrap.indent(
-        "\n".join(
-            textwrap.wrap(
-                ", ".join(BUILTIN_SCHEMA_NAMES),
-                width=75,
-                break_long_words=False,
-                break_on_hyphens=False,
-            ),
-        ),
-        "    ",
-    ),
+    + pretty_helptext_list(BUILTIN_SCHEMA_NAMES)
+    + """\
+
+\b
+The '--disable-formats' flag supports the following formats:
+"""
+    + pretty_helptext_list(KNOWN_FORMATS),
 )
 @click.help_option("-h", "--help")
 @click.version_option()
@@ -170,13 +121,29 @@ The '--builtin-schema' flag supports the following schema names:
     ),
 )
 @click.option(
-    "--disable-format", is_flag=True, help="Disable all format checks in the schema."
+    "--disable-format",
+    is_flag=True,
+    help="{deprecated} Disable all format checks in the schema.",
+    callback=deprecation_warning_callback(
+        "--disable-format",
+        is_flag=True,
+        append_message="Users should now pass '--disable-formats \"*\"' for "
+        "the same functionality.",
+    ),
+)
+@click.option(
+    "--disable-formats",
+    multiple=True,
+    help="Disable specific format checks in the schema. "
+    "Pass '*' to disable all format checks.",
+    type=CommaDelimitedList(choices=("*", *KNOWN_FORMATS)),
+    metavar="{*|FORMAT,FORMAT,...}",
 )
 @click.option(
     "--format-regex",
     help=(
         "Set the mode of format validation for regexes. "
-        "If '--disable-format' is used, this option has no effect."
+        "If `--disable-formats regex` is used, this option has no effect."
     ),
     default=RegexFormatBehavior.default.value,
     type=click.Choice([x.value for x in RegexFormatBehavior], case_sensitive=False),
@@ -249,6 +216,7 @@ def main(
     no_cache: bool,
     cache_filename: str | None,
     disable_format: bool,
+    disable_formats: tuple[list[str], ...],
     format_regex: str,
     default_filetype: str,
     traceback_mode: str,
@@ -264,7 +232,13 @@ def main(
     args.set_schema(schemafile, builtin_schema, check_metaschema)
     args.instancefiles = instancefiles
 
-    args.disable_format = disable_format
+    normalized_disable_formats: tuple[str, ...] = tuple(
+        f for sublist in disable_formats for f in sublist
+    )
+    if disable_format or "*" in normalized_disable_formats:
+        args.disable_all_formats = True
+    else:
+        args.disable_formats = normalized_disable_formats
     args.format_regex = RegexFormatBehavior(format_regex)
     args.disable_cache = no_cache
     args.default_filetype = default_filetype

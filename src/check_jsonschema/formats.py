@@ -8,6 +8,33 @@ import typing as t
 import jsonschema
 import jsonschema.validators
 
+# all known format strings except for a selection from draft3 which have either
+# been renamed or removed:
+# - color
+# - host-name
+# - ip-address
+KNOWN_FORMATS: tuple[str, ...] = (
+    "date",
+    "date-time",
+    "duration",
+    "email",
+    "hostname",
+    "idn-email",
+    "idn-hostname",
+    "ipv4",
+    "ipv6",
+    "iri",
+    "iri-reference",
+    "json-pointer",
+    "regex",
+    "relative-json-pointer",
+    "time",
+    "uri",
+    "uri-reference",
+    "uri-template",
+    "uuid",
+)
+
 
 def _regex_check(instance: t.Any) -> bool:
     if not isinstance(instance, str):
@@ -37,9 +64,13 @@ class FormatOptions:
         *,
         enabled: bool = True,
         regex_behavior: RegexFormatBehavior = RegexFormatBehavior.default,
+        disabled_formats: tuple[str, ...] = (),
     ) -> None:
         self.enabled = enabled
         self.regex_behavior = regex_behavior
+        self.disabled_formats = disabled_formats
+        if "regex" in self.disabled_formats:
+            self.regex_behavior = RegexFormatBehavior.disabled
 
 
 def get_base_format_checker(schema_dialect: str | None) -> jsonschema.FormatChecker:
@@ -63,8 +94,14 @@ def make_format_checker(
     base_checker = get_base_format_checker(schema_dialect)
     checker = copy.deepcopy(base_checker)
 
-    # remove the regex check
+    # remove the regex check -- it will be re-added if it is enabled
     del checker.checkers["regex"]
+
+    # remove the disabled checks
+    for checkname in opts.disabled_formats:
+        if checkname not in checker.checkers:
+            continue
+        del checker.checkers[checkname]
 
     if opts.regex_behavior == RegexFormatBehavior.disabled:
         pass

@@ -7,7 +7,7 @@ import pytest
 from click.testing import CliRunner
 
 from check_jsonschema import main as cli_main
-from check_jsonschema.cli import ParseResult, SchemaLoadingMode
+from check_jsonschema.cli.parse_result import ParseResult, SchemaLoadingMode
 
 
 class BoxedContext:
@@ -22,7 +22,7 @@ def boxed_context():
 @pytest.fixture
 def mock_parse_result():
     args = ParseResult()
-    with mock.patch("check_jsonschema.cli.ParseResult") as m:
+    with mock.patch("check_jsonschema.cli.main_command.ParseResult") as m:
         m.return_value = args
         yield args
 
@@ -32,7 +32,9 @@ def mock_cli_exec(boxed_context):
     def get_ctx(*args):
         boxed_context.ref = click.get_current_context()
 
-    with mock.patch("check_jsonschema.cli.execute", side_effect=get_ctx) as m:
+    with mock.patch(
+        "check_jsonschema.cli.main_command.execute", side_effect=get_ctx
+    ) as m:
         yield m
 
 
@@ -195,3 +197,73 @@ def test_color_cli_option_is_choice(runner, setting, expected_value):
         ).exit_code
         == expected_value
     )
+
+
+def test_formats_default_to_enabled(runner, mock_parse_result):
+    runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
+    assert mock_parse_result.disable_all_formats is False
+    assert mock_parse_result.disable_formats == ()
+
+
+@pytest.mark.parametrize(
+    "addargs",
+    (
+        [
+            "--disable-formats",
+            "uri-reference",
+            "--disable-formats",
+            "date-time",
+        ],
+        ["--disable-formats", "uri-reference,date-time"],
+    ),
+)
+def test_disable_selected_formats(runner, mock_parse_result, addargs):
+    runner.invoke(
+        cli_main,
+        [
+            "--schemafile",
+            "schema.json",
+            "foo.json",
+        ]
+        + addargs,
+    )
+    assert mock_parse_result.disable_all_formats is False
+    assert set(mock_parse_result.disable_formats) == {"uri-reference", "date-time"}
+
+
+@pytest.mark.parametrize(
+    "addargs",
+    (
+        [
+            "--disable-formats",
+            "uri-reference",
+            "--disable-formats",
+            "date-time",
+            "--disable-formats",
+            "*",
+        ],
+        ["--disable-formats", "*"],
+        ["--disable-formats", "*,email"],
+    ),
+)
+def test_disable_all_formats(runner, mock_parse_result, addargs):
+    # this should be an override, with or without other args
+    runner.invoke(
+        cli_main,
+        [
+            "--schemafile",
+            "schema.json",
+            "foo.json",
+        ]
+        + addargs,
+    )
+    assert mock_parse_result.disable_all_formats is True
+
+
+def test_disable_format_deprecated_flag(runner, mock_parse_result):
+    # this should be an override, with or without other args
+    with pytest.warns(UserWarning, match="'--disable-format' is deprecated"):
+        runner.invoke(
+            cli_main, ["--schemafile", "schema.json", "foo.json", "--disable-format"]
+        )
+    assert mock_parse_result.disable_all_formats is True
