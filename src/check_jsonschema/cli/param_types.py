@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-import click
 import typing as t
+
+import click
 
 
 class CommaDelimitedList(click.ParamType):
