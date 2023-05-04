@@ -202,8 +202,8 @@ Because ``"format"`` checking is not done by all JSON Schema tools, it is
 possible that a file may validate under a schema with a different tool, but
 fail with ``check-jsonschema`` if ``--disable-formats`` is not set.
 
-This option may be specified multiple times and supports the following formats
-as arguments:
+This option may be specified multiple times or as a comma-delimited list and
+supports the following formats as arguments:
 
 - ``date``
 - ``date-time``
@@ -224,6 +224,13 @@ as arguments:
 - ``uri-reference``
 - ``uri-template``
 - ``uuid``
+
+Example usage:
+
+.. code-block:: bash
+
+    # disables all three of time, date-time, and iri
+    --disable-formats time,date-time --disable-formats iri
 
 ``--format-regex``
 ~~~~~~~~~~~~~~~~~~
