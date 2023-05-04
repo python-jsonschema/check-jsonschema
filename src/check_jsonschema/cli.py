@@ -216,8 +216,7 @@ The '--builtin-schema' flag supports the following schema names:
     "--format-regex",
     help=(
         "Set the mode of format validation for regexes. "
-        "If '--disable-format' or `--disable-formats regex` is used, "
-        "this option has no effect."
+        "If `--disable-formats regex` is used, this option has no effect."
     ),
     default=RegexFormatBehavior.default.value,
     type=click.Choice([x.value for x in RegexFormatBehavior], case_sensitive=False),

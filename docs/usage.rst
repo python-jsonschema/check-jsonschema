@@ -185,11 +185,45 @@ following options can be used to control this behavior.
 ``--disable-format``
 ~~~~~~~~~~~~~~~~~~~~
 
-Disable all ``"format"`` checks.
+.. warning::
+
+    This option is deprecated. Use ``--disable-formats "*"`` instead.
+
+Disable all format checks.
+
+``--disable-formats``
+~~~~~~~~~~~~~~~~~~~~~
+
+Disable specified ``"format"`` checks.
+
+Use ``--disable-formats "*"`` to disable all format checking.
 
 Because ``"format"`` checking is not done by all JSON Schema tools, it is
 possible that a file may validate under a schema with a different tool, but
-fail with ``check-jsonschema`` if ``--disable-format`` is not set.
+fail with ``check-jsonschema`` if ``--disable-formats`` is not set.
+
+This option may be specified multiple times and supports the following formats
+as arguments:
+
+- ``date``
+- ``date-time``
+- ``duration``
+- ``email``
+- ``hostname``
+- ``idn-email``
+- ``idn-hostname``
+- ``ipv4``
+- ``ipv6``
+- ``iri``
+- ``iri-reference``
+- ``json-pointer``
+- ``regex``
+- ``relative-json-pointer``
+- ``time``
+- ``uri``
+- ``uri-reference``
+- ``uri-template``
+- ``uuid``
 
 ``--format-regex``
 ~~~~~~~~~~~~~~~~~~

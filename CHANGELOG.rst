@@ -11,6 +11,12 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2023-05-03)
+- A new option, ``--disable-formats`` replaces and enhances the
+  ``--disable-format`` flag. ``--disable-formats`` takes a format to disable
+  and may be passed multiple times, allowing users to opt out of any specific
+  format checks. ``--disable-format "*"`` can be used to disable all format
+  checking. ``--disable-format`` is still supported, but is deprecated and
+  emits a warning.
 
 0.22.0
 ------
