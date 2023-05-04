@@ -1,26 +1,25 @@
 from __future__ import annotations
 
-import enum
 import os
 import textwrap
-import typing as t
-import warnings
 
 import click
 
-from .catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
-from .checker import SchemaChecker
-from .formats import KNOWN_FORMATS, FormatOptions, RegexFormatBehavior
-from .instance_loader import InstanceLoader
-from .parsers import SUPPORTED_FILE_FORMATS
-from .reporter import REPORTER_BY_NAME, Reporter
-from .schema_loader import (
+from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
+from ..checker import SchemaChecker
+from ..formats import KNOWN_FORMATS, RegexFormatBehavior
+from ..instance_loader import InstanceLoader
+from ..parsers import SUPPORTED_FILE_FORMATS
+from ..reporter import REPORTER_BY_NAME, Reporter
+from ..schema_loader import (
     BuiltinSchemaLoader,
     MetaSchemaLoader,
     SchemaLoader,
     SchemaLoaderBase,
 )
-from .transforms import TRANSFORM_LIBRARY, Transform
+from ..transforms import TRANSFORM_LIBRARY
+from .parse_result import ParseResult, SchemaLoadingMode
+from .warnings import deprecation_warning_callback
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
     f"custom.{k}" for k in CUSTOM_SCHEMA_NAMES
@@ -28,71 +27,6 @@ BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
 BUILTIN_SCHEMA_CHOICES = (
     BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + CUSTOM_SCHEMA_NAMES
 )
-
-
-class SchemaLoadingMode(enum.Enum):
-    filepath = "filepath"
-    builtin = "builtin"
-    metaschema = "metaschema"
-
-
-class ParseResult:
-    def __init__(self) -> None:
-        # primary options: schema + instances
-        self.schema_mode: SchemaLoadingMode = SchemaLoadingMode.filepath
-        self.schema_path: str | None = None
-        self.instancefiles: tuple[str, ...] = ()
-        # cache controls
-        self.disable_cache: bool = False
-        self.cache_filename: str | None = None
-        # filetype detection (JSON, YAML, TOML, etc)
-        self.default_filetype: str = "json"
-        # data-transform (for Azure Pipelines and potentially future transforms)
-        self.data_transform: Transform | None = None
-        # fill default values on instances during validation
-        self.fill_defaults: bool = False
-        # regex format options
-        self.disable_all_formats: bool = False
-        self.disable_formats: tuple[str, ...] = ()
-        self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
-        # error and output controls
-        self.verbosity: int = 1
-        self.traceback_mode: str = "short"
-        self.output_format: str = "text"
-
-    def set_schema(
-        self, schemafile: str | None, builtin_schema: str | None, check_metaschema: bool
-    ) -> None:
-        mutex_arg_count = sum(
-            1 if x else 0 for x in (schemafile, builtin_schema, check_metaschema)
-        )
-        if mutex_arg_count == 0:
-            raise click.UsageError(
-                "Either --schemafile, --builtin-schema, or --check-metaschema "
-                "must be provided"
-            )
-        if mutex_arg_count > 1:
-            raise click.UsageError(
-                "--schemafile, --builtin-schema, and --check-metaschema "
-                "are mutually exclusive"
-            )
-
-        if schemafile:
-            self.schema_mode = SchemaLoadingMode.filepath
-            self.schema_path = schemafile
-        elif builtin_schema:
-            self.schema_mode = SchemaLoadingMode.builtin
-            self.schema_path = builtin_schema
-        else:
-            self.schema_mode = SchemaLoadingMode.metaschema
-
-    @property
-    def format_opts(self) -> FormatOptions:
-        return FormatOptions(
-            enabled=not self.disable_all_formats,
-            regex_behavior=self.format_regex,
-            disabled_formats=self.disable_formats,
-        )
 
 
 def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
@@ -104,25 +38,6 @@ def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
             "always": True,
             "never": False,
         }[value]
-
-
-def deprecation_warning_callback(
-    optstring: str, *, is_flag: bool = False, append_message: str | None = None
-) -> t.Callable[[click.Context, click.Parameter, t.Any], t.Any]:
-    def callback(ctx: click.Context, param: click.Parameter, value: t.Any) -> t.Any:
-        if not value:
-            return value
-        if (is_flag and bool(value) is True) or (value is not None):
-            message = (
-                f"'{optstring}' is deprecated and will be removed in a future release."
-            )
-            if append_message is not None:
-                message += f" {append_message}"
-            warnings.warn(message)
-
-        return value
-
-    return callback
 
 
 @click.command(
