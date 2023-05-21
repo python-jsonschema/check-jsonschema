@@ -473,6 +473,15 @@
       "type": "string",
       "default": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}"
     },
+    "commitMessageLowerCase": {
+      "description": "Lowercase PR- and commit titles.",
+      "type": "string",
+      "enum": [
+        "auto",
+        "never"
+      ],
+      "default": "auto"
+    },
     "commitMessagePrefix": {
       "description": "Prefix to add to start of commit messages and PR titles. Uses a semantic prefix if `semanticCommits` is enabled.",
       "type": "string"
@@ -552,6 +561,16 @@
       "description": "The directory where Renovate stores its containerbase cache. If left empty, Renovate creates a subdirectory within the `cacheDir`.",
       "type": "string"
     },
+    "cpanfile": {
+      "description": "Configuration object for the cpanfile manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)cpanfile$"
+        ]
+      },
+      "$ref": "#"
+    },
     "customEnvVariables": {
       "description": "Custom environment variables for child processes and sidecar Docker containers.",
       "type": "object",
@@ -597,6 +616,16 @@
         "type": "string"
       },
       "default": null
+    },
+    "dependencyDashboardOSVVulnerabilitySummary": {
+      "description": "Control if the Dependency Dashboard issue lists CVEs supplied by [osv.dev](https://osv.dev).",
+      "type": "string",
+      "enum": [
+        "none",
+        "all",
+        "unresolved"
+      ],
+      "default": "none"
     },
     "dependencyDashboardTitle": {
       "description": "Title for the Dependency Dashboard issue.",
@@ -685,8 +714,8 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/|\\.)(Docker|Container)file$",
-          "(^|/)(Docker|Container)file[^/]*$"
+          "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
+          "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
         ]
       },
       "$ref": "#"
@@ -1023,6 +1052,7 @@
           "\\.gradle(\\.kts)?$",
           "(^|/)gradle\\.properties$",
           "(^|/)gradle/.+\\.toml$",
+          "(^|/)buildSrc/.+\\.kt$",
           "\\.versions\\.toml$",
           "(^|/)versions.props$",
           "(^|/)versions.lock$"
@@ -1162,6 +1192,10 @@
           {
             "type": "object",
             "properties": {
+              "description": {
+                "type": "string",
+                "description": "A custom description for this configuration object"
+              },
               "abortIgnoreStatusCodes": {
                 "description": "A list of HTTP status codes safe to ignore even when `abortOnError=true`.",
                 "type": "array",
@@ -1702,6 +1736,10 @@
           {
             "type": "object",
             "properties": {
+              "description": {
+                "type": "string",
+                "description": "A custom description for this configuration object"
+              },
               "allowedVersions": {
                 "description": "A version range or regex pattern capturing allowed versions for dependencies.",
                 "type": "string"
@@ -2070,6 +2108,16 @@
       "default": {},
       "$ref": "#"
     },
+    "pep621": {
+      "description": "Configuration object for the pep621 manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)pyproject\\.toml$"
+        ]
+      },
+      "$ref": "#"
+    },
     "persistRepoData": {
       "description": "If set to `true`: keep repository data between runs instead of deleting the data.",
       "type": "boolean",
@@ -2168,7 +2216,8 @@
         "codecommit",
         "gitea",
         "github",
-        "gitlab"
+        "gitlab",
+        "local"
       ],
       "default": "github"
     },
@@ -2227,6 +2276,10 @@
           {
             "type": "object",
             "properties": {
+              "description": {
+                "type": "string",
+                "description": "A custom description for this configuration object"
+              },
               "commands": {
                 "description": "A list of post-upgrade commands that are executed before a commit is made by Renovate.",
                 "type": "array",
@@ -2514,6 +2567,10 @@
           {
             "type": "object",
             "properties": {
+              "description": {
+                "type": "string",
+                "description": "A custom description for this configuration object"
+              },
               "autoReplaceStringTemplate": {
                 "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `regexManagers` object.",
                 "type": "string"
@@ -2801,6 +2858,7 @@
           "configErrorIssue",
           "deprecationWarningIssues",
           "lockFileErrors",
+          "missingCredentialsError",
           "onboardingClose",
           "prEditedNotification",
           "prIgnoreNotification"
@@ -2975,43 +3033,51 @@
     "versioning": {
       "description": "Versioning to use for filtering and comparisons.",
       "type": "string",
-      "enum": [
-        "aws-machine-image",
-        "azure-rest-api",
-        "bazel-module",
-        "cargo",
-        "composer",
-        "conan",
-        "deb",
-        "debian",
-        "docker",
-        "git",
-        "go-mod-directive",
-        "gradle",
-        "hashicorp",
-        "helm",
-        "hermit",
-        "hex",
-        "ivy",
-        "kubernetes-api",
-        "loose",
-        "maven",
-        "nixpkgs",
-        "node",
-        "npm",
-        "nuget",
-        "pep440",
-        "perl",
-        "poetry",
-        "python",
-        "redhat",
-        "regex",
-        "rez",
-        "ruby",
-        "semver",
-        "semver-coerced",
-        "swift",
-        "ubuntu"
+      "oneOf": [
+        {
+          "enum": [
+            "aws-machine-image",
+            "azure-rest-api",
+            "bazel-module",
+            "cargo",
+            "composer",
+            "conan",
+            "deb",
+            "debian",
+            "docker",
+            "git",
+            "go-mod-directive",
+            "gradle",
+            "hashicorp",
+            "helm",
+            "hermit",
+            "hex",
+            "ivy",
+            "kubernetes-api",
+            "loose",
+            "maven",
+            "nixpkgs",
+            "node",
+            "npm",
+            "nuget",
+            "pep440",
+            "perl",
+            "poetry",
+            "python",
+            "redhat",
+            "regex",
+            "rez",
+            "ruby",
+            "semver",
+            "semver-coerced",
+            "swift",
+            "ubuntu"
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^regex:"
+        }
       ]
     },
     "vulnerabilityAlerts": {
