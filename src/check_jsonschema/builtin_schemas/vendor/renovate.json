@@ -222,7 +222,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)batect(-bundle)?\\.yml$"
+          "(^|/)batect(-bundle)?\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -246,6 +246,17 @@
           "(^|/)WORKSPACE(|\\.bazel)$",
           "\\.bzl$"
         ]
+      },
+      "$ref": "#"
+    },
+    "bazel-module": {
+      "description": "Configuration object for the bazel-module manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)MODULE\\.bazel$"
+        ],
+        "enabled": false
       },
       "$ref": "#"
     },
@@ -418,7 +429,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)\\.circleci/config\\.yml$"
+          "(^|/)\\.circleci/config\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -851,7 +862,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)flux-system/(?:.+/)?gotk-components\\.yaml$"
+          "(^|/)flux-system/(?:.+/)?gotk-components\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -994,7 +1005,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "\\.gitlab-ci\\.yml$"
+          "\\.gitlab-ci\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -1004,7 +1015,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "\\.gitlab-ci\\.yml$"
+          "\\.gitlab-ci\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -1106,7 +1117,7 @@
         },
         "commitMessageTopic": "helm chart {{depName}}",
         "fileMatch": [
-          "(^|/)requirements\\.yaml$"
+          "(^|/)requirements\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -1117,7 +1128,7 @@
       "default": {
         "commitMessageTopic": "helm values {{depName}}",
         "fileMatch": [
-          "(^|/)values\\.yaml$"
+          "(^|/)values\\.ya?ml$"
         ],
         "pinDigests": false
       },
@@ -1132,7 +1143,7 @@
         },
         "commitMessageTopic": "helm chart {{depName}}",
         "fileMatch": [
-          "(^|/)helmfile\\.yaml$"
+          "(^|/)helmfile\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -1154,7 +1165,7 @@
         },
         "commitMessageTopic": "helm chart {{depName}}",
         "fileMatch": [
-          "(^|/)Chart\\.yaml$"
+          "(^|/)Chart\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -1473,7 +1484,7 @@
         "commitMessageTopic": null,
         "commitMessageExtra": null,
         "schedule": [
-          "before 5am on monday"
+          "before 4am on monday"
         ],
         "groupName": null,
         "prBodyDefinitions": {
@@ -1929,7 +1940,7 @@
                 ]
               },
               "matchFiles": {
-                "description": "List of strings to do an exact match against package files with full path. Only works inside a `packageRules` object.",
+                "description": "List of strings to do an exact match against package and lock files with full path. Only works inside a `packageRules` object.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -2421,7 +2432,7 @@
         "commitMessageTopic": "pre-commit hook {{depName}}",
         "enabled": false,
         "fileMatch": [
-          "(^|/)\\.pre-commit-config\\.yaml$"
+          "(^|/)\\.pre-commit-config\\.ya?ml$"
         ],
         "prBodyNotes": [
           "Note: The `pre-commit` manager in Renovate is not supported by the `pre-commit` maintainers or community. Please do not report any problems there, instead [create a Discussion in the Renovate repository](https://github.com/renovatebot/renovate/discussions/new) if you have any questions."
@@ -2965,7 +2976,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "^\\.travis\\.yml$"
+          "^\\.travis\\.ya?ml$"
         ],
         "major": {
           "enabled": false
