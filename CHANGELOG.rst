@@ -11,6 +11,8 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2023-05-30)
+- The schema for enforcing timeout-minutes on GitHub Actions jobs has been
+  updated to allow for workflow call jobs (which cannot have a timeout)
 
 0.23.0
 ------

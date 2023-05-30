@@ -8,19 +8,32 @@
       "patternProperties": {
         "^[_a-zA-Z][a-zA-Z0-9_-]*$": {
           "$comment": "https://help.github.com/en/github/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_id",
-          "type": "object",
-          "properties": {
-            "timeout-minutes": {
-              "$comment": "https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes",
-              "description": "The maximum number of minutes to let a workflow run before GitHub automatically cancels it. Default: 360",
-              "type": "number",
-              "default": 360
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "timeout-minutes": {
+                  "$comment": "https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes",
+                  "description": "The maximum number of minutes to let a workflow run before GitHub automatically cancels it. Default: 360",
+                  "type": "number",
+                  "default": 360
+                }
+              },
+              "required": [
+                "runs-on",
+                "timeout-minutes"
+              ],
+              "additionalProperties": true
+            },
+            {
+              "$comment": "https://docs.github.com/en/actions/learn-github-actions/reusing-workflows#calling-a-reusable-workflow",
+              "type": "object",
+              "required": [
+                "uses"
+              ],
+              "additionalProperties": true
             }
-          },
-          "required": [
-            "timeout-minutes"
-          ],
-          "additionalProperties": true
+          ]
         }
       }
     }
