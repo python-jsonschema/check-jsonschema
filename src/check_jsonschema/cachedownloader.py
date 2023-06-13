@@ -90,7 +90,7 @@ class CacheDownloader:
                 )
             )
         else:
-            return 0
+            return 0.0
 
     def _cache_hit(self, cachefile: str, response: requests.Response) -> bool:
         # no file? miss
