@@ -1051,7 +1051,8 @@
       "default": {
         "fileMatch": [
           "(^|/)go\\.mod$"
-        ]
+        ],
+        "pinDigests": false
       },
       "$ref": "#"
     },

@@ -1061,7 +1061,7 @@
               "description": "Runs your workflow anytime someone creates a deployment, which triggers the deployment event. Deployments created with a commit SHA may not have a Git ref. For information about the REST API, see https://developer.github.com/v3/repos/deployments/."
             },
             "deployment_status": {
-              "$comment": "https://help.github.com/en/github/automating-your-workflow-with-github-actions/events-that-trigger-workflows#deployment-status-event-deployment_status",
+              "$comment": "https://docs.github.com/en/github/automating-your-workflow-with-github-actions/events-that-trigger-workflows",
               "$ref": "#/definitions/eventObject",
               "description": "Runs your workflow anytime a third party provides a deployment status, which triggers the deployment_status event. Deployments created with a commit SHA may not have a Git ref. For information about the REST API, see https://developer.github.com/v3/repos/deployments/#create-a-deployment-status."
             },
@@ -1626,8 +1626,9 @@
                         },
                         "type": {
                           "description": "A string representing the type of the input.",
+                          "$comment": "https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputsinput_idtype",
                           "type": "string",
-                          "enum": ["string", "choice", "boolean", "environment"]
+                          "enum": ["string", "choice", "boolean", "number"]
                         },
                         "options": {
                           "$comment": "https://github.blog/changelog/2021-11-10-github-actions-input-types-for-manual-workflows",
@@ -1644,6 +1645,23 @@
                           "if": {
                             "properties": {
                               "type": {
+                                "const": "string"
+                              }
+                            },
+                            "required": ["type"]
+                          },
+                          "then": {
+                            "properties": {
+                              "default": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "if": {
+                            "properties": {
+                              "type": {
                                 "const": "boolean"
                               }
                             },
@@ -1655,11 +1673,21 @@
                                 "type": "boolean"
                               }
                             }
+                          }
+                        },
+                        {
+                          "if": {
+                            "properties": {
+                              "type": {
+                                "const": "number"
+                              }
+                            },
+                            "required": ["type"]
                           },
-                          "else": {
+                          "then": {
                             "properties": {
                               "default": {
-                                "type": "string"
+                                "type": "number"
                               }
                             }
                           }
