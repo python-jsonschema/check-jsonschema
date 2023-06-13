@@ -9,6 +9,7 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+- Update vendored schemas (2023-06-13)
 - Fix the handling of malformed and missing ``Last-Modified`` headers in the
   caching downloader. Thanks :user:`balihb`! (:issue:`275`)
 
