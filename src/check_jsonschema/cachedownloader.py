@@ -17,7 +17,6 @@ class FailedDownloadError(Exception):
 
 
 class CacheDownloader:
-    _LASTMOD_DEFAULT = "Sun, 01 Jan 1970 00:00:01 GMT"
     _LASTMOD_FMT = "%a, %d %b %Y %H:%M:%S %Z"
 
     # changed in v0.5.0
@@ -83,12 +82,15 @@ class CacheDownloader:
             raise FailedDownloadError("encountered error during download") from e
 
     def _lastmod_from_response(self, response: requests.Response) -> float:
-        return time.mktime(
-            time.strptime(
-                response.headers.get("last-modified", self._LASTMOD_DEFAULT),
-                self._LASTMOD_FMT,
+        if "last-modified" in response.headers:
+            return time.mktime(
+                time.strptime(
+                    response.headers.get("last-modified"),
+                    self._LASTMOD_FMT,
+                )
             )
-        )
+        else:
+            return 0
 
     def _cache_hit(self, cachefile: str, response: requests.Response) -> bool:
         # no file? miss
