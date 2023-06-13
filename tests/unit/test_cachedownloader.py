@@ -205,3 +205,66 @@ def test_cachedownloader_retries_on_bad_data(tmp_path, disable_cache):
         assert not f.exists()
     else:
         assert f.exists()
+
+
+@pytest.mark.parametrize("file_exists", (True, False))
+@pytest.mark.parametrize(
+    "failure_mode", ("header_missing", "header_malformed", "time_overflow")
+)
+def test_cachedownloader_handles_bad_lastmod_header(
+    monkeypatch, tmp_path, file_exists, failure_mode
+):
+    if failure_mode == "header_missing":
+        responses.add(
+            "GET",
+            "https://example.com/schema1.json",
+            headers={},
+            json={},
+            match_querystring=None,
+        )
+    elif failure_mode == "header_malformed":
+        responses.add(
+            "GET",
+            "https://example.com/schema1.json",
+            headers={"Last-Modified": "Jan 2000 00:00:01"},
+            json={},
+            match_querystring=None,
+        )
+    elif failure_mode == "time_overflow":
+        add_default_response()
+
+        def fake_mktime(*args):
+            raise OverflowError("uh-oh")
+
+        monkeypatch.setattr("time.mktime", fake_mktime)
+    else:
+        raise NotImplementedError
+
+    original_file_contents = b'{"foo": "bar"}'
+    f = tmp_path / "schema1.json"
+
+    if file_exists:
+        f.write_bytes(original_file_contents)
+    else:
+        assert not f.exists()
+
+    cd = CacheDownloader(
+        "https://example.com/schema1.json", filename=str(f), cache_dir=str(tmp_path)
+    )
+
+    # if the file already existed, it will not be overwritten by the cachedownloader
+    # so the returned value for both the downloader and a direct file read should be the
+    # original contents
+    if file_exists:
+        with cd.open() as fp:
+            assert fp.read() == original_file_contents
+        assert f.read_bytes() == original_file_contents
+    # otherwise, the file will have been created with new content
+    # both reads will show that new content
+    else:
+        with cd.open() as fp:
+            assert fp.read() == b"{}"
+        assert f.read_bytes() == b"{}"
+
+    # at the end, the file always exists on disk
+    assert f.exists()
