@@ -9,6 +9,8 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+- Fix the handling of malformed and missing ``Last-Modified`` headers in the
+  caching downloader. Thanks :user:`balihb`! (:issue:`275`)
 
 0.23.1
 ------
