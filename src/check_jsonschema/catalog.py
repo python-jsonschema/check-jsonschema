@@ -3,6 +3,10 @@ from __future__ import annotations
 import typing as t
 
 
+def _bitbucket_pipelines_url() -> str:
+    return "https://bitbucket.org/atlassianlabs/atlascode/raw/main/resources/schemas/pipelines-schema.json"  # noqa: E501
+
+
 def _githubusercontent_url(owner: str, repo: str, ref: str, path: str) -> str:
     return f"https://raw.githubusercontent.com/{owner}/{repo}/{ref}/{path}"
 
@@ -35,6 +39,14 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "hook_config": {
             "name": "Validate Bamboo Specs",
             "files": r"^bamboo-specs/.*\.(yml|yaml)$",
+            "types": "yaml",
+        },
+    },
+    "bitbucket-pipelines": {
+        "url": _bitbucket_pipelines_url(),
+        "hook_config": {
+            "name": "Validate Bitbucket Pipelines",
+            "files": r"bitbucket-pipelines\.(yml|yaml)$",
             "types": "yaml",
         },
     },
