@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas (2023-07-11)
+
 0.23.2
 ------
 - Update vendored schemas: github-workflow, gitlab-ci, renovate (2023-06-13)

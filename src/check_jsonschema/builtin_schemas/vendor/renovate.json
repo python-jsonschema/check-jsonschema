@@ -33,9 +33,9 @@
       "default": false
     },
     "allowPostUpgradeCommandTemplating": {
-      "description": "Set this to `true` to allow templating for post-upgrade commands.",
+      "description": "Set this to `false` to disable template compilation for post-upgrade commands.",
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "allowScripts": {
       "description": "Set this to `true` if repositories are allowed to run install scripts.",
@@ -139,6 +139,13 @@
           "type": "string"
         }
       ],
+      "default": null
+    },
+    "autodiscoverTopics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "default": null
     },
     "automerge": {
@@ -255,8 +262,7 @@
       "default": {
         "fileMatch": [
           "(^|/)MODULE\\.bazel$"
-        ],
-        "enabled": false
+        ]
       },
       "$ref": "#"
     },
@@ -582,6 +588,46 @@
       },
       "$ref": "#"
     },
+    "customDatasources": {
+      "description": "Defines custom datasources for usage by managers",
+      "type": "object",
+      "default": {},
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "A custom description for this configuration object"
+              },
+              "defaultRegistryUrlTemplate": {
+                "description": "Template for generating a defaultRegistryUrl for custom datasource",
+                "type": "string",
+                "default": ""
+              },
+              "format": {
+                "description": "Format of the custom datasource",
+                "type": "string",
+                "enum": [
+                  "json"
+                ],
+                "default": "json"
+              },
+              "transformTemplates": {
+                "description": "List of jsonata transformation rules",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              }
+            }
+          }
+        ]
+      }
+    },
     "customEnvVariables": {
       "description": "Custom environment variables for child processes and sidecar Docker containers.",
       "type": "object",
@@ -688,14 +734,6 @@
       },
       "$ref": "#"
     },
-    "docker": {
-      "description": "Configuration object for Docker language.",
-      "type": "object",
-      "default": {
-        "versioning": "docker"
-      },
-      "$ref": "#"
-    },
     "docker-compose": {
       "description": "Configuration object for the docker-compose manager",
       "type": "object",
@@ -711,10 +749,14 @@
       "type": "string",
       "default": "renovate_"
     },
-    "dockerImagePrefix": {
-      "description": "Change this value to override the default Renovate Docker sidecar image name prefix.",
+    "dockerCliOptions": {
+      "description": "Pass CLI flags to `docker run` command when `binarySource=docker`.",
+      "type": "string"
+    },
+    "dockerSidecarImage": {
+      "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "docker.io/containerbase"
+      "default": "ghcr.io/containerbase/sidecar:9.2.1"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -729,12 +771,6 @@
           "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
         ]
       },
-      "$ref": "#"
-    },
-    "dotnet": {
-      "description": "Configuration object for .NET language.",
-      "type": "object",
-      "default": {},
       "$ref": "#"
     },
     "draftPR": {
@@ -822,9 +858,14 @@
       "format": "regex"
     },
     "fetchReleaseNotes": {
-      "description": "Controls if release notes are fetched.",
-      "type": "boolean",
-      "default": true
+      "description": "Controls if and when release notes are fetched.",
+      "type": "string",
+      "enum": [
+        "off",
+        "branch",
+        "pr"
+      ],
+      "default": "pr"
     },
     "fileMatch": {
       "description": "RegEx (`re2`) pattern for matching manager files.",
@@ -885,6 +926,10 @@
       "description": "Disallow maintainers to push to Renovate pull requests when running in fork mode.",
       "type": "boolean",
       "default": false
+    },
+    "forkOrg": {
+      "description": "The preferred organization to create or find forked repositories, when in fork mode.",
+      "type": "string"
     },
     "forkProcessing": {
       "description": "Whether to process forked repositories. By default, all forked repositories are skipped when in `autodiscover` mode.",
@@ -1036,14 +1081,6 @@
       "default": [
         "./..."
       ]
-    },
-    "golang": {
-      "description": "Configuration object for Go language.",
-      "type": "object",
-      "default": {
-        "commitMessageTopic": "module {{depName}}"
-      },
-      "$ref": "#"
     },
     "gomod": {
       "description": "Configuration object for the gomod manager",
@@ -1370,6 +1407,11 @@
       "description": "Ignore versions with unstable SemVer.",
       "type": "boolean"
     },
+    "includeMirrors": {
+      "description": "Whether to process repositories that are mirrors. By default, repositories that are mirrors are skipped.",
+      "type": "boolean",
+      "default": false
+    },
     "includePaths": {
       "description": "Include package files only within these defined paths.",
       "type": "array",
@@ -1393,12 +1435,6 @@
       ],
       "default": "strict"
     },
-    "java": {
-      "description": "Configuration object for all Java package managers.",
-      "type": "object",
-      "default": {},
-      "$ref": "#"
-    },
     "jenkins": {
       "description": "Configuration object for the jenkins manager",
       "type": "object",
@@ -1407,12 +1443,6 @@
           "(^|/)plugins\\.(txt|ya?ml)$"
         ]
       },
-      "$ref": "#"
-    },
-    "js": {
-      "description": "Configuration object for JavaScript language.",
-      "type": "object",
-      "default": {},
       "$ref": "#"
     },
     "jsonnet-bundler": {
@@ -1478,7 +1508,7 @@
       "type": "object",
       "default": {
         "enabled": false,
-        "recreateClosed": true,
+        "recreateWhen": "always",
         "rebaseStalePrs": true,
         "branchTopic": "lock-file-maintenance",
         "commitMessageAction": "Lock file maintenance",
@@ -1601,14 +1631,6 @@
       },
       "$ref": "#"
     },
-    "node": {
-      "description": "Configuration object for Node version renovation.",
-      "type": "object",
-      "default": {
-        "commitMessageTopic": "Node.js"
-      },
-      "$ref": "#"
-    },
     "nodenv": {
       "description": "Configuration object for the nodenv manager",
       "type": "object",
@@ -1627,7 +1649,6 @@
         "fileMatch": [
           "(^|/)package\\.json$"
         ],
-        "rollbackPrs": true,
         "versioning": "npm",
         "digest": {
           "prBodyDefinitions": {
@@ -1848,6 +1869,20 @@
                   }
                 ]
               },
+              "matchCategories": {
+                "description": "List of categories to match (for example: `[\"python\"]`). Valid only within a `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
               "matchConfidence": {
                 "description": "Merge confidence levels to match against (`low`, `neutral`, `high`, `very high`). Valid only within `packageRules` object.",
                 "oneOf": [
@@ -1940,26 +1975,12 @@
                   }
                 ]
               },
-              "matchFiles": {
+              "matchFileNames": {
                 "description": "List of strings to do an exact match against package and lock files with full path. Only works inside a `packageRules` object.",
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
-              },
-              "matchLanguages": {
-                "description": "List of languages to match (e.g. `[\"python\"]`). Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
               },
               "matchManagers": {
                 "description": "List of package managers to match (e.g. `[\"pipenv\"]`). Valid only within a `packageRules` object.",
@@ -2018,13 +2039,6 @@
                     "type": "string"
                   }
                 ]
-              },
-              "matchPaths": {
-                "description": "List of strings or glob patterns to match against package files. Only works inside a `packageRules` object.",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
               },
               "matchSourceUrlPrefixes": {
                 "description": "A list of source URL prefixes to match against, commonly used to group monorepos or packages from the same organization.",
@@ -2135,12 +2149,6 @@
       "type": "boolean",
       "default": false
     },
-    "php": {
-      "description": "Configuration object for PHP.",
-      "type": "object",
-      "default": {},
-      "$ref": "#"
-    },
     "pin": {
       "description": "Configuration to apply when an update type is `pin`.",
       "type": "object",
@@ -2193,7 +2201,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)([\\w-]*)requirements\\.(txt|pip)$"
+          "(^|/)[\\w-]*requirements(-\\w+)?\\.(txt|pip)$"
         ]
       },
       "$ref": "#"
@@ -2236,7 +2244,7 @@
     "platformAutomerge": {
       "description": "Controls if platform-native auto-merge is used.",
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "platformCommit": {
       "description": "Use platform API to perform commits instead of using Git directly.",
@@ -2260,12 +2268,12 @@
         "type": "string",
         "enum": [
           "bundlerConservative",
-          "helmUpdateSubChartArchives",
           "gomodMassage",
-          "gomodUpdateImportPaths",
           "gomodTidy",
           "gomodTidy1.17",
           "gomodTidyE",
+          "gomodUpdateImportPaths",
+          "helmUpdateSubChartArchives",
           "npmDedupe",
           "pnpmDedupe",
           "yarnDedupeFewer",
@@ -2315,7 +2323,9 @@
                 "items": {
                   "type": "string"
                 },
-                "default": []
+                "default": [
+                  "**/*"
+                ]
               }
             }
           }
@@ -2518,12 +2528,6 @@
       },
       "$ref": "#"
     },
-    "python": {
-      "description": "Configuration object for Python.",
-      "type": "object",
-      "default": {},
-      "$ref": "#"
-    },
     "rangeStrategy": {
       "description": "Determines how to modify or update existing ranges.",
       "type": "string",
@@ -2554,10 +2558,15 @@
       ],
       "default": "auto"
     },
-    "recreateClosed": {
+    "recreateWhen": {
       "description": "Recreate PRs even if same ones were closed previously.",
-      "type": "boolean",
-      "default": false
+      "type": "string",
+      "enum": [
+        "auto",
+        "always",
+        "never"
+      ],
+      "default": "auto"
     },
     "redisUrl": {
       "description": "If set, this Redis URL will be used for caching instead of the file system.",
@@ -2742,12 +2751,6 @@
       "type": "boolean",
       "default": false
     },
-    "ruby": {
-      "description": "Configuration object for Ruby language.",
-      "type": "object",
-      "default": {},
-      "$ref": "#"
-    },
     "ruby-version": {
       "description": "Configuration object for the ruby-version manager",
       "type": "object",
@@ -2757,12 +2760,6 @@
         ],
         "versioning": "ruby"
       },
-      "$ref": "#"
-    },
-    "rust": {
-      "description": "Configuration option for Rust package management.",
-      "type": "object",
-      "default": {},
       "$ref": "#"
     },
     "sbt": {
@@ -2868,6 +2865,7 @@
           "artifactErrors",
           "branchAutomergeFailure",
           "configErrorIssue",
+          "dependencyLookupWarnings",
           "deprecationWarningIssues",
           "lockFileErrors",
           "missingCredentialsError",
