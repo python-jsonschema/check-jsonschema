@@ -1,0 +1,11 @@
+options:
+  max-time: 30
+  docker: true
+  size: 2x
+
+pipelines:
+  default:
+    - step:
+        name: Hello world example
+        script:
+          - echo "Hello, World!"

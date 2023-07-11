@@ -74,6 +74,7 @@ SchemaStore and other sources:
 
 - ``vendor.azure-pipelines``
 - ``vendor.bamboo-spec``
+- ``vendor.bitbucket-pipelines``
 - ``vendor.buildkite``
 - ``vendor.dependabot``
 - ``vendor.github-actions``

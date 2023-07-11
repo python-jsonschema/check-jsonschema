@@ -1,0 +1,712 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://bitbucket.org/product/features/pipelines",
+    "title": "Bitbucket Pipelines Schema",
+    "type": "object",
+    "properties": {
+        "image": {
+            "$ref": "#/definitions/image",
+            "default": "atlassian/default-image:latest"
+        },
+        "clone": {
+            "$ref": "#/definitions/clone"
+        },
+        "options": {
+            "$ref": "#/definitions/options"
+        },
+        "definitions": {
+            "$ref": "#/definitions/definitions"
+        },
+        "pipelines": {
+            "$ref": "#/definitions/pipelines"
+        },
+        "export": {
+            "type": "boolean",
+            "title": "Enable pipelines config sharing",
+            "description": "Allows other Bitbucket repositories to import pipeline configurations from this file. A bitbucket-pipelines.yml can't contain both an `import` and an `export` property"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "pipelines"
+    ],
+    "definitions": {
+        "pipelines": {
+            "type": "object",
+            "title": "Build pipelines",
+            "description": "The start of your pipelines definitions. Under this keyword you must define your build pipelines using at least one of the following:\n\n  * default (for all branches that don't match any of the following)\n  * branches (Git and Mercurial)\n  * tags (Git)\n  * bookmarks (Mercurial)",
+            "properties": {
+                "branches": {
+                    "type": "object",
+                    "title": "Branch-specific build pipelines",
+                    "description": "Defines a section for all branch-specific build pipelines. The names or expressions in this section are matched against:\n\n  * branches in your Git repository\n  * named branches in your Mercurial repository\n\nYou can use glob patterns for handling the branch names.",
+                    "additionalProperties": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/steps"
+                            },
+                            {
+                                "$ref": "#/definitions/import"
+                            }
+                        ]
+                    },
+                    "minProperties": 1
+                },
+                "bookmarks": {
+                    "type": "object",
+                    "title": "Bookmark-specific build pipelines (to be used in Mercurial repositories)",
+                    "description": "Defines all bookmark-specific build pipelines. \n\nThe names or expressions in this section are matched against bookmarks in your Mercurial repository. \n\nYou can use glob patterns for handling the tag names.",
+                    "additionalProperties": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/steps"
+                            },
+                            {
+                                "$ref": "#/definitions/import"
+                            }
+                        ]
+                    },
+                    "minProperties": 1
+                },
+                "custom": {
+                    "type": "object",
+                    "title": "Manually triggered build pipelines",
+                    "description": "Defines pipelines that can only be triggered manually or scheduled from the Bitbucket Cloud interface.",
+                    "additionalProperties": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/stepsWithVariables"
+                            },
+                            {
+                                "$ref": "#/definitions/import"
+                            }
+                        ]
+                    },
+                    "minProperties": 1
+                },
+                "tags": {
+                    "type": "object",
+                    "title": "Tag-specific build pipelines",
+                    "description": "Defines all tag-specific build pipelines. \n\nThe names or expressions in this section are matched against tags and annotated tags in your Git repository. \n\nYou can use glob patterns for handling the tag names.",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/steps"
+                    },
+                    "minProperties": 1
+                },
+                "pull-requests": {
+                    "type": "object",
+                    "title": "Pull-request-specific build pipelines",
+                    "description": "A special pipeline which only runs on pull requests. Pull-requests has the same level of indentation as branches.\n\nThis type of pipeline runs a little differently to other pipelines. When it's triggered, we'll merge the destination branch into your working branch before it runs. If the merge fails we will stop the pipeline.",
+                    "additionalProperties": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/steps"
+                            },
+                            {
+                                "$ref": "#/definitions/import"
+                            }
+                        ]
+                    },
+                    "minProperties": 1
+                },
+                "default": {
+                    "title": "Default build pipeline for branches",
+                    "description": "The default pipeline runs on every push to the repository, unless a branch-specific pipeline is defined. \nYou can define a branch pipeline in the branches section.\n\nNote: The default pipeline doesn't run on tags or bookmarks.",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/steps"
+                        },
+                        {
+                            "$ref": "#/definitions/import"
+                        }
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "import": {
+            "type": "object",
+            "properties": {
+                "import": {
+                    "type": "string",
+                    "pattern": "^[^:]+:[^:]+:[^:]+$",
+                    "title": "Location to import pipelines config from",
+                    "description": "The import needs to match the following format: {repo-slug|repo-uuid}:{tag|branch-name}:{pipeline-name}"
+                }
+            },
+            "additionalProperties": false
+        },
+        "stepsWithVariables": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "variables": {
+                                "type": "array",
+                                "description": "List of variables for the custom pipeline",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "description": "Name of a variable for the custom pipeline",
+                                            "minLength": 1
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                },
+                                "minItems": 1
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "step": {
+                                "$ref": "#/definitions/step"
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "parallel": {
+                                "$ref": "#/definitions/parallel"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ]
+            },
+            "minItems": 1
+        },
+        "steps": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "step": {
+                                "$ref": "#/definitions/step"
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "parallel": {
+                                "$ref": "#/definitions/parallel"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ]
+            },
+            "minItems": 1
+        },
+        "step": {
+            "type": "object",
+            "title": "Build execution unit",
+            "description": "Define s a build execution unit. \n\nSteps are executed in the order that they appear in the bitbucket-pipelines.yml file. \nYou can use up to 10 steps in a pipeline.",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "title": "Name of the step",
+                    "description": "You can add a name to a step to make displays and reports easier to read and understand.",
+                    "minLength": 1
+                },
+                "runs-on": {
+                    "$ref": "#/definitions/runs-on",
+                    "description": "self-hosted runner labels"
+                },
+                "image": {
+                    "$ref": "#/definitions/image"
+                },
+                "max-time": {
+                    "$ref": "#/definitions/max-time"
+                },
+                "size": {
+                    "$ref": "#/definitions/size"
+                },
+                "script": {
+                    "$ref": "#/definitions/script",
+                    "description": "Commands to execute in the step"
+                },
+                "after-script": {
+                    "$ref": "#/definitions/script",
+                    "title": "Commands to execute after the step succeeds or fails",
+                    "description": "Commands inside an after-script section will run when the step succeeds or fails. This could be useful for clean up commands, test coverage, notifications, or rollbacks you might want to run, especially if your after-script uses the value of BITBUCKET_EXIT_CODE.\n\nNote: If any commands in the after-script section fail:\n\n* we won't run any more commands in that section\n\n* it will not effect the reported status of the step."
+                },
+                "artifacts": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "description": "Glob pattern for the path to the artifacts",
+                                "minLength": 1
+                            }
+                        },
+                        {
+                            "type": "object",
+                            "title": "Files produced by a step to share with a following step",
+                            "description": "Defines files to be shared from one step to a later step in your pipeline. Artifacts can be defined using glob patterns.",
+                            "properties": {
+                                "download": {
+                                    "type": "boolean",
+                                    "description": "Indicates whether to download artifact in the step"
+                                },
+                                "paths": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "description": "Glob pattern for the path to the artifacts",
+                                        "minLength": 1
+                                    }
+                                }
+                            },
+                            "required": [
+                                "paths"
+                            ],
+                            "minItems": 1
+                        }
+                    ]
+                },
+                "caches": {
+                    "type": "array",
+                    "description": "Caches enabled for the step",
+                    "items": {
+                        "type": "string",
+                        "description": "Name of the cache",
+                        "minLength": 1
+                    },
+                    "minItems": 1
+                },
+                "clone": {
+                    "$ref": "#/definitions/clone"
+                },
+                "services": {
+                    "type": "array",
+                    "description": "Services enabled for the step",
+                    "items": {
+                        "type": "string",
+                        "description": "Name of the service",
+                        "minLength": 1
+                    },
+                    "minItems": 1,
+                    "maxItems": 5
+                },
+                "trigger": {
+                    "type": "string",
+                    "title": "Step trigger type",
+                    "description": "Specifies whether a step will run automatically or only after someone manually triggers it. You can define the trigger type as manual or automatic. If the trigger type is not defined, the step defaults to running automatically. The first step cannot be manual. If you want to have a whole pipeline only run from a manual trigger then use a custom pipeline.",
+                    "enum": [
+                        "automatic",
+                        "manual"
+                    ],
+                    "default": "automatic"
+                },
+                "deployment": {
+                    "type": "string",
+                    "title": "Type of environment for the deployment step",
+                    "description": "Sets the type of environment for your deployment step, used in the Deployments dashboard.",
+                    "minLength": 1
+                },
+                "condition": {
+                    "type": "object",
+                    "title": "Execute step when only condition is satisfied",
+                    "description": "Allows for steps to execute when certain conditions or rules are satisfied",
+                    "properties": {
+                        "changesets": {
+                            "type": "object",
+                            "properties": {
+                                "includePaths": {
+                                    "type": "array",
+                                    "title": "List of paths for changeset condition."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "script"
+            ],
+            "additionalProperties": false
+        },
+        "parallel": {
+            "type": "array",
+            "title": "Set of steps to run concurrently",
+            "description": "Parallel steps enable you to build and test faster, by running a set of steps at the same time.\n\nThe total number of build minutes used by a pipeline will not change if you make the steps parallel, but you'll be able to see the results sooner.\n\nThere is a limit of 10 for the total number of steps you can run in a pipeline, regardless of whether they are running in parallel or serial.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "step": {
+                        "$ref": "#/definitions/step"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "minItems": 2
+        },
+        "script": {
+            "description": "Contains a list of commands that are executed in sequence. \n\nScripts are executed in the order in which they appear in a step. \n\nWe recommend that you move large scripts to a separate script file and call it from the bitbucket-pipelines.yml.",
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "description": "Command to execute",
+                        "minLength": 1
+                    },
+                    {
+                        "$ref": "#/definitions/pipe"
+                    }
+                ]
+            },
+            "minItems": 1
+        },
+        "runs-on": {
+            "description": "self-hosted runner labels",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "description": "self-hosted runner label",
+                "minLength": 1
+            }
+        },
+        "pipe": {
+            "type": "object",
+            "title": "Pipe to execute",
+            "description": "Pipes make complex tasks easier, by doing a lot of the work behind the scenes.\nThis means you can just select which pipe you want to use, and supply the necessary variables.\nYou can look at the repository for the pipe to see what commands it is running.\n\nLearn more about pipes: https://confluence.atlassian.com/bitbucket/pipes-958765631.html",
+            "properties": {
+                "pipe": {
+                    "type": "string",
+                    "title": "Pipe identifier",
+                    "description": "Pipes make complex tasks easier, by doing a lot of the work behind the scenes.\nThis means you can just select which pipe you want to use, and supply the necessary variables.\nYou can look at the repository for the pipe to see what commands it is running.\n\nLearn more about pipes: https://confluence.atlassian.com/bitbucket/pipes-958765631.html",
+                    "minLength": 1
+                },
+                "variables": {
+                    "type": "object",
+                    "description": "Environment variables passed to the pipe",
+                    "additionalProperties": {
+                        "type": "string",
+                        "description": "Environment variable value",
+                        "minLength": 1
+                    },
+                    "minProperties": 1
+                }
+            },
+            "required": [
+                "pipe"
+            ],
+            "additionalProperties": false
+        },
+        "definitions": {
+            "type": "object",
+            "title": "Defines resources used elsewhere in the pipeline configuration",
+            "description": "Define resources used elsewhere in your pipeline configuration. \nResources can include:\n\n* services that run in separate Docker containers – see https://confluence.atlassian.com/x/gC8kN\n\n* caches – see https://confluence.atlassian.com/x/bA1hNQ#Cachingdependencies-custom-caches\n\n* YAML anchors - a way to define a chunk of your yaml for easy re-use - see https://confluence.atlassian.com/bitbucket/yaml-anchors-960154027.html",
+            "properties": {
+                "services": {
+                    "$ref": "#/definitions/services"
+                },
+                "caches": {
+                    "$ref": "#/definitions/caches"
+                },
+                "pipelines": {
+                    "$ref": "#/definitions/pipelinesUnderDefinitions"
+                }
+            }
+        },
+        "pipelinesUnderDefinitions": {
+            "type": "object",
+            "title": "Pipeline definitions that are defined to be used elsewhere",
+            "description": "Defines pipelines that can be used under root level pipelines section.",
+            "additionalProperties": {
+                "anyOf": [
+                    {
+                        "$ref": "#/definitions/stepsWithVariables"
+                    }
+                ]
+            },
+            "minProperties": 1
+        },
+        "services": {
+            "type": "object",
+            "title": "Defines services that run in separate Docker containers",
+            "description": "Rather than trying to build all the resources you might need into one large image, we can spin up separate docker containers for services. This will tend to speed up the build, and makes it very easy to change a single service without having to redo your whole image.",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "image": {
+                        "$ref": "#/definitions/image"
+                    },
+                    "variables": {
+                        "type": "object",
+                        "description": "Environment variables passed to the service container",
+                        "additionalProperties": {
+                            "type": "string",
+                            "description": "Environment variable value",
+                            "minLength": 1
+                        },
+                        "minProperties": 1
+                    },
+                    "memory": {
+                        "type": "integer",
+                        "description": "Memory limit for the service container, in megabytes",
+                        "minimum": 128,
+                        "default": 1024
+                    }
+                }
+            }
+        },
+        "cache-key-files": {
+            "type": "array",
+            "title": "Cache key",
+            "description": "Checksum of these file paths will be used to generate the cache key",
+            "items": {
+                "type": "string",
+                "description": "Glob pattern for the cache key files",
+                "minLength": 1
+            }
+        },
+        "caches": {
+            "type": "object",
+            "title": "Defines custom caches to be used by pipelines.",
+            "description": "Caching build dependencies and directories enables faster builds and reduces the number of consumed build minutes.\n\nLearn more about caches: https://support.atlassian.com/bitbucket-cloud/docs/cache-dependencies",
+            "patternProperties": {
+                "^(?!-)[-a-z0-9]{0,49}[a-z0-9]$": {
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "title": "Path to the directory to be cached",
+                            "description": "Path to the directory to be cached, can be absolute or relative to the clone directory",
+                            "minLength": 1
+                        },
+                        {
+                            "type": "object",
+                            "title": "Caches",
+                            "description": "Cache name",
+                            "minLength": 2,
+                            "properties": {
+                                "key": {
+                                    "type": "object",
+                                    "title": "Cache key",
+                                    "description": "Checksum of these file paths will be used to generate the cache key",
+                                    "properties": {
+                                        "files": {
+                                            "$ref": "#/definitions/cache-key-files"
+                                        }
+                                    }
+                                },
+                                "path": {
+                                    "type": "string",
+                                    "title": "Cache path",
+                                    "description": "Path to the directory to be cached, can be absolute or relative to the clone directory",
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "key",
+                                "path"
+                            ],
+                            "additionalProperties": false
+                        }
+                    ]
+                }
+            },
+            "not": {
+                "required": [
+                    "docker"
+                ]
+            },
+            "additionalProperties": false
+        },
+        "options": {
+            "type": "object",
+            "title": "Global settings that apply to all pipelines",
+            "description": "Contains global settings that apply to all your pipelines. The main keyword you'd use here is max-time.",
+            "properties": {
+                "docker": {
+                    "type": "boolean",
+                    "description": "A flag to add Docker to all build steps in all pipelines"
+                },
+                "max-time": {
+                    "$ref": "#/definitions/max-time"
+                },
+                "size": {
+                    "$ref": "#/definitions/size"
+                }
+            },
+            "additionalProperties": false
+        },
+        "max-time": {
+            "type": "integer",
+            "description": "Maximum amount of minutes a step can execute",
+            "minimum": 1,
+            "maximum": 120,
+            "default": 120
+        },
+        "size": {
+            "type": "string",
+            "title": "Multiplier of the resources allocated to a pipeline step",
+            "description": "You can allocate additional resources to a step, or to the whole pipeline. \nBy specifying the size of 2x, you'll have double the resources available (eg. 4GB memory → 8GB memory).\n\nAt this time, valid sizes are 1x and 2x.",
+            "enum": [
+                "1x",
+                "2x"
+            ],
+            "default": "1x"
+        },
+        "clone": {
+            "type": "object",
+            "title": "Contains settings to clone the repository into a container",
+            "description": "Contains settings for when we clone your repository into a container. Settings here include:\n\n* lfs - Support for Git lfs\n\n* depth - the depth of the Git clone.",
+            "properties": {
+                "depth": {
+                    "description": "Depth of Git clones for all pipelines (supported only for Git repositories)",
+                    "oneOf": [
+                        {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        {
+                            "const": "full"
+                        }
+                    ],
+                    "default": 50
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enables cloning of the repository",
+                    "default": true
+                },
+                "lfs": {
+                    "type": "boolean",
+                    "description": "Enables the download of LFS files in the clone (supported only for Git repositories)",
+                    "default": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "runAsUser": {
+            "type": "integer",
+            "title": "The UID of a user in the docker image to run as",
+            "description": "Overrides image's default user, specified user UID must be an existing user in the image with a valid home directory"
+        },
+        "simpleImage": {
+            "type": "string",
+            "title": "Name of the Docker image which may or may not include registry URL, tag, and digest value",
+            "description": "The Docker container to run your builds.\n\nsee: https://confluence.atlassian.com/x/kYU5Lw for details",
+            "minLength": 1
+        },
+        "imageWithCustomUser": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/simpleImage"
+                },
+                "run-as-user": {
+                    "$ref": "#/definitions/runAsUser"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "additionalProperties": false
+        },
+        "privateImage": {
+            "type": "object",
+            "description": "A docker image hosted in a private repository",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/simpleImage"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "Username to use to fetch the Docker image",
+                    "minLength": 1
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password to use to fetch the Docker image",
+                    "minLength": 1
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email to use to fetch the Docker image",
+                    "format": "email",
+                    "minLength": 1
+                },
+                "run-as-user": {
+                    "$ref": "#/definitions/runAsUser"
+                }
+            },
+            "required": [
+                "name",
+                "username",
+                "password"
+            ],
+            "additionalProperties": false
+        },
+        "awsImage": {
+            "type": "object",
+            "description": "A docker image hosted by AWS ECR",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/simpleImage"
+                },
+                "aws": {
+                    "type": "object",
+                    "description": "AWS credentials",
+                    "properties": {
+                        "access-key": {
+                            "type": "string",
+                            "description": "AWS Access Key",
+                            "minLength": 1
+                        },
+                        "secret-key": {
+                            "type": "string",
+                            "description": "AWS Secret Key",
+                            "minLength": 1
+                        }
+                    },
+                    "required": [
+                        "access-key",
+                        "secret-key"
+                    ],
+                    "additionalProperties": false
+                },
+                "run-as-user": {
+                    "$ref": "#/definitions/runAsUser"
+                }
+            },
+            "required": [
+                "name",
+                "aws"
+            ],
+            "additionalProperties": false
+        },
+        "image": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/simpleImage"
+                },
+                {
+                    "$ref": "#/definitions/imageWithCustomUser"
+                },
+                {
+                    "$ref": "#/definitions/privateImage"
+                },
+                {
+                    "$ref": "#/definitions/awsImage"
+                }
+            ]
+        }
+    }
+}
