@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-07-11)
+0.23.3
+------
+
+- Update vendored schemas: buildkite, dependabot, github-workflows, gitlab-ci,
+  readthedocs, renovate (2023-07-11)
 - Add Bitbucket Pipelines schema and pre-commit hook. Thanks :user:`djgoku`!
   (:pr:`282`)
 
