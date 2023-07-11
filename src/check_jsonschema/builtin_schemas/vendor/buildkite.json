@@ -1,6 +1,6 @@
 {
   "title": "JSON schema for Buildkite pipeline configuration files",
-  "$schema": "http://json-schema.org/draft-06/schema",
+  "$schema": "http://json-schema.org/draft-06/schema#",
   "fileMatch": [
     "buildkite.yml",
     "buildkite.yaml",
@@ -1221,6 +1221,9 @@
         "identifier": {
           "$ref": "#/definitions/commonOptions/identifier"
         },
+        "if": {
+          "$ref": "#/definitions/commonOptions/if"
+        },
         "key": {
           "$ref": "#/definitions/commonOptions/key"
         },
@@ -1241,6 +1244,9 @@
               { "$ref": "#/definitions/nestedCommandStep" },
               { "$ref": "#/definitions/triggerStep" },
               { "$ref": "#/definitions/nestedTriggerStep" },
+              { "$ref": "#/definitions/stringInputStep" },
+              { "$ref": "#/definitions/inputStep" },
+              { "$ref": "#/definitions/nestedInputStep" },
               { "$ref": "#/definitions/stringWaitStep" },
               { "$ref": "#/definitions/waitStep" },
               { "$ref": "#/definitions/nestedWaitStep" }
