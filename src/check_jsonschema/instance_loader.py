@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pathlib
+import types
 import typing as t
 
 from .parsers import ParseError, ParserSet
@@ -32,5 +33,7 @@ class InstanceLoader:
             except ParseError as err:
                 data = err
             else:
+                if isinstance(data, types.GeneratorType):
+                    data = list(data)
                 data = self._data_transform(data)
             yield (path, data)
