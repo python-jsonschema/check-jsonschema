@@ -756,7 +756,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.2.1"
+      "default": "ghcr.io/containerbase/sidecar:9.5.2"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1762,7 +1762,7 @@
       "default": false
     },
     "packageRules": {
-      "description": "Rules for matching package names.",
+      "description": "Rules for matching packages.",
       "type": "array",
       "items": {
         "allOf": [
@@ -2358,7 +2358,11 @@
         "Change": "`{{{displayFrom}}}` -> `{{{displayTo}}}`",
         "Pending": "{{{displayPending}}}",
         "References": "{{{references}}}",
-        "Package file": "{{{packageFile}}}"
+        "Package file": "{{{packageFile}}}",
+        "Age": "[![age](https://developer.mend.io/api/mc/badges/age/{{datasource}}/{{replace '/' '%2f' depName}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/)",
+        "Adoption": "[![adoption](https://developer.mend.io/api/mc/badges/adoption/{{datasource}}/{{replace '/' '%2f' depName}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/)",
+        "Passing": "[![passing](https://developer.mend.io/api/mc/badges/compatibility/{{datasource}}/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/)",
+        "Confidence": "[![confidence](https://developer.mend.io/api/mc/badges/confidence/{{datasource}}/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/)"
       }
     },
     "prBodyNotes": {
