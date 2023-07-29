@@ -6,7 +6,7 @@ import urllib.parse
 
 import referencing
 import requests
-from referencing.jsonschema import DRAFT202012
+from referencing.jsonschema import DRAFT202012, Schema
 
 from ..parsers import ParserSet
 from ..utils import filename2path
@@ -18,7 +18,9 @@ def make_reference_registry(
     schema_resource = referencing.Resource.from_contents(
         schema, default_specification=DRAFT202012
     )
-    registry = referencing.Registry(
+    # mypy does not recognize that Registry is an `attrs` class and has `retrieve` as an
+    # argument to its implicit initializer
+    registry: referencing.Registry = referencing.Registry(  # type: ignore[call-arg]
         retrieve=create_retrieve_callable(parsers, schema_uri)
     )
 
@@ -34,8 +36,8 @@ def make_reference_registry(
 
 def create_retrieve_callable(
     parser_set: ParserSet, schema_uri: str | None
-) -> t.Callable[[str], referencing.Resource]:
-    def get_local_file(uri: str):
+) -> t.Callable[[str], referencing.Resource[Schema]]:
+    def get_local_file(uri: str) -> t.Any:
         path = pathlib.Path(uri)
         if not path.is_absolute():
             if schema_uri is None:
@@ -48,7 +50,7 @@ def create_retrieve_callable(
             path = schema_path.parent / path
         return parser_set.parse_file(path, "json")
 
-    def retrieve_reference(uri: str) -> referencing.Resource:
+    def retrieve_reference(uri: str) -> referencing.Resource[Schema]:
         scheme = urllib.parse.urlsplit(uri).scheme
         if scheme in ("http", "https"):
             data = requests.get(uri, stream=True)

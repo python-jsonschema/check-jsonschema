@@ -65,7 +65,7 @@ class ParserSet:
             }
 
     def get(
-        self, path: pathlib.Path, default_filetype: str
+        self, path: pathlib.Path | str, default_filetype: str
     ) -> t.Callable[[t.BinaryIO], t.Any]:
         filetype = path_to_type(path, default_type=default_filetype)
 
