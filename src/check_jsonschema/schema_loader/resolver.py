@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import pathlib
 import typing as t
 import urllib.parse
 
@@ -38,25 +37,22 @@ def create_retrieve_callable(
     parser_set: ParserSet, schema_uri: str | None
 ) -> t.Callable[[str], referencing.Resource[Schema]]:
     def get_local_file(uri: str) -> t.Any:
-        path = pathlib.Path(uri)
-        if not path.is_absolute():
-            if schema_uri is None:
-                raise referencing.exceptions.Unretrievable(
-                    f"Cannot retrieve schema reference data for '{uri}' from "
-                    "local filesystem. "
-                    "The path appears relative, but there is no known local base path."
-                )
-            schema_path = filename2path(schema_uri)
-            path = schema_path.parent / path
+        path = filename2path(uri)
         return parser_set.parse_file(path, "json")
 
     def retrieve_reference(uri: str) -> referencing.Resource[Schema]:
         scheme = urllib.parse.urlsplit(uri).scheme
-        if scheme in ("http", "https"):
-            data = requests.get(uri, stream=True)
-            parsed_object = parser_set.parse_data_with_path(data.raw, uri, "json")
+        if scheme == "" and schema_uri is not None:
+            full_uri = urllib.parse.urljoin(schema_uri, uri)
         else:
-            parsed_object = get_local_file(uri)
+            full_uri = uri
+
+        full_uri_scheme = urllib.parse.urlsplit(full_uri).scheme
+        if full_uri_scheme in ("http", "https"):
+            data = requests.get(full_uri, stream=True)
+            parsed_object = parser_set.parse_data_with_path(data.raw, full_uri, "json")
+        else:
+            parsed_object = get_local_file(full_uri)
 
         return referencing.Resource.from_contents(
             parsed_object, default_specification=DRAFT202012
