@@ -30,7 +30,7 @@ class LocalSchemaReader:
         self.filename = str(self.path)
         self.parsers = ParserSet()
 
-    def get_ref_base(self) -> str:
+    def get_retrieval_uri(self) -> str:
         return self.path.as_uri()
 
     def _read_impl(self) -> t.Any:
@@ -55,7 +55,7 @@ class HttpSchemaReader:
             validation_callback=json.loads,
         )
 
-    def get_ref_base(self) -> str:
+    def get_retrieval_uri(self) -> str:
         return self.url
 
     def _read_impl(self) -> t.Any:

@@ -100,8 +100,8 @@ class SchemaLoader(SchemaLoaderBase):
                 f"detected parsed URL had an unrecognized scheme: {self.url_info}"
             )
 
-    def get_schema_ref_base(self) -> str | None:
-        return self.reader.get_ref_base()
+    def get_schema_retrieval_uri(self) -> str | None:
+        return self.reader.get_retrieval_uri()
 
     def get_schema(self) -> dict[str, t.Any]:
         return self.reader.read_schema()
@@ -113,7 +113,7 @@ class SchemaLoader(SchemaLoaderBase):
         format_opts: FormatOptions,
         fill_defaults: bool,
     ) -> jsonschema.Validator:
-        schema_uri = self.get_schema_ref_base()
+        retrieval_uri = self.get_schema_retrieval_uri()
         schema = self.get_schema()
 
         schema_dialect = schema.get("$schema")
@@ -123,7 +123,7 @@ class SchemaLoader(SchemaLoaderBase):
 
         # reference resolution
         # with support for YAML, TOML, and other formats from the parsers
-        reference_registry = make_reference_registry(self._parsers, schema_uri, schema)
+        reference_registry = make_reference_registry(self._parsers, retrieval_uri, schema)
 
         # get the correct validator class and check the schema under its metaschema
         validator_cls = jsonschema.validators.validator_for(schema)
@@ -147,7 +147,7 @@ class BuiltinSchemaLoader(SchemaLoader):
         self.schema_name = schema_name
         self._parsers = ParserSet()
 
-    def get_schema_ref_base(self) -> str | None:
+    def get_schema_retrieval_uri(self) -> str | None:
         return None
 
     def get_schema(self) -> dict[str, t.Any]:
