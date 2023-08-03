@@ -123,7 +123,9 @@ class SchemaLoader(SchemaLoaderBase):
 
         # reference resolution
         # with support for YAML, TOML, and other formats from the parsers
-        reference_registry = make_reference_registry(self._parsers, retrieval_uri, schema)
+        reference_registry = make_reference_registry(
+            self._parsers, retrieval_uri, schema
+        )
 
         # get the correct validator class and check the schema under its metaschema
         validator_cls = jsonschema.validators.validator_for(schema)
