@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-08-08)
+0.24.0
+------
+
+- Update vendored schemas: github-actions, gitlab-ci, readthedocs, renovate,
+  travis (2023-08-08)
 - Remove support for python3.7
 - The minimum supported version of the `jsonschema` library is now `4.18.0`,
   which introduces new `$ref` resolution behavior and fixes. That behavior is
