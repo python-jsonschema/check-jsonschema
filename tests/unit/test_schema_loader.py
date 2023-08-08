@@ -2,6 +2,7 @@ import os
 import pathlib
 
 import pytest
+import responses
 
 from check_jsonschema.schema_loader import SchemaLoader, SchemaParseError
 from check_jsonschema.schema_loader.readers import HttpSchemaReader, LocalSchemaReader
@@ -40,12 +41,12 @@ def test_schemaloader_path_handling_relative_local_path(in_tmp_dir, filename):
     [
         "schema.yaml",
         "schema.yml",
+        "https://foo.example.com/schema.yaml",
+        "https://foo.example.com/schema.yml",
     ],
 )
-def test_schemaloader_local_yaml_data(tmp_path, filename):
-    f = tmp_path / filename
-    f.write_text(
-        """
+def test_schemaloader_yaml_data(tmp_path, filename):
+    schema_text = """
 ---
 "$schema": https://json-schema.org/draft/2020-12/schema
 type: object
@@ -60,8 +61,14 @@ properties:
       c:
         type: string
 """
-    )
-    sl = SchemaLoader(str(f))
+    if filename.startswith("http"):
+        responses.add("GET", filename, body=schema_text)
+        path = filename
+    else:
+        f = tmp_path / filename
+        f.write_text(schema_text)
+        path = str(f)
+    sl = SchemaLoader(path)
     schema = sl.get_schema()
     assert schema == {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
