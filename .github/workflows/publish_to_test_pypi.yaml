@@ -6,6 +6,7 @@ on:
       devNumber:
         required: false
         type: number
+        description: 'The number to use as a ".devN" suffix. Defaults to 1.'
 
   push:
     tags: ["*"]
