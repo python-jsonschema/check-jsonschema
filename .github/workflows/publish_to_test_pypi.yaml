@@ -24,12 +24,12 @@ jobs:
       - run: python -m pip install build
 
       - name: Set dev version prior to upload (auto)
-        if: ${{ github.events.inputs.devNumber == '' }}
+        if: ${{ github.event.inputs.devNumber == '' }}
         run: python ./scripts/set-dev-version.py
 
       - name: Set dev version prior to upload (workflow_dispatch)
-        if: ${{ github.events.inputs.devNumber != '' }}
-        run: python ./scripts/set-dev-version.py -n ${{ github.events.inputs.devNumber }}
+        if: ${{ github.event.inputs.devNumber != '' }}
+        run: python ./scripts/set-dev-version.py -n ${{ github.event.inputs.devNumber }}
 
       - run: python -m build .
 
