@@ -48,7 +48,7 @@ class SchemaChecker:
 
     def get_validator(
         self, path: pathlib.Path, doc: dict[str, t.Any]
-    ) -> jsonschema.Validator:
+    ) -> jsonschema.protocols.Validator:
         try:
             return self._schema_loader.get_validator(
                 path, doc, self._format_opts, self._fill_defaults

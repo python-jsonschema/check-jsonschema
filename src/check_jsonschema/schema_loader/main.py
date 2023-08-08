@@ -17,7 +17,7 @@ from .resolver import make_reference_registry
 
 
 def _extend_with_default(
-    validator_class: type[jsonschema.Validator],
+    validator_class: type[jsonschema.protocols.Validator],
 ) -> type[jsonschema.Validator]:
     validate_properties = validator_class.VALIDATORS["properties"]
 
@@ -51,7 +51,7 @@ class SchemaLoaderBase:
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
         fill_defaults: bool,
-    ) -> jsonschema.Validator:
+    ) -> jsonschema.protocols.Validator:
         raise NotImplementedError
 
 
@@ -112,7 +112,7 @@ class SchemaLoader(SchemaLoaderBase):
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
         fill_defaults: bool,
-    ) -> jsonschema.Validator:
+    ) -> jsonschema.protocols.Validator:
         retrieval_uri = self.get_schema_retrieval_uri()
         schema = self.get_schema()
 
@@ -141,7 +141,7 @@ class SchemaLoader(SchemaLoaderBase):
             registry=reference_registry,
             format_checker=format_checker,
         )
-        return t.cast(jsonschema.Validator, validator)
+        return t.cast(jsonschema.protocols.Validator, validator)
 
 
 class BuiltinSchemaLoader(SchemaLoader):
@@ -163,7 +163,7 @@ class MetaSchemaLoader(SchemaLoaderBase):
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
         fill_defaults: bool,
-    ) -> jsonschema.Validator:
+    ) -> jsonschema.protocols.Validator:
         schema_validator = jsonschema.validators.validator_for(instance_doc)
         meta_validator_class = jsonschema.validators.validator_for(
             schema_validator.META_SCHEMA, default=schema_validator
