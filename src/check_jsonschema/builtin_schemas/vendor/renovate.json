@@ -142,6 +142,7 @@
       "default": null
     },
     "autodiscoverTopics": {
+      "description": "Filter the list of autodiscovered repositories by topics.",
       "type": "array",
       "items": {
         "type": "string"
@@ -611,7 +612,8 @@
                 "description": "Format of the custom datasource",
                 "type": "string",
                 "enum": [
-                  "json"
+                  "json",
+                  "plain"
                 ],
                 "default": "json"
               },
@@ -756,7 +758,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.5.2"
+      "default": "ghcr.io/containerbase/sidecar:9.8.7"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1855,6 +1857,20 @@
                   }
                 ]
               },
+              "excludeRepositories": {
+                "description": "List of repositories to exclude (e.g. `[\"**/*-archived\"]`). Valid only within a `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
               "matchBaseBranches": {
                 "description": "List of strings containing exact matches (e.g. `[\"main\"]`) and/or regex expressions (e.g. `[\"/^release/.*/\"]`). Valid only within a `packageRules` object.",
                 "oneOf": [
@@ -2028,6 +2044,20 @@
               },
               "matchPackagePrefixes": {
                 "description": "Package name prefixes to match. Valid only within a `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchRepositories": {
+                "description": "List of repositories to match (e.g. `[\"**/*-archived\"]`). Valid only within a `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
