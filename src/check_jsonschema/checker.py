@@ -5,6 +5,7 @@ import typing as t
 
 import click
 import jsonschema
+import referencing.exceptions
 
 from . import utils
 from .formats import FormatOptions
@@ -75,7 +76,11 @@ class SchemaChecker:
     def _run(self) -> None:
         try:
             result = self._build_result()
-        except jsonschema.RefResolutionError as e:
+        except (
+            referencing.exceptions.NoSuchResource,
+            referencing.exceptions.Unretrievable,
+            referencing.exceptions.Unresolvable,
+        ) as e:
             self._fail("Failure resolving $ref within schema\n", e)
 
         self._reporter.report_result(result)
