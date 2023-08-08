@@ -10,7 +10,7 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-07-18)
+- Update vendored schemas (2023-08-08)
 - Remove support for python3.7
 - The minimum supported version of the `jsonschema` library is now `4.18.0`,
   which introduces new `$ref` resolution behavior and fixes. That behavior is
