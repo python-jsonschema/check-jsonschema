@@ -65,7 +65,7 @@ class ParserSet:
             }
 
     def get(
-        self, path: pathlib.Path, default_filetype: str
+        self, path: pathlib.Path | str, default_filetype: str
     ) -> t.Callable[[t.BinaryIO], t.Any]:
         filetype = path_to_type(path, default_type=default_filetype)
 
@@ -82,10 +82,15 @@ class ParserSet:
             + ",".join(self._by_tag.keys())
         )
 
-    def parse_file(self, path: pathlib.Path, default_filetype: str) -> t.Any:
+    def parse_data_with_path(
+        self, data: t.BinaryIO, path: pathlib.Path | str, default_filetype: str
+    ) -> t.Any:
         loadfunc = self.get(path, default_filetype)
         try:
-            with open(path, "rb") as fp:
-                return loadfunc(fp)
+            return loadfunc(data)
         except LOADING_FAILURE_ERROR_TYPES as e:
             raise FailedFileLoadError(f"Failed to parse {path}") from e
+
+    def parse_file(self, path: pathlib.Path | str, default_filetype: str) -> t.Any:
+        with open(path, "rb") as fp:
+            return self.parse_data_with_path(fp, path, default_filetype)

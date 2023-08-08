@@ -9,14 +9,15 @@ import jsonschema
 
 from ..builtin_schemas import get_builtin_schema
 from ..formats import FormatOptions, make_format_checker
+from ..parsers import ParserSet
 from ..utils import is_url_ish
 from .errors import UnsupportedUrlScheme
 from .readers import HttpSchemaReader, LocalSchemaReader
-from .resolver import make_ref_resolver
+from .resolver import make_reference_registry
 
 
 def _extend_with_default(
-    validator_class: type[jsonschema.Validator],
+    validator_class: type[jsonschema.protocols.Validator],
 ) -> type[jsonschema.Validator]:
     validate_properties = validator_class.VALIDATORS["properties"]
 
@@ -50,7 +51,7 @@ class SchemaLoaderBase:
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
         fill_defaults: bool,
-    ) -> jsonschema.Validator:
+    ) -> jsonschema.protocols.Validator:
         raise NotImplementedError
 
 
@@ -70,6 +71,9 @@ class SchemaLoader(SchemaLoaderBase):
         self.url_info = None
         if is_url_ish(self.schemafile):
             self.url_info = urllib.parse.urlparse(self.schemafile)
+
+        # setup a parser collection
+        self._parsers = ParserSet()
 
         # setup a schema reader lazily, when needed
         self._reader: LocalSchemaReader | HttpSchemaReader | None = None
@@ -96,8 +100,8 @@ class SchemaLoader(SchemaLoaderBase):
                 f"detected parsed URL had an unrecognized scheme: {self.url_info}"
             )
 
-    def get_schema_ref_base(self) -> str | None:
-        return self.reader.get_ref_base()
+    def get_schema_retrieval_uri(self) -> str | None:
+        return self.reader.get_retrieval_uri()
 
     def get_schema(self) -> dict[str, t.Any]:
         return self.reader.read_schema()
@@ -108,8 +112,8 @@ class SchemaLoader(SchemaLoaderBase):
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
         fill_defaults: bool,
-    ) -> jsonschema.Validator:
-        schema_uri = self.get_schema_ref_base()
+    ) -> jsonschema.protocols.Validator:
+        retrieval_uri = self.get_schema_retrieval_uri()
         schema = self.get_schema()
 
         schema_dialect = schema.get("$schema")
@@ -117,11 +121,11 @@ class SchemaLoader(SchemaLoaderBase):
         # format checker (which may be None)
         format_checker = make_format_checker(format_opts, schema_dialect)
 
-        # ref resolver which may be built from the schema path
-        # if the location is a URL, there's no change, but if it's a file path
-        # it's made absolute and URI-ized
-        # the resolver should use `$id` if there is one present in the schema
-        ref_resolver = make_ref_resolver(schema_uri, schema)
+        # reference resolution
+        # with support for YAML, TOML, and other formats from the parsers
+        reference_registry = make_reference_registry(
+            self._parsers, retrieval_uri, schema
+        )
 
         # get the correct validator class and check the schema under its metaschema
         validator_cls = jsonschema.validators.validator_for(schema)
@@ -134,17 +138,18 @@ class SchemaLoader(SchemaLoaderBase):
         # now that we know it's safe to try to create the validator instance, do it
         validator = validator_cls(
             schema,
-            resolver=ref_resolver,
+            registry=reference_registry,
             format_checker=format_checker,
         )
-        return t.cast(jsonschema.Validator, validator)
+        return t.cast(jsonschema.protocols.Validator, validator)
 
 
 class BuiltinSchemaLoader(SchemaLoader):
     def __init__(self, schema_name: str) -> None:
         self.schema_name = schema_name
+        self._parsers = ParserSet()
 
-    def get_schema_ref_base(self) -> str | None:
+    def get_schema_retrieval_uri(self) -> str | None:
         return None
 
     def get_schema(self) -> dict[str, t.Any]:
@@ -158,7 +163,7 @@ class MetaSchemaLoader(SchemaLoaderBase):
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
         fill_defaults: bool,
-    ) -> jsonschema.Validator:
+    ) -> jsonschema.protocols.Validator:
         schema_validator = jsonschema.validators.validator_for(instance_doc)
         meta_validator_class = jsonschema.validators.validator_for(
             schema_validator.META_SCHEMA, default=schema_validator

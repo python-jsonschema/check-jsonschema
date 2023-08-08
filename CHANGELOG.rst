@@ -11,6 +11,18 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2023-08-08)
+- Remove support for python3.7
+- The minimum supported version of the `jsonschema` library is now `4.18.0`,
+  which introduces new `$ref` resolution behavior and fixes. That behavior is
+  used in all cases, which should result in faster evaluation especially on
+  large schemas.
+- `$ref` usage may now refer to YAML, TOML, or JSON5 files, or any other
+  non-JSON format supported by `check-jsonschema`. The file type is inferred
+  only from the file extension in these cases and defaults to JSON if there is
+  no recognizable extension.
+- Remote schemafiles (http/s) now support YAML, TOML, and JSON5 formats, if the
+  URL ends with the appropriate extension and the matching parser is available.
+  Extensionless URLs are treated as JSON.
 
 0.23.3
 ------

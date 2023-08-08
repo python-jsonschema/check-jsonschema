@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import json
+import io
 import typing as t
 
 import ruamel.yaml
@@ -25,14 +25,12 @@ def _run_load_callback(schema_location: str, callback: t.Callable) -> dict:
 
 
 class LocalSchemaReader:
-    FORMATS = ("json", "json5", "yaml")
-
     def __init__(self, filename: str) -> None:
         self.path = filename2path(filename)
         self.filename = str(self.path)
-        self.parsers = ParserSet(supported_formats=self.FORMATS)
+        self.parsers = ParserSet()
 
-    def get_ref_base(self) -> str:
+    def get_retrieval_uri(self) -> str:
         return self.path.as_uri()
 
     def _read_impl(self) -> t.Any:
@@ -50,19 +48,28 @@ class HttpSchemaReader:
         disable_cache: bool,
     ) -> None:
         self.url = url
+        self.parsers = ParserSet()
         self.downloader = CacheDownloader(
             url,
             cache_filename,
             disable_cache=disable_cache,
-            validation_callback=json.loads,
+            validation_callback=self._parse,
         )
+        self._parsed_schema: t.Any | None = None
 
-    def get_ref_base(self) -> str:
+    def _parse(self, schema_bytes: bytes) -> t.Any:
+        if self._parsed_schema is None:
+            self._parsed_schema = self.parsers.parse_data_with_path(
+                io.BytesIO(schema_bytes), self.url, default_filetype="json"
+            )
+        return self._parsed_schema
+
+    def get_retrieval_uri(self) -> str:
         return self.url
 
     def _read_impl(self) -> t.Any:
         with self.downloader.open() as fp:
-            return json.load(fp)
+            return self._parse(fp.read())
 
     def read_schema(self) -> dict:
         return _run_load_callback(self.url, self._read_impl)
