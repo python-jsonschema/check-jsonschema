@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import io
 import json
 import pathlib
 import typing as t
@@ -83,10 +84,12 @@ class ParserSet:
         )
 
     def parse_data_with_path(
-        self, data: t.BinaryIO, path: pathlib.Path | str, default_filetype: str
+        self, data: t.BinaryIO | bytes, path: pathlib.Path | str, default_filetype: str
     ) -> t.Any:
         loadfunc = self.get(path, default_filetype)
         try:
+            if isinstance(data, bytes):
+                data = io.BytesIO(data)
             return loadfunc(data)
         except LOADING_FAILURE_ERROR_TYPES as e:
             raise FailedFileLoadError(f"Failed to parse {path}") from e
