@@ -44,6 +44,8 @@ def create_retrieve_callable(
     if base_uri is None:
         base_uri = retrieval_uri
 
+    cache = ResourceCache()
+
     def get_local_file(uri: str) -> t.Any:
         path = filename2path(uri)
         return parser_set.parse_file(path, "json")
@@ -55,15 +57,37 @@ def create_retrieve_callable(
         else:
             full_uri = uri
 
+        if full_uri in cache._cache:
+            return cache[uri]
+
         full_uri_scheme = urllib.parse.urlsplit(full_uri).scheme
         if full_uri_scheme in ("http", "https"):
             data = requests.get(full_uri, stream=True)
-            parsed_object = parser_set.parse_data_with_path(data.raw, full_uri, "json")
+            parsed_object = parser_set.parse_data_with_path(
+                data.content, full_uri, "json"
+            )
         else:
             parsed_object = get_local_file(full_uri)
 
-        return referencing.Resource.from_contents(
-            parsed_object, default_specification=DRAFT202012
-        )
+        cache[uri] = parsed_object
+        return cache[uri]
 
     return retrieve_reference
+
+
+class ResourceCache:
+    def __init__(self) -> None:
+        self._cache: t.Dict[str, referencing.Resource[Schema]] = {}
+
+    def __setitem__(self, uri: str, data: t.Any) -> referencing.Resource[Schema]:
+        resource = referencing.Resource.from_contents(
+            data, default_specification=DRAFT202012
+        )
+        self._cache[uri] = resource
+        return resource
+
+    def __getitem__(self, uri: str) -> referencing.Resource[Schema]:
+        return self._cache[uri]
+
+    def __contains__(self, uri: str) -> bool:
+        return uri in self._cache
