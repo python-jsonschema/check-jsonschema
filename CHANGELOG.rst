@@ -10,6 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
+0.24.1
+------
+
+- Fix bugs related to the new `$ref` resolution behavior
+
 0.24.0
 ------
 
