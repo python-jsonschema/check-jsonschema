@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Add Drone-CI schema and pre-commit hook. Thanks :user:`s-weigand`!
+  (:pr:`299`)
+
 0.24.1
 ------
 
