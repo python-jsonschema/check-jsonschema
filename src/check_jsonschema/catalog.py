@@ -76,6 +76,14 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "drone-ci": {
+        "url": "https://json.schemastore.org/drone.json",
+        "hook_config": {
+            "name": "Validate Drone-CI Config",
+            "files": r"^\.drone\.yml$",
+            "types": "yaml",
+        },
+    },
     "github-actions": {
         "url": "https://json.schemastore.org/github-action",
         "hook_config": {

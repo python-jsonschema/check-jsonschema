@@ -1,0 +1,14 @@
+kind: pipeline
+type: ssh
+name: default
+
+server:
+  host: 1.2.3.4
+  user: root
+  password:
+    from_secret: password
+
+steps:
+  - name: greeting
+    commands:
+      - echo hello world

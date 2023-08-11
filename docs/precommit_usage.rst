@@ -113,6 +113,20 @@ Validate Dependabot Config (v2) against the schema provided by SchemaStore
         - id: check-dependabot
 
 
+``check-drone-ci``
+~~~~~~~~~~~~~~~~~~
+
+Validate Drone-CI Config against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.24.1
+      hooks:
+        - id: check-drone-ci
+
+
 ``check-github-actions``
 ~~~~~~~~~~~~~~~~~~~~~~~~
 

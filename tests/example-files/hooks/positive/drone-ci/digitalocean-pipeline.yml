@@ -1,0 +1,11 @@
+kind: pipeline
+type: digitalocean
+name: default
+
+token:
+  from_secret: token
+
+steps:
+  - name: greeting
+    commands:
+      - echo hello world
