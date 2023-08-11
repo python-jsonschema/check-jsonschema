@@ -77,6 +77,7 @@ SchemaStore and other sources:
 - ``vendor.bitbucket-pipelines``
 - ``vendor.buildkite``
 - ``vendor.dependabot``
+- ``vendor.drone-ci``
 - ``vendor.github-actions``
 - ``vendor.github-workflows``
 - ``vendor.gitlab-ci``
