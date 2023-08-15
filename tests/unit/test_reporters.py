@@ -130,6 +130,11 @@ def test_text_print_validation_error_nested(capsys, verbosity):
         assert "$.foo: {} is not of type 'string'" in captured.out
         assert "$.bar: {'baz': 'buzz'} is not of type 'string'" in captured.out
         assert "$.bar.baz: 'buzz' is not of type 'integer'" in captured.out
+    else:
+        assert (
+            "4 other errors were produced. Use '--verbose' to see all errors."
+            in captured.out
+        )
 
 
 @pytest.mark.parametrize("pretty_json", (True, False))
@@ -187,6 +192,7 @@ def test_json_format_validation_error_nested(capsys, pretty_json, verbosity):
     assert len(data["errors"]) == 1
     assert "is not valid under any of the given schemas" in data["errors"][0]["message"]
     assert data["errors"][0]["has_sub_errors"]
+    assert data["errors"][0]["num_sub_errors"] == 5
 
     # stop here unless 'verbosity>=2'
     if verbosity < 2:

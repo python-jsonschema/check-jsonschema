@@ -77,12 +77,33 @@ class TextReporter(Reporter):
         if err.context:
             best_match = jsonschema.exceptions.best_match(err.context)
             self._echo("Underlying errors caused this.", indent=2)
+            self._echo("")
             self._echo("Best Match:", indent=2)
             self._echo(self._format_validation_error_message(best_match), indent=4)
+
+            best_deep_match = find_best_deep_match(err)
+            if best_deep_match != best_match:
+                self._echo("Best Deep Match:", indent=2)
+                self._echo(
+                    self._format_validation_error_message(best_deep_match), indent=4
+                )
+
             if self.verbosity > 1:
                 self._echo("All Errors:", indent=2)
                 for e in iter_validation_error(err):
                     self._echo(self._format_validation_error_message(e), indent=4)
+            else:
+                num_other_errors = len(list(iter_validation_error(err))) - 1
+                if best_deep_match != best_match:
+                    num_other_errors -= 1
+                if num_other_errors > 0:
+                    self._echo("")
+                    self._echo(
+                        f"{click.style(str(num_other_errors), fg='yellow')} other "
+                        "errors were produced. "
+                        "Use '--verbose' to see all errors.",
+                        indent=2,
+                    )
 
     def _show_parse_error(self, filename: str, err: ParseError) -> None:
         if self.verbosity < 2:
@@ -139,10 +160,17 @@ class JsonReporter(Reporter):
                 }
                 if err.context:
                     best_match = jsonschema.exceptions.best_match(err.context)
+                    best_deep_match = find_best_deep_match(err)
                     item["best_match"] = {
                         "path": best_match.json_path,
                         "message": best_match.message,
                     }
+                    item["best_deep_match"] = {
+                        "path": best_deep_match.json_path,
+                        "message": best_deep_match.message,
+                    }
+                    num_sub_errors = len(list(iter_validation_error(err))) - 1
+                    item["num_sub_errors"] = num_sub_errors
                     if self.verbosity > 1:
                         item["sub_errors"] = [
                             {"path": suberr.json_path, "message": suberr.message}
@@ -176,3 +204,18 @@ REPORTER_BY_NAME: dict[str, type[Reporter]] = {
     "text": TextReporter,
     "json": JsonReporter,
 }
+
+
+def _deep_match_relevance(error: jsonschema.ValidationError) -> tuple[bool | int, ...]:
+    validator = error.validator
+    return (
+        validator not in ("anyOf", "oneOf"),
+        len(error.absolute_path),
+        -len(error.path),
+    )
+
+
+def find_best_deep_match(
+    errors: jsonschema.ValidationError,
+) -> jsonschema.ValidationError:
+    return max(iter_validation_error(errors), key=_deep_match_relevance)
