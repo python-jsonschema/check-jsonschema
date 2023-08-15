@@ -36,6 +36,28 @@ jobs:
 
       - run: python -m tox run -e "${{ matrix.toxenv }}"
 
+  # run tests after building an sdist and unpacking it
+  test-sdist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: install requirements
+        run: python -m pip install build tox
+      - name: build and unpack sdist
+        run: |
+          python -m build --sdist
+          version="$(grep '^version' setup.cfg |  cut -d '=' -f2 | tr -d ' ')"
+          cd dist
+          tar -xzf "check-jsonschema-${version}.tar.gz"
+      - name: test
+        run: |
+          version="$(grep '^version' setup.cfg |  cut -d '=' -f2 | tr -d ' ')"
+          cd "dist/check-jsonschema-${version}"
+          python -m tox run -m ci
+
   ci-test-matrix:
     strategy:
       matrix:
