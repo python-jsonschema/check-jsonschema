@@ -1,2 +1,17 @@
+## Core Package Requirements
+
+# data files in the distribution
 include src/check_jsonschema/builtin_schemas/vendor/*
 include src/check_jsonschema/builtin_schemas/custom/*.json
+
+## Testing Requirements
+
+# include all test files and test data files
+recursive-include tests *.py *.json *.yaml *.yml *.json5 *.toml
+
+# the test runner
+include tox.ini
+
+# needed as a data file for the tests (several tests check integrity
+# against this file)
+include .pre-commit-hooks.yaml
