@@ -4,7 +4,7 @@ import enum
 
 import click
 
-from ..formats import FormatOptions, RegexFormatBehavior
+from ..formats import FormatOptions, RegexVariantName
 from ..transforms import Transform
 
 
@@ -33,7 +33,7 @@ class ParseResult:
         # regex format options
         self.disable_all_formats: bool = False
         self.disable_formats: tuple[str, ...] = ()
-        self.format_regex: RegexFormatBehavior = RegexFormatBehavior.default
+        self.format_regex: RegexVariantName = RegexVariantName.default
         # error and output controls
         self.verbosity: int = 1
         self.traceback_mode: str = "short"
@@ -69,6 +69,6 @@ class ParseResult:
     def format_opts(self) -> FormatOptions:
         return FormatOptions(
             enabled=not self.disable_all_formats,
-            regex_behavior=self.format_regex,
+            regex_variant=self.format_regex,
             disabled_formats=self.disable_formats,
         )

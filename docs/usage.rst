@@ -198,13 +198,10 @@ follows:
 
    * - mode
      - description
-   * - disabled
-     - Skip checking ``regex``, but leave other formats enabled.
    * - default
-     - Check for known non-python regex syntaxes. If one is found, the expression
-       always passes. Otherwise, check validity in the python engine.
+     - Require the regex to be valid in ECMAScript regex syntax.
    * - python
-     - Require the regex to be valid in python regex syntax.
+     - Require the regex to be valid in Python regex syntax.
 
 Other Options
 --------------

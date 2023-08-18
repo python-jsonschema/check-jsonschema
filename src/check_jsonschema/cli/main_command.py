@@ -7,7 +7,7 @@ import click
 
 from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from ..checker import SchemaChecker
-from ..formats import KNOWN_FORMATS, RegexFormatBehavior
+from ..formats import KNOWN_FORMATS, RegexVariantName
 from ..instance_loader import InstanceLoader
 from ..parsers import SUPPORTED_FILE_FORMATS
 from ..reporter import REPORTER_BY_NAME, Reporter
@@ -69,8 +69,7 @@ including the following formats by default:
 \b
 For the "regex" format, there are multiple modes which can be specified with
 '--format-regex':
-    default  |  best effort check
-    disabled |  do not check the regex format
+    default  |  check that the string is a valid ECMAScript regex
     python   |  check that the string is a valid python regex
 
 \b
@@ -153,8 +152,8 @@ The '--disable-formats' flag supports the following formats:
         "Set the mode of format validation for regexes. "
         "If `--disable-formats regex` is used, this option has no effect."
     ),
-    default=RegexFormatBehavior.default.value,
-    type=click.Choice([x.value for x in RegexFormatBehavior], case_sensitive=False),
+    default=RegexVariantName.default.value,
+    type=click.Choice([x.value for x in RegexVariantName], case_sensitive=False),
 )
 @click.option(
     "--default-filetype",
@@ -249,7 +248,7 @@ def main(
         args.disable_all_formats = True
     else:
         args.disable_formats = normalized_disable_formats
-    args.format_regex = RegexFormatBehavior(format_regex)
+    args.format_regex = RegexVariantName(format_regex)
     args.disable_cache = no_cache
     args.default_filetype = default_filetype
     args.fill_defaults = fill_defaults
