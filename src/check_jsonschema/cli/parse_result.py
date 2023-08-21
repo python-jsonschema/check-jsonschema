@@ -19,6 +19,7 @@ class ParseResult:
         # primary options: schema + instances
         self.schema_mode: SchemaLoadingMode = SchemaLoadingMode.filepath
         self.schema_path: str | None = None
+        self.base_uri: str | None = None
         self.instancefiles: tuple[str, ...] = ()
         # cache controls
         self.disable_cache: bool = False

@@ -95,6 +95,14 @@ The '--disable-formats' flag supports the following formats:
     ),
 )
 @click.option(
+    "--base-uri",
+    help=(
+        "Override the base URI for the schema. The default behavior is to "
+        "follow the behavior specified by the JSON Schema spec, which is to "
+        "prefer an explicit '$id' and failover to the retrieval URI."
+    ),
+)
+@click.option(
     "--builtin-schema",
     help="The name of an internal schema to use for '--schemafile'",
     type=click.Choice(BUILTIN_SCHEMA_CHOICES, case_sensitive=False),
@@ -212,6 +220,7 @@ def main(
     *,
     schemafile: str | None,
     builtin_schema: str | None,
+    base_uri: str | None,
     check_metaschema: bool,
     no_cache: bool,
     cache_filename: str | None,
@@ -230,6 +239,7 @@ def main(
     args = ParseResult()
 
     args.set_schema(schemafile, builtin_schema, check_metaschema)
+    args.base_uri = base_uri
     args.instancefiles = instancefiles
 
     normalized_disable_formats: tuple[str, ...] = tuple(
@@ -264,13 +274,18 @@ def main(
 
 def build_schema_loader(args: ParseResult) -> SchemaLoaderBase:
     if args.schema_mode == SchemaLoadingMode.metaschema:
-        return MetaSchemaLoader()
+        return MetaSchemaLoader(base_uri=args.base_uri)
     elif args.schema_mode == SchemaLoadingMode.builtin:
         assert args.schema_path is not None
-        return BuiltinSchemaLoader(args.schema_path)
+        return BuiltinSchemaLoader(args.schema_path, base_uri=args.base_uri)
     elif args.schema_mode == SchemaLoadingMode.filepath:
         assert args.schema_path is not None
-        return SchemaLoader(args.schema_path, args.cache_filename, args.disable_cache)
+        return SchemaLoader(
+            args.schema_path,
+            args.cache_filename,
+            args.disable_cache,
+            base_uri=args.base_uri,
+        )
     else:
         raise NotImplementedError("no valid schema option provided")
 
