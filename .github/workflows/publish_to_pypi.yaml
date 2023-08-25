@@ -27,10 +27,10 @@ jobs:
           name: packages
           path: dist/*
 
-  publish:
+  publish_pypi:
     needs: [build-dists]
     runs-on: ubuntu-latest
-    environment: publish-testpypi
+    environment: publish
     permissions:
       id-token: write
 
@@ -42,3 +42,19 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  publish_release_asset:
+    needs: [build-dists]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: packages
+          path: dist
+
+      - name: Publish to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release upload "${{ github.release }}" dist/*.tgz
