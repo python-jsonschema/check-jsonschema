@@ -5,11 +5,8 @@ on:
     types: [published]
 
 jobs:
-  publish:
+  build-dists:
     runs-on: ubuntu-latest
-    environment: publish
-    permissions:
-      id-token: write
 
     steps:
       - uses: actions/checkout@v3
@@ -17,8 +14,31 @@ jobs:
         with:
           python-version: "3.11"
 
-      - run: python -m pip install build
-      - run: python -m build .
+      - run: python -m pip install build twine
+
+      - name: Build Dists
+        run: python -m build .
+
+      - name: Check Dists (twine)
+        run: twine check dist/*
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: packages
+          path: dist/*
+
+  publish:
+    needs: [build-dists]
+    runs-on: ubuntu-latest
+    environment: publish-testpypi
+    permissions:
+      id-token: write
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: packages
+          path: dist
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
