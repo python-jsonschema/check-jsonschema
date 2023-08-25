@@ -9,6 +9,9 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+
+0.26.0
+------
 - The regex format check has been improved to support ECMAScript regexes by
   default. (:issue:`302`)
 - The ``--format-regex disabled`` option has been removed. Users should use
