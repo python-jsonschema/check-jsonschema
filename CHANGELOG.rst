@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-08-25)
+0.25.0
+------
+
+- Update vendored schemas: bamboo-spec, dependabot, drone-ci, github-actions,
+  github-workflows, readthedocs, renovate, travis (2023-08-25)
 - Add Drone-CI schema and pre-commit hook. Thanks :user:`s-weigand`!
   (:pr:`299`)
 - Add a ``--base-uri`` option for specifying an explicit base URI (:pr:`305`)
