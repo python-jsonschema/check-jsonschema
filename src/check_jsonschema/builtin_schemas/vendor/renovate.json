@@ -274,7 +274,8 @@
         "fileMatch": [
           "(^|/)\\.bazelversion$"
         ],
-        "pinDigests": false
+        "pinDigests": false,
+        "versioning": "semver"
       },
       "$ref": "#"
     },
@@ -636,6 +637,15 @@
       "default": {},
       "$ref": "#"
     },
+    "customizeDashboard": {
+      "description": "Customize sections in the dependency dashboard issue.",
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "type": "string"
+      },
+      "$ref": "#"
+    },
     "defaultRegistryUrls": {
       "description": "List of registry URLs to use as the default for a datasource.",
       "type": "array",
@@ -758,7 +768,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.8.7"
+      "default": "ghcr.io/containerbase/sidecar:9.17.3"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -975,7 +985,7 @@
       "type": "string"
     },
     "gitIgnoredAuthors": {
-      "description": "Additional Git authors which are ignored by Renovate. Must conform to [RFC5322](https://datatracker.ietf.org/doc/html/rfc5322).",
+      "description": "Git authors which are ignored by Renovate. Must conform to [RFC5322](https://datatracker.ietf.org/doc/html/rfc5322).",
       "type": "array",
       "items": {
         "type": "string"
@@ -2396,7 +2406,7 @@
       }
     },
     "prBodyNotes": {
-      "description": "List of additional notes/templates to include in the Pull Request body.",
+      "description": "List of extra notes or templates to include in the Pull Request body.",
       "oneOf": [
         {
           "type": "array",
@@ -2633,6 +2643,13 @@
               "currentValueTemplate": {
                 "description": "Optional `currentValue` for extracted dependencies. Valid only within a `regexManagers` object.",
                 "type": "string"
+              },
+              "customType": {
+                "description": "Custom manager to use. Valid only within a `regexManagers` object.",
+                "type": "string",
+                "enum": [
+                  "regex"
+                ]
               },
               "datasourceTemplate": {
                 "description": "Optional datasource for extracted dependencies. Valid only within a `regexManagers` object.",
