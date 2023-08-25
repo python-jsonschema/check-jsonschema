@@ -141,3 +141,43 @@ def test_ref_resolution_does_not_callout_for_absolute_ref_to_retrieval_uri(
         assert result.exit_code == 0, output
     else:
         assert result.exit_code == 1, output
+
+
+# this test ensures that `$id` is overwritten when `--base-uri` is used
+@pytest.mark.parametrize("check_passes", (True, False))
+def test_ref_resolution_with_custom_base_uri(run_line, tmp_path, check_passes):
+    retrieval_uri = "https://example.org/retrieval-and-in-schema-only/schemas/main"
+    explicit_base_uri = "https://example.org/schemas/main"
+    main_schema = {
+        "$id": retrieval_uri,
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "properties": {
+            "title": {"$ref": "./title_schema.json"},
+        },
+        "additionalProperties": False,
+    }
+    title_schema = {"type": "string"}
+
+    responses.add("GET", retrieval_uri, json=main_schema)
+    responses.add(
+        "GET", "https://example.org/schemas/title_schema.json", json=title_schema
+    )
+
+    instance_path = tmp_path / "instance.json"
+    instance_path.write_text(json.dumps({"title": "doc one" if check_passes else 2}))
+
+    result = run_line(
+        [
+            "check-jsonschema",
+            "--schemafile",
+            retrieval_uri,
+            "--base-uri",
+            explicit_base_uri,
+            str(instance_path),
+        ]
+    )
+    output = f"\nstdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+    if check_passes:
+        assert result.exit_code == 0, output
+    else:
+        assert result.exit_code == 1, output

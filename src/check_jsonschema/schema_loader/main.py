@@ -61,11 +61,13 @@ class SchemaLoader(SchemaLoaderBase):
         schemafile: str,
         cache_filename: str | None = None,
         disable_cache: bool = False,
+        base_uri: str | None = None,
     ) -> None:
         # record input parameters (these are not to be modified)
         self.schemafile = schemafile
         self.cache_filename = cache_filename
         self.disable_cache = disable_cache
+        self.base_uri = base_uri
 
         # if the schema location is a URL, which may include a file:// URL, parse it
         self.url_info = None
@@ -104,7 +106,10 @@ class SchemaLoader(SchemaLoaderBase):
         return self.reader.get_retrieval_uri()
 
     def get_schema(self) -> dict[str, t.Any]:
-        return self.reader.read_schema()
+        data = self.reader.read_schema()
+        if self.base_uri is not None:
+            data["$id"] = self.base_uri
+        return data
 
     def get_validator(
         self,
@@ -145,18 +150,29 @@ class SchemaLoader(SchemaLoaderBase):
 
 
 class BuiltinSchemaLoader(SchemaLoader):
-    def __init__(self, schema_name: str) -> None:
+    def __init__(self, schema_name: str, base_uri: str | None = None) -> None:
         self.schema_name = schema_name
+        self.base_uri = base_uri
         self._parsers = ParserSet()
 
     def get_schema_retrieval_uri(self) -> str | None:
         return None
 
     def get_schema(self) -> dict[str, t.Any]:
-        return get_builtin_schema(self.schema_name)
+        data = get_builtin_schema(self.schema_name)
+        if self.base_uri is not None:
+            data["$id"] = self.base_uri
+        return data
 
 
 class MetaSchemaLoader(SchemaLoaderBase):
+    def __init__(self, base_uri: str | None = None) -> None:
+        if base_uri is not None:
+            raise NotImplementedError(
+                "'--base-uri' was used with '--metaschema'. "
+                "This combination is not supported."
+            )
+
     def get_validator(
         self,
         path: pathlib.Path,

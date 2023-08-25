@@ -40,8 +40,22 @@ Detailed helptext is always available interactively via
        the error and exit. Use ``--traceback-mode full`` to request the full traceback
        be printed, for debugging and troubleshooting.
 
-Other Schema Options
---------------------
+Environment Variables
+---------------------
+
+The following environment variables are supported.
+
+.. list-table:: Environment Variables
+   :widths: 15 30
+   :header-rows: 1
+
+   * - Name
+     - Description
+   * - ``NO_COLOR``
+     - Set ``NO_COLOR=1`` to explicitly turn off colorized output.
+
+Schema Selection Options
+------------------------
 
 No matter what usage form is used, a schema must be specified.
 
@@ -112,68 +126,6 @@ The following options control caching behaviors.
    * - ``--cache-filename``
      - The name to use for caching a remote schema.
        Defaults to using the last slash-delimited part of the URI.
-
-Environment Variables
----------------------
-
-The following environment variables are supported.
-
-.. list-table:: Environment Variables
-   :widths: 15 30
-   :header-rows: 1
-
-   * - Name
-     - Description
-   * - ``NO_COLOR``
-     - Set ``NO_COLOR=1`` to explicitly turn off colorized output.
-
-Parsing Options
----------------
-
-``--default-filetype``
-~~~~~~~~~~~~~~~~~~~~~~
-
-The default filetype to assume on instance files when they are detected neither
-as JSON nor as YAML.
-
-For example, pass ``--default-filetype yaml`` to instruct that files which have
-no extension should be treated as YAML.
-
-By default, this is not set and files without a detected type of JSON or YAML
-will fail.
-
-``--data-transform``
-~~~~~~~~~~~~~~~~~~~~
-
-``--data-transform`` applies a transformation to instancefiles before they are
-checked. The following transforms are supported:
-
-- ``azure-pipelines``:
-    "Unpack" compile-time expressions for Azure Pipelines files, skipping them
-    for the purposes of validation. This transformation is based on Microsoft's
-    lanaguage-server for VSCode and how it handles expressions
-
-- ``gitlab-ci``:
-    Handle ``!reference`` tags in YAML data for gitlab-ci files. This transform
-    has no effect if the data is not being loaded from YAML, and it does not
-    interpret ``!reference`` usages -- it only expands them to lists of strings
-    to pass schema validation
-
-``--fill-defaults``
--------------------
-
-JSON Schema specifies the ``"default"`` keyword as potentially meaningful for
-consumers of schemas, but not for validators. Therefore, the default behavior
-for ``check-jsonschema`` is to ignore ``"default"``.
-
-``--fill-defaults`` changes this behavior, filling in ``"default"`` values
-whenever they are encountered prior to validation.
-
-.. warning::
-
-    There are many schemas which make the meaning of ``"default"`` unclear.
-    In particular, the behavior of ``check-jsonschema`` is undefined when multiple
-    defaults are specified via ``anyOf``, ``oneOf``, or other forms of polymorphism.
 
 "format" Validation Options
 ---------------------------
@@ -253,3 +205,61 @@ follows:
        always passes. Otherwise, check validity in the python engine.
    * - python
      - Require the regex to be valid in python regex syntax.
+
+Other Options
+--------------
+
+``--default-filetype``
+~~~~~~~~~~~~~~~~~~~~~~
+
+The default filetype to assume on instance files when they are detected neither
+as JSON nor as YAML.
+
+For example, pass ``--default-filetype yaml`` to instruct that files which have
+no extension should be treated as YAML.
+
+By default, this is not set and files without a detected type of JSON or YAML
+will fail.
+
+``--data-transform``
+~~~~~~~~~~~~~~~~~~~~
+
+``--data-transform`` applies a transformation to instancefiles before they are
+checked. The following transforms are supported:
+
+- ``azure-pipelines``:
+    "Unpack" compile-time expressions for Azure Pipelines files, skipping them
+    for the purposes of validation. This transformation is based on Microsoft's
+    lanaguage-server for VSCode and how it handles expressions
+
+- ``gitlab-ci``:
+    Handle ``!reference`` tags in YAML data for gitlab-ci files. This transform
+    has no effect if the data is not being loaded from YAML, and it does not
+    interpret ``!reference`` usages -- it only expands them to lists of strings
+    to pass schema validation
+
+``--fill-defaults``
+~~~~~~~~~~~~~~~~~~~
+
+JSON Schema specifies the ``"default"`` keyword as potentially meaningful for
+consumers of schemas, but not for validators. Therefore, the default behavior
+for ``check-jsonschema`` is to ignore ``"default"``.
+
+``--fill-defaults`` changes this behavior, filling in ``"default"`` values
+whenever they are encountered prior to validation.
+
+.. warning::
+
+    There are many schemas which make the meaning of ``"default"`` unclear.
+    In particular, the behavior of ``check-jsonschema`` is undefined when multiple
+    defaults are specified via ``anyOf``, ``oneOf``, or other forms of polymorphism.
+
+``--base-uri``
+~~~~~~~~~~~~~~
+
+``check-jsonschema`` defaults to using the ``"$id"`` of the schema as the base
+URI for ``$ref`` resolution, falling back to the retrieval URI if ``"$id"`` is
+not set.
+
+``--base-uri`` overrides this behavior, setting a custom base URI for ``$ref``
+resolution.
