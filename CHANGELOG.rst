@@ -13,6 +13,8 @@ Unreleased
   default. (:issue:`302`)
 - The ``--format-regex disabled`` option has been removed. Users should use
   ``--disable-formats regex`` if they wish to disable regex format checking.
+- The deprecated ``--disable-format`` flag has been removed. Users should use
+  ``--disable-formats "*"`` if they wish to disable all format checking.
 
 0.25.0
 ------

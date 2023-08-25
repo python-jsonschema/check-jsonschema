@@ -136,15 +136,6 @@ that any validation for formats be applied.
 ``check-jsonschema`` supports checking several ``"format"``\s by default. The
 following options can be used to control this behavior.
 
-``--disable-format``
-~~~~~~~~~~~~~~~~~~~~
-
-.. warning::
-
-    This option is deprecated. Use ``--disable-formats "*"`` instead.
-
-Disable all format checks.
-
 ``--disable-formats``
 ~~~~~~~~~~~~~~~~~~~~~
 

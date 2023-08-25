@@ -258,12 +258,3 @@ def test_disable_all_formats(runner, mock_parse_result, addargs):
         + addargs,
     )
     assert mock_parse_result.disable_all_formats is True
-
-
-def test_disable_format_deprecated_flag(runner, mock_parse_result):
-    # this should be an override, with or without other args
-    with pytest.warns(UserWarning, match="'--disable-format' is deprecated"):
-        runner.invoke(
-            cli_main, ["--schemafile", "schema.json", "foo.json", "--disable-format"]
-        )
-    assert mock_parse_result.disable_all_formats is True
