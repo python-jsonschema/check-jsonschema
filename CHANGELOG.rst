@@ -11,9 +11,9 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2023-08-25)
-
 - Add Drone-CI schema and pre-commit hook. Thanks :user:`s-weigand`!
   (:pr:`299`)
+- Add a ``--base-uri`` option for specifying an explicit base URI (:pr:`305`)
 
 0.24.1
 ------
