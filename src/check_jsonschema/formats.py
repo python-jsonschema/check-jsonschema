@@ -7,6 +7,7 @@ import typing as t
 
 import jsonschema
 import jsonschema.validators
+import regress
 
 # all known format strings except for a selection from draft3 which have either
 # been renamed or removed:
@@ -36,26 +37,30 @@ KNOWN_FORMATS: tuple[str, ...] = (
 )
 
 
-def _regex_check(instance: t.Any) -> bool:
-    if not isinstance(instance, str):
-        return True
-    re.compile(instance)
-    return True
-
-
-def _gated_regex_check(instance: t.Any) -> bool:
-    if not isinstance(instance, str):
-        return True
-    if re.search(r"\(\?[^!=]", instance):
-        return True
-    re.compile(instance)
-    return True
-
-
-class RegexFormatBehavior(enum.Enum):
+class RegexVariantName(enum.Enum):
     default = "default"
-    disabled = "disabled"
     python = "python"
+
+
+class RegexImplementation:
+    def __init__(self, variant: RegexVariantName) -> None:
+        self.variant = variant
+
+    def check_format(self, instance: t.Any) -> bool:
+        if not isinstance(instance, str):
+            return True
+
+        try:
+            if self.variant == RegexVariantName.default:
+                regress.Regex(instance)
+            else:
+                re.compile(instance)
+        # something is wrong with RegressError getting into the published types
+        # needs investigation... for now, ignore the error
+        except (regress.RegressError, re.error):  # type: ignore[attr-defined]
+            return False
+
+        return True
 
 
 class FormatOptions:
@@ -63,14 +68,12 @@ class FormatOptions:
         self,
         *,
         enabled: bool = True,
-        regex_behavior: RegexFormatBehavior = RegexFormatBehavior.default,
+        regex_variant: RegexVariantName = RegexVariantName.default,
         disabled_formats: tuple[str, ...] = (),
     ) -> None:
         self.enabled = enabled
-        self.regex_behavior = regex_behavior
+        self.regex_variant = regex_variant
         self.disabled_formats = disabled_formats
-        if "regex" in self.disabled_formats:
-            self.regex_behavior = RegexFormatBehavior.disabled
 
 
 def get_base_format_checker(schema_dialect: str | None) -> jsonschema.FormatChecker:
@@ -94,22 +97,15 @@ def make_format_checker(
     base_checker = get_base_format_checker(schema_dialect)
     checker = copy.deepcopy(base_checker)
 
-    # remove the regex check -- it will be re-added if it is enabled
+    # replace the regex check
     del checker.checkers["regex"]
+    regex_impl = RegexImplementation(opts.regex_variant)
+    checker.checks("regex")(regex_impl.check_format)
 
-    # remove the disabled checks
+    # remove the disabled checks, which may include the regex check
     for checkname in opts.disabled_formats:
         if checkname not in checker.checkers:
             continue
         del checker.checkers[checkname]
-
-    if opts.regex_behavior == RegexFormatBehavior.disabled:
-        pass
-    elif opts.regex_behavior == RegexFormatBehavior.default:
-        checker.checks("regex", raises=re.error)(_gated_regex_check)
-    elif opts.regex_behavior == RegexFormatBehavior.python:
-        checker.checks("regex", raises=re.error)(_regex_check)
-    else:  # pragma: no cover
-        raise NotImplementedError
 
     return checker

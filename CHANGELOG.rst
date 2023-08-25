@@ -9,6 +9,10 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+- The regex format check has been improved to support ECMAScript regexes by
+  default. (:issue:`302`)
+- The ``--format-regex disabled`` option has been removed. Users should use
+  ``--disable-formats regex`` if they wish to disable regex format checking.
 
 0.25.0
 ------
@@ -71,7 +75,7 @@ Unreleased
 - A new option, ``--disable-formats`` replaces and enhances the
   ``--disable-format`` flag. ``--disable-formats`` takes a format to disable
   and may be passed multiple times, allowing users to opt out of any specific
-  format checks. ``--disable-format "*"`` can be used to disable all format
+  format checks. ``--disable-formats "*"`` can be used to disable all format
   checking. ``--disable-format`` is still supported, but is deprecated and
   emits a warning.
 
