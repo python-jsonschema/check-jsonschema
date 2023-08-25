@@ -4,6 +4,7 @@ import linecache
 import os
 import pathlib
 import re
+import textwrap
 import traceback
 import typing as t
 import urllib.parse
@@ -94,7 +95,7 @@ def filename2path(filename: str) -> pathlib.Path:
 
 def format_shortened_error(err: Exception, *, indent: int = 0) -> str:
     lines = []
-    lines.append(indent * " " + f"{type(err).__name__}: {err}")
+    lines.append(textwrap.indent(f"{type(err).__name__}: {err}", indent * " "))
     if err.__traceback__ is not None:
         lineno = err.__traceback__.tb_lineno
         tb_frame = err.__traceback__.tb_frame
