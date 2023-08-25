@@ -20,7 +20,6 @@ from ..schema_loader import (
 from ..transforms import TRANSFORM_LIBRARY
 from .param_types import CommaDelimitedList
 from .parse_result import ParseResult, SchemaLoadingMode
-from .warnings import deprecation_warning_callback
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
     f"custom.{k}" for k in CUSTOM_SCHEMA_NAMES
@@ -128,17 +127,6 @@ The '--disable-formats' flag supports the following formats:
     ),
 )
 @click.option(
-    "--disable-format",
-    is_flag=True,
-    help="{deprecated} Disable all format checks in the schema.",
-    callback=deprecation_warning_callback(
-        "--disable-format",
-        is_flag=True,
-        append_message="Users should now pass '--disable-formats \"*\"' for "
-        "the same functionality.",
-    ),
-)
-@click.option(
     "--disable-formats",
     multiple=True,
     help="Disable specific format checks in the schema. "
@@ -223,7 +211,6 @@ def main(
     check_metaschema: bool,
     no_cache: bool,
     cache_filename: str | None,
-    disable_format: bool,
     disable_formats: tuple[list[str], ...],
     format_regex: str,
     default_filetype: str,
@@ -244,10 +231,11 @@ def main(
     normalized_disable_formats: tuple[str, ...] = tuple(
         f for sublist in disable_formats for f in sublist
     )
-    if disable_format or "*" in normalized_disable_formats:
+    if "*" in normalized_disable_formats:
         args.disable_all_formats = True
     else:
         args.disable_formats = normalized_disable_formats
+
     args.format_regex = RegexVariantName(format_regex)
     args.disable_cache = no_cache
     args.default_filetype = default_filetype
