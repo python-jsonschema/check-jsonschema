@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.26.1
+------
+
 - Update vendored schemas: github-workflows, renovate (2023-08-25)
 
 0.26.0
