@@ -18,7 +18,7 @@ def deprecation_warning_callback(
             )
             if append_message is not None:
                 message += f" {append_message}"
-            warnings.warn(message)
+            warnings.warn(message, stacklevel=2)
 
         return value
 

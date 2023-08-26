@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: github-workflows, renovate (2023-08-25)
+
 0.26.0
 ------
 - The regex format check has been improved to support ECMAScript regexes by

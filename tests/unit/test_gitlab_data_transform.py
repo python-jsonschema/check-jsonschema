@@ -1,6 +1,6 @@
 import pytest
 
-from check_jsonschema.parsers.yaml import construct_yaml_implementation
+from check_jsonschema.parsers.yaml import ParseError, construct_yaml_implementation
 from check_jsonschema.transforms.gitlab import (
     GITLAB_TRANSFORM,
     GitLabReferenceExpectationViolation,
@@ -30,7 +30,7 @@ foo:
 """
     impl = construct_yaml_implementation()
 
-    with pytest.raises(Exception):
+    with pytest.raises(ParseError):
         data = impl.load(rawdata)
 
     GITLAB_TRANSFORM.modify_yaml_implementation(impl)
@@ -45,7 +45,7 @@ foo:
 """
     impl = construct_yaml_implementation()
 
-    with pytest.raises(Exception):
+    with pytest.raises(ParseError):
         impl.load(rawdata)
 
     GITLAB_TRANSFORM.modify_yaml_implementation(impl)
