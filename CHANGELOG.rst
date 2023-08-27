@@ -10,6 +10,12 @@ Unreleased
 
 .. vendor-insert-here
 
+0.26.2
+------
+
+- When ``-v/--verbose`` is used, output will include a list of all files which
+  were checked on success (:issue:`312`)
+
 0.26.1
 ------
 
