@@ -24,7 +24,7 @@ class Reporter(abc.ABC):
         super().__init__(**kwargs)
 
     @abc.abstractmethod
-    def report_success(self) -> None:
+    def report_success(self, result: CheckResult) -> None:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -33,7 +33,7 @@ class Reporter(abc.ABC):
 
     def report_result(self, result: CheckResult) -> None:
         if result.success:
-            self.report_success()
+            self.report_success(result)
         else:
             self.report_errors(result)
 
@@ -51,11 +51,15 @@ class TextReporter(Reporter):
     def _echo(self, s: str, *, indent: int = 0) -> None:
         click.echo(" " * indent + s, file=self.stream)
 
-    def report_success(self) -> None:
+    def report_success(self, result: CheckResult) -> None:
         if self.verbosity < 1:
             return
         ok = click.style("ok", fg="green")
         self._echo(f"{ok} -- validation done")
+        if self.verbosity > 1:
+            self._echo("The following files were checked:")
+            for filename in result.successes:
+                self._echo(f"  {filename}")
 
     def _format_validation_error_message(
         self, err: jsonschema.ValidationError, filename: str | None = None
@@ -140,10 +144,12 @@ class JsonReporter(Reporter):
         else:
             click.echo(json.dumps(data, separators=(",", ":")))
 
-    def report_success(self) -> None:
+    def report_success(self, result: CheckResult) -> None:
         report_obj: dict[str, t.Any] = {"status": "ok"}
         if self.verbosity > 0:
             report_obj["errors"] = []
+        if self.verbosity > 1:
+            report_obj["checked_paths"] = list(result.successes)
         self._dump(report_obj)
 
     def _dump_error_map(
@@ -192,6 +198,8 @@ class JsonReporter(Reporter):
 
     def report_errors(self, result: CheckResult) -> None:
         report_obj: dict[str, t.Any] = {"status": "fail"}
+        if self.verbosity > 1:
+            report_obj["checked_paths"] = list(result.successes)
         if self.verbosity > 0:
             report_obj["errors"] = list(self._dump_error_map(result.validation_errors))
             report_obj["parse_errors"] = list(

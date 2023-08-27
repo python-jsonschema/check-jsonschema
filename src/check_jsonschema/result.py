@@ -9,10 +9,14 @@ class CheckResult:
     def __init__(self) -> None:
         self.validation_errors: dict[str, list[jsonschema.ValidationError]] = {}
         self.parse_errors: dict[str, list[ParseError]] = {}
+        self.successes: list[str] = []
 
     @property
     def success(self) -> bool:
         return not (bool(self.parse_errors) or bool(self.validation_errors))
+
+    def record_validation_success(self, path: pathlib.Path) -> None:
+        self.successes.append(str(path))
 
     def record_validation_error(
         self, path: pathlib.Path, err: jsonschema.ValidationError
