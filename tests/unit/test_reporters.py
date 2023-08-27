@@ -1,4 +1,5 @@
 import json
+import textwrap
 
 import pytest
 from jsonschema import Draft7Validator
@@ -8,7 +9,9 @@ from check_jsonschema.result import CheckResult
 
 
 def _make_success_result():
-    return CheckResult()
+    res = CheckResult()
+    res.successes.append("foo.json")
+    return res
 
 
 @pytest.mark.parametrize("verbosity", (0, 1, 2))
@@ -18,29 +21,41 @@ def test_text_format_success(capsys, verbosity, use_report_result_path):
     if use_report_result_path:
         reporter.report_result(_make_success_result())
     else:
-        reporter.report_success()
+        reporter.report_success(_make_success_result())
     captured = capsys.readouterr()
     assert captured.err == ""
     if verbosity == 0:
         assert captured.out == ""
-    else:
+    elif verbosity == 1:
         assert captured.out == "ok -- validation done\n"
+    else:
+        assert captured.out == textwrap.dedent(
+            """\
+            ok -- validation done
+            The following files were checked:
+              foo.json
+            """
+        )
 
 
-@pytest.mark.parametrize("verbosity", (0, 1))
+@pytest.mark.parametrize("verbosity", (0, 1, 2))
 @pytest.mark.parametrize("use_report_result_path", (False, True))
 def test_json_format_success(capsys, verbosity, use_report_result_path):
     reporter = JsonReporter(verbosity=verbosity, pretty=False)
     if use_report_result_path:
         reporter.report_result(_make_success_result())
     else:
-        reporter.report_success()
+        reporter.report_success(_make_success_result())
     captured = capsys.readouterr()
     assert captured.err == ""
     if verbosity == 0:
         assert captured.out == '{"status":"ok"}\n'
-    else:
+    elif verbosity == 1:
         assert captured.out == '{"status":"ok","errors":[]}\n'
+    else:
+        assert (
+            captured.out == '{"status":"ok","errors":[],"checked_paths":["foo.json"]}\n'
+        )
 
 
 def test_text_format_validation_error_message_simple():

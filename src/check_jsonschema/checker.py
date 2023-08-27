@@ -71,6 +71,8 @@ class SchemaChecker:
                 validator = self.get_validator(path, data)
                 for err in validator.iter_errors(data):
                     result.record_validation_error(path, err)
+                else:
+                    result.record_validation_success(path)
         return result
 
     def _run(self) -> None:
