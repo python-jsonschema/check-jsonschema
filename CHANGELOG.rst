@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Fix a minor bug with the verbose output introduced in v0.26.2
+
 0.26.2
 ------
 

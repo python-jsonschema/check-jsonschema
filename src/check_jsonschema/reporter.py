@@ -199,7 +199,7 @@ class JsonReporter(Reporter):
     def report_errors(self, result: CheckResult) -> None:
         report_obj: dict[str, t.Any] = {"status": "fail"}
         if self.verbosity > 1:
-            report_obj["checked_paths"] = list(result.successes)
+            report_obj["successes"] = list(result.successes)
         if self.verbosity > 0:
             report_obj["errors"] = list(self._dump_error_map(result.validation_errors))
             report_obj["parse_errors"] = list(
