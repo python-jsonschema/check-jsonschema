@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Run '${{ matrix.toxenv }}' on python ${{ matrix.py }}"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: get date for caching
         run: /bin/date -u "+%U" > cachedate.txt
@@ -40,7 +40,7 @@ jobs:
   test-sdist:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: "3.x"
@@ -66,7 +66,7 @@ jobs:
     name: "Run tests on ${{ matrix.os }}, py${{ matrix.py }}"
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: get date for caching
         run: /bin/date -u "+%U" > cachedate.txt
@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Collate results to check for skipped tests"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: "3.x"
@@ -128,7 +128,7 @@ jobs:
   ensure-catalog-matches-hook-config:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: get date for caching
         run: /bin/date -u "+%U" > cachedate.txt
@@ -157,7 +157,7 @@ jobs:
     name: "Self-Check"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: get date for caching
         run: /bin/date -u "+%U" > cachedate.txt
