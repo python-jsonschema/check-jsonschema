@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pathlib
+import sys
 from unittest import mock
 
 import click
@@ -25,6 +27,33 @@ def mock_parse_result():
     with mock.patch("check_jsonschema.cli.main_command.ParseResult") as m:
         m.return_value = args
         yield args
+
+
+@pytest.fixture
+def mock_module(tmp_path, monkeypatch):
+    monkeypatch.syspath_prepend(tmp_path)
+    all_names_to_clear = []
+
+    def func(path, text):
+        path = pathlib.Path(path)
+        mod_dir = tmp_path / (path.parent)
+        mod_dir.mkdir(parents=True, exist_ok=True)
+        for part in path.parts[:-1]:
+            (tmp_path / part / "__init__.py").touch()
+
+        (tmp_path / path).write_text(text)
+
+        for i in range(len(path.parts)):
+            modname = ".".join(path.parts[: i + 1])
+            if modname.endswith(".py"):
+                modname = modname[:-3]
+            all_names_to_clear.append(modname)
+
+    yield func
+
+    for name in all_names_to_clear:
+        if name in sys.modules:
+            del sys.modules[name]
 
 
 @pytest.fixture(autouse=True)
@@ -258,3 +287,93 @@ def test_disable_all_formats(runner, mock_parse_result, addargs):
         + addargs,
     )
     assert mock_parse_result.disable_all_formats is True
+
+
+def test_can_specify_custom_validator_class(runner, mock_parse_result, mock_module):
+    mock_module("foo.py", "class MyValidator: pass")
+    import foo
+
+    result = runner.invoke(
+        cli_main,
+        [
+            "--schemafile",
+            "schema.json",
+            "foo.json",
+            "--validator-class",
+            "foo:MyValidator",
+        ],
+    )
+    assert result.exit_code == 0
+    assert mock_parse_result.validator_class == foo.MyValidator
+
+
+def test_warns_on_validator_function(runner, mock_parse_result, mock_module):
+    mock_module(
+        "foo/bar.py",
+        """\
+class MyValidator: pass
+
+def validator(*args, **kwargs):
+    return MyValidator(*args, **kwargs)
+""",
+    )
+    import foo.bar
+
+    with pytest.warns(UserWarning, match="'validator' in 'foo.bar' is not a class"):
+        result = runner.invoke(
+            cli_main,
+            [
+                "--schemafile",
+                "schema.json",
+                "foo.json",
+                "--validator-class",
+                "foo.bar:validator",
+            ],
+        )
+        assert result.exit_code == 0
+    assert mock_parse_result.validator_class == foo.bar.validator
+
+
+@pytest.mark.parametrize("failmode", ("syntax", "import", "attr", "callability"))
+def test_can_custom_validator_class_fails(
+    runner, mock_parse_result, mock_module, failmode
+):
+    mock_module(
+        "foo.py",
+        """\
+class MyValidator: pass
+
+def validator(*args, **kwargs):
+    return MyValidator(*args, **kwargs)
+
+other_thing = 100
+""",
+    )
+
+    if failmode == "syntax":
+        arg = "foo.MyValidator"
+    elif failmode == "import":
+        arg = "foo.bar:MyValidator"
+    elif failmode == "attr":
+        arg = "foo:no_such_attr"
+    elif failmode == "callability":
+        arg = "foo:other_thing"
+    else:
+        raise NotImplementedError
+
+    result = runner.invoke(
+        cli_main,
+        ["--schemafile", "schema.json", "foo.json", "--validator-class", arg],
+    )
+    assert result.exit_code == 2
+
+    if failmode == "syntax":
+        assert "is not a valid specifier" in result.stderr
+    elif failmode == "import":
+        assert "was not an importable module" in result.stderr
+    elif failmode == "attr":
+        assert "was not resolvable to a class" in result.stderr
+    elif failmode == "callability":
+        assert "is not a class or callable" in result.stderr
+    else:
+        raise NotImplementedError

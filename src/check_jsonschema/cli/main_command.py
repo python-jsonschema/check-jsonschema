@@ -4,6 +4,7 @@ import os
 import textwrap
 
 import click
+import jsonschema
 
 from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from ..checker import SchemaChecker
@@ -18,7 +19,7 @@ from ..schema_loader import (
     SchemaLoaderBase,
 )
 from ..transforms import TRANSFORM_LIBRARY
-from .param_types import CommaDelimitedList
+from .param_types import CommaDelimitedList, ValidatorClassName
 from .parse_result import ParseResult, SchemaLoadingMode
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
@@ -169,13 +170,27 @@ The '--disable-formats' flag supports the following formats:
 )
 @click.option(
     "--fill-defaults",
-    help="Autofill 'default' values prior to validation.",
+    help=(
+        "Autofill 'default' values prior to validation. "
+        "This may conflict with certain third-party validators used with "
+        "'--validator-class'"
+    ),
     is_flag=True,
+)
+@click.option(
+    "--validator-class",
+    help=(
+        "The fully qualified name of a python validator to use in place of "
+        "the 'jsonschema' library validators, in the form of '<package>:<class>'. "
+        "The validator must be importable in the same environment where "
+        "'check-jsonschema' is run."
+    ),
+    type=ValidatorClassName(),
 )
 @click.option(
     "-o",
     "--output-format",
-    help="Which output format to use",
+    help="Which output format to use.",
     type=click.Choice(tuple(REPORTER_BY_NAME.keys()), case_sensitive=False),
     default="text",
 )
@@ -217,6 +232,7 @@ def main(
     traceback_mode: str,
     data_transform: str | None,
     fill_defaults: bool,
+    validator_class: type[jsonschema.protocols.Validator] | None,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -225,6 +241,8 @@ def main(
     args = ParseResult()
 
     args.set_schema(schemafile, builtin_schema, check_metaschema)
+    args.set_validator(validator_class)
+
     args.base_uri = base_uri
     args.instancefiles = instancefiles
 
