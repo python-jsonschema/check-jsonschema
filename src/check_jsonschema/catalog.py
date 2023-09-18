@@ -30,7 +30,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "description": "Validate Azure Pipelines config against the schema provided "
             "by Microsoft",
             "add_args": ["--data-transform", "azure-pipelines"],
-            "files": r"^(\.)?azure-pipelines.(yml|yaml)$",
+            "files": r"^(\.)?azure-pipelines\.(yml|yaml)$",
             "types": "yaml",
         },
     },
@@ -72,7 +72,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "url": "https://json.schemastore.org/dependabot-2.0.json",
         "hook_config": {
             "name": "Validate Dependabot Config (v2)",
-            "files": r"^\.github/dependabot.(yml|yaml)$",
+            "files": r"^\.github/dependabot\.(yml|yaml)$",
             "types": "yaml",
         },
     },
@@ -88,7 +88,10 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "url": "https://json.schemastore.org/github-action",
         "hook_config": {
             "name": "Validate GitHub Actions",
-            "files": ["action.(yml|yaml)", r"\.github/actions/(.+/)?action.(yml|yaml)"],
+            "files": [
+                "action.(yml|yaml)",
+                r"\.github/actions/(.+/)?action\.(yml|yaml)",
+            ],
             "types": "yaml",
         },
     },
@@ -106,7 +109,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "hook_config": {
             "name": "Validate GitLab CI config",
             "add_args": ["--data-transform", "gitlab-ci"],
-            "files": r"^.*\.gitlab-ci.yml$",
+            "files": r"^.*\.gitlab-ci\.yml$",
             "types": "yaml",
         },
     },
@@ -121,7 +124,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "name": "Validate ReadTheDocs Config",
             "description": "Validate ReadTheDocs config against the schema "
             "provided by ReadTheDocs",
-            "files": r"^\.readthedocs.(yml|yaml)$",
+            "files": r"^\.readthedocs\.(yml|yaml)$",
             "types": "yaml",
         },
     },
@@ -142,7 +145,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "url": "https://json.schemastore.org/travis",
         "hook_config": {
             "name": "Validate Travis Config",
-            "files": r"^\.travis.(yml|yaml)$",
+            "files": r"^\.travis\.(yml|yaml)$",
             "types": "yaml",
         },
     },
