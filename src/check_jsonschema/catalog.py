@@ -89,7 +89,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "hook_config": {
             "name": "Validate GitHub Actions",
             "files": [
-                "action.(yml|yaml)",
+                r"action\.(yml|yaml)",
                 r"\.github/actions/(.+/)?action\.(yml|yaml)",
             ],
             "types": "yaml",
