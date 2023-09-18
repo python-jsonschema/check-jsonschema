@@ -113,6 +113,14 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "mkdocs-material": {
+        "url": "https://squidfunk.github.io/mkdocs-material/schema.json",
+        "hook_config": {
+            "name": "Validate MkDocs Material Config",
+            "files": r"^mkdocs\.yml$",
+            "types": "yaml",
+        },
+    },
     "readthedocs": {
         "url": _githubusercontent_url(
             "readthedocs",
