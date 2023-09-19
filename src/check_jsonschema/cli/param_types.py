@@ -3,7 +3,6 @@ from __future__ import annotations
 import importlib
 import re
 import typing as t
-import warnings
 
 import click
 import jsonschema
@@ -101,17 +100,7 @@ class ValidatorClassName(click.ParamType):
                 ctx,
             )
 
-        if not callable(result):
-            self.fail(
-                f"'{classname}' in '{pkg}' is not a class or callable", param, ctx
-            )
-
         if not isinstance(result, type):
-            warnings.warn(
-                f"'{classname}' in '{pkg}' is not a class. If it is a function "
-                f"returning a Validator, it still might work, but this usage "
-                "is not recommended.",
-                stacklevel=1,
-            )
+            self.fail(f"'{classname}' in '{pkg}' is not a class", param, ctx)
 
         return t.cast(t.Type[jsonschema.protocols.Validator], result)

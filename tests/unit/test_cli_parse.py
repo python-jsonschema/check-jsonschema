@@ -307,34 +307,9 @@ def test_can_specify_custom_validator_class(runner, mock_parse_result, mock_modu
     assert mock_parse_result.validator_class == foo.MyValidator
 
 
-def test_warns_on_validator_function(runner, mock_parse_result, mock_module):
-    mock_module(
-        "foo/bar.py",
-        """\
-class MyValidator: pass
-
-def validator(*args, **kwargs):
-    return MyValidator(*args, **kwargs)
-""",
-    )
-    import foo.bar
-
-    with pytest.warns(UserWarning, match="'validator' in 'foo.bar' is not a class"):
-        result = runner.invoke(
-            cli_main,
-            [
-                "--schemafile",
-                "schema.json",
-                "foo.json",
-                "--validator-class",
-                "foo.bar:validator",
-            ],
-        )
-        assert result.exit_code == 0
-    assert mock_parse_result.validator_class == foo.bar.validator
-
-
-@pytest.mark.parametrize("failmode", ("syntax", "import", "attr", "callability"))
+@pytest.mark.parametrize(
+    "failmode", ("syntax", "import", "attr", "function", "non_callable")
+)
 def test_can_custom_validator_class_fails(
     runner, mock_parse_result, mock_module, failmode
 ):
@@ -343,7 +318,7 @@ def test_can_custom_validator_class_fails(
         """\
 class MyValidator: pass
 
-def validator(*args, **kwargs):
+def validator_func(*args, **kwargs):
     return MyValidator(*args, **kwargs)
 
 other_thing = 100
@@ -356,7 +331,9 @@ other_thing = 100
         arg = "foo.bar:MyValidator"
     elif failmode == "attr":
         arg = "foo:no_such_attr"
-    elif failmode == "callability":
+    elif failmode == "function":
+        arg = "foo:validator_func"
+    elif failmode == "non_callable":
         arg = "foo:other_thing"
     else:
         raise NotImplementedError
@@ -373,7 +350,7 @@ other_thing = 100
         assert "was not an importable module" in result.stderr
     elif failmode == "attr":
         assert "was not resolvable to a class" in result.stderr
-    elif failmode == "callability":
-        assert "is not a class or callable" in result.stderr
+    elif failmode in ("function", "non_callable"):
+        assert "is not a class" in result.stderr
     else:
         raise NotImplementedError
