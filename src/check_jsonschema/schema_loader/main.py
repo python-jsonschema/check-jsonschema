@@ -56,18 +56,22 @@ class SchemaLoaderBase:
 
 
 class SchemaLoader(SchemaLoaderBase):
+    validator_class: type[jsonschema.protocols.Validator] | None = None
+
     def __init__(
         self,
         schemafile: str,
         cache_filename: str | None = None,
         disable_cache: bool = False,
         base_uri: str | None = None,
+        validator_class: type[jsonschema.protocols.Validator] | None = None,
     ) -> None:
         # record input parameters (these are not to be modified)
         self.schemafile = schemafile
         self.cache_filename = cache_filename
         self.disable_cache = disable_cache
         self.base_uri = base_uri
+        self.validator_class = validator_class
 
         # if the schema location is a URL, which may include a file:// URL, parse it
         self.url_info = None
@@ -132,9 +136,19 @@ class SchemaLoader(SchemaLoaderBase):
             self._parsers, retrieval_uri, schema
         )
 
-        # get the correct validator class and check the schema under its metaschema
-        validator_cls = jsonschema.validators.validator_for(schema)
-        validator_cls.check_schema(schema)
+        if self.validator_class is None:
+            # get the correct validator class and check the schema under its metaschema
+            validator_cls = jsonschema.validators.validator_for(schema)
+            validator_cls.check_schema(schema)
+        else:
+            # for a user-provided validator class, don't check_schema
+            # on the grounds that it might *not* be valid but the user wants to use
+            # their custom validator anyway
+            #
+            # in fact, there's no real guarantee that a user-provided
+            # validator_class properly conforms to the jsonschema.Validator protocol
+            # we *hope* that it does, but we can't be fully sure
+            validator_cls = self.validator_class
 
         # extend the validator class with default-filling behavior if appropriate
         if fill_defaults:

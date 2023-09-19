@@ -290,6 +290,7 @@ def build_schema_loader(args: ParseResult) -> SchemaLoaderBase:
             args.cache_filename,
             args.disable_cache,
             base_uri=args.base_uri,
+            validator_class=args.validator_class,
         )
     else:
         raise NotImplementedError("no valid schema option provided")
