@@ -258,3 +258,68 @@ def test_disable_all_formats(runner, mock_parse_result, addargs):
         + addargs,
     )
     assert mock_parse_result.disable_all_formats is True
+
+
+def test_can_specify_custom_validator_class(runner, mock_parse_result, mock_module):
+    mock_module("foo.py", "class MyValidator: pass")
+    import foo
+
+    result = runner.invoke(
+        cli_main,
+        [
+            "--schemafile",
+            "schema.json",
+            "foo.json",
+            "--validator-class",
+            "foo:MyValidator",
+        ],
+    )
+    assert result.exit_code == 0
+    assert mock_parse_result.validator_class == foo.MyValidator
+
+
+@pytest.mark.parametrize(
+    "failmode", ("syntax", "import", "attr", "function", "non_callable")
+)
+def test_custom_validator_class_fails(runner, mock_parse_result, mock_module, failmode):
+    mock_module(
+        "foo.py",
+        """\
+class MyValidator: pass
+
+def validator_func(*args, **kwargs):
+    return MyValidator(*args, **kwargs)
+
+other_thing = 100
+""",
+    )
+
+    if failmode == "syntax":
+        arg = "foo.MyValidator"
+    elif failmode == "import":
+        arg = "foo.bar:MyValidator"
+    elif failmode == "attr":
+        arg = "foo:no_such_attr"
+    elif failmode == "function":
+        arg = "foo:validator_func"
+    elif failmode == "non_callable":
+        arg = "foo:other_thing"
+    else:
+        raise NotImplementedError
+
+    result = runner.invoke(
+        cli_main,
+        ["--schemafile", "schema.json", "foo.json", "--validator-class", arg],
+    )
+    assert result.exit_code == 2
+
+    if failmode == "syntax":
+        assert "is not a valid specifier" in result.stderr
+    elif failmode == "import":
+        assert "was not an importable module" in result.stderr
+    elif failmode == "attr":
+        assert "was not resolvable to a class" in result.stderr
+    elif failmode in ("function", "non_callable"):
+        assert "is not a class" in result.stderr
+    else:
+        raise NotImplementedError

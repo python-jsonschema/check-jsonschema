@@ -3,6 +3,7 @@ from __future__ import annotations
 import enum
 
 import click
+import jsonschema
 
 from ..formats import FormatOptions, RegexVariantName
 from ..transforms import Transform
@@ -28,7 +29,8 @@ class ParseResult:
         self.default_filetype: str = "json"
         # data-transform (for Azure Pipelines and potentially future transforms)
         self.data_transform: Transform | None = None
-        # fill default values on instances during validation
+        # validation behavioral controls
+        self.validator_class: type[jsonschema.protocols.Validator] | None = None
         self.fill_defaults: bool = False
         # regex format options
         self.disable_all_formats: bool = False
@@ -64,6 +66,17 @@ class ParseResult:
             self.schema_path = builtin_schema
         else:
             self.schema_mode = SchemaLoadingMode.metaschema
+
+    def set_validator(
+        self, validator_class: type[jsonschema.protocols.Validator] | None
+    ) -> None:
+        if validator_class is None:
+            return
+        if self.schema_mode != SchemaLoadingMode.filepath:
+            raise click.UsageError(
+                "--validator-class can only be used with --schemafile for schema loading"
+            )
+        self.validator_class = validator_class
 
     @property
     def format_opts(self) -> FormatOptions:
