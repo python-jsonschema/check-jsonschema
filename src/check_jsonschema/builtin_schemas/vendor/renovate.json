@@ -141,6 +141,14 @@
       ],
       "default": null
     },
+    "autodiscoverNamespaces": {
+      "description": "Filter the list of autodiscovered repositories by namespaces.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": null
+    },
     "autodiscoverTopics": {
       "description": "Filter the list of autodiscovered repositories by topics.",
       "type": "array",
@@ -373,6 +381,25 @@
         "prerelease"
       ]
     },
+    "bun": {
+      "description": "Configuration object for the bun manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)bun\\.lockb$"
+        ],
+        "versioning": "npm",
+        "digest": {
+          "prBodyDefinitions": {
+            "Change": "{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}"
+          }
+        },
+        "prBodyDefinitions": {
+          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
+        }
+      },
+      "$ref": "#"
+    },
     "bundler": {
       "description": "Configuration object for the bundler manager",
       "type": "object",
@@ -391,7 +418,7 @@
     "cacheHardTtlMinutes": {
       "description": "Maximum duration in minutes to keep datasource cache entries.",
       "type": "integer",
-      "default": 1440
+      "default": 10080
     },
     "cacheTtlOverride": {
       "description": "An object that contains cache namespace TTL override values",
@@ -774,7 +801,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.19.0"
+      "default": "ghcr.io/containerbase/sidecar:9.20.3"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1052,7 +1079,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "^(workflow-templates|\\.github/workflows)/[^/]+\\.ya?ml$",
+          "^(workflow-templates|\\.(?:github|gitea|forgejo)/workflows)/[^/]+\\.ya?ml$",
           "(^|/)action\\.ya?ml$"
         ]
       },
@@ -1309,6 +1336,21 @@
               "hostType": {
                 "description": "hostType for a package rule. Can be a platform name or a datasource name.",
                 "type": "string"
+              },
+              "httpsCertificate": {
+                "description": "The certificate chains in PEM format.",
+                "type": "string",
+                "default": null
+              },
+              "httpsCertificateAuthority": {
+                "description": "The overriding trusted CA certificate.",
+                "type": "string",
+                "default": null
+              },
+              "httpsPrivateKey": {
+                "description": "The private key in PEM format.",
+                "type": "string",
+                "default": null
               },
               "insecureRegistry": {
                 "description": "Explicitly turn on insecure Docker registry access (HTTP).",
