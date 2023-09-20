@@ -23,12 +23,22 @@
         "export": {
             "type": "boolean",
             "title": "Enable pipelines config sharing",
-            "description": "Allows other Bitbucket repositories to import pipeline configurations from this file. A bitbucket-pipelines.yml can't contain both an `import` and an `export` property"
+            "description": "Allows other Bitbucket repositories to import pipeline configurations from this file. A shared pipeline definition can't contain another `import` property."
         }
     },
     "additionalProperties": false,
-    "required": [
-        "pipelines"
+    "anyOf": [
+        {
+            "required": [
+                "pipelines"
+            ]
+        },
+        {
+            "required": [
+                "definitions",
+                "export"
+            ]
+        }
     ],
     "definitions": {
         "pipelines": {
