@@ -9,8 +9,11 @@ Unreleased
 ----------
 
 .. vendor-insert-here
-
 - Update vendored schemas (2023-09-20)
+- Add a ``--validator-class`` option for specifying a custom
+  ``jsonschema.protocols.Validator`` class to use (:pr:`327`, :issue:`262`)
+- Minor fix to hook regexes to explicitly match `.` chars. Thanks
+  :user:`skwde`! (:pr:`325`)
 
 0.26.3
 ------

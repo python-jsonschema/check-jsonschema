@@ -26,7 +26,22 @@ files.
   rev: 0.26.3
   hooks:
     - id: check-github-workflows
+      args: ["--verbose"]
 ```
+
+### Installing and Running as a CLI Tool
+
+Install with `pipx` or `brew`:
+
+    pipx install check-jsonschema
+
+or
+
+    brew install check-jsonschema
+
+Then run, as in
+
+    check-jsonschema --schemafile schema.json instance.json
 
 ## Documentation
 
