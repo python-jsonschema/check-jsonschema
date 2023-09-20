@@ -1,0 +1,6 @@
+# copied from
+#   https://www.mkdocs.org/user-guide/configuration/#configuration-inheritance
+
+INHERIT: ../base.yml
+site_name: Foo Project
+site_url: https://example.com/foo

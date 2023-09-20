@@ -169,6 +169,20 @@ Validate GitLab CI config against the schema provided by SchemaStore
         - id: check-gitlab-ci
 
 
+``check-mkdocs-material``
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate MkDocs Material Config against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.26.3
+      hooks:
+        - id: check-mkdocs-material
+
+
 ``check-readthedocs``
 ~~~~~~~~~~~~~~~~~~~~~
 

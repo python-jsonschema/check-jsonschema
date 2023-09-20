@@ -1,0 +1,7 @@
+# copied from
+#   https://www.mkdocs.org/user-guide/configuration/#configuration-inheritance
+# but modified to make INHERIT a list
+
+INHERIT: [../base.yml]
+site_name: Foo Project
+site_url: https://example.com/foo

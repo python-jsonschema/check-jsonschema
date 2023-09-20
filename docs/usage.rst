@@ -95,6 +95,7 @@ SchemaStore and other sources:
 - ``vendor.github-actions``
 - ``vendor.github-workflows``
 - ``vendor.gitlab-ci``
+- ``vendor.mkdocs-material``
 - ``vendor.readthedocs``
 - ``vendor.renovate``
 - ``vendor.travis``

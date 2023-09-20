@@ -1,0 +1,17 @@
+# copied from
+#   https://www.mkdocs.org/user-guide/configuration/#configuration-inheritance
+
+site_name: Bar Project
+site_url: https://example.com/bar
+
+theme:
+  name: mkdocs
+  locale: en
+  highlightjs: true
+
+markdown_extensions:
+  def_list: {}
+  toc:
+    permalink: 
+    separator: "_"
+  admonition: {}
