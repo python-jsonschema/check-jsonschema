@@ -251,3 +251,26 @@ not set.
 
 ``--base-uri`` overrides this behavior, setting a custom base URI for ``$ref``
 resolution.
+
+``--validator-class``
+~~~~~~~~~~~~~~~~~~~~~
+
+``check-jsonschema`` allows users to pass a custom validator class which
+implements the ``jsonschema.protocols.Validator`` protocol.
+
+The format used for this argument is ``<module>:<class>``. For example, to
+explicitly use the ``jsonschema`` validator for Draft7, use
+``--validator-class 'jsonschema.validators:Draft7Validator'``.
+
+The module containing the validator class must be importable from within the
+``check-jsonschema`` runtime context.
+
+.. note::
+
+    ``check-jsonschema`` will treat the validator class similarly to the
+    ``jsonschema`` library builtin validators. This includes using documented
+    extension points like passing a format checker or the behavior enabled with
+    ``--fill-defaults``. Users of this feature are recommended to build their
+    validators using ``jsonschema``'s documented interfaces (e.g.
+    ``jsonschema.validators.extend``) to ensure that their validators are
+    compatible.
