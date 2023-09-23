@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import textwrap
+import typing as t
 
 import click
 import jsonschema
@@ -217,7 +218,7 @@ The '--disable-formats' flag supports the following formats:
     help="Reduce output verbosity",
     count=True,
 )
-@click.argument("instancefiles", required=True, nargs=-1)
+@click.argument("instancefiles", required=True, nargs=-1, type=click.File("rb"))
 def main(
     *,
     schemafile: str | None,
@@ -236,7 +237,7 @@ def main(
     output_format: str,
     verbose: int,
     quiet: int,
-    instancefiles: tuple[str, ...],
+    instancefiles: tuple[t.BinaryIO, ...],
 ) -> None:
     args = ParseResult()
 

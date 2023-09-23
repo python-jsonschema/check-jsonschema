@@ -1,3 +1,4 @@
+import os
 import pathlib
 import sys
 
@@ -38,3 +39,10 @@ def mock_module(tmp_path, monkeypatch):
     for name in all_names_to_clear:
         if name in sys.modules:
             del sys.modules[name]
+
+
+@pytest.fixture
+def in_tmp_dir(request, tmp_path):
+    os.chdir(str(tmp_path))
+    yield
+    os.chdir(request.config.invocation_dir)
