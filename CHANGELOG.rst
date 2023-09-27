@@ -9,6 +9,8 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+
+- Update vendored schemas (2023-09-27)
 - Update vendored schemas (2023-09-20)
 - Add a ``--validator-class`` option for specifying a custom
   ``jsonschema.protocols.Validator`` class to use (:pr:`327`, :issue:`262`)

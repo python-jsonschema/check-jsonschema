@@ -670,6 +670,85 @@
       "default": {},
       "$ref": "#"
     },
+    "customManagers": {
+      "description": "Custom managers using regex matching.",
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "A custom description for this configuration object"
+              },
+              "autoReplaceStringTemplate": {
+                "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `customManagers` object.",
+                "type": "string"
+              },
+              "currentValueTemplate": {
+                "description": "Optional `currentValue` for extracted dependencies. Valid only within a `customManagers` object.",
+                "type": "string"
+              },
+              "customType": {
+                "description": "Custom manager to use. Valid only within a `customManagers` object.",
+                "type": "string",
+                "enum": [
+                  "regex"
+                ]
+              },
+              "datasourceTemplate": {
+                "description": "Optional datasource for extracted dependencies. Valid only within a `customManagers` object.",
+                "type": "string"
+              },
+              "depNameTemplate": {
+                "description": "Optional depName for extracted dependencies. Valid only within a `customManagers` object.",
+                "type": "string"
+              },
+              "depTypeTemplate": {
+                "description": "Optional `depType` for extracted dependencies. Valid only within a `customManagers` object.",
+                "type": "string"
+              },
+              "extractVersionTemplate": {
+                "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `customManagers` object.",
+                "type": "string"
+              },
+              "matchStrings": {
+                "description": "Regex capture rule to use. Valid only within a `customManagers` object.",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "regex"
+                }
+              },
+              "matchStringsStrategy": {
+                "description": "Strategy how to interpret matchStrings.",
+                "type": "string",
+                "enum": [
+                  "any",
+                  "recursive",
+                  "combination"
+                ],
+                "default": "any"
+              },
+              "packageNameTemplate": {
+                "description": "Optional packageName for extracted dependencies, else defaults to `depName` value. Valid only within a `customManagers` object.",
+                "type": "string"
+              },
+              "registryUrlTemplate": {
+                "description": "Optional registry URL for extracted dependencies. Valid only within a `customManagers` object.",
+                "type": "string"
+              },
+              "versioningTemplate": {
+                "description": "Optional versioning for extracted dependencies. Valid only within a `customManagers` object.",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "default": []
+    },
     "customizeDashboard": {
       "description": "Customize sections in the dependency dashboard issue.",
       "type": "object",
@@ -801,7 +880,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.20.3"
+      "default": "ghcr.io/containerbase/sidecar:9.20.4"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -948,7 +1027,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)flux-system/(?:.+/)?gotk-components\\.ya?ml$"
+          "(?:^|/)gotk-components\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -2671,85 +2750,6 @@
         "pinDigests": false
       },
       "$ref": "#"
-    },
-    "regexManagers": {
-      "description": "Custom managers using regex matching.",
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "string",
-                "description": "A custom description for this configuration object"
-              },
-              "autoReplaceStringTemplate": {
-                "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `regexManagers` object.",
-                "type": "string"
-              },
-              "currentValueTemplate": {
-                "description": "Optional `currentValue` for extracted dependencies. Valid only within a `regexManagers` object.",
-                "type": "string"
-              },
-              "customType": {
-                "description": "Custom manager to use. Valid only within a `regexManagers` object.",
-                "type": "string",
-                "enum": [
-                  "regex"
-                ]
-              },
-              "datasourceTemplate": {
-                "description": "Optional datasource for extracted dependencies. Valid only within a `regexManagers` object.",
-                "type": "string"
-              },
-              "depNameTemplate": {
-                "description": "Optional depName for extracted dependencies. Valid only within a `regexManagers` object.",
-                "type": "string"
-              },
-              "depTypeTemplate": {
-                "description": "Optional `depType` for extracted dependencies. Valid only within a `regexManagers` object.",
-                "type": "string"
-              },
-              "extractVersionTemplate": {
-                "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `regexManagers` object.",
-                "type": "string"
-              },
-              "matchStrings": {
-                "description": "Regex capture rule to use. Valid only within a `regexManagers` object.",
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "regex"
-                }
-              },
-              "matchStringsStrategy": {
-                "description": "Strategy how to interpret matchStrings.",
-                "type": "string",
-                "enum": [
-                  "any",
-                  "recursive",
-                  "combination"
-                ],
-                "default": "any"
-              },
-              "packageNameTemplate": {
-                "description": "Optional packageName for extracted dependencies, else defaults to `depName` value. Valid only within a `regexManagers` object.",
-                "type": "string"
-              },
-              "registryUrlTemplate": {
-                "description": "Optional registry URL for extracted dependencies. Valid only within a `regexManagers` object.",
-                "type": "string"
-              },
-              "versioningTemplate": {
-                "description": "Optional versioning for extracted dependencies. Valid only within a `regexManagers` object.",
-                "type": "string"
-              }
-            }
-          }
-        ]
-      },
-      "default": []
     },
     "registryAliases": {
       "description": "Aliases for registries.",
