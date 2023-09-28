@@ -10,10 +10,16 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-09-27)
+0.27.0
+------
+
+- Update vendored schemas: azure-pipelines, bitbucket-pipelines, gitlab-ci,
+  renovate (2023-09-27)
 - Add a ``--validator-class`` option for specifying a custom
   ``jsonschema.protocols.Validator`` class to use (:pr:`327`, :issue:`262`)
-- Minor fix to hook regexes to explicitly match `.` chars. Thanks
+- Instances and schemas may now be passed on stdin, using ``-`` (:pr:`332`,
+  :issue:`251`)
+- Minor fix to hook regexes to explicitly match ``.`` chars. Thanks
   :user:`skwde`! (:pr:`325`)
 
 0.26.3
