@@ -114,3 +114,37 @@ def test_remote_schema_requiring_retry(run_line, check_passes, tmp_path, monkeyp
         assert result.exit_code == 0
     else:
         assert result.exit_code == 1
+
+
+@pytest.mark.parametrize("check_passes", (True, False))
+@pytest.mark.parametrize("using_stdin", ("schema", "instance"))
+def test_schema_or_instance_from_stdin(
+    run_line, check_passes, tmp_path, monkeypatch, using_stdin
+):
+    """
+    a "remote schema" (meaning HTTPS) with bad data, therefore requiring that a retry
+    fires in order to parse
+    """
+    if using_stdin == "schema":
+        instance_path = tmp_path / "instance.json"
+        instance_path.write_text("42" if check_passes else '"foo"')
+
+        result = run_line(
+            ["check-jsonschema", "--schemafile", "-", str(instance_path)],
+            input='{"type": "integer"}',
+        )
+    elif using_stdin == "instance":
+        schema_path = tmp_path / "schema.json"
+        schema_path.write_text('{"type": "integer"}')
+        instance = "42" if check_passes else '"foo"'
+
+        result = run_line(
+            ["check-jsonschema", "--schemafile", schema_path, "-"],
+            input=instance,
+        )
+    else:
+        raise NotImplementedError
+    if check_passes:
+        assert result.exit_code == 0
+    else:
+        assert result.exit_code == 1

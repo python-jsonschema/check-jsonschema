@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from check_jsonschema.instance_loader import InstanceLoader
@@ -8,11 +6,20 @@ from check_jsonschema.parsers.json5 import ENABLED as JSON5_ENABLED
 from check_jsonschema.parsers.toml import ENABLED as TOML_ENABLED
 
 
+# handy helper for opening multiple files for InstanceLoader
 @pytest.fixture
-def in_tmp_dir(request, tmp_path):
-    os.chdir(str(tmp_path))
-    yield
-    os.chdir(request.config.invocation_dir)
+def open_wide():
+    track_paths = []
+
+    def func(*paths):
+        open_paths = [open(p, "rb") for p in paths]
+        track_paths.extend(open_paths)
+        return open_paths
+
+    yield func
+
+    for p in track_paths:
+        p.close()
 
 
 @pytest.mark.parametrize(
@@ -27,12 +34,12 @@ def in_tmp_dir(request, tmp_path):
         ("foo", "yaml"),
     ],
 )
-def test_instanceloader_json_data(tmp_path, filename, default_filetype):
+def test_instanceloader_json_data(tmp_path, filename, default_filetype, open_wide):
     f = tmp_path / filename
     f.write_text("{}")
-    loader = InstanceLoader([str(f)], default_filetype=default_filetype)
+    loader = InstanceLoader(open_wide(f), default_filetype=default_filetype)
     data = list(loader.iter_files())
-    assert data == [(f, {})]
+    assert data == [(str(f), {})]
 
 
 @pytest.mark.parametrize(
@@ -47,7 +54,7 @@ def test_instanceloader_json_data(tmp_path, filename, default_filetype):
         ("foo", "yaml"),
     ],
 )
-def test_instanceloader_yaml_data(tmp_path, filename, default_filetype):
+def test_instanceloader_yaml_data(tmp_path, filename, default_filetype, open_wide):
     f = tmp_path / filename
     f.write_text(
         """\
@@ -58,21 +65,21 @@ a:
   c: d
 """
     )
-    loader = InstanceLoader([f], default_filetype=default_filetype)
+    loader = InstanceLoader(open_wide(f), default_filetype=default_filetype)
     data = list(loader.iter_files())
-    assert data == [(f, {"a": {"b": [1, 2], "c": "d"}})]
+    assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
 
 
-def test_instanceloader_unknown_type_nonjson_content(tmp_path):
+def test_instanceloader_unknown_type_nonjson_content(tmp_path, open_wide):
     f = tmp_path / "foo"  # no extension here
     f.write_text("a:b")  # non-json data (cannot be detected as JSON)
-    loader = InstanceLoader([f], default_filetype="unknown")
+    loader = InstanceLoader(open_wide(f), default_filetype="unknown")
     # at iteration time, the file should error and be reported as such
     data = list(loader.iter_files())
     assert len(data) == 1
     assert isinstance(data[0], tuple)
     assert len(data[0]) == 2
-    assert data[0][0] == f
+    assert data[0][0] == str(f)
     assert isinstance(data[0][1], BadFileTypeError)
 
 
@@ -96,29 +103,35 @@ def test_instanceloader_unknown_type_nonjson_content(tmp_path):
     ],
 )
 def test_instanceloader_optional_format_handling(
-    tmp_path, enabled_flag, extension, file_content, expect_data, expect_error_message
+    tmp_path,
+    enabled_flag,
+    extension,
+    file_content,
+    expect_data,
+    expect_error_message,
+    open_wide,
 ):
     f = tmp_path / f"foo.{extension}"
     f.write_text(file_content)
-    loader = InstanceLoader([f])
+    loader = InstanceLoader(open_wide(f))
     if enabled_flag:
         # at iteration time, the file should load fine
         data = list(loader.iter_files())
-        assert data == [(f, expect_data)]
+        assert data == [(str(f), expect_data)]
     else:
         # at iteration time, an error should be raised
         data = list(loader.iter_files())
         assert len(data) == 1
         assert isinstance(data[0], tuple)
         assert len(data[0]) == 2
-        assert data[0][0] == f
+        assert data[0][0] == str(f)
         assert isinstance(data[0][1], BadFileTypeError)
 
         # error message should be instructive
         assert expect_error_message in str(data[0])
 
 
-def test_instanceloader_yaml_dup_anchor(tmp_path):
+def test_instanceloader_yaml_dup_anchor(tmp_path, open_wide):
     f = tmp_path / "foo.yaml"
     f.write_text(
         """\
@@ -129,9 +142,9 @@ a:
   c: &anchor d
 """
     )
-    loader = InstanceLoader([str(f)])
+    loader = InstanceLoader(open_wide(f))
     data = list(loader.iter_files())
-    assert data == [(f, {"a": {"b": [1, 2], "c": "d"}})]
+    assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
 
 
 @pytest.mark.parametrize(
@@ -144,7 +157,9 @@ a:
         ("toml", "foo.toml", "abc\n"),
     ],
 )
-def test_instanceloader_invalid_data(tmp_path, file_format, filename, content):
+def test_instanceloader_invalid_data(
+    tmp_path, file_format, filename, content, open_wide
+):
     if file_format == "json5" and not JSON5_ENABLED:
         pytest.skip("test requires 'json5' support")
     if file_format == "toml" and not TOML_ENABLED:
@@ -152,16 +167,16 @@ def test_instanceloader_invalid_data(tmp_path, file_format, filename, content):
 
     f = tmp_path / filename
     f.write_text(content)
-    loader = InstanceLoader([f])
+    loader = InstanceLoader(open_wide(f))
     data = list(loader.iter_files())
     assert len(data) == 1
     assert isinstance(data[0], tuple)
     assert len(data[0]) == 2
-    assert data[0][0] == f
+    assert data[0][0] == str(f)
     assert isinstance(data[0][1], FailedFileLoadError)
 
 
-def test_instanceloader_invalid_data_mixed_with_valid_data(tmp_path):
+def test_instanceloader_invalid_data_mixed_with_valid_data(tmp_path, open_wide):
     a = tmp_path / "a.json"
     b = tmp_path / "b.json"
     c = tmp_path / "c.json"
@@ -169,19 +184,19 @@ def test_instanceloader_invalid_data_mixed_with_valid_data(tmp_path):
     b.write_text("{")
     c.write_text('{"c":true}')
 
-    loader = InstanceLoader([a, b, c])
+    loader = InstanceLoader(open_wide(a, b, c))
 
     data = list(loader.iter_files())
     assert len(data) == 3
 
-    assert data[0] == (a, {})
+    assert data[0] == (str(a), {})
 
     assert isinstance(data[1], tuple)
     assert len(data[1]) == 2
-    assert data[1][0] == b
+    assert data[1][0] == str(b)
     assert isinstance(data[1][1], FailedFileLoadError)
 
-    assert data[2] == (c, {"c": True})
+    assert data[2] == (str(c), {"c": True})
 
 
 @pytest.mark.parametrize(
@@ -193,7 +208,7 @@ def test_instanceloader_invalid_data_mixed_with_valid_data(tmp_path):
         ("json", "yaml", "toml", "json5"),
     ),
 )
-def test_instanceloader_mixed_filetypes(tmp_path, filetypes):
+def test_instanceloader_mixed_filetypes(tmp_path, filetypes, open_wide):
     if not JSON5_ENABLED and "json5" in filetypes:
         pytest.skip("test requires json5")
     if not TOML_ENABLED and "toml" in filetypes:
@@ -217,7 +232,7 @@ def test_instanceloader_mixed_filetypes(tmp_path, filetypes):
         files["toml"].write_text('[foo]  # bar\nname = "value"\n')
         file_order.append("toml")
 
-    loader = InstanceLoader(files.values())
+    loader = InstanceLoader(open_wide(*files.values()))
 
     data = list(loader.iter_files())
     assert len(data) == len(files)
@@ -226,7 +241,7 @@ def test_instanceloader_mixed_filetypes(tmp_path, filetypes):
         assert isinstance(data[i], tuple)
         assert len(data[i]) == 2
         path, value = data[i]
-        assert path == files[filetype]
+        assert path == str(files[filetype])
         if filetype == "json":
             assert value == {}
         elif filetype == "yaml":

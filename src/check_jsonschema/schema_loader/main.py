@@ -12,7 +12,7 @@ from ..formats import FormatOptions, make_format_checker
 from ..parsers import ParserSet
 from ..utils import is_url_ish
 from .errors import UnsupportedUrlScheme
-from .readers import HttpSchemaReader, LocalSchemaReader
+from .readers import HttpSchemaReader, LocalSchemaReader, StdinSchemaReader
 from .resolver import make_reference_registry
 
 
@@ -47,7 +47,7 @@ def _extend_with_default(
 class SchemaLoaderBase:
     def get_validator(
         self,
-        path: pathlib.Path,
+        path: pathlib.Path | str,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
         fill_defaults: bool,
@@ -82,15 +82,22 @@ class SchemaLoader(SchemaLoaderBase):
         self._parsers = ParserSet()
 
         # setup a schema reader lazily, when needed
-        self._reader: LocalSchemaReader | HttpSchemaReader | None = None
+        self._reader: LocalSchemaReader | HttpSchemaReader | StdinSchemaReader | None = (
+            None
+        )
 
     @property
-    def reader(self) -> LocalSchemaReader | HttpSchemaReader:
+    def reader(self) -> LocalSchemaReader | HttpSchemaReader | StdinSchemaReader:
         if self._reader is None:
             self._reader = self._get_schema_reader()
         return self._reader
 
-    def _get_schema_reader(self) -> LocalSchemaReader | HttpSchemaReader:
+    def _get_schema_reader(
+        self,
+    ) -> LocalSchemaReader | HttpSchemaReader | StdinSchemaReader:
+        if self.schemafile == "-":
+            return StdinSchemaReader()
+
         if self.url_info is None or self.url_info.scheme in ("file", ""):
             return LocalSchemaReader(self.schemafile)
 
@@ -117,7 +124,7 @@ class SchemaLoader(SchemaLoaderBase):
 
     def get_validator(
         self,
-        path: pathlib.Path,
+        path: pathlib.Path | str,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
         fill_defaults: bool,
@@ -189,7 +196,7 @@ class MetaSchemaLoader(SchemaLoaderBase):
 
     def get_validator(
         self,
-        path: pathlib.Path,
+        path: pathlib.Path | str,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
         fill_defaults: bool,
