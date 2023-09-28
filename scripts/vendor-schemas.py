@@ -16,7 +16,8 @@ TODAY = datetime.datetime.today().strftime("%Y-%m-%d")
 VENDOR_SLUG = "\n.. vendor-insert-here\n"
 
 EXISTING_CHANGELINE_PATTERN = re.compile(
-    re.escape(f"{VENDOR_SLUG}\n- Update vendored schemas")
+    re.escape(VENDOR_SLUG)
+    + "\n?- Update vendored schemas"
     + r" \(\d{4}-\d{2}-\d{2}\)"
     + "\n",
     flags=re.MULTILINE,
