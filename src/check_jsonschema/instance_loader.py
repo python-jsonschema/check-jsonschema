@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import io
 import typing as t
 
 from .parsers import ParseError, ParserSet
@@ -25,14 +26,21 @@ class InstanceLoader:
 
     def iter_files(self) -> t.Iterator[tuple[str, ParseError | t.Any]]:
         for file in self._files:
-            if not hasattr(file, "name"):
+            if hasattr(file, "name"):
+                name = file.name
+            # allowing for BytesIO to be special-cased here is useful for
+            # simpler test setup, since this is what tests will pass and we naturally
+            # support it here
+            elif isinstance(file, io.BytesIO) or file.fileno() == 0:
+                name = "<stdin>"
+            else:
                 raise ValueError(f"File {file} has no name attribute")
             try:
                 data: t.Any = self._parsers.parse_data_with_path(
-                    file, file.name, self._default_filetype
+                    file, name, self._default_filetype
                 )
             except ParseError as err:
                 data = err
             else:
                 data = self._data_transform(data)
-            yield (file.name, data)
+            yield (name, data)

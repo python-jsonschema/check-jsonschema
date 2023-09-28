@@ -91,8 +91,10 @@ The '--disable-formats' flag supports the following formats:
     help=(
         "The path to a file containing the JSON Schema to use or an "
         "HTTP(S) URI for the schema. If a remote file is used, "
-        "it will be downloaded and cached locally based on mtime."
+        "it will be downloaded and cached locally based on mtime. "
+        "Use '-' for stdin."
     ),
+    metavar="[PATH|URI]",
 )
 @click.option(
     "--base-uri",

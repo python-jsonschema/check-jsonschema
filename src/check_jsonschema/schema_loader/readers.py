@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import io
+import json
+import sys
 import typing as t
 
 import ruamel.yaml
 
 from ..cachedownloader import CacheDownloader
-from ..parsers import ParserSet
+from ..parsers import ParseError, ParserSet
 from ..utils import filename2path
 from .errors import SchemaParseError
 
@@ -30,7 +32,7 @@ class LocalSchemaReader:
         self.filename = str(self.path)
         self.parsers = ParserSet()
 
-    def get_retrieval_uri(self) -> str:
+    def get_retrieval_uri(self) -> str | None:
         return self.path.as_uri()
 
     def _read_impl(self) -> t.Any:
@@ -38,6 +40,20 @@ class LocalSchemaReader:
 
     def read_schema(self) -> dict:
         return _run_load_callback(self.filename, self._read_impl)
+
+
+class StdinSchemaReader:
+    def __init__(self) -> None:
+        self.parsers = ParserSet()
+
+    def get_retrieval_uri(self) -> str | None:
+        return None
+
+    def read_schema(self) -> dict:
+        try:
+            return json.load(sys.stdin)
+        except ValueError as e:
+            raise ParseError("Failed to parse JSON from stdin") from e
 
 
 class HttpSchemaReader:
@@ -64,7 +80,7 @@ class HttpSchemaReader:
             )
         return self._parsed_schema
 
-    def get_retrieval_uri(self) -> str:
+    def get_retrieval_uri(self) -> str | None:
         return self.url
 
     def _read_impl(self) -> t.Any:
