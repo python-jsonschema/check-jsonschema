@@ -421,7 +421,7 @@
       "default": 10080
     },
     "cacheTtlOverride": {
-      "description": "An object that contains cache namespace TTL override values",
+      "description": "An object that contains cache namespace TTL override values.",
       "type": "object",
       "default": {},
       "$ref": "#"
@@ -624,7 +624,7 @@
       "$ref": "#"
     },
     "customDatasources": {
-      "description": "Defines custom datasources for usage by managers",
+      "description": "Defines custom datasources for usage by managers.",
       "type": "object",
       "default": {},
       "$ref": "#",
@@ -638,12 +638,12 @@
                 "description": "A custom description for this configuration object"
               },
               "defaultRegistryUrlTemplate": {
-                "description": "Template for generating a defaultRegistryUrl for custom datasource",
+                "description": "Template for generating a `defaultRegistryUrl` for custom datasource.",
                 "type": "string",
                 "default": ""
               },
               "format": {
-                "description": "Format of the custom datasource",
+                "description": "Format of the custom datasource.",
                 "type": "string",
                 "enum": [
                   "json",
@@ -652,7 +652,7 @@
                 "default": "json"
               },
               "transformTemplates": {
-                "description": "List of jsonata transformation rules",
+                "description": "List of jsonata transformation rules.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -750,7 +750,7 @@
       "default": []
     },
     "customizeDashboard": {
-      "description": "Customize sections in the dependency dashboard issue.",
+      "description": "Customize sections in the Dependency Dashboard issue.",
       "type": "object",
       "default": {},
       "additionalProperties": {
@@ -880,7 +880,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.20.4"
+      "default": "ghcr.io/containerbase/sidecar:9.23.4"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1197,7 +1197,7 @@
       }
     },
     "goGetDirs": {
-      "description": "Directory pattern to run `go get` on",
+      "description": "Directory pattern to run `go get` on.",
       "type": "array",
       "items": {
         "type": "string"
@@ -1382,7 +1382,7 @@
                 "default": false
               },
               "artifactAuth": {
-                "description": "A list of package managers to enable artifact auth. Only managers on the list are enabled. All are enabled if `null`",
+                "description": "A list of package managers to enable artifact auth. Only managers on the list are enabled. All are enabled if `null`.",
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -1456,12 +1456,7 @@
             }
           }
         ]
-      },
-      "default": [
-        {
-          "timeout": 60000
-        }
-      ]
+      }
     },
     "html": {
       "description": "Configuration object for the html manager",
@@ -2067,7 +2062,7 @@
                 "type": "string"
               },
               "matchCurrentVersion": {
-                "description": "A version or range of versions to match against the current version of a package. Valid only within a `packageRules` object.",
+                "description": "A version, or range of versions, to match against the current version of a package. Valid only within a `packageRules` object.",
                 "type": "string"
               },
               "matchDatasources": {
@@ -3057,7 +3052,7 @@
       "$ref": "#"
     },
     "timezone": {
-      "description": "[IANA Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)",
+      "description": "Must conform to [IANA Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) format.",
       "type": "string"
     },
     "token": {
@@ -3138,6 +3133,11 @@
         ]
       },
       "$ref": "#"
+    },
+    "versionCompatibility": {
+      "description": "A regex (`re2`) with named capture groups to show how version and compatibility are split from a raw version string.",
+      "type": "string",
+      "format": "regex"
     },
     "versioning": {
       "description": "Versioning to use for filtering and comparisons.",
