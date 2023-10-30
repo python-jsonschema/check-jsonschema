@@ -15,6 +15,9 @@
     ".buildkite/pipeline.*.yaml",
     ".buildkite/pipeline.*.json"
   ],
+  "required": [
+    "steps"
+  ],
   "definitions": {
     "commonOptions": {
       "allowDependencyFailure": {
@@ -1234,7 +1237,7 @@
           "$ref": "#/definitions/commonOptions/dependsOn"
         },
         "group": {
-          "type": "string",
+          "type": [ "string", "null" ],
           "description": "The name to give to this group of steps",
           "examples": [ "Tests" ]
         },
@@ -1255,6 +1258,12 @@
         },
         "name": {
           "$ref": "#/definitions/groupStep/properties/label"
+        },
+        "allow_dependency_failure": {
+          "$ref": "#/definitions/commonOptions/allowDependencyFailure"
+        },
+        "notify": {
+          "$ref": "#/definitions/commonOptions/buildNotify"
         },
         "steps": {
           "type": "array",
@@ -1278,7 +1287,7 @@
           "minSize": 1
         },
         "type": {
-          "type": "string",
+          "type": [ "string" ],
           "enum": [ "group" ]
         }
       },
