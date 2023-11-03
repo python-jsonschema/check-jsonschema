@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-11-03)
+0.27.1
+------
+
+- Update vendored schemas: buildkite, drone-ci, github-workflows, gitlab-ci,
+  readthedocs, renovate (2023-11-03)
 
 0.27.0
 ------
