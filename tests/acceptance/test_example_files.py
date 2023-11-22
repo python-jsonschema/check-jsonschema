@@ -64,7 +64,7 @@ def test_hook_positive_examples(case_name, run_line):
 
     hook_id = POSITIVE_HOOK_CASES[case_name]
     ret = run_line(HOOK_CONFIG[hook_id] + [rcase.path] + rcase.add_args)
-    assert ret.exit_code == 0
+    assert ret.exit_code == 0, _format_cli_result(rcase, ret)
 
 
 @pytest.mark.parametrize("case_name", NEGATIVE_HOOK_CASES.keys())
@@ -73,7 +73,7 @@ def test_hook_negative_examples(case_name, run_line):
 
     hook_id = NEGATIVE_HOOK_CASES[case_name]
     ret = run_line(HOOK_CONFIG[hook_id] + [rcase.path] + rcase.add_args)
-    assert ret.exit_code == 1
+    assert ret.exit_code == 1, _format_cli_result(rcase, ret)
 
 
 @pytest.mark.parametrize("case_name", _get_explicit_cases("positive"))
@@ -167,3 +167,13 @@ def _package_is_installed(pkg: str) -> bool:
     if spec is None:
         return False
     return True
+
+
+def _format_cli_result(rcase: ResolvedCase, result) -> str:
+    return (
+        "\n"
+        f"config.add_args={rcase.add_args}\n"
+        f"{result.exit_code=}\n"
+        f"result.stdout={result.output}\n"
+        f"{result.stderr=}"
+    )
