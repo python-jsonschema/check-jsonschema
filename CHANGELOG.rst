@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Add official support for Python 3.12
+
 0.27.1
 ------
 
