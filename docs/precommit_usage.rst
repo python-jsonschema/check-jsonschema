@@ -99,6 +99,20 @@ Validate Buildkite Pipelines against the schema provided by Buildkite
         - id: check-buildkite
 
 
+``check-cloudbuild``
+~~~~~~~~~~~~~~~~~~~~
+
+Validate Google Cloud Build config against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.27.1
+      hooks:
+        - id: check-cloudbuild
+
+
 ``check-dependabot``
 ~~~~~~~~~~~~~~~~~~~~
 
