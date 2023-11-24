@@ -11,8 +11,11 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2023-11-24)
-
 - Add official support for Python 3.12
+- Add Google Cloud Build schema and pre-commit hook. Thanks :user:`nikolaik`!
+  (:pr:`339`)
+- Fix a bug in the custom `github-action-require-timeout` schema which forbade
+  the use of GitHub expression syntax for the timeout value. (:issue:`354`)
 
 0.27.1
 ------
