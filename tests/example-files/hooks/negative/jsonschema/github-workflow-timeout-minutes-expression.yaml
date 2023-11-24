@@ -1,0 +1,12 @@
+on:
+  workflow-call:
+    inputs:
+      qemu:
+          default: ''
+          required: false
+
+jobs:
+  job-id:
+    runs-on: ubuntu-latest
+    # missing trailing '}'
+    timeout-minutes: ${{ inputs.qemu && '60' || '20' }
