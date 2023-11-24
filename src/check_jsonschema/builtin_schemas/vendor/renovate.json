@@ -623,6 +623,14 @@
       },
       "$ref": "#"
     },
+    "crossplane": {
+      "description": "Configuration object for the crossplane manager",
+      "type": "object",
+      "default": {
+        "fileMatch": []
+      },
+      "$ref": "#"
+    },
     "customDatasources": {
       "description": "Defines custom datasources for usage by managers.",
       "type": "object",
@@ -880,7 +888,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.23.9"
+      "default": "ghcr.io/containerbase/sidecar:9.24.0"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -957,6 +965,11 @@
       "type": "integer",
       "default": 15
     },
+    "expandCodeOwnersGroups": {
+      "description": "Expand the configured code owner groups into a full list of group members.",
+      "type": "boolean",
+      "default": false
+    },
     "exposeAllEnv": {
       "description": "Set this to `true` to allow passing of all environment variables to package managers.",
       "type": "boolean",
@@ -981,8 +994,8 @@
       "type": "string",
       "format": "regex"
     },
-    "fetchReleaseNotes": {
-      "description": "Controls if and when release notes are fetched.",
+    "fetchChangeLogs": {
+      "description": "Controls if and when changelogs/release notes are fetched.",
       "type": "string",
       "enum": [
         "off",
@@ -1158,7 +1171,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "^(workflow-templates|\\.(?:github|gitea|forgejo)/workflows)/[^/]+\\.ya?ml$",
+          "(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/workflows)/[^/]+\\.ya?ml$",
           "(^|/)action\\.ya?ml$"
         ]
       },
