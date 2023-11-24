@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas (2023-11-24)
+
 - Add official support for Python 3.12
 
 0.27.1
