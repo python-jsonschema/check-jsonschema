@@ -108,7 +108,7 @@ Validate Google Cloud Build config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.27.0
+      rev: 0.27.1
       hooks:
         - id: check-cloudbuild
 
