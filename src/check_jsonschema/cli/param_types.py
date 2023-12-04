@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import importlib
+import os
 import re
+import stat
 import typing as t
 
 import click
 import jsonschema
+from click._compat import open_stream
 
 
 class CommaDelimitedList(click.ParamType):
@@ -104,3 +107,45 @@ class ValidatorClassName(click.ParamType):
             self.fail(f"'{classname}' in '{pkg}' is not a class", param, ctx)
 
         return t.cast(t.Type[jsonschema.protocols.Validator], result)
+
+
+class _CustomLazyFile(click.utils.LazyFile):
+    def __init__(
+        self,
+        filename: str | os.PathLike[str],
+        mode: str = "r",
+        encoding: str | None = None,
+        errors: str | None = "strict",
+        atomic: bool = False,
+    ):
+        self.name: str = os.fspath(filename)
+        self.mode = mode
+        self.encoding = encoding
+        self.errors = errors
+        self.atomic = atomic
+        self._f: t.IO[t.Any] | None
+        self.should_close: bool
+
+        if self.name == "-":
+            self._f, self.should_close = open_stream(filename, mode, encoding, errors)
+        else:
+            if "r" in mode and not stat.S_ISFIFO(os.stat(filename).st_mode):
+                # Open and close the file in case we're opening it for
+                # reading so that we can catch at least some errors in
+                # some cases early.
+                open(filename, mode).close()
+            self._f = None
+            self.should_close = True
+
+
+class LazyBinaryReadFile(click.File):
+    def convert(
+        self,
+        value: str,
+        param: click.Parameter | None,
+        ctx: click.Context | None,
+    ) -> t.IO[bytes]:
+        lf = _CustomLazyFile(value, mode="rb")
+        if ctx is not None:
+            ctx.call_on_close(lf.close_intelligently)
+        return t.cast(t.IO[bytes], lf)

@@ -43,4 +43,6 @@ class InstanceLoader:
                 data = err
             else:
                 data = self._data_transform(data)
+
+            file.close()
             yield (name, data)
