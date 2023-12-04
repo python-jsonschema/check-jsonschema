@@ -15,6 +15,13 @@ from .errors import SchemaParseError
 yaml = ruamel.yaml.YAML(typ="safe")
 
 
+class _UnsetType:
+    pass
+
+
+_UNSET = _UnsetType()
+
+
 def _run_load_callback(schema_location: str, callback: t.Callable) -> dict:
     try:
         schema = callback()
@@ -31,6 +38,7 @@ class LocalSchemaReader:
         self.path = filename2path(filename)
         self.filename = str(self.path)
         self.parsers = ParserSet()
+        self._parsed_schema: dict | _UnsetType = _UNSET
 
     def get_retrieval_uri(self) -> str | None:
         return self.path.as_uri()
@@ -39,21 +47,26 @@ class LocalSchemaReader:
         return self.parsers.parse_file(self.path, default_filetype="json")
 
     def read_schema(self) -> dict:
-        return _run_load_callback(self.filename, self._read_impl)
+        if self._parsed_schema is _UNSET:
+            self._parsed_schema = _run_load_callback(self.filename, self._read_impl)
+        return self._parsed_schema
 
 
 class StdinSchemaReader:
     def __init__(self) -> None:
         self.parsers = ParserSet()
+        self._parsed_schema: dict | _UnsetType = _UNSET
 
     def get_retrieval_uri(self) -> str | None:
         return None
 
     def read_schema(self) -> dict:
-        try:
-            return json.load(sys.stdin)
-        except ValueError as e:
-            raise ParseError("Failed to parse JSON from stdin") from e
+        if self._parsed_schema is _UNSET:
+            try:
+                self._parsed_schema = json.load(sys.stdin)
+            except ValueError as e:
+                raise ParseError("Failed to parse JSON from stdin") from e
+        return self._parsed_schema
 
 
 class HttpSchemaReader:
@@ -71,14 +84,12 @@ class HttpSchemaReader:
             disable_cache=disable_cache,
             validation_callback=self._parse,
         )
-        self._parsed_schema: t.Any | None = None
+        self._parsed_schema: dict | _UnsetType = _UNSET
 
     def _parse(self, schema_bytes: bytes) -> t.Any:
-        if self._parsed_schema is None:
-            self._parsed_schema = self.parsers.parse_data_with_path(
-                io.BytesIO(schema_bytes), self.url, default_filetype="json"
-            )
-        return self._parsed_schema
+        return self.parsers.parse_data_with_path(
+            io.BytesIO(schema_bytes), self.url, default_filetype="json"
+        )
 
     def get_retrieval_uri(self) -> str | None:
         return self.url
@@ -88,4 +99,6 @@ class HttpSchemaReader:
             return self._parse(fp.read())
 
     def read_schema(self) -> dict:
-        return _run_load_callback(self.url, self._read_impl)
+        if self._parsed_schema is _UNSET:
+            self._parsed_schema = _run_load_callback(self.url, self._read_impl)
+        return self._parsed_schema
