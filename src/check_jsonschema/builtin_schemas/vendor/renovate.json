@@ -888,7 +888,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.24.0"
+      "default": "ghcr.io/containerbase/sidecar:9.27.0"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1318,7 +1318,7 @@
         },
         "commitMessageTopic": "helm chart {{depName}}",
         "fileMatch": [
-          "(^|/)helmfile\\.ya?ml$"
+          "(^|/)helmfile\\.ya?ml(?:\\.gotmpl)?$"
         ]
       },
       "$ref": "#"
@@ -1448,8 +1448,8 @@
                 "description": "Explicitly turn on insecure Docker registry access (HTTP).",
                 "type": "boolean"
               },
-              "keepalive": {
-                "description": "Enable HTTP keepalives for hosts.",
+              "keepAlive": {
+                "description": "Enable HTTP keep-alive for hosts.",
                 "type": "boolean",
                 "default": false
               },
@@ -2630,6 +2630,11 @@
       },
       "$ref": "#"
     },
+    "presetCachePersistence": {
+      "description": "Cache resolved presets in package cache.",
+      "type": "boolean",
+      "default": false
+    },
     "printConfig": {
       "description": "If enabled, Renovate logs the fully resolved config for each repository, plus the fully resolved presets.",
       "type": "boolean",
@@ -2786,7 +2791,7 @@
         "commitMessageAction": "Replace",
         "commitMessageExtra": "with {{newName}} {{#if isMajor}}{{{prettyNewMajor}}}{{else}}{{#if isSingleVersion}}{{{prettyNewVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
         "prBodyNotes": [
-          "This is a special PR that replaces `{{{depNameSanitized}}}` with the community suggested minimal stable replacement version."
+          "This is a special PR that replaces `{{{depName}}}` with the community suggested minimal stable replacement version."
         ]
       },
       "$ref": "#"

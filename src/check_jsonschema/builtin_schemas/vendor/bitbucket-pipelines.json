@@ -328,6 +328,12 @@
                     "description": "Sets the type of environment for your deployment step, used in the Deployments dashboard.",
                     "minLength": 1
                 },
+                "oidc": {
+                    "type": "boolean",
+                    "title": "OpenID Connect",
+                    "description": "Enables the use of OpenID Connect with Pipelines and your resource server. The oidc value must be set to true to set up and configure OpenID Connect.",
+                    "default": false
+                },
                 "condition": {
                     "type": "object",
                     "title": "Execute step when only condition is satisfied",
@@ -672,6 +678,18 @@
                     "$ref": "#/definitions/simpleImage"
                 },
                 "aws": {
+                    "$ref": "#/definitions/awsCredentials"
+                },
+                "run-as-user": {
+                    "$ref": "#/definitions/runAsUser"
+                }
+            },
+            "required": ["name", "aws"],
+            "additionalProperties": false
+        },
+        "awsCredentials": {
+            "oneOf": [
+                {
                     "type": "object",
                     "description": "AWS credentials",
                     "properties": {
@@ -692,15 +710,20 @@
                     ],
                     "additionalProperties": false
                 },
-                "run-as-user": {
-                    "$ref": "#/definitions/runAsUser"
+                {
+                    "type": "object",
+                    "description": "AWS credentials",
+                    "properties": {
+                        "oidc-role": {
+                            "type": "string",
+                            "description": "AWS IAM Role assumable using OpenID Connect",
+                            "minLength": 1
+                        }
+                    },
+                    "required": ["oidc-role"],
+                    "additionalProperties": false
                 }
-            },
-            "required": [
-                "name",
-                "aws"
-            ],
-            "additionalProperties": false
+            ]
         },
         "image": {
             "oneOf": [
