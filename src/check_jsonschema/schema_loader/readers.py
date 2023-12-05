@@ -49,7 +49,7 @@ class LocalSchemaReader:
     def read_schema(self) -> dict:
         if self._parsed_schema is _UNSET:
             self._parsed_schema = _run_load_callback(self.filename, self._read_impl)
-        return self._parsed_schema
+        return t.cast(dict, self._parsed_schema)
 
 
 class StdinSchemaReader:
@@ -66,7 +66,7 @@ class StdinSchemaReader:
                 self._parsed_schema = json.load(sys.stdin)
             except ValueError as e:
                 raise ParseError("Failed to parse JSON from stdin") from e
-        return self._parsed_schema
+        return t.cast(dict, self._parsed_schema)
 
 
 class HttpSchemaReader:
@@ -101,4 +101,4 @@ class HttpSchemaReader:
     def read_schema(self) -> dict:
         if self._parsed_schema is _UNSET:
             self._parsed_schema = _run_load_callback(self.url, self._read_impl)
-        return self._parsed_schema
+        return t.cast(dict, self._parsed_schema)

@@ -141,11 +141,16 @@ class _CustomLazyFile(click.utils.LazyFile):
 class LazyBinaryReadFile(click.File):
     def convert(
         self,
-        value: str,
+        value: str | os.PathLike[str] | t.IO[t.Any],
         param: click.Parameter | None,
         ctx: click.Context | None,
     ) -> t.IO[bytes]:
-        lf = _CustomLazyFile(value, mode="rb")
+        if hasattr(value, "read") or hasattr(value, "write"):
+            return t.cast(t.IO[bytes], value)
+
+        value_: str | os.PathLike[str] = t.cast("str | os.PathLike[str]", value)
+
+        lf = _CustomLazyFile(value_, mode="rb")
         if ctx is not None:
             ctx.call_on_close(lf.close_intelligently)
         return t.cast(t.IO[bytes], lf)
