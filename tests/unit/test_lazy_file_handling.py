@@ -1,4 +1,5 @@
 import os
+import platform
 
 import pytest
 from click.testing import CliRunner
@@ -12,7 +13,9 @@ def runner() -> CliRunner:
     return CliRunner(mix_stderr=False)
 
 
-@pytest.mark.skipif(os.name != "posix", reason="test requires use of /proc/self/")
+@pytest.mark.skipif(
+    platform.system() != "Linux", reason="test requires /proc/self/ mechanism"
+)
 def test_open_file_usage_never_exceeds_1000(runner, monkeypatch, tmp_path):
     schema_path = tmp_path / "schema.json"
     schema_path.write_text("{}")
