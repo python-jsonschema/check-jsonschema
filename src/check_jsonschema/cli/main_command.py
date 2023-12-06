@@ -20,7 +20,7 @@ from ..schema_loader import (
     SchemaLoaderBase,
 )
 from ..transforms import TRANSFORM_LIBRARY
-from .param_types import CommaDelimitedList, ValidatorClassName
+from .param_types import CommaDelimitedList, LazyBinaryReadFile, ValidatorClassName
 from .parse_result import ParseResult, SchemaLoadingMode
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
@@ -220,7 +220,9 @@ The '--disable-formats' flag supports the following formats:
     help="Reduce output verbosity",
     count=True,
 )
-@click.argument("instancefiles", required=True, nargs=-1, type=click.File("rb"))
+@click.argument(
+    "instancefiles", required=True, nargs=-1, type=LazyBinaryReadFile("rb", lazy=True)
+)
 def main(
     *,
     schemafile: str | None,

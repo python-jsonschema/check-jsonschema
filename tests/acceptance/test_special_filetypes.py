@@ -1,7 +1,7 @@
+import multiprocessing
 import os
 import platform
 import sys
-import threading
 
 import pytest
 import responses
@@ -33,6 +33,16 @@ def test_schema_and_instance_in_memfds(run_line_simple):
         os.close(instancefd)
 
 
+# helper (in global scope) for multiprocessing "spawn" to be able to use to launch
+# background writers
+def _fifo_write(path, data):
+    fd = os.open(path, os.O_WRONLY)
+    try:
+        os.write(fd, data)
+    finally:
+        os.close(fd)
+
+
 @pytest.mark.skipif(os.name != "posix", reason="test requires mkfifo")
 @pytest.mark.parametrize("check_succeeds", (True, False))
 def test_schema_and_instance_in_fifos(tmp_path, run_line, check_succeeds):
@@ -45,25 +55,17 @@ def test_schema_and_instance_in_fifos(tmp_path, run_line, check_succeeds):
     os.mkfifo(schema_path)
     os.mkfifo(instance_path)
 
-    # execute FIFO writes as blocking writes in background threads
-    # nonblocking writes fail file existence if there's no reader, so using a FIFO
-    # requires some level of concurrency
-    def fifo_write(path, data):
-        fd = os.open(path, os.O_WRONLY)
-        try:
-            os.write(fd, data)
-        finally:
-            os.close(fd)
+    spawn_ctx = multiprocessing.get_context("spawn")
 
-    schema_thread = threading.Thread(
-        target=fifo_write, args=[schema_path, b'{"type": "integer"}']
+    schema_proc = spawn_ctx.Process(
+        target=_fifo_write, args=(schema_path, b'{"type": "integer"}')
     )
-    schema_thread.start()
+    schema_proc.start()
     instance_data = b"42" if check_succeeds else b'"foo"'
-    instance_thread = threading.Thread(
-        target=fifo_write, args=[instance_path, instance_data]
+    instance_proc = spawn_ctx.Process(
+        target=_fifo_write, args=(instance_path, instance_data)
     )
-    instance_thread.start()
+    instance_proc.start()
 
     try:
         result = run_line(
@@ -74,8 +76,8 @@ def test_schema_and_instance_in_fifos(tmp_path, run_line, check_succeeds):
         else:
             assert result.exit_code == 1
     finally:
-        schema_thread.join(timeout=0.1)
-        instance_thread.join(timeout=0.1)
+        schema_proc.terminate()
+        instance_proc.terminate()
 
 
 @pytest.mark.parametrize("check_passes", (True, False))
