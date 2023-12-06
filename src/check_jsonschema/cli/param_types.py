@@ -109,7 +109,7 @@ class ValidatorClassName(click.ParamType):
         return t.cast(t.Type[jsonschema.protocols.Validator], result)
 
 
-class _CustomLazyFile(click.utils.LazyFile):
+class CustomLazyFile(click.utils.LazyFile):
     def __init__(
         self,
         filename: str | os.PathLike[str],
@@ -150,7 +150,7 @@ class LazyBinaryReadFile(click.File):
 
         value_: str | os.PathLike[str] = t.cast("str | os.PathLike[str]", value)
 
-        lf = _CustomLazyFile(value_, mode="rb")
+        lf = CustomLazyFile(value_, mode="rb")
         if ctx is not None:
             ctx.call_on_close(lf.close_intelligently)
         return t.cast(t.IO[bytes], lf)
