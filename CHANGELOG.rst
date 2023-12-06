@@ -10,7 +10,15 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2023-12-05)
+0.27.3
+------
+- Update vendored schemas: bitbucket, gitlab-ci, readthedocs, renovate
+  (2023-12-05)
+- Limit the number of instance files which are opened simultaneously, which
+  avoids reaching OS limits for open file descriptors. Thanks
+  :user:`ianmackinnon`! (:issue:`352`)
+- Improve handling of schemafiles to ensure that they are only read once
+  (:pr:`363`)
 
 0.27.2
 ------
