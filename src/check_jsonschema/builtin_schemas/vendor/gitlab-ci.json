@@ -58,6 +58,9 @@
         "interruptible": {
           "$ref": "#/definitions/interruptible"
         },
+        "id_tokens": {
+          "$ref": "#/definitions/id_tokens"
+        },
         "retry": {
           "$ref": "#/definitions/retry"
         },
@@ -113,6 +116,9 @@
       "properties": {
         "name": {
           "$ref": "#/definitions/workflowName"
+        },
+        "auto_cancel": {
+          "$ref": "#/definitions/workflowAutoCancel"
         },
         "rules": {
           "type": "array",
@@ -327,6 +333,10 @@
             "load_performance": {
               "$ref": "#/definitions/string_file_list",
               "markdownDescription": "Path to file or list of files with load performance testing report(s). [Learn More](https://docs.gitlab.com/ee/ci/yaml/artifacts_reports.html#artifactsreportsload_performance)."
+            },
+            "repository_xray": {
+              "$ref": "#/definitions/string_file_list",
+              "description": "Path to file or list of files with Repository X-Ray report(s)."
             }
           }
         }
@@ -931,6 +941,21 @@
       "markdownDescription": "Defines the pipeline name. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#workflowname).",
       "minLength": 1,
       "maxLength": 255
+    },
+    "workflowAutoCancel": {
+      "type": "object",
+      "markdownDescription": "Define the rules for when pipeline should be automatically cancelled.",
+      "properties": {
+        "on_job_failure": {
+          "markdownDescription": "Define which jobs to stop after a job fails.",
+          "default": "none",
+          "type": "string",
+          "enum": [
+            "none",
+            "all"
+          ]
+        }
+      }
     },
     "globalVariables": {
       "markdownDescription": "Defines default variables for all jobs. Job level property overrides global variables. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#variables).",
