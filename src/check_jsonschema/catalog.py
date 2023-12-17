@@ -111,6 +111,14 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "gitea-workflows": {
+        "url": "https://json.schemastore.org/github-workflow",
+        "hook_config": {
+            "name": "Validate Gitea Workflows",
+            "files": r"^\.gitea/workflows/[^/]+$",
+            "types": "yaml",
+        },
+    },
     "gitlab-ci": {
         "url": "https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts"
         "/editor/schema/ci.json",
