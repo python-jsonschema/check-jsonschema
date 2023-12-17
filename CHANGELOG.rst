@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas (2023-12-17)
+
 0.27.3
 ------
 - Update vendored schemas: bitbucket, gitlab-ci, readthedocs, renovate

@@ -888,7 +888,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.27.0"
+      "default": "ghcr.io/containerbase/sidecar:9.30.6"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1461,6 +1461,11 @@
                 "description": "Limit requests rate per host.",
                 "type": "integer",
                 "default": 0
+              },
+              "maxRetryAfter": {
+                "description": "Maximum retry-after header value to wait for before retrying a failed request.",
+                "type": "integer",
+                "default": 60
               },
               "timeout": {
                 "description": "Timeout (in milliseconds) for queries to external endpoints.",
@@ -2963,6 +2968,17 @@
       "description": "Skip installing modules/dependencies if lock file updating is possible without a full install.",
       "type": "boolean",
       "default": null
+    },
+    "statusCheckNames": {
+      "description": "Custom strings to use as status check names.",
+      "type": "object",
+      "default": {
+        "artifactError": "renovate/artifacts",
+        "configValidation": "renovate/config-validation",
+        "mergeConfidence": "renovate/merge-confidence",
+        "minimumReleaseAge": "renovate/stability-days"
+      },
+      "$ref": "#"
     },
     "stopUpdatingLabel": {
       "description": "Label to make Renovate stop updating a PR.",
