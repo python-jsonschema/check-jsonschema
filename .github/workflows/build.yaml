@@ -100,7 +100,7 @@ jobs:
           python -m tox run-parallel -m ci -- --junitxml pytest.{envname}.xml
           python -m tox run -e cov
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: pytest-report-py${{ matrix.py }}-${{ matrix.os }}
           path: pytest.*.xml
@@ -115,7 +115,7 @@ jobs:
         with:
           python-version: "3.x"
       # download everything
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: artifacts/
       # collate and report
