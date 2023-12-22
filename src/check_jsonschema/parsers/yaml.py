@@ -53,8 +53,8 @@ _data_sentinel = object()
 
 def impl2loader(
     primary: ruamel.yaml.YAML, *fallbacks: ruamel.yaml.YAML
-) -> t.Callable[[t.BinaryIO], t.Any]:
-    def load(stream: t.BinaryIO) -> t.Any:
+) -> t.Callable[[t.IO[bytes]], t.Any]:
+    def load(stream: t.IO[bytes]) -> t.Any:
         stream_bytes = stream.read()
         lasterr: ruamel.yaml.YAMLError | None = None
         data: t.Any = _data_sentinel

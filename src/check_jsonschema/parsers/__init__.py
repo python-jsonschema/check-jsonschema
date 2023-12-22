@@ -11,7 +11,7 @@ from ..identify_filetype import path_to_type
 from . import json5, toml, yaml
 
 _PARSER_ERRORS: set[type[Exception]] = {json.JSONDecodeError, yaml.ParseError}
-DEFAULT_LOAD_FUNC_BY_TAG: dict[str, t.Callable[[t.BinaryIO], t.Any]] = {
+DEFAULT_LOAD_FUNC_BY_TAG: dict[str, t.Callable[[t.IO[bytes]], t.Any]] = {
     "json": json.load,
 }
 SUPPORTED_FILE_FORMATS = ["json", "yaml"]
@@ -67,7 +67,7 @@ class ParserSet:
 
     def get(
         self, path: pathlib.Path | str, default_filetype: str
-    ) -> t.Callable[[t.BinaryIO], t.Any]:
+    ) -> t.Callable[[t.IO[bytes]], t.Any]:
         filetype = path_to_type(path, default_type=default_filetype)
 
         if filetype in self._by_tag:
@@ -84,7 +84,7 @@ class ParserSet:
         )
 
     def parse_data_with_path(
-        self, data: t.BinaryIO | bytes, path: pathlib.Path | str, default_filetype: str
+        self, data: t.IO[bytes] | bytes, path: pathlib.Path | str, default_filetype: str
     ) -> t.Any:
         loadfunc = self.get(path, default_filetype)
         try:
