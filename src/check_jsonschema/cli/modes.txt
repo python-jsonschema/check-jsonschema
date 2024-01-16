@@ -1,0 +1,14 @@
+Legacy interface, no command group as the first argument. Each mode is a flag:
+
+    check-jsonschema --schemafile foo.json instance.json
+    check-jsonschema --schemafile https://example.com/foo.json instance.json
+    check-jsonschema --builtin-schema vendor.foo instance.json
+    check-jsonschema --check-metaschema foo.json
+
+New interface, each mode of use gets a dedicated subcommand.
+Also note that `--schemafile` is split into two modes:
+
+    check-jsonschema local foo.json instance.json
+    check-jsonschema remote foo.json instance.json
+    check-jsonschema vendored foo instance.json
+    check-jsonschema metaschema foo.json

@@ -4,8 +4,8 @@ import platform
 import pytest
 from click.testing import CliRunner
 
-from check_jsonschema.cli.main_command import build_checker
-from check_jsonschema.cli.main_command import main as cli_main
+# TODO: redefine this to also test modernized commands
+from check_jsonschema.cli.legacy import build_checker, legacy_main
 
 
 @pytest.fixture
@@ -36,8 +36,8 @@ def test_open_file_usage_never_exceeds_1000(runner, monkeypatch, tmp_path):
         nonlocal checker
         checker = build_checker(argv)
 
-    monkeypatch.setattr("check_jsonschema.cli.main_command.execute", fake_execute)
-    res = runner.invoke(cli_main, args)
+    monkeypatch.setattr("check_jsonschema.cli.legacy.execute", fake_execute)
+    res = runner.invoke(legacy_main, args)
     assert res.exit_code == 0, res.stderr
 
     assert checker is not None

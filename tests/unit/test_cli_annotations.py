@@ -2,7 +2,8 @@ import typing as t
 
 import pytest
 
-from check_jsonschema.cli import main as cli_main
+# TODO: also test modernized commands
+from check_jsonschema.cli.legacy import legacy_main
 
 click_type_test = pytest.importorskip(
     "click_type_test", reason="tests require 'click-type-test'"
@@ -11,7 +12,7 @@ click_type_test = pytest.importorskip(
 
 def test_annotations_match_click_params():
     click_type_test.check_param_annotations(
-        cli_main,
+        legacy_main,
         overrides={
             # don't bother with a Literal for this, since it's relatively dynamic data
             "builtin_schema": str | None,

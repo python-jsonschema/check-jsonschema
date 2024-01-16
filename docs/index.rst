@@ -27,3 +27,4 @@ features are tracked in the associated `issue tracker
     :caption: Change History:
 
     changelog
+    upgrading

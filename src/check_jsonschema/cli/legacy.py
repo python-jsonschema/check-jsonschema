@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 import sys
 import textwrap
 import typing as t
@@ -21,7 +20,15 @@ from ..schema_loader import (
     SchemaLoaderBase,
 )
 from ..transforms import TRANSFORM_LIBRARY
-from .param_types import CommaDelimitedList, LazyBinaryReadFile, ValidatorClassName
+from .common_options import (
+    base_uri_opt,
+    download_opts,
+    jsonschema_format_opts,
+    output_format_opt,
+    universal_opts,
+    validator_behavior_opts,
+)
+from .param_types import LazyBinaryReadFile
 from .parse_result import ParseResult, SchemaLoadingMode
 
 if sys.version_info >= (3, 8):
@@ -35,17 +42,6 @@ BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
 BUILTIN_SCHEMA_CHOICES = (
     BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + CUSTOM_SCHEMA_NAMES
 )
-
-
-def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
-    if "NO_COLOR" in os.environ:
-        ctx.color = False
-    else:
-        ctx.color = {
-            "auto": None,
-            "always": True,
-            "never": False,
-        }[value]
 
 
 def pretty_helptext_list(values: list[str] | tuple[str, ...]) -> str:
@@ -90,8 +86,8 @@ The '--disable-formats' flag supports the following formats:
 """
     + pretty_helptext_list(KNOWN_FORMATS),
 )
-@click.help_option("-h", "--help")
-@click.version_option()
+@universal_opts
+@base_uri_opt
 @click.option(
     "--schemafile",
     help=(
@@ -101,14 +97,6 @@ The '--disable-formats' flag supports the following formats:
         "Use '-' for stdin."
     ),
     metavar="[PATH|URI]",
-)
-@click.option(
-    "--base-uri",
-    help=(
-        "Override the base URI for the schema. The default behavior is to "
-        "follow the behavior specified by the JSON Schema spec, which is to "
-        "prefer an explicit '$id' and failover to the retrieval URI."
-    ),
 )
 @click.option(
     "--builtin-schema",
@@ -124,52 +112,14 @@ The '--disable-formats' flag supports the following formats:
         "schema and validate them under their matching metaschemas."
     ),
 )
-@click.option(
-    "--no-cache",
-    is_flag=True,
-    help="Disable schema caching. Always download remote schemas.",
-)
-@click.option(
-    "--cache-filename",
-    help=(
-        "The name to use for caching a remote schema. "
-        "Defaults to the last slash-delimited part of the URI."
-    ),
-)
-@click.option(
-    "--disable-formats",
-    multiple=True,
-    help=(
-        "Disable specific format checks in the schema. "
-        "Pass '*' to disable all format checks."
-    ),
-    type=CommaDelimitedList(choices=("*", *KNOWN_FORMATS)),
-    metavar="{*|FORMAT,FORMAT,...}",
-)
-@click.option(
-    "--format-regex",
-    help=(
-        "Set the mode of format validation for regexes. "
-        "If `--disable-formats regex` is used, this option has no effect."
-    ),
-    default=RegexVariantName.default.value,
-    type=click.Choice([x.value for x in RegexVariantName], case_sensitive=False),
-)
+@download_opts
+@jsonschema_format_opts
 @click.option(
     "--default-filetype",
     help="A default filetype to assume when a file's type is not detected",
     default="json",
     show_default=True,
     type=click.Choice(SUPPORTED_FILE_FORMATS, case_sensitive=True),
-)
-@click.option(
-    "--traceback-mode",
-    help=(
-        "Set the mode of presentation for error traces. "
-        "Defaults to shortened tracebacks."
-    ),
-    type=click.Choice(("full", "short")),
-    default="short",
 )
 @click.option(
     "--data-transform",
@@ -179,59 +129,12 @@ The '--disable-formats' flag supports the following formats:
     ),
     type=click.Choice(tuple(TRANSFORM_LIBRARY.keys())),
 )
-@click.option(
-    "--fill-defaults",
-    help=(
-        "Autofill 'default' values prior to validation. "
-        "This may conflict with certain third-party validators used with "
-        "'--validator-class'"
-    ),
-    is_flag=True,
-)
-@click.option(
-    "--validator-class",
-    help=(
-        "The fully qualified name of a python validator to use in place of "
-        "the 'jsonschema' library validators, in the form of '<package>:<class>'. "
-        "The validator must be importable in the same environment where "
-        "'check-jsonschema' is run."
-    ),
-    type=ValidatorClassName(),
-)
-@click.option(
-    "-o",
-    "--output-format",
-    help="Which output format to use.",
-    type=click.Choice(tuple(REPORTER_BY_NAME.keys()), case_sensitive=False),
-    default="text",
-)
-@click.option(
-    "--color",
-    help="Force or disable colorized output. Defaults to autodetection.",
-    default="auto",
-    type=click.Choice(("auto", "always", "never")),
-    callback=set_color_mode,
-    expose_value=False,
-)
-@click.option(
-    "-v",
-    "--verbose",
-    help=(
-        "Increase output verbosity. On validation errors, this may be especially "
-        "useful when oneOf or anyOf is used in the schema."
-    ),
-    count=True,
-)
-@click.option(
-    "-q",
-    "--quiet",
-    help="Reduce output verbosity",
-    count=True,
-)
+@validator_behavior_opts
+@output_format_opt
 @click.argument(
     "instancefiles", required=True, nargs=-1, type=LazyBinaryReadFile("rb", lazy=True)
 )
-def main(
+def legacy_main(
     *,
     schemafile: str | None,
     builtin_schema: str | None,
