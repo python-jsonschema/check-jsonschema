@@ -86,7 +86,7 @@ jobs:
       - run: python -m pip install tox
 
       - name: cache tox virtualenvs
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .tox
           key: >
