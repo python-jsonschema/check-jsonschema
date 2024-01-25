@@ -157,4 +157,16 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "woodpecker-ci": {
+        "url": "https://raw.githubusercontent.com/woodpecker-ci/woodpecker/main/pipeline"
+        "/frontend/yaml/linter/schema/schema.json",
+        "hook_config": {
+            "name": "Validate Woodpecker Config",
+            "files": [
+                r"^\.woodpecker\.(yml|yaml)$",
+                r"^\.woodpecker/.+\.(yml|yaml)$",
+            ],
+            "types": "yaml",
+        },
+    },
 }

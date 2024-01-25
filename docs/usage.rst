@@ -99,6 +99,7 @@ SchemaStore and other sources:
 - ``vendor.readthedocs``
 - ``vendor.renovate``
 - ``vendor.travis``
+- ``vendor.woodpecker-ci``
 
 .. vendored-schema-list-end
 

@@ -225,6 +225,20 @@ Validate Travis Config against the schema provided by SchemaStore
         - id: check-travis
 
 
+``check-woodpecker-ci``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate Woodpecker Config against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.27.3
+      hooks:
+        - id: check-woodpecker-ci
+
+
 .. generated-hook-list-end
 
 
