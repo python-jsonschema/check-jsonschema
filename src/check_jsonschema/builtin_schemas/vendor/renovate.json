@@ -42,6 +42,16 @@
       "type": "boolean",
       "default": false
     },
+    "allowedHeaders": {
+      "description": "List of allowed patterns for header names in repository hostRules config.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "X-*"
+      ]
+    },
     "allowedPostUpgradeCommands": {
       "description": "A list of regular expressions that decide which post-upgrade tasks are allowed.",
       "type": "array",
@@ -887,7 +897,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.30.9"
+      "default": "ghcr.io/containerbase/sidecar:9.31.5"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1170,7 +1180,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/workflows)/[^/]+\\.ya?ml$",
+          "(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$",
           "(^|/)action\\.ya?ml$"
         ]
       },
@@ -1423,6 +1433,11 @@
                 "description": "Enable got HTTP/2 support.",
                 "type": "boolean",
                 "default": false
+              },
+              "headers": {
+                "description": "Put fields to be forwarded to the HTTP request headers in the headers config option.",
+                "type": "object",
+                "$ref": "#"
               },
               "hostType": {
                 "description": "hostType for a package rule. Can be a platform name or a datasource name.",
@@ -1847,6 +1862,14 @@
         ],
         "versioning": "node",
         "pinDigests": false
+      },
+      "$ref": "#"
+    },
+    "ocb": {
+      "description": "Configuration object for the ocb manager",
+      "type": "object",
+      "default": {
+        "fileMatch": []
       },
       "$ref": "#"
     },
@@ -2413,6 +2436,7 @@
         "bitbucket",
         "bitbucket-server",
         "codecommit",
+        "gerrit",
         "gitea",
         "github",
         "gitlab",
@@ -2756,6 +2780,10 @@
         "never"
       ],
       "default": "auto"
+    },
+    "redisPrefix": {
+      "description": "Key prefix for redis cache entries.",
+      "type": "string"
     },
     "redisUrl": {
       "description": "If set, this Redis URL will be used for caching instead of the file system.",
@@ -3144,6 +3172,11 @@
       ],
       "default": "none"
     },
+    "useCloudMetadataServices": {
+      "description": "If `false`, Renovate does not try to access cloud metadata services.",
+      "type": "boolean",
+      "default": true
+    },
     "userStrings": {
       "description": "User-facing strings for the Renovate comment when a PR is closed.",
       "type": "object",
@@ -3210,6 +3243,7 @@
             "redhat",
             "regex",
             "rez",
+            "rpm",
             "ruby",
             "semver",
             "semver-coerced",
