@@ -82,9 +82,9 @@ class SchemaLoader(SchemaLoaderBase):
         self._parsers = ParserSet()
 
         # setup a schema reader lazily, when needed
-        self._reader: LocalSchemaReader | HttpSchemaReader | StdinSchemaReader | None = (
-            None
-        )
+        self._reader: (
+            LocalSchemaReader | HttpSchemaReader | StdinSchemaReader | None
+        ) = None
 
     @property
     def reader(self) -> LocalSchemaReader | HttpSchemaReader | StdinSchemaReader:

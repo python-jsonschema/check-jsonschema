@@ -60,13 +60,13 @@ def generate_hook_lines(config) -> t.Iterator[str]:
     yield "  language: python"
 
     if isinstance(config["files"], list):
-        config[
-            "files"
-        ] = r""">
+        config["files"] = (
+            r""">
     (?x)^(
       {}
     )$""".format(
-            "|\n      ".join(config["files"])
+                "|\n      ".join(config["files"])
+            )
         )
 
     yield f"  files: {config['files']}"

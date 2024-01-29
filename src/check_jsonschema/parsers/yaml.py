@@ -24,9 +24,9 @@ def construct_yaml_implementation(
     # however, JSON does not support native datetimes, so JSON Schema formats for
     # dates apply to strings
     # Turn off this feature, instructing the parser to load datetimes as strings
-    implementation.constructor.yaml_constructors[
-        "tag:yaml.org,2002:timestamp"
-    ] = implementation.constructor.yaml_constructors["tag:yaml.org,2002:str"]
+    implementation.constructor.yaml_constructors["tag:yaml.org,2002:timestamp"] = (
+        implementation.constructor.yaml_constructors["tag:yaml.org,2002:str"]
+    )
 
     return implementation
 

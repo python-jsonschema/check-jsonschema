@@ -27,6 +27,7 @@ into
         steps:
           - bash: echo ${{ val }}
 """
+
 from __future__ import annotations
 
 import typing as t
