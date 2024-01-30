@@ -22,7 +22,7 @@ class ParseResult:
         self.schema_mode: SchemaLoadingMode = SchemaLoadingMode.filepath
         self.schema_path: str | None = None
         self.base_uri: str | None = None
-        self.instancefiles: tuple[t.BinaryIO, ...] = ()
+        self.instancefiles: tuple[t.IO[bytes], ...] = ()
         # cache controls
         self.disable_cache: bool = False
         self.cache_filename: str | None = None

@@ -62,14 +62,14 @@ ENABLED = has_toml and not FORCE_TOML_DISABLED
 if ENABLED:
     ParseError: type[Exception] = toml_implementation.TOMLDecodeError
 
-    def load(stream: t.BinaryIO) -> t.Any:
+    def load(stream: t.IO[bytes]) -> t.Any:
         data = toml_implementation.load(stream)
         return _normalize(data)
 
 else:
     ParseError = ValueError
 
-    def load(stream: t.BinaryIO) -> t.Any:
+    def load(stream: t.IO[bytes]) -> t.Any:
         raise NotImplementedError
 
 

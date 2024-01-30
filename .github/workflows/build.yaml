@@ -97,7 +97,7 @@ jobs:
 
       - name: test
         run: |
-          python -m tox run-parallel -m ci -- --junitxml pytest.{envname}.xml
+          python -m tox run -m ci -- -v --junitxml pytest.{envname}.xml
           python -m tox run -e cov
 
       - uses: actions/upload-artifact@v4

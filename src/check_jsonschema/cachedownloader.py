@@ -127,7 +127,7 @@ class CacheDownloader:
         return dest
 
     @contextlib.contextmanager
-    def open(self) -> t.Generator[t.BinaryIO, None, None]:
+    def open(self) -> t.Iterator[t.IO[bytes]]:
         if (not self._cache_dir) or self._disable_cache:
             yield io.BytesIO(self._get_request().content)
         else:

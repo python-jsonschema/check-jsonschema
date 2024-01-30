@@ -27,12 +27,12 @@ ENABLED = _load is not None
 if _load is not None:
     _load_concrete: t.Callable = _load
 
-    def load(stream: t.BinaryIO) -> t.Any:
+    def load(stream: t.IO[bytes]) -> t.Any:
         return _load_concrete(stream)
 
 else:
 
-    def load(stream: t.BinaryIO) -> t.Any:
+    def load(stream: t.IO[bytes]) -> t.Any:
         raise NotImplementedError
 
 

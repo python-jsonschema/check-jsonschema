@@ -12,7 +12,7 @@ from .transforms import Transform
 class InstanceLoader:
     def __init__(
         self,
-        files: t.Sequence[t.BinaryIO | CustomLazyFile],
+        files: t.Sequence[t.IO[bytes] | CustomLazyFile],
         default_filetype: str = "json",
         data_transform: Transform | None = None,
     ) -> None:
@@ -40,7 +40,7 @@ class InstanceLoader:
 
             try:
                 if isinstance(file, CustomLazyFile):
-                    stream: t.BinaryIO = t.cast(t.BinaryIO, file.open())
+                    stream: t.IO[bytes] = t.cast(t.IO[bytes], file.open())
                 else:
                     stream = file
 
