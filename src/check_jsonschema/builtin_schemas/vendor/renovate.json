@@ -941,7 +941,8 @@
     },
     "enabled": {
       "description": "Enable or disable Renovate bot.",
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "enabledManagers": {
       "description": "A list of package managers to enable. Only managers on the list are enabled.",
@@ -1460,7 +1461,8 @@
               },
               "insecureRegistry": {
                 "description": "Explicitly turn on insecure Docker registry access (HTTP).",
-                "type": "boolean"
+                "type": "boolean",
+                "default": false
               },
               "keepAlive": {
                 "description": "Enable HTTP keep-alive for hosts.",
@@ -1571,7 +1573,8 @@
     },
     "ignoreUnstable": {
       "description": "Ignore versions with unstable SemVer.",
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "includeMirrors": {
       "description": "Whether to process repositories that are mirrors. By default, repositories that are mirrors are skipped.",
@@ -2096,6 +2099,10 @@
                     ]
                   }
                 ]
+              },
+              "matchCurrentAge": {
+                "description": "Matches the current age of the package derived from its release timestamp. Valid only within a `packageRules` object.",
+                "type": "string"
               },
               "matchCurrentValue": {
                 "description": "A regex to match against the raw `currentValue` string of a dependency. Valid only within a `packageRules` object.",
@@ -2862,7 +2869,8 @@
     },
     "respectLatest": {
       "description": "Ignore versions newer than npm \"latest\" version.",
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "reviewers": {
       "description": "Requested reviewers for Pull Requests (either username or email address depending on the platform).",
@@ -2968,7 +2976,8 @@
     },
     "separateMajorMinor": {
       "description": "If set to `false`, Renovate will upgrade dependencies to their latest release only. Renovate will not separate major or minor branches.",
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "separateMinorPatch": {
       "description": "If set to `true`, Renovate will separate `minor` and `patch` updates into separate branches.",
@@ -3152,11 +3161,13 @@
     },
     "updateLockFiles": {
       "description": "Set to `false` to disable lock file updating.",
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "updateNotScheduled": {
       "description": "Whether to update branches when not scheduled. Renovate will not create branches outside of the schedule.",
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "updatePinnedDependencies": {
       "description": "Whether to update pinned (single version) dependencies or not.",
