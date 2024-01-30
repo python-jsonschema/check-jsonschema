@@ -10,7 +10,12 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-01-29)
+0.27.4
+------
+
+- Update vendored schemas: cloudbuild, dependabot, drone-ci, github-actions,
+  github-workflows, gitlab-ci, renovate, travis (2024-01-29)
+- Add Woodpecker-CI schema and pre-commit hook. Thanks :user:`6543`! (:pr:`380`)
 
 0.27.3
 ------
