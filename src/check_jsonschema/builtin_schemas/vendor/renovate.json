@@ -397,7 +397,6 @@
         "fileMatch": [
           "(^|/)bun\\.lockb$"
         ],
-        "versioning": "npm",
         "digest": {
           "prBodyDefinitions": {
             "Change": "{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}"
@@ -897,7 +896,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.31.5"
+      "default": "ghcr.io/containerbase/sidecar:9.31.6"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1818,7 +1817,6 @@
         "fileMatch": [
           "(^|/)package\\.json$"
         ],
-        "versioning": "npm",
         "digest": {
           "prBodyDefinitions": {
             "Change": "{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}"
