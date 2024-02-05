@@ -139,8 +139,10 @@ The '--disable-formats' flag supports the following formats:
 @click.option(
     "--disable-formats",
     multiple=True,
-    help="Disable specific format checks in the schema. "
-    "Pass '*' to disable all format checks.",
+    help=(
+        "Disable specific format checks in the schema. "
+        "Pass '*' to disable all format checks."
+    ),
     type=CommaDelimitedList(choices=("*", *KNOWN_FORMATS)),
     metavar="{*|FORMAT,FORMAT,...}",
 )
