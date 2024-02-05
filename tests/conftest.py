@@ -21,7 +21,7 @@ def mock_module(tmp_path, monkeypatch):
 
     def func(path, text):
         path = pathlib.Path(path)
-        mod_dir = tmp_path / (path.parent)
+        mod_dir = tmp_path / path.parent
         mod_dir.mkdir(parents=True, exist_ok=True)
         for part in path.parts[:-1]:
             (tmp_path / part / "__init__.py").touch()

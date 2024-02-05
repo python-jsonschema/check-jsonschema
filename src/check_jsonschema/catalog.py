@@ -27,8 +27,10 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         ),
         "hook_config": {
             "name": "Validate Azure Pipelines",
-            "description": "Validate Azure Pipelines config against the schema provided "
-            "by Microsoft",
+            "description": (
+                "Validate Azure Pipelines config against the schema provided "
+                "by Microsoft"
+            ),
             "add_args": ["--data-transform", "azure-pipelines"],
             "files": r"^(\.)?azure-pipelines\.(yml|yaml)$",
             "types": "yaml",
@@ -112,8 +114,10 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         },
     },
     "gitlab-ci": {
-        "url": "https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts"
-        "/editor/schema/ci.json",
+        "url": (
+            "https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts"
+            "/editor/schema/ci.json"
+        ),
         "hook_config": {
             "name": "Validate GitLab CI config",
             "add_args": ["--data-transform", "gitlab-ci"],
@@ -130,8 +134,10 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         ),
         "hook_config": {
             "name": "Validate ReadTheDocs Config",
-            "description": "Validate ReadTheDocs config against the schema "
-            "provided by ReadTheDocs",
+            "description": (
+                "Validate ReadTheDocs config against the schema "
+                "provided by ReadTheDocs"
+            ),
             "files": r"^\.readthedocs\.(yml|yaml)$",
             "types": "yaml",
         },
@@ -140,8 +146,10 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "url": "https://docs.renovatebot.com/renovate-schema.json",
         "hook_config": {
             "name": "Validate Renovate Config",
-            "description": "Validate Renovate config against the schema provided by "
-            "Renovate (does not support renovate config in package.json)",
+            "description": (
+                "Validate Renovate config against the schema provided by "
+                "Renovate (does not support renovate config in package.json)"
+            ),
             "files": [
                 r"renovate\.(json|json5)",
                 r"\.(github|gitlab)/renovate\.(json|json5)",
@@ -158,8 +166,10 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         },
     },
     "woodpecker-ci": {
-        "url": "https://raw.githubusercontent.com/woodpecker-ci/woodpecker/main/pipeline"
-        "/frontend/yaml/linter/schema/schema.json",
+        "url": (
+            "https://raw.githubusercontent.com/woodpecker-ci/woodpecker/main/pipeline"
+            "/frontend/yaml/linter/schema/schema.json"
+        ),
         "hook_config": {
             "name": "Validate Woodpecker Config",
             "files": [

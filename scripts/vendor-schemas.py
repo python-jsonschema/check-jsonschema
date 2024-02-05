@@ -107,12 +107,9 @@ def save_new_hashes() -> None:
     for name in UPDATED_SCHEMAS:
         digest = file2digest(schema2filename(name))
 
-        # new file, changes were made and hash should update
-        if name not in OLD_HASHES:
-            _save_new_hash(name, digest)
-
+        # new file, changes were made and hash should update, OR
         # if the existing hash does not match the new hash, save the new one
-        elif digest != OLD_HASHES[name]:
+        if name not in OLD_HASHES or digest != OLD_HASHES[name]:
             _save_new_hash(name, digest)
 
 

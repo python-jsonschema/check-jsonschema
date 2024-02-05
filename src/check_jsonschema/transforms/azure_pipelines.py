@@ -69,8 +69,6 @@ def traverse_list(data: list) -> list:
 
             if isinstance(item_value, list):
                 ret.extend(item_value)
-            elif isinstance(item_value, dict):
-                ret.append(item_value)
             else:
                 ret.append(item_value)
         # not expression? process the item and append
