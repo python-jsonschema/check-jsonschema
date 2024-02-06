@@ -10,7 +10,7 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-02-05)
+- Update vendored schemas (2024-02-06)
 - Support the use of `orjson` for faster JSON parsing when it is installed.
   This makes it an optional parser which is preferred over the default
   `json` module when it is available.
