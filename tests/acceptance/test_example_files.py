@@ -9,7 +9,6 @@ import pytest
 import ruamel.yaml
 
 from check_jsonschema.parsers.json5 import ENABLED as JSON5_ENABLED
-from check_jsonschema.parsers.toml import ENABLED as TOML_ENABLED
 
 yaml = ruamel.yaml.YAML(typ="safe")
 
@@ -109,8 +108,6 @@ def test_explicit_positive_examples(case_name, run_line):
 def _check_file_format_skip(case_name):
     if case_name.endswith("json5") and not JSON5_ENABLED:
         pytest.skip("cannot check json5 support without json5 enabled")
-    if case_name.endswith("toml") and not TOML_ENABLED:
-        pytest.skip("cannot check toml support without toml enabled")
 
 
 @dataclasses.dataclass

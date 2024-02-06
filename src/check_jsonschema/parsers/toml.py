@@ -4,17 +4,9 @@ import datetime
 import sys
 import typing as t
 
-from check_jsonschema._testing import FORCE_TOML_DISABLED
-
 if sys.version_info < (3, 11):
-    try:
-        import tomli as toml_implementation
-
-        has_toml = True
-    except ImportError:  # pragma: no cover
-        has_toml = False
+    import tomli as toml_implementation
 else:
-    has_toml = True
     import tomllib as toml_implementation
 
 
@@ -55,30 +47,9 @@ def _normalize(data: t.Any) -> t.Any:
         return data
 
 
-# present a bool for detecting that it's enabled
-ENABLED = has_toml and not FORCE_TOML_DISABLED
+ParseError: type[Exception] = toml_implementation.TOMLDecodeError
 
 
-if ENABLED:
-    ParseError: type[Exception] = toml_implementation.TOMLDecodeError
-
-    def load(stream: t.IO[bytes]) -> t.Any:
-        data = toml_implementation.load(stream)
-        return _normalize(data)
-
-else:
-    ParseError = ValueError
-
-    def load(stream: t.IO[bytes]) -> t.Any:
-        raise NotImplementedError
-
-
-MISSING_SUPPORT_MESSAGE = """
-check-jsonschema can only parse TOML files when a TOML parser is installed
-
-If you are running check-jsonschema as an installed python package, add support with
-    pip install tomli
-
-If you are running check-jsonschema as a pre-commit hook, set
-    additional_dependencies: ['tomli']
-"""
+def load(stream: t.IO[bytes]) -> t.Any:
+    data = toml_implementation.load(stream)
+    return _normalize(data)

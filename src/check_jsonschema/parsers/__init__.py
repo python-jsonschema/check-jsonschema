@@ -9,22 +9,22 @@ import ruamel.yaml
 from ..identify_filetype import path_to_type
 from . import json5, json_, toml, yaml
 
-_PARSER_ERRORS: set[type[Exception]] = {json_.JSONDecodeError, yaml.ParseError}
+_PARSER_ERRORS: set[type[Exception]] = {
+    json_.JSONDecodeError,
+    yaml.ParseError,
+    toml.ParseError,
+}
 DEFAULT_LOAD_FUNC_BY_TAG: dict[str, t.Callable[[t.IO[bytes]], t.Any]] = {
     "json": json_.load,
+    "toml": toml.load,
 }
-SUPPORTED_FILE_FORMATS = ["json", "yaml"]
+SUPPORTED_FILE_FORMATS = ["json", "toml", "yaml"]
 if json5.ENABLED:
     SUPPORTED_FILE_FORMATS.append("json5")
     DEFAULT_LOAD_FUNC_BY_TAG["json5"] = json5.load
     _PARSER_ERRORS.add(json5.ParseError)
-if toml.ENABLED:
-    SUPPORTED_FILE_FORMATS.append("toml")
-    DEFAULT_LOAD_FUNC_BY_TAG["toml"] = toml.load
-    _PARSER_ERRORS.add(toml.ParseError)
 MISSING_SUPPORT_MESSAGES: dict[str, str] = {
     "json5": json5.MISSING_SUPPORT_MESSAGE,
-    "toml": toml.MISSING_SUPPORT_MESSAGE,
 }
 LOADING_FAILURE_ERROR_TYPES: tuple[type[Exception], ...] = tuple(_PARSER_ERRORS)
 

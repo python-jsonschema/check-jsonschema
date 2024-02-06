@@ -28,6 +28,12 @@ For example,
 TOML
 ----
 
+.. note::
+
+    In the latest versions of ``check-jsonschema``, the TOML parser is no
+    longer optional. It is always available, using ``tomli`` or ``tomllib``
+    depending on the environment.
+
 - Supported for Instances: yes
 - Supported for Schemas: no
 

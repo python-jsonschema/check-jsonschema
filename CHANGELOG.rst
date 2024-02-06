@@ -14,6 +14,10 @@ Unreleased
 - Support the use of `orjson` for faster JSON parsing when it is installed.
   This makes it an optional parser which is preferred over the default
   `json` module when it is available.
+- TOML parsing is now always available (rather than an optional parser).
+  This change adds a dependency on `tomli` on older Python versions, ensuring
+  that TOML formatted data is always supported. Users should no longer need
+  to install `tomli` manually in order to use TOML files.
 
 0.27.4
 ------
