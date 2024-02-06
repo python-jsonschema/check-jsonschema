@@ -11,6 +11,9 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2024-02-05)
+- Include a built-in, efficient implementation of `date-time` format validation
+  (RFC 3339). This makes the `date-time` format always available for
+  validation. (:issue:`378`)
 - Support the use of `orjson` for faster JSON parsing when it is installed.
   This makes it an optional parser which is preferred over the default
   `json` module when it is available.
