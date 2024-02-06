@@ -1,5 +1,4 @@
 import re
-import typing as t
 
 # this regex is based on the one from the rfc3339-validator package
 # credit to the original author
@@ -56,7 +55,7 @@ RFC3339_REGEX = re.compile(
 )
 
 
-def validate(date_str: t.Any) -> bool:
+def validate(date_str: object) -> bool:
     """Validate a string as a RFC3339 date-time."""
     if not isinstance(date_str, str):
         return False
@@ -80,18 +79,15 @@ if __name__ == "__main__":
     import timeit
 
     N = 100_000
-    long_fracsec = "2018-12-31T23:59:59.8446519776713Z"
-    basic = "2018-12-31T23:59:59Z"
-    in_february = "2018-02-12T23:59:59Z"
-    in_february_invalid = "2018-02-29T23:59:59Z"
+    tests = (
+        ("long_fracsec", "2018-12-31T23:59:59.8446519776713Z"),
+        ("basic", "2018-12-31T23:59:59Z"),
+        ("in_february", "2018-02-12T23:59:59Z"),
+        ("in_february_invalid", "2018-02-29T23:59:59Z"),
+    )
 
     print("benchmarking")
-    for name, val in (
-        ("long_fracsec", long_fracsec),
-        ("basic", basic),
-        ("february", in_february),
-        ("february_invalid", in_february_invalid),
-    ):
+    for name, val in tests:
         all_times = timeit.repeat(
             f"validate({val!r})", globals=globals(), repeat=3, number=N
         )
