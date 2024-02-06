@@ -1,18 +1,17 @@
 from __future__ import annotations
 
 import io
-import json
 import pathlib
 import typing as t
 
 import ruamel.yaml
 
 from ..identify_filetype import path_to_type
-from . import json5, toml, yaml
+from . import json5, json_, toml, yaml
 
-_PARSER_ERRORS: set[type[Exception]] = {json.JSONDecodeError, yaml.ParseError}
+_PARSER_ERRORS: set[type[Exception]] = {json_.JSONDecodeError, yaml.ParseError}
 DEFAULT_LOAD_FUNC_BY_TAG: dict[str, t.Callable[[t.IO[bytes]], t.Any]] = {
-    "json": json.load,
+    "json": json_.load,
 }
 SUPPORTED_FILE_FORMATS = ["json", "yaml"]
 if json5.ENABLED:
