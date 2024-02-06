@@ -3,7 +3,6 @@ import pytest
 from check_jsonschema.instance_loader import InstanceLoader
 from check_jsonschema.parsers import BadFileTypeError, FailedFileLoadError
 from check_jsonschema.parsers.json5 import ENABLED as JSON5_ENABLED
-from check_jsonschema.parsers.toml import ENABLED as TOML_ENABLED
 
 
 # handy helper for opening multiple files for InstanceLoader
@@ -70,6 +69,23 @@ a:
     assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
 
 
+@pytest.mark.parametrize(
+    "filename, default_filetype",
+    [
+        ("foo.toml", "notarealfiletype"),
+        ("foo.toml", "json"),
+        ("foo.toml", "yaml"),
+        ("foo", "toml"),
+    ],
+)
+def test_instanceloader_toml_data(tmp_path, filename, default_filetype, open_wide):
+    f = tmp_path / "foo.toml"
+    f.write_text('[foo]\nbar = "baz"\n')
+    loader = InstanceLoader(open_wide(f), default_filetype=default_filetype)
+    data = list(loader.iter_files())
+    assert data == [(str(f), {"foo": {"bar": "baz"}})]
+
+
 def test_instanceloader_unknown_type_nonjson_content(tmp_path, open_wide):
     f = tmp_path / "foo"  # no extension here
     f.write_text("a:b")  # non-json data (cannot be detected as JSON)
@@ -92,13 +108,6 @@ def test_instanceloader_unknown_type_nonjson_content(tmp_path, open_wide):
             "{}",
             {},
             "pip install json5",
-        ),
-        (
-            TOML_ENABLED,
-            "toml",
-            '[foo]\nbar = "baz"\n',
-            {"foo": {"bar": "baz"}},
-            "pip install tomli",
         ),
     ],
 )
@@ -162,8 +171,6 @@ def test_instanceloader_invalid_data(
 ):
     if file_format == "json5" and not JSON5_ENABLED:
         pytest.skip("test requires 'json5' support")
-    if file_format == "toml" and not TOML_ENABLED:
-        pytest.skip("test requires 'toml' support")
 
     f = tmp_path / filename
     f.write_text(content)
@@ -211,8 +218,6 @@ def test_instanceloader_invalid_data_mixed_with_valid_data(tmp_path, open_wide):
 def test_instanceloader_mixed_filetypes(tmp_path, filetypes, open_wide):
     if not JSON5_ENABLED and "json5" in filetypes:
         pytest.skip("test requires json5")
-    if not TOML_ENABLED and "toml" in filetypes:
-        pytest.skip("test requires toml")
     files = {}
     file_order = []
     if "json" in filetypes:
