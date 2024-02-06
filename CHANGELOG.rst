@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-02-06)
+0.28.0
+------
+
+- Update vendored schemas: cloudbuild, dependabot, gitlab-ci, readthedocs,
+  renovate (2024-02-06)
 - Include built-in, efficient implementations of `date-time` format validation
   (RFC 3339) and `time` format validation (ISO 8601). This makes the `date-time`
   and `time` formats always available for validation. (:issue:`378`)
