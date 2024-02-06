@@ -71,7 +71,7 @@ The schema is specified either with '--schemafile' or with '--builtin-schema'.
 
 'check-jsonschema' supports format checks with appropriate libraries installed,
 including the following formats by default:
-    date, email, ipv4, ipv6, regex, uuid
+    date, date-time, email, ipv4, ipv6, regex, uuid
 
 \b
 For the "regex" format, there are multiple modes which can be specified with
