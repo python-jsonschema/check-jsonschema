@@ -9,6 +9,8 @@ import jsonschema
 import jsonschema.validators
 import regress
 
+from .implementations import validate_rfc3339, validate_time
+
 # all known format strings except for a selection from draft3 which have either
 # been renamed or removed:
 # - color
@@ -101,6 +103,8 @@ def make_format_checker(
     del checker.checkers["regex"]
     regex_impl = RegexImplementation(opts.regex_variant)
     checker.checks("regex")(regex_impl.check_format)
+    checker.checks("date-time")(validate_rfc3339)
+    checker.checks("time")(validate_time)
 
     # remove the disabled checks, which may include the regex check
     for checkname in opts.disabled_formats:
