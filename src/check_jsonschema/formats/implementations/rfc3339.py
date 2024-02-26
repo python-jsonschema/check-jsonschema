@@ -34,19 +34,18 @@ RFC3339_REGEX = re.compile(
     -
     (?:0[1-9]|1[0-2])
     -
-    (?:\d{2})
-    (?:T|t)
+    (?:[0-3]\d)
+    (?:[Tt])
     (?:[01]\d|2[0123])
     :
     (?:[0-5]\d)
     :
     (?:[0-5]\d)
     # (optional) fractional seconds
-    (?:(\.|,)\d+)?
+    (?:[\.,]\d+)?
     # UTC or offset
     (?:
-        Z
-        | z
+        [Zz]
         | [+-](?:[01]\d|2[0123]):[0-5]\d
     )
     $
@@ -84,6 +83,8 @@ if __name__ == "__main__":
         ("basic", "2018-12-31T23:59:59Z"),
         ("in_february", "2018-02-12T23:59:59Z"),
         ("in_february_invalid", "2018-02-29T23:59:59Z"),
+        ("missing_t", "2018-12-31 23:59:59Z"),
+        ("invalid_day", "2018-12-41T23:59:59Z"),
     )
 
     print("benchmarking")
