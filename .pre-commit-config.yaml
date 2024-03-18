@@ -19,7 +19,7 @@ repos:
     - id: check-merge-conflict
     - id: trailing-whitespace
 - repo: https://github.com/psf/black-pre-commit-mirror
-  rev: 24.2.0
+  rev: 24.3.0
   hooks:
     - id: black
 - repo: https://github.com/PyCQA/flake8
@@ -31,7 +31,7 @@ repos:
         - 'flake8-typing-as-t==0.0.3'
         - 'flake8-comprehensions==3.14.0'
 - repo: https://github.com/sirosen/slyp
-  rev: 0.4.1
+  rev: 0.6.0
   hooks:
     - id: slyp
 - repo: https://github.com/PyCQA/isort
