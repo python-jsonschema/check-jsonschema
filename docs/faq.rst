@@ -81,3 +81,37 @@ array with ``self-hosted``, like so:
         runs-on: [self-hosted, spot-self-hosted]
         steps:
           - run: echo 'hi'
+
+Azure Pipelines Workflow
+------------------------
+
+Quoted Boolean Issues
+~~~~~~~~~~~~~~~~~~~~~
+Microsoft's schema allows only for the strings ``"true"`` and ``"false"`` in a number
+of cases in which the booleans ``true`` and ``false`` should also be allowed.
+
+For example, the following results in the validation error ``True is not of type 'string'``:
+
+.. code-block:: yaml
+
+    parameters:
+      - name: myBoolean
+        displayName: myboolean
+        type: boolean
+        default: true
+
+    steps:
+      - bash: echo "{{ parameters.myBoolean}}"
+
+To resolve, quote the boolean:
+
+.. code-block:: yaml
+
+    parameters:
+      - name: myBoolean
+        displayName: myboolean
+        type: boolean
+        default: 'true'
+
+    steps:
+      - bash: echo "{{ parameters.myBoolean}}"
