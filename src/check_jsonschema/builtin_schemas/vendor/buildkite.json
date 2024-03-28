@@ -1,6 +1,6 @@
 {
   "title": "JSON schema for Buildkite pipeline configuration files",
-  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "fileMatch": [
     "buildkite.yml",
     "buildkite.yaml",
@@ -90,7 +90,8 @@
               "agent_refused",
               "agent_stop",
               "cancel",
-              "process_run_error"
+              "process_run_error",
+              "signature_rejected"
             ]
           }
         },
@@ -324,6 +325,14 @@
                   "description": "The explanatory text that is shown after the label",
                   "examples": [
                     "What’s the code name for this release? :name_badge:"
+                  ]
+                },
+                "format": {
+                  "type": "string",
+                  "description": "The format must be a regular expression implicitly anchored to the beginning and end of the input and is functionally equivalent to the HTML5 pattern attribute.",
+                  "format": "regex",
+                  "examples": [
+                    "[0-9a-f]+"
                   ]
                 },
                 "required": {
