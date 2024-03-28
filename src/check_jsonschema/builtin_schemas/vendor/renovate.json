@@ -42,6 +42,14 @@
       "type": "boolean",
       "default": false
     },
+    "allowedEnv": {
+      "description": "List of allowed patterns for environment variable names in repository env config.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
     "allowedHeaders": {
       "description": "List of allowed patterns for header names in repository hostRules config.",
       "type": "array",
@@ -152,6 +160,14 @@
     },
     "autodiscoverNamespaces": {
       "description": "Filter the list of autodiscovered repositories by namespaces.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": null
+    },
+    "autodiscoverProjects": {
+      "description": "Filter the list of autodiscovered repositories by project names.",
       "type": "array",
       "items": {
         "type": "string"
@@ -478,7 +494,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)\\.circleci/config\\.ya?ml$"
+          "(^|/)\\.circleci/.+\\.ya?ml$"
         ]
       },
       "$ref": "#"
@@ -650,8 +666,19 @@
             "type": "object",
             "properties": {
               "description": {
-                "type": "string",
-                "description": "A custom description for this configuration object"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
               },
               "defaultRegistryUrlTemplate": {
                 "description": "Template for generating a `defaultRegistryUrl` for custom datasource.",
@@ -695,8 +722,19 @@
             "type": "object",
             "properties": {
               "description": {
-                "type": "string",
-                "description": "A custom description for this configuration object"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
               },
               "autoReplaceStringTemplate": {
                 "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `customManagers` object.",
@@ -896,7 +934,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:9.33.1"
+      "default": "ghcr.io/containerbase/sidecar:10.3.8"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -960,6 +998,12 @@
       "description": "Custom endpoint to use.",
       "type": "string",
       "default": null
+    },
+    "env": {
+      "description": "Environment variables that Renovate uses when executing package manager commands.",
+      "type": "object",
+      "default": {},
+      "$ref": "#"
     },
     "excludeCommitPaths": {
       "description": "A file matching any of these glob patterns will not be committed, even if the file has been updated.",
@@ -1065,6 +1109,11 @@
     },
     "forceCli": {
       "description": "Decides if CLI configuration options are moved to the `force` config section.",
+      "type": "boolean",
+      "default": true
+    },
+    "forkCreation": {
+      "description": "Whether to create forks as needed at runtime when running in \"fork mode\".",
       "type": "boolean",
       "default": true
     },
@@ -1388,8 +1437,19 @@
             "type": "object",
             "properties": {
               "description": {
-                "type": "string",
-                "description": "A custom description for this configuration object"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
               },
               "abortIgnoreStatusCodes": {
                 "description": "A list of HTTP status codes safe to ignore even when `abortOnError=true`.",
@@ -1588,6 +1648,26 @@
       },
       "default": []
     },
+    "inheritConfig": {
+      "description": "If `true`, Renovate will inherit configuration from the `inheritConfigFileName` file in `inheritConfigRepoName",
+      "type": "boolean",
+      "default": false
+    },
+    "inheritConfigFileName": {
+      "description": "Renovate will look for this config file name in the `inheritConfigRepoName`.",
+      "type": "string",
+      "default": "org-inherited-config.json"
+    },
+    "inheritConfigRepoName": {
+      "description": "Renovate will look in this repo for the `inheritConfigFileName`.",
+      "type": "string",
+      "default": "{{parentOrg}}/renovate-config"
+    },
+    "inheritConfigStrict": {
+      "description": "If `true`, any `inheritedConfig` fetch errror will result in an aborted run.",
+      "type": "boolean",
+      "default": false
+    },
     "internalChecksAsSuccess": {
       "description": "Whether to consider passing internal checks such as `minimumReleaseAge` when determining branch status.",
       "type": "boolean",
@@ -1623,6 +1703,10 @@
         "datasource": "git-tags"
       },
       "$ref": "#"
+    },
+    "keepUpdatedLabel": {
+      "description": "If set, users can add this label to PRs to request they be kept updated with the base branch.",
+      "type": "string"
     },
     "kotlin-script": {
       "description": "Configuration object for the kotlin-script manager",
@@ -1706,6 +1790,50 @@
       "type": "string",
       "default": "debug"
     },
+    "logLevelRemap": {
+      "description": "Remap log levels to different levels.",
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "matchMessage": {
+                "description": "Regex/minimatch expression to match against log message.",
+                "type": "string"
+              },
+              "newLogLevel": {
+                "description": "New log level to use if matchMessage matches.",
+                "type": "string",
+                "enum": [
+                  "trace",
+                  "debug",
+                  "info",
+                  "warn",
+                  "error",
+                  "fatal"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
     "major": {
       "description": "Configuration to apply when an update type is `major`.",
       "type": "object",
@@ -1753,6 +1881,11 @@
         "type": "string"
       },
       "$ref": "#"
+    },
+    "milestone": {
+      "description": "The number of a milestone. If set, the milestone will be set when Renovate creates the PR.",
+      "type": "integer",
+      "default": null
     },
     "minimumReleaseAge": {
       "description": "Time required before a new release is considered stable.",
@@ -1945,8 +2078,19 @@
             "type": "object",
             "properties": {
               "description": {
-                "type": "string",
-                "description": "A custom description for this configuration object"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
               },
               "allowedVersions": {
                 "description": "A version range or regex pattern capturing allowed versions for dependencies.",
@@ -2189,6 +2333,10 @@
                   }
                 ]
               },
+              "matchNewValue": {
+                "description": "A regex to match against the raw `newValue` string of a dependency. Valid only within a `packageRules` object.",
+                "type": "string"
+              },
               "matchPackageNames": {
                 "description": "Package names to match. Valid only within a `packageRules` object.",
                 "oneOf": [
@@ -2408,7 +2556,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)[\\w-]*requirements(-\\w+)?\\.(txt|pip)$"
+          "(^|/)[\\w-]*requirements([-.]\\w+)?\\.(txt|pip)$"
         ]
       },
       "$ref": "#"
@@ -2505,8 +2653,19 @@
             "type": "object",
             "properties": {
               "description": {
-                "type": "string",
-                "description": "A custom description for this configuration object"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
               },
               "commands": {
                 "description": "A list of post-upgrade commands that are executed before a commit is made by Renovate.",
@@ -2567,10 +2726,10 @@
         "Pending": "{{{displayPending}}}",
         "References": "{{{references}}}",
         "Package file": "{{{packageFile}}}",
-        "Age": "[![age](https://developer.mend.io/api/mc/badges/age/{{datasource}}/{{replace '/' '%2f' depName}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/)",
-        "Adoption": "[![adoption](https://developer.mend.io/api/mc/badges/adoption/{{datasource}}/{{replace '/' '%2f' depName}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/)",
-        "Passing": "[![passing](https://developer.mend.io/api/mc/badges/compatibility/{{datasource}}/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/)",
-        "Confidence": "[![confidence](https://developer.mend.io/api/mc/badges/confidence/{{datasource}}/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/)"
+        "Age": "{{#if newVersion}}[![age](https://developer.mend.io/api/mc/badges/age/{{datasource}}/{{replace '/' '%2f' depName}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/){{/if}}",
+        "Adoption": "{{#if newVersion}}[![adoption](https://developer.mend.io/api/mc/badges/adoption/{{datasource}}/{{replace '/' '%2f' depName}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/){{/if}}",
+        "Passing": "{{#if newVersion}}[![passing](https://developer.mend.io/api/mc/badges/compatibility/{{datasource}}/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/){{/if}}",
+        "Confidence": "{{#if newVersion}}[![confidence](https://developer.mend.io/api/mc/badges/confidence/{{datasource}}/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/){{/if}}"
       }
     },
     "prBodyNotes": {
@@ -2807,8 +2966,7 @@
       "type": "object",
       "default": {},
       "additionalProperties": {
-        "type": "string",
-        "format": "uri"
+        "type": "string"
       },
       "$ref": "#"
     },
@@ -2832,6 +2990,21 @@
         ]
       },
       "$ref": "#"
+    },
+    "reportPath": {
+      "description": "Path to where the file should be written. In case of `s3` this has to be a full S3 URI.",
+      "type": "string",
+      "default": null
+    },
+    "reportType": {
+      "description": "Set how, or if, reports should be generated.",
+      "type": "string",
+      "enum": [
+        "logging",
+        "file",
+        "s3"
+      ],
+      "default": null
     },
     "repositories": {
       "description": "List of Repositories.",
@@ -2920,7 +3093,8 @@
         "fileMatch": [
           "\\.sbt$",
           "project/[^/]*\\.scala$",
-          "project/build\\.properties$"
+          "project/build\\.properties$",
+          "(^|/)repositories$"
         ],
         "versioning": "ivy"
       },
@@ -2984,6 +3158,11 @@
     },
     "separateMultipleMajor": {
       "description": "If set to `true`, PRs will be raised separately for each available `major` upgrade version.",
+      "type": "boolean",
+      "default": false
+    },
+    "separateMultipleMinor": {
+      "description": "If set to `true`, Renovate creates separate PRs for each `minor` stream.",
       "type": "boolean",
       "default": false
     },
@@ -3210,6 +3389,17 @@
       },
       "$ref": "#"
     },
+    "vendir": {
+      "description": "Configuration object for the vendir manager",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "vendir {{depName}}",
+        "fileMatch": [
+          "(^|/)vendir\\.yml$"
+        ]
+      },
+      "$ref": "#"
+    },
     "versionCompatibility": {
       "description": "A regex (`re2`) with named capture groups to show how version and compatibility are split from a raw version string.",
       "type": "string",
@@ -3257,7 +3447,8 @@
             "semver",
             "semver-coerced",
             "swift",
-            "ubuntu"
+            "ubuntu",
+            "unity3d"
           ]
         },
         {
