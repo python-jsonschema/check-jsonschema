@@ -61,8 +61,8 @@
         "id_tokens": {
           "$ref": "#/definitions/id_tokens"
         },
-        "identity_provider": {
-          "$ref": "#/definitions/identity_provider"
+        "identity": {
+          "$ref": "#/definitions/identity"
         },
         "retry": {
           "$ref": "#/definitions/retry"
@@ -91,7 +91,17 @@
         "deploy"
       ],
       "items": {
-        "type": "string"
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
       },
       "uniqueItems": true,
       "minItems": 1
@@ -227,6 +237,16 @@
             "on_success",
             "on_failure",
             "always"
+          ]
+        },
+        "access": {
+          "markdownDescription": "Configure who can access the artifacts. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#artifactsaccess).",
+          "default": "all",
+          "type": "string",
+          "enum": [
+            "none",
+            "developer",
+            "all"
           ]
         },
         "expire_in": {
@@ -706,9 +726,9 @@
         }
       }
     },
-    "identity_provider": {
+    "identity": {
       "type": "string",
-      "markdownDescription": "Sets an identity provider (experimental), allowing automatic authentication with the external provider. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#identity_provider).",
+      "markdownDescription": "Sets a workload identity (experimental), allowing automatic authentication with the external system. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#identity).",
       "enum": [
         "google_cloud"
       ]
@@ -926,6 +946,9 @@
               },
               "needs": {
                 "$ref": "#/definitions/rulesNeeds"
+              },
+              "interruptible": {
+                "$ref": "#/definitions/interruptible"
               }
             }
           },
@@ -1034,8 +1057,9 @@
           "oneOf": [
             {
               "type": [
-                "string",
-                "number"
+                "boolean",
+                "number",
+                "string"
               ]
             },
             {
@@ -1078,8 +1102,9 @@
           "oneOf": [
             {
               "type": [
-                "string",
-                "number"
+                "boolean",
+                "number",
+                "string"
               ]
             },
             {
@@ -1106,8 +1131,9 @@
       "patternProperties": {
         ".*": {
           "type": [
-            "string",
-            "number"
+            "boolean",
+            "number",
+            "string"
           ]
         },
         "additionalProperties": false
@@ -1527,6 +1553,24 @@
                   }
                 }
               ]
+            },
+            "exit_codes": {
+              "markdownDescription": "Either a single or array of exit codes to trigger job retry on. [Learn More](https://docs.gitlab.com/ee/ci/yaml/#retryexit_codes).",
+              "oneOf": [
+                {
+                  "description": "Retry when the job exit code is included in the array's values.",
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                {
+                  "description": "Retry when the job exit code is equal to.",
+                  "type": "integer"
+                }
+              ]
             }
           }
         }
@@ -1642,8 +1686,8 @@
         "id_tokens": {
           "$ref": "#/definitions/id_tokens"
         },
-        "identity_provider": {
-          "$ref": "#/definitions/identity_provider"
+        "identity": {
+          "$ref": "#/definitions/identity"
         },
         "secrets": {
           "$ref": "#/definitions/secrets"
