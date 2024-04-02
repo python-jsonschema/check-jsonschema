@@ -26,6 +26,7 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v6
       with:
+        title: 'Update vendored schemas'
         commit-message: '[vendor-schemas] automated update'
         branch: vendor-schemas-auto
         reviewers: sirosen
