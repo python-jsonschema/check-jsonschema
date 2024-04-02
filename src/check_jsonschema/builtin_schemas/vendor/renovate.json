@@ -934,7 +934,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:10.3.8"
+      "default": "ghcr.io/containerbase/sidecar:10.3.11"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -3097,6 +3097,16 @@
           "(^|/)repositories$"
         ],
         "versioning": "ivy"
+      },
+      "$ref": "#"
+    },
+    "scalafmt": {
+      "description": "Configuration object for the scalafmt manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.scalafmt.conf$"
+        ]
       },
       "$ref": "#"
     },
