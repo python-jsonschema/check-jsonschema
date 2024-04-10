@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-04-10)
+0.28.2
+------
+
+- Update vendored schemas: cloudbuild, gitlab-ci, renovate (2024-04-10)
+- Add Taskfile schema and pre-commit hook. Thanks :user:`jrdnbradford`! (:pr:`417`)
 
 0.28.1
 ------
