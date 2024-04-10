@@ -98,6 +98,7 @@ SchemaStore and other sources:
 - ``vendor.gitlab-ci``
 - ``vendor.readthedocs``
 - ``vendor.renovate``
+- ``vendor.taskfile``
 - ``vendor.travis``
 - ``vendor.woodpecker-ci``
 
