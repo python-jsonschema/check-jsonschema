@@ -934,7 +934,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:10.3.11"
+      "default": "ghcr.io/containerbase/sidecar:10.3.13"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -2798,7 +2798,7 @@
       "default": 0
     },
     "prTitle": {
-      "description": "Pull Request title template (deprecated). Inherits from `commitMessage` if null.",
+      "description": "Pull Request title template. Inherits from `commitMessage` if null.",
       "type": "string",
       "default": null
     },
