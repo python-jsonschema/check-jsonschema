@@ -211,6 +211,20 @@ Validate Renovate config against the schema provided by Renovate (does not suppo
         - id: check-renovate
 
 
+``check-taskfile``
+~~~~~~~~~~~~~~~~~~
+
+Validate Taskfile config against the schema provided by Task
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.28.1
+      hooks:
+        - id: check-taskfile
+
+
 ``check-travis``
 ~~~~~~~~~~~~~~~~
 

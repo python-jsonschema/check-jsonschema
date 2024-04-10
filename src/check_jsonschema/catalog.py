@@ -157,6 +157,22 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             ],
         },
     },
+    "taskfile": {
+        "url": "https://taskfile.dev/schema.json",
+        "hook_config": {
+            "name": "Validate Taskfile Config",
+            "description": (
+                "Validate Taskfile config against the schema provided by Task"
+            ),
+            "files": [
+                r"Taskfile\.(yml|yaml)",
+                r"taskfile\.(yml|yaml)",
+                r"Taskfile\.dist\.(yml|yaml)",
+                r"taskfile\.dist\.(yml|yaml)",
+            ],
+            "types": "yaml",
+        },
+    },
     "travis": {
         "url": "https://json.schemastore.org/travis",
         "hook_config": {
