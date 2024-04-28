@@ -78,7 +78,7 @@ def test_basic_bounds_validated(datestr):
 )
 def test_day_bounds_by_month(month, maxday):
     good_date = f"2020-{month:02}-{maxday:02}T00:00:00Z"
-    bad_date = f"2020-{month:02}-{maxday+1:02}T00:00:00Z"
+    bad_date = f"2020-{month:02}-{(maxday + 1):02}T00:00:00Z"
     assert validate(good_date)
     assert not validate(bad_date)
 
@@ -94,6 +94,6 @@ def test_day_bounds_by_month(month, maxday):
 )
 def test_day_bounds_for_february(year, maxday):
     good_date = f"{year}-02-{maxday:02}T00:00:00Z"
-    bad_date = f"{year}-02-{maxday+1:02}T00:00:00Z"
+    bad_date = f"{year}-02-{(maxday + 1):02}T00:00:00Z"
     assert validate(good_date)
     assert not validate(bad_date)
