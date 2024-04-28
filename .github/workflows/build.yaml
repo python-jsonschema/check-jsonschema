@@ -51,11 +51,11 @@ jobs:
           python -m build --sdist
           version="$(grep '^version' setup.cfg |  cut -d '=' -f2 | tr -d ' ')"
           cd dist
-          tar -xzf "check-jsonschema-${version}.tar.gz"
+          tar -xzf "check_jsonschema-${version}.tar.gz"
       - name: test
         run: |
           version="$(grep '^version' setup.cfg |  cut -d '=' -f2 | tr -d ' ')"
-          cd "dist/check-jsonschema-${version}"
+          cd "dist/check_jsonschema-${version}"
           python -m tox run -m ci
 
   ci-test-matrix:
