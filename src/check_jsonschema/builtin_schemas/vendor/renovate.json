@@ -901,6 +901,17 @@
       "type": "boolean",
       "default": false
     },
+    "devcontainer": {
+      "description": "Configuration object for the devcontainer manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "^.devcontainer/devcontainer.json$",
+          "^.devcontainer.json$"
+        ]
+      },
+      "$ref": "#"
+    },
     "digest": {
       "description": "Configuration to apply when updating a digest (no change in tag/version).",
       "type": "object",
@@ -933,7 +944,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:10.3.15"
+      "default": "ghcr.io/containerbase/sidecar:10.5.0"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1540,6 +1551,10 @@
                 "description": "Maximum retry-after header value to wait for before retrying a failed request.",
                 "type": "integer",
                 "default": 60
+              },
+              "readOnly": {
+                "description": "Match against requests that only read data and do not mutate anything.",
+                "type": "boolean"
               },
               "timeout": {
                 "description": "Timeout (in milliseconds) for queries to external endpoints.",
