@@ -7,7 +7,7 @@ For the exact list of schemas here, see the repo root for hook config.
 
 Most of the schemas in this directory are provided by SchemaStore. They are
 therefore licensed under the SchemaStore license, included in this directory.
-Additional licenses are provided for other sources as noted below.
+Additional licenses can be found in [`licenses`](licenses).
 
 ### Azure Pipelines
 
@@ -34,3 +34,8 @@ of the license for that repo.
 
 The Buildkite schema is provided by Buildkite and licensed under the license
 for their 'pipeline-schema' repo.
+
+### Taskfile
+
+The Taskfile schema is provided by Task and licensed under the license
+for their 'task' repo.
