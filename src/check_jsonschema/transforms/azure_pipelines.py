@@ -7,7 +7,7 @@ Azure Pipelines Language Server:
 
 That source is licensed under the MIT License.
 The original license can be found in
-    src/check_jsonschema/builtin_schemas/vendor/LICENSE.azure-pipelines
+    src/check_jsonschema/builtin_schemas/vendor/licenses/LICENSE.azure-pipelines
 
 
 The transform does not deeply interpret the expressions. It just "unnests" them.

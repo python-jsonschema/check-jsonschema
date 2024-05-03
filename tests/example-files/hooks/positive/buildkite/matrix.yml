@@ -1,6 +1,6 @@
 # this example copied from the buildkite pipeline-schema repo
 # it is therefore licensed under the existing buildkite MIT license
-# see src/check_jsonschema/builtin_schemas/vendor/ for license details
+# see src/check_jsonschema/builtin_schemas/vendor/licenses for license details
 
 steps:
   - command: "echo {{matrix}}"
