@@ -74,8 +74,12 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "url": "https://json.schemastore.org/cloudbuild.json",
         "hook_config": {
             "name": "Validate Google Cloud Build config",
-            "files": r"^cloudbuild\.(yml|yaml)$",
-            "types": "yaml",
+            "description": (
+                "Validate Google Cloud Build config against the schema provided "
+                "by SchemaStore"
+            ),
+            "files": r"^cloudbuild\.(yml|yaml|json)$",
+            "types_or": ["json", "yaml"],
         },
     },
     "dependabot": {
