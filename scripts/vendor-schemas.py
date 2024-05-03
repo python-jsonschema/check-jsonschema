@@ -33,7 +33,7 @@ def schema2filename(name: str) -> str:
 
 
 def schema2hashfile(name: str) -> str:
-    return f"src/check_jsonschema/builtin_schemas/vendor/{name}.sha256"
+    return f"src/check_jsonschema/builtin_schemas/vendor/sha256/{name}.sha256"
 
 
 def file2digest(filepath: str) -> str:
