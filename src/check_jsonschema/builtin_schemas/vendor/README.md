@@ -34,3 +34,8 @@ of the license for that repo.
 
 The Buildkite schema is provided by Buildkite and licensed under the license
 for their 'pipeline-schema' repo.
+
+### Taskfile
+
+The Taskfile schema is provided by Task and licensed under the license
+for their 'task' repo.
