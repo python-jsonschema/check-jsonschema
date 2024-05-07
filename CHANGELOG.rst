@@ -10,7 +10,13 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-05-05)
+0.28.3
+------
+
+- Update vendored schemas: dependabot, github-workflows, gitlab-ci, renovate,
+  woodpecker-ci (2024-05-05)
+- Update Cloud Build pre-commit hook to support JSON Cloud Build config. Thanks
+  :user:`jrdnbradford`! (:pr:`427`)
 
 0.28.2
 ------
