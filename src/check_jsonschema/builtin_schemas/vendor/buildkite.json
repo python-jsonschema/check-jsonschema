@@ -1313,6 +1313,9 @@
     "notify": {
       "$ref": "#/definitions/commonOptions/buildNotify"
     },
+    "skip": {
+      "$ref": "#/definitions/commonOptions/skip"
+    },
     "steps": {
       "description": "A list of steps",
       "type": "array",
