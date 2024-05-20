@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-05-19)
+0.28.4
+------
+
+- Update vendored schemas: buildkite, github-workflows, gitlab-ci, renovate,
+  taskfile, woodpecker-ci (2024-05-19)
 
 0.28.3
 ------
