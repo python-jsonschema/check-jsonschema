@@ -965,7 +965,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:10.6.15"
+      "default": "ghcr.io/containerbase/sidecar:10.7.0"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1024,6 +1024,10 @@
       "type": "object",
       "default": null,
       "$ref": "#"
+    },
+    "encryptedWarning": {
+      "description": "Warning text to use if encrypted config is found.",
+      "type": "string"
     },
     "endpoint": {
       "description": "Custom endpoint to use.",
@@ -1690,7 +1694,7 @@
       "default": []
     },
     "inheritConfig": {
-      "description": "If `true`, Renovate will inherit configuration from the `inheritConfigFileName` file in `inheritConfigRepoName",
+      "description": "If `true`, Renovate will inherit configuration from the `inheritConfigFileName` file in `inheritConfigRepoName`.",
       "type": "boolean",
       "default": false
     },
