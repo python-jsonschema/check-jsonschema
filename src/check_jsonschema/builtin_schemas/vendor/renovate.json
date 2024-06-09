@@ -965,7 +965,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:10.7.0"
+      "default": "ghcr.io/containerbase/sidecar:10.11.1"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -2181,7 +2181,7 @@
                 "description": "A version range or regex pattern capturing allowed versions for dependencies.",
                 "type": "string"
               },
-              "customChangelogUrl": {
+              "changelogUrl": {
                 "description": "If set, Renovate will use this URL to fetch changelogs for a matched dependency. Valid only within a `packageRules` object.",
                 "type": "string"
               },
@@ -2590,6 +2590,14 @@
               },
               "replacementVersion": {
                 "description": "The version of the new dependency that replaces the old deprecated dependency.",
+                "type": "string"
+              },
+              "sourceDirectory": {
+                "description": "The source directory in which the package is present at its source.",
+                "type": "string"
+              },
+              "sourceUrl": {
+                "description": "The source URL of the package.",
                 "type": "string"
               }
             }

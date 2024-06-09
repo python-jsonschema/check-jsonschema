@@ -1318,7 +1318,7 @@
           "type": "integer",
           "description": "Creates N instances of the job that run in parallel.",
           "default": 0,
-          "minimum": 2,
+          "minimum": 1,
           "maximum": 200
         },
         {
@@ -1878,6 +1878,10 @@
         },
         "start_in": {
           "$ref": "#/definitions/start_in"
+        },
+        "manual_confirmation": {
+          "markdownDescription": "Describes the Custom confirmation message for a manual job [Learn More](https://docs.gitlab.com/ee/ci/yaml/#when).",
+          "type": "string"
         },
         "dependencies": {
           "type": "array",
