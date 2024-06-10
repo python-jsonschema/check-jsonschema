@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-06-10)
+0.28.5
+------
+
+- Update vendored schemas: bitbucket-pipelines, dependabot, github-actions,
+  github-workflows, gitlab-ci, readthedocs, renovate (2024-06-10)
 - Update bitbucket schema to use the option from the
   intellij-bitbucket-references-plugin . For more details on this decision, see
   :issue:`440` . Thanks @blade2005 for the PR! (:pr:`442`)
