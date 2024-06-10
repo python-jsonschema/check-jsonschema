@@ -4,7 +4,7 @@ import typing as t
 
 
 def _bitbucket_pipelines_url() -> str:
-    return "https://bitbucket.org/atlassianlabs/atlascode/raw/main/resources/schemas/pipelines-schema.json"  # noqa: E501
+    return "https://bitbucket.org/atlassianlabs/intellij-bitbucket-references-plugin/raw/master/src/main/resources/schemas/bitbucket-pipelines.schema.json"  # noqa: E501
 
 
 def _githubusercontent_url(owner: str, repo: str, ref: str, path: str) -> str:
