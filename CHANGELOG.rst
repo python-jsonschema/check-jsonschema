@@ -10,7 +10,10 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-06-02)
+- Update vendored schemas (2024-06-10)
+- Update bitbucket schema to use the option from the
+  intellij-bitbucket-references-plugin . For more details on this decision, see
+  :issue:`440` . Thanks @blade2005 for the PR! (:pr:`442`)
 
 0.28.4
 ------
