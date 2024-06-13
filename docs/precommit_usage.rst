@@ -102,7 +102,7 @@ Validate Buildkite Pipelines against the schema provided by Buildkite
 ``check-circle-ci``
 ~~~~~~~~~~~~~~~~~~~
 
-Validate Circle CI config against the schema provided by SchemaStore
+Validate CircleCI config against the schema provided by SchemaStore
 
 .. code-block:: yaml
     :caption: example config

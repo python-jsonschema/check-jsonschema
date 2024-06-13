@@ -72,8 +72,8 @@
 # to modify this hook, update `src/check_jsonschema/catalog.py`
 # and run `make generate-hooks` or `tox run -e generate-hooks-config`
 - id: check-circle-ci
-  name: Validate Circle CI config
-  description: 'Validate Circle CI config against the schema provided by SchemaStore'
+  name: Validate CircleCI config
+  description: 'Validate CircleCI config against the schema provided by SchemaStore'
   entry: check-jsonschema --builtin-schema vendor.circle-ci
   language: python
   files: ^\.circleci/config\.(yml|yaml)$

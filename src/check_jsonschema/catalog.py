@@ -73,10 +73,9 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
     "circle-ci": {
         "url": "https://json.schemastore.org/circleciconfig.json",
         "hook_config": {
-            "name": "Validate Circle CI config",
+            "name": "Validate CircleCI config",
             "description": (
-                "Validate Circle CI config against the schema provided "
-                "by SchemaStore"
+                "Validate CircleCI config against the schema provided by SchemaStore"
             ),
             "files": r"^\.circleci/config\.(yml|yaml)$",
             "type": "yaml",
