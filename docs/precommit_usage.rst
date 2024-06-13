@@ -99,6 +99,20 @@ Validate Buildkite Pipelines against the schema provided by Buildkite
         - id: check-buildkite
 
 
+``check-circle-ci``
+~~~~~~~~~~~~~~~~~~~
+
+Validate Circle CI config against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.28.5
+      hooks:
+        - id: check-circle-ci
+
+
 ``check-cloudbuild``
 ~~~~~~~~~~~~~~~~~~~~
 

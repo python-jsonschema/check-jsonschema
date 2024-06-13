@@ -70,6 +70,18 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types_or": ["json", "yaml"],
         },
     },
+    "circle-ci": {
+        "url": "https://json.schemastore.org/circleciconfig.json",
+        "hook_config": {
+            "name": "Validate Circle CI config",
+            "description": (
+                "Validate Circle CI config against the schema provided "
+                "by SchemaStore"
+            ),
+            "files": r"^\.circleci/config\.(yml|yaml)$",
+            "type": "yaml",
+        },
+    },
     "cloudbuild": {
         "url": "https://json.schemastore.org/cloudbuild.json",
         "hook_config": {
