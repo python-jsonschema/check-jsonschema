@@ -151,6 +151,18 @@
         "title": "Clone Repository Settings",
         "type": "object"
       },
+      "cloud": {
+        "description": "Custom cloud step runtime",
+        "properties": {
+          "atlassian-ip-ranges": {
+            "default": false,
+            "description": "Whether it uses Atlassian ip ranges.",
+            "type": "boolean"
+          }
+        },
+        "title": "Cloud step runtime",
+        "type": "object"
+      },
       "condition": {
         "properties": {
           "changesets": {
@@ -557,6 +569,9 @@
               "max-time": {
                 "$ref": "#/components/schemas/max_time"
               },
+              "runtime": {
+                "$ref": "#/components/schemas/runtime"
+              },
               "size": {
                 "$ref": "#/components/schemas/size"
               }
@@ -640,6 +655,16 @@
         "title": "Step Runner Label",
         "type": "string"
       },
+      "runtime": {
+        "description": "Custom step runtime",
+        "properties": {
+          "cloud": {
+            "$ref": "#/components/schemas/cloud"
+          }
+        },
+        "title": "Step Runtime",
+        "type": "object"
+      },
       "script": {
         "items": {
           "oneOf": [
@@ -700,7 +725,8 @@
           "2x",
           "4x",
           "8x",
-          "16x"
+          "16x",
+          "32x"
         ],
         "title": "Step Size",
         "type": "string"
@@ -837,6 +863,9 @@
           },
           "runs-on": {
             "$ref": "#/components/schemas/runs_on"
+          },
+          "runtime": {
+            "$ref": "#/components/schemas/runtime"
           },
           "script": {
             "$ref": "#/components/schemas/script",
