@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
+0.28.6
+------
+
 - Update vendored schemas (2024-06-23)
+- Add CircleCI schema and pre-commit hook. Thanks :user:`jrdnbradford`! (:pr:`444`)
 
 0.28.5
 ------
