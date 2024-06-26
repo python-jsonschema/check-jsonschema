@@ -4,8 +4,9 @@ import typing as t
 import urllib.parse
 
 import referencing
-import requests
 from referencing.jsonschema import DRAFT202012, Schema
+
+from check_jsonschema.cachedownloader import CacheDownloader
 
 from ..parsers import ParserSet
 from ..utils import filename2path
@@ -62,10 +63,9 @@ def create_retrieve_callable(
 
         full_uri_scheme = urllib.parse.urlsplit(full_uri).scheme
         if full_uri_scheme in ("http", "https"):
-            data = requests.get(full_uri, stream=True)
-            parsed_object = parser_set.parse_data_with_path(
-                data.content, full_uri, "json"
-            )
+            dwl = CacheDownloader(full_uri)
+            with dwl.open() as file:
+                parsed_object = parser_set.parse_data_with_path(file, full_uri, "json")
         else:
             parsed_object = get_local_file(full_uri)
 

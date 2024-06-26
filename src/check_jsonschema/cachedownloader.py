@@ -24,6 +24,9 @@ class CacheDownloader:
     # this will let us do any other caching we might need in the future in the same
     # cache dir (adjacent to "downloads")
     _CACHEDIR_NAME = os.path.join("check_jsonschema", "downloads")
+    # Keep list of newly loaded/revalidated schemas in memory to avoid network requests
+    # Especially useful for schemas making extensive use of refs to remote URLs
+    _DOWNLOADED_URIS: set[str] = set()
 
     def __init__(
         self,
@@ -113,10 +116,14 @@ class CacheDownloader:
         shutil.copy(fp.name, dest)
         os.remove(fp.name)
 
-    def _download(self) -> str:
+    def _cachefile_path(self) -> str:
         assert self._cache_dir
         os.makedirs(self._cache_dir, exist_ok=True)
-        dest = os.path.join(self._cache_dir, self._filename)
+        return os.path.join(self._cache_dir, self._filename)
+
+    def _download(self) -> str:
+        dest = self._cachefile_path()
+        CacheDownloader._DOWNLOADED_URIS.add(self._file_url)
 
         response = self._get_request()
         # check to see if we have a file which matches the connection
@@ -130,6 +137,14 @@ class CacheDownloader:
     def open(self) -> t.Iterator[t.IO[bytes]]:
         if (not self._cache_dir) or self._disable_cache:
             yield io.BytesIO(self._get_request().content)
+
         else:
-            with open(self._download(), "rb") as fp:
-                yield fp
+            cachefile = self._cachefile_path()
+            if self._file_url in CacheDownloader._DOWNLOADED_URIS and os.path.exists(
+                cachefile
+            ):
+                with open(cachefile, "rb") as fp:
+                    yield fp
+            else:
+                with open(self._download(), "rb") as fp:
+                    yield fp
