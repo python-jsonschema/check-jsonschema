@@ -6,8 +6,6 @@ import sys
 import pytest
 import responses
 
-from check_jsonschema import cachedownloader
-
 
 @pytest.mark.skipif(
     platform.system() != "Linux", reason="test requires /proc/self/ mechanism"
@@ -87,13 +85,12 @@ def test_remote_schema_requiring_retry(run_line, check_passes, tmp_path, monkeyp
     fires in order to parse
     """
 
-    def _fake_compute_default_cache_dir(self):
+    def _fake_default_cache_dir():
         return str(tmp_path)
 
     monkeypatch.setattr(
-        cachedownloader.CacheDownloader,
-        "_compute_default_cache_dir",
-        _fake_compute_default_cache_dir,
+        "check_jsonschema.cachedownloader._get_default_cache_dir",
+        _fake_default_cache_dir,
     )
 
     schema_loc = "https://example.com/schema1.json"

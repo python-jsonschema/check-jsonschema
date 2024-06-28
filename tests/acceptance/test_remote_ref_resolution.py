@@ -3,8 +3,6 @@ import json
 import pytest
 import responses
 
-from check_jsonschema import cachedownloader
-
 CASES = {
     "case1": {
         "main_schema": {
@@ -39,13 +37,12 @@ CASES = {
 
 @pytest.fixture(autouse=True)
 def _mock_schema_cache_dir(monkeypatch, tmp_path):
-    def _fake_compute_default_cache_dir(self):
+    def _fake_default_cache_dir():
         return str(tmp_path)
 
     monkeypatch.setattr(
-        cachedownloader.CacheDownloader,
-        "_compute_default_cache_dir",
-        _fake_compute_default_cache_dir,
+        "check_jsonschema.cachedownloader._get_default_cache_dir",
+        _fake_default_cache_dir,
     )
 
 
