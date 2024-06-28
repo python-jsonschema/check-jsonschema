@@ -268,3 +268,39 @@ def test_cachedownloader_handles_bad_lastmod_header(
 
     # at the end, the file always exists on disk
     assert f.exists()
+
+
+def test_cachedownloader_validation_is_not_invoked_on_hit(monkeypatch, tmp_path):
+    """
+    Regression test for https://github.com/python-jsonschema/check-jsonschema/issues/453
+
+    This was a bug in which the validation callback was invoked eagerly, even on a cache
+    hit. As a result, cache hits did not demonstrate their expected performance gain.
+    """
+    # 1: construct some perfectly good data (it doesn't really matter what it is)
+    add_default_response()
+    # 2: put equivalent data on disk
+    f = tmp_path / "schema1.json"
+    f.write_text("{}")
+
+    # 3: construct a validator which marks that it ran in a variable
+    validator_ran = False
+
+    def dummy_validate_bytes(data):
+        nonlocal validator_ran
+        validator_ran = True
+
+    # construct a downloader pointed at the schema and file, expecting a cache hit
+    # and use the above validation method
+    cd = CacheDownloader(
+        "https://example.com/schema1.json",
+        filename=str(f),
+        cache_dir=str(tmp_path),
+        validation_callback=dummy_validate_bytes,
+    )
+
+    # read data from the downloader
+    with cd.open() as fp:
+        assert fp.read() == b"{}"
+    # assert that the validator was not run
+    assert validator_ran is False

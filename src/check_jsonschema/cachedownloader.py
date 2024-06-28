@@ -60,23 +60,18 @@ class CacheDownloader:
 
         return cache_dir
 
-    def _get_request(self) -> requests.Response:
+    def _get_request(
+        self, *, response_ok: t.Callable[[requests.Response], bool]
+    ) -> requests.Response:
         try:
-            # do manual retries, rather than using urllib3 retries, to make it trivially
-            # testable with 'responses'
             r: requests.Response | None = None
             for _attempt in range(3):
                 r = requests.get(self._file_url, stream=True)
-                if r.ok:
-                    if self._validation_callback is not None:
-                        try:
-                            self._validation_callback(r.content)
-                        except ValueError:
-                            continue
+                if r.ok and response_ok(r):
                     return r
             assert r is not None
             raise FailedDownloadError(
-                f"got responses with status={r.status_code}, retries exhausted"
+                f"got response with status={r.status_code}, retries exhausted"
             )
         except requests.RequestException as e:
             raise FailedDownloadError("encountered error during download") from e
@@ -113,12 +108,31 @@ class CacheDownloader:
         shutil.copy(fp.name, dest)
         os.remove(fp.name)
 
+    def _validate(self, response: requests.Response) -> bool:
+        if not self._validation_callback:
+            return True
+
+        try:
+            self._validation_callback(response.content)
+            return True
+        except ValueError:
+            return False
+
     def _download(self) -> str:
         assert self._cache_dir
         os.makedirs(self._cache_dir, exist_ok=True)
         dest = os.path.join(self._cache_dir, self._filename)
 
-        response = self._get_request()
+        def check_response_for_download(r: requests.Response) -> bool:
+            # if the response indicates a cache hit, treat it as valid
+            # this ensures that we short-circuit any further evaluation immediately on
+            # a hit
+            if self._cache_hit(dest, r):
+                return True
+            # we now know it's not a hit, so validate the content (forces download)
+            return self._validate(r)
+
+        response = self._get_request(response_ok=check_response_for_download)
         # check to see if we have a file which matches the connection
         # only download if we do not (cache miss, vs hit)
         if not self._cache_hit(dest, response):
@@ -129,7 +143,7 @@ class CacheDownloader:
     @contextlib.contextmanager
     def open(self) -> t.Iterator[t.IO[bytes]]:
         if (not self._cache_dir) or self._disable_cache:
-            yield io.BytesIO(self._get_request().content)
+            yield io.BytesIO(self._get_request(response_ok=self._validate).content)
         else:
             with open(self._download(), "rb") as fp:
                 yield fp
