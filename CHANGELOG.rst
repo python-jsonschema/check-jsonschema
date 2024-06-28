@@ -9,6 +9,9 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+- Fix an ordering bug which caused caching to be ineffective, resulting in
+  repeated downloads of remote schemas even when the cache was populated.
+  Thanks :user:`alex1701c` for reporting! (:issue:`453`)
 
 0.28.6
 ------
