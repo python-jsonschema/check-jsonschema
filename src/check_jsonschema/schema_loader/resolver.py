@@ -1,18 +1,19 @@
 from __future__ import annotations
 
+import hashlib
 import typing as t
 import urllib.parse
 
 import referencing
-import requests
 from referencing.jsonschema import DRAFT202012, Schema
 
+from ..cachedownloader import CacheDownloader
 from ..parsers import ParserSet
 from ..utils import filename2path
 
 
 def make_reference_registry(
-    parsers: ParserSet, retrieval_uri: str | None, schema: dict
+    parsers: ParserSet, retrieval_uri: str | None, schema: dict, disable_cache: bool
 ) -> referencing.Registry:
     id_attribute_: t.Any = schema.get("$id")
     if isinstance(id_attribute_, str):
@@ -26,7 +27,9 @@ def make_reference_registry(
     # mypy does not recognize that Registry is an `attrs` class and has `retrieve` as an
     # argument to its implicit initializer
     registry: referencing.Registry = referencing.Registry(  # type: ignore[call-arg]
-        retrieve=create_retrieve_callable(parsers, retrieval_uri, id_attribute)
+        retrieve=create_retrieve_callable(
+            parsers, retrieval_uri, id_attribute, disable_cache
+        )
     )
 
     if retrieval_uri is not None:
@@ -38,13 +41,17 @@ def make_reference_registry(
 
 
 def create_retrieve_callable(
-    parser_set: ParserSet, retrieval_uri: str | None, id_attribute: str | None
+    parser_set: ParserSet,
+    retrieval_uri: str | None,
+    id_attribute: str | None,
+    disable_cache: bool,
 ) -> t.Callable[[str], referencing.Resource[Schema]]:
     base_uri = id_attribute
     if base_uri is None:
         base_uri = retrieval_uri
 
     cache = ResourceCache()
+    downloader = CacheDownloader("refs", disable_cache)
 
     def get_local_file(uri: str) -> t.Any:
         path = filename2path(uri)
@@ -62,10 +69,19 @@ def create_retrieve_callable(
 
         full_uri_scheme = urllib.parse.urlsplit(full_uri).scheme
         if full_uri_scheme in ("http", "https"):
-            data = requests.get(full_uri, stream=True)
-            parsed_object = parser_set.parse_data_with_path(
-                data.content, full_uri, "json"
+
+            def validation_callback(content: bytes) -> None:
+                parser_set.parse_data_with_path(content, full_uri, "json")
+
+            bound_downloader = downloader.bind(
+                full_uri,
+                hashlib.md5(full_uri.encode()).hexdigest(),
+                validation_callback,
             )
+            with bound_downloader.open() as fp:
+                data = fp.read()
+
+            parsed_object = parser_set.parse_data_with_path(data, full_uri, "json")
         else:
             parsed_object = get_local_file(full_uri)
 

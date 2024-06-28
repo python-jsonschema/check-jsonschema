@@ -51,8 +51,11 @@ def test_default_filename_from_uri(default_response):
     ],
 )
 def test_default_cache_dir(
-    monkeypatch, default_response, sysname, fakeenv, expect_value
+    patch_cache_dir, monkeypatch, default_response, sysname, fakeenv, expect_value
 ):
+    # undo the patch which typically overrides resolution of the cache dir
+    patch_cache_dir.undo()
+
     for var in ["LOCALAPPDATA", "APPDATA", "XDG_CACHE_HOME"]:
         monkeypatch.delenv(var, raising=False)
     for k, v in fakeenv.items():
@@ -113,17 +116,42 @@ def test_cachedownloader_cached_file(tmp_path, monkeypatch, default_response):
     # set the cache_dir to the tmp dir (so that cache_dir will always be set)
     cd = CacheDownloader(cache_dir=tmp_path).bind(str(f))
     # patch the downloader to skip any download "work"
-    monkeypatch.setattr(cd._downloader, "_download", lambda file_uri, filename: str(f))
+    monkeypatch.setattr(
+        cd._downloader, "_download", lambda file_uri, filename, response_ok: str(f)
+    )
 
     with cd.open() as fp:
         assert fp.read() == b"{}"
 
 
-@pytest.mark.parametrize(
-    "mode", ["filename", "filename_otherdir", "cache_dir", "disable_cache"]
-)
-@pytest.mark.parametrize("failures", (0, 1, 10, requests.ConnectionError))
-def test_cachedownloader_e2e(tmp_path, mode, failures):
+@pytest.mark.parametrize("disable_cache", (True, False))
+def test_cachedownloader_on_success(cache_dir, disable_cache):
+    add_default_response()
+    f = cache_dir / "check_jsonschema" / "downloads" / "schema1.json"
+    cd = CacheDownloader(disable_cache=disable_cache).bind(
+        "https://example.com/schema1.json"
+    )
+
+    with cd.open() as fp:
+        assert fp.read() == b"{}"
+    if disable_cache:
+        assert not f.exists()
+    else:
+        assert f.exists()
+
+
+def test_cachedownloader_using_alternate_target_dir(cache_dir):
+    add_default_response()
+    f = cache_dir / "check_jsonschema" / "otherdir" / "schema1.json"
+    cd = CacheDownloader("otherdir").bind("https://example.com/schema1.json")
+    with cd.open() as fp:
+        assert fp.read() == b"{}"
+    assert f.exists()
+
+
+@pytest.mark.parametrize("disable_cache", (True, False))
+@pytest.mark.parametrize("failures", (1, 2, requests.ConnectionError))
+def test_cachedownloader_succeeds_after_few_errors(cache_dir, disable_cache, failures):
     if isinstance(failures, int):
         for _i in range(failures):
             responses.add(
@@ -140,51 +168,52 @@ def test_cachedownloader_e2e(tmp_path, mode, failures):
             match_querystring=None,
         )
     add_default_response()
-    f = tmp_path / "schema1.json"
-    if mode == "filename":
-        cd = CacheDownloader(cache_dir=str(tmp_path)).bind(
-            "https://example.com/schema1.json", filename=str(f)
-        )
-    elif mode == "filename_otherdir":
-        otherdir = tmp_path / "otherdir"
-        cd = CacheDownloader(cache_dir=str(otherdir)).bind(
-            "https://example.com/schema1.json", filename=str(f)
-        )
-    elif mode == "cache_dir":
-        cd = CacheDownloader(cache_dir=str(tmp_path)).bind(
-            "https://example.com/schema1.json"
-        )
-    elif mode == "disable_cache":
-        cd = CacheDownloader(disable_cache=True).bind(
-            "https://example.com/schema1.json"
-        )
-    else:
-        raise NotImplementedError
+    f = cache_dir / "check_jsonschema" / "downloads" / "schema1.json"
+    cd = CacheDownloader(disable_cache=disable_cache).bind(
+        "https://example.com/schema1.json"
+    )
 
-    if isinstance(failures, int) and failures < 3:
-        with cd.open() as fp:
-            assert fp.read() == b"{}"
-        if mode == "filename":
-            assert f.exists()
-        elif mode == "filename_otherdir":
-            otherdir = f.exists()
-        elif mode == "cache_dir":
-            assert (tmp_path / "schema1.json").exists()
-        elif mode == "disable_cache":
-            assert not (tmp_path / "schema1.json").exists()
-            assert not f.exists()
-        else:
-            raise NotImplementedError
-    else:
-        with pytest.raises(FailedDownloadError):
-            with cd.open() as fp:
-                pass
-        assert not (tmp_path / "schema1.json").exists()
+    with cd.open() as fp:
+        assert fp.read() == b"{}"
+    if disable_cache:
         assert not f.exists()
+    else:
+        assert f.exists()
 
 
 @pytest.mark.parametrize("disable_cache", (True, False))
-def test_cachedownloader_retries_on_bad_data(tmp_path, disable_cache):
+@pytest.mark.parametrize("connection_error", (True, False))
+def test_cachedownloader_fails_after_many_errors(
+    cache_dir, disable_cache, connection_error
+):
+    for _i in range(10):
+        if connection_error:
+            responses.add(
+                "GET",
+                "https://example.com/schema1.json",
+                body=requests.ConnectionError(),
+                match_querystring=None,
+            )
+        else:
+            responses.add(
+                "GET",
+                "https://example.com/schema1.json",
+                status=500,
+                match_querystring=None,
+            )
+    add_default_response()  # never reached, the 11th response
+    f = cache_dir / "check_jsonschema" / "downloads" / "schema1.json"
+    cd = CacheDownloader(disable_cache=disable_cache).bind(
+        "https://example.com/schema1.json"
+    )
+    with pytest.raises(FailedDownloadError):
+        with cd.open():
+            pass
+    assert not f.exists()
+
+
+@pytest.mark.parametrize("disable_cache", (True, False))
+def test_cachedownloader_retries_on_bad_data(cache_dir, disable_cache):
     responses.add(
         "GET",
         "https://example.com/schema1.json",
@@ -193,12 +222,14 @@ def test_cachedownloader_retries_on_bad_data(tmp_path, disable_cache):
         match_querystring=None,
     )
     add_default_response()
-    f = tmp_path / "schema1.json"
+    f = cache_dir / "check_jsonschema" / "downloads" / "schema1.json"
     cd = CacheDownloader(
-        cache_dir=str(tmp_path),
         disable_cache=disable_cache,
+    ).bind(
+        "https://example.com/schema1.json",
+        filename=str(f),
         validation_callback=json.loads,
-    ).bind("https://example.com/schema1.json", filename=str(f))
+    )
 
     with cd.open() as fp:
         assert fp.read() == b"{}"
@@ -214,7 +245,7 @@ def test_cachedownloader_retries_on_bad_data(tmp_path, disable_cache):
     "failure_mode", ("header_missing", "header_malformed", "time_overflow")
 )
 def test_cachedownloader_handles_bad_lastmod_header(
-    monkeypatch, tmp_path, file_exists, failure_mode
+    monkeypatch, cache_dir, file_exists, failure_mode
 ):
     if failure_mode == "header_missing":
         responses.add(
@@ -243,16 +274,15 @@ def test_cachedownloader_handles_bad_lastmod_header(
         raise NotImplementedError
 
     original_file_contents = b'{"foo": "bar"}'
-    f = tmp_path / "schema1.json"
+    (cache_dir / "check_jsonschema" / "downloads").mkdir(parents=True)
+    f = cache_dir / "check_jsonschema" / "downloads" / "schema1.json"
 
     if file_exists:
         f.write_bytes(original_file_contents)
     else:
         assert not f.exists()
 
-    cd = CacheDownloader(cache_dir=str(tmp_path)).bind(
-        "https://example.com/schema1.json", filename=str(f)
-    )
+    cd = CacheDownloader().bind("https://example.com/schema1.json", filename=str(f))
 
     # if the file already existed, it will not be overwritten by the cachedownloader
     # so the returned value for both the downloader and a direct file read should be the
@@ -272,7 +302,7 @@ def test_cachedownloader_handles_bad_lastmod_header(
     assert f.exists()
 
 
-def test_cachedownloader_validation_is_not_invoked_on_hit(monkeypatch, tmp_path):
+def test_cachedownloader_validation_is_not_invoked_on_hit(monkeypatch, cache_dir):
     """
     Regression test for https://github.com/python-jsonschema/check-jsonschema/issues/453
 
@@ -282,7 +312,8 @@ def test_cachedownloader_validation_is_not_invoked_on_hit(monkeypatch, tmp_path)
     # 1: construct some perfectly good data (it doesn't really matter what it is)
     add_default_response()
     # 2: put equivalent data on disk
-    f = tmp_path / "schema1.json"
+    (cache_dir / "check_jsonschema" / "downloads").mkdir(parents=True)
+    f = cache_dir / "check_jsonschema" / "downloads" / "schema1.json"
     f.write_text("{}")
 
     # 3: construct a validator which marks that it ran in a variable
@@ -294,9 +325,11 @@ def test_cachedownloader_validation_is_not_invoked_on_hit(monkeypatch, tmp_path)
 
     # construct a downloader pointed at the schema and file, expecting a cache hit
     # and use the above validation method
-    cd = CacheDownloader(
-        cache_dir=str(tmp_path), validation_callback=dummy_validate_bytes
-    ).bind("https://example.com/schema1.json", filename=str(f))
+    cd = CacheDownloader().bind(
+        "https://example.com/schema1.json",
+        filename=str(f),
+        validation_callback=dummy_validate_bytes,
+    )
 
     # read data from the downloader
     with cd.open() as fp:

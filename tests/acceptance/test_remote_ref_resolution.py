@@ -35,17 +35,6 @@ CASES = {
 }
 
 
-@pytest.fixture(autouse=True)
-def _mock_schema_cache_dir(monkeypatch, tmp_path):
-    def _fake_default_cache_dir():
-        return str(tmp_path)
-
-    monkeypatch.setattr(
-        "check_jsonschema.cachedownloader._get_default_cache_dir",
-        _fake_default_cache_dir,
-    )
-
-
 @pytest.mark.parametrize("check_passes", (True, False))
 @pytest.mark.parametrize("casename", ("case1", "case2"))
 def test_remote_ref_resolution_simple_case(run_line, check_passes, casename, tmp_path):

@@ -11,14 +11,10 @@ import typing as t
 
 import requests
 
-# this will let us do any other caching we might need in the future in the same
-# cache dir (adjacent to "downloads")
-_CACHEDIR_NAME = os.path.join("check_jsonschema", "downloads")
-
 _LASTMOD_FMT = "%a, %d %b %Y %H:%M:%S %Z"
 
 
-def _get_default_cache_dir() -> str | None:
+def _base_cache_dir() -> str | None:
     sysname = platform.system()
 
     # on windows, try to get the appdata env var
@@ -34,9 +30,13 @@ def _get_default_cache_dir() -> str | None:
     else:
         cache_dir = os.getenv("XDG_CACHE_HOME", os.path.expanduser("~/.cache"))
 
-    if cache_dir:
-        cache_dir = os.path.join(cache_dir, _CACHEDIR_NAME)
+    return cache_dir
 
+
+def _resolve_cache_dir(dirname: str = "downloads") -> str | None:
+    cache_dir = _base_cache_dir()
+    if cache_dir:
+        cache_dir = os.path.join(cache_dir, "check_jsonschema", dirname)
     return cache_dir
 
 
@@ -55,18 +55,21 @@ def _lastmod_from_response(response: requests.Response) -> float:
 def _get_request(
     file_url: str, *, response_ok: t.Callable[[requests.Response], bool]
 ) -> requests.Response:
-    try:
-        r: requests.Response | None = None
-        for _attempt in range(3):
+    num_retries = 2
+    r: requests.Response | None = None
+    for _attempt in range(num_retries + 1):
+        try:
             r = requests.get(file_url, stream=True)
-            if r.ok and response_ok(r):
-                return r
-        assert r is not None
-        raise FailedDownloadError(
-            f"got response with status={r.status_code}, retries exhausted"
-        )
-    except requests.RequestException as e:
-        raise FailedDownloadError("encountered error during download") from e
+        except requests.RequestException as e:
+            if _attempt == num_retries:
+                raise FailedDownloadError("encountered error during download") from e
+            continue
+        if r.ok and response_ok(r):
+            return r
+    assert r is not None
+    raise FailedDownloadError(
+        f"got response with status={r.status_code}, retries exhausted"
+    )
 
 
 def _atomic_write(dest: str, content: bytes) -> None:
@@ -97,27 +100,19 @@ class FailedDownloadError(Exception):
 
 
 class CacheDownloader:
-    def __init__(
-        self,
-        cache_dir: str | None = None,
-        disable_cache: bool = False,
-        validation_callback: t.Callable[[bytes], t.Any] | None = None,
-    ):
-        self._cache_dir = cache_dir or _get_default_cache_dir()
+    def __init__(self, cache_dir: str | None = None, disable_cache: bool = False):
+        if cache_dir is None:
+            self._cache_dir = _resolve_cache_dir()
+        else:
+            self._cache_dir = _resolve_cache_dir(cache_dir)
         self._disable_cache = disable_cache
-        self._validation_callback = validation_callback
 
-    def _validate(self, response: requests.Response) -> bool:
-        if not self._validation_callback:
-            return True
-
-        try:
-            self._validation_callback(response.content)
-            return True
-        except ValueError:
-            return False
-
-    def _download(self, file_url: str, filename: str) -> str:
+    def _download(
+        self,
+        file_url: str,
+        filename: str,
+        response_ok: t.Callable[[requests.Response], bool],
+    ) -> str:
         assert self._cache_dir is not None
         os.makedirs(self._cache_dir, exist_ok=True)
         dest = os.path.join(self._cache_dir, filename)
@@ -129,7 +124,7 @@ class CacheDownloader:
             if _cache_hit(dest, r):
                 return True
             # we now know it's not a hit, so validate the content (forces download)
-            return self._validate(r)
+            return response_ok(r)
 
         response = _get_request(file_url, response_ok=check_response_for_download)
         # check to see if we have a file which matches the connection
@@ -140,15 +135,31 @@ class CacheDownloader:
         return dest
 
     @contextlib.contextmanager
-    def open(self, file_url: str, filename: str) -> t.Iterator[t.IO[bytes]]:
+    def open(
+        self,
+        file_url: str,
+        filename: str,
+        validate_response: t.Callable[[requests.Response], bool],
+    ) -> t.Iterator[t.IO[bytes]]:
         if (not self._cache_dir) or self._disable_cache:
-            yield io.BytesIO(_get_request(file_url, response_ok=self._validate).content)
+            yield io.BytesIO(
+                _get_request(file_url, response_ok=validate_response).content
+            )
         else:
-            with open(self._download(file_url, filename), "rb") as fp:
+            with open(
+                self._download(file_url, filename, response_ok=validate_response), "rb"
+            ) as fp:
                 yield fp
 
-    def bind(self, file_url: str, filename: str | None = None) -> BoundCacheDownloader:
-        return BoundCacheDownloader(file_url, filename, self)
+    def bind(
+        self,
+        file_url: str,
+        filename: str | None = None,
+        validation_callback: t.Callable[[bytes], t.Any] | None = None,
+    ) -> BoundCacheDownloader:
+        return BoundCacheDownloader(
+            file_url, filename, self, validation_callback=validation_callback
+        )
 
 
 class BoundCacheDownloader:
@@ -157,12 +168,29 @@ class BoundCacheDownloader:
         file_url: str,
         filename: str | None,
         downloader: CacheDownloader,
+        *,
+        validation_callback: t.Callable[[bytes], t.Any] | None = None,
     ):
         self._file_url = file_url
         self._filename = filename or file_url.split("/")[-1]
         self._downloader = downloader
+        self._validation_callback = validation_callback
 
     @contextlib.contextmanager
     def open(self) -> t.Iterator[t.IO[bytes]]:
-        with self._downloader.open(self._file_url, self._filename) as fp:
+        with self._downloader.open(
+            self._file_url,
+            self._filename,
+            validate_response=self._validate_response,
+        ) as fp:
             yield fp
+
+    def _validate_response(self, response: requests.Response) -> bool:
+        if not self._validation_callback:
+            return True
+
+        try:
+            self._validation_callback(response.content)
+            return True
+        except ValueError:
+            return False
