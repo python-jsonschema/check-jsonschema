@@ -9,6 +9,8 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+
+- Update vendored schemas (2024-06-30)
 - Fix an ordering bug which caused caching to be ineffective, resulting in
   repeated downloads of remote schemas even when the cache was populated.
   Thanks :user:`alex1701c` for reporting! (:issue:`453`)

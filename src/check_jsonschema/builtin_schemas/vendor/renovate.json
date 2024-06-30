@@ -965,7 +965,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:10.11.7"
+      "default": "ghcr.io/containerbase/sidecar:10.12.0"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -3207,6 +3207,17 @@
       },
       "$ref": "#"
     },
+    "runtime-version": {
+      "description": "Configuration object for the runtime-version manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)runtime.txt$"
+        ],
+        "pinDigests": false
+      },
+      "$ref": "#"
+    },
     "sbt": {
       "description": "Configuration object for the sbt manager",
       "type": "object",
@@ -3339,7 +3350,6 @@
           "branchAutomergeFailure",
           "configErrorIssue",
           "dependencyLookupWarnings",
-          "deprecationWarningIssues",
           "lockFileErrors",
           "missingCredentialsError",
           "onboardingClose",
@@ -3347,9 +3357,7 @@
           "prIgnoreNotification"
         ]
       },
-      "default": [
-        "deprecationWarningIssues"
-      ]
+      "default": []
     },
     "swift": {
       "description": "Configuration object for the swift manager",
@@ -3581,6 +3589,7 @@
             "rez",
             "rpm",
             "ruby",
+            "same-major",
             "semver",
             "semver-coerced",
             "swift",
