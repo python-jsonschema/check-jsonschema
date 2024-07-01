@@ -115,3 +115,46 @@ To resolve, quote the boolean:
 
     steps:
       - bash: echo "{{ parameters.myBoolean}}"
+
+Caching
+-------
+
+What data gets cached?
+~~~~~~~~~~~~~~~~~~~~~~
+
+``check-jsonschema`` will cache all downloaded schemas by default.
+The schemas are stored in the ``downloads/`` directory in your cache dir, and any
+downloaded refs are stored in the ``refs/`` directory.
+
+Where is the cache dir?
+~~~~~~~~~~~~~~~~~~~~~~~
+
+``check-jsonschema`` detects an appropriate cache directory based on your
+platform and environment variables.
+
+On Windows, the cache dir is ``%LOCALAPPDATA%/check_jsonschema/`` and falls back
+to ``%APPDATA%/check_jsonschema/`` if ``LOCALAPPDATA`` is unset.
+
+On macOS, the cache dir is ``~/Library/Caches/check_jsonschema/``.
+
+On Linux, the cache dir is ``$XDG_CACHE_HOME/check_jsonschema/`` and falls back
+to ``~/.cache/check_jsonschema/`` if ``XDG_CACHE_HOME`` is unset.
+
+How does check-jsonschema decide what is a cache hit vs miss?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``check-jsonschema`` checks for cache hits by comparing local file modification
+times to the ``Last-Modified`` header present in the headers on an HTTP GET
+request. If the local last modified time is older than the header, the rest of
+the request will be streamed and written to replace the file.
+
+How do I clear the cache?
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There is no special command for clearing the cache. Simply find the cache
+directory based on the information above and remove it or any of its contents.
+
+Can I disable caching?
+~~~~~~~~~~~~~~~~~~~~~~
+
+Yes! Just use the ``--no-cache`` CLI option.
