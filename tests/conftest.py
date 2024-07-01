@@ -46,3 +46,17 @@ def in_tmp_dir(request, tmp_path):
     os.chdir(str(tmp_path))
     yield
     os.chdir(request.config.invocation_dir)
+
+
+@pytest.fixture
+def cache_dir(tmp_path):
+    return tmp_path / ".cache"
+
+
+@pytest.fixture(autouse=True)
+def patch_cache_dir(monkeypatch, cache_dir):
+    with monkeypatch.context() as m:
+        m.setattr(
+            "check_jsonschema.cachedownloader._base_cache_dir", lambda: str(cache_dir)
+        )
+        yield m

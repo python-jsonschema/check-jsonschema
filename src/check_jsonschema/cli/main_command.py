@@ -300,8 +300,8 @@ def build_schema_loader(args: ParseResult) -> SchemaLoaderBase:
         assert args.schema_path is not None
         return SchemaLoader(
             args.schema_path,
-            args.cache_filename,
-            args.disable_cache,
+            cache_filename=args.cache_filename,
+            disable_cache=args.disable_cache,
             base_uri=args.base_uri,
             validator_class=args.validator_class,
         )

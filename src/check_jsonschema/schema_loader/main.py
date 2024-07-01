@@ -57,14 +57,16 @@ class SchemaLoaderBase:
 
 class SchemaLoader(SchemaLoaderBase):
     validator_class: type[jsonschema.protocols.Validator] | None = None
+    disable_cache: bool = True
 
     def __init__(
         self,
         schemafile: str,
+        *,
         cache_filename: str | None = None,
-        disable_cache: bool = False,
         base_uri: str | None = None,
         validator_class: type[jsonschema.protocols.Validator] | None = None,
+        disable_cache: bool = True,
     ) -> None:
         # record input parameters (these are not to be modified)
         self.schemafile = schemafile
@@ -140,7 +142,7 @@ class SchemaLoader(SchemaLoaderBase):
         # reference resolution
         # with support for YAML, TOML, and other formats from the parsers
         reference_registry = make_reference_registry(
-            self._parsers, retrieval_uri, schema
+            self._parsers, retrieval_uri, schema, self.disable_cache
         )
 
         if self.validator_class is None:
@@ -171,7 +173,7 @@ class SchemaLoader(SchemaLoaderBase):
 
 
 class BuiltinSchemaLoader(SchemaLoader):
-    def __init__(self, schema_name: str, base_uri: str | None = None) -> None:
+    def __init__(self, schema_name: str, *, base_uri: str | None = None) -> None:
         self.schema_name = schema_name
         self.base_uri = base_uri
         self._parsers = ParserSet()
@@ -187,7 +189,7 @@ class BuiltinSchemaLoader(SchemaLoader):
 
 
 class MetaSchemaLoader(SchemaLoaderBase):
-    def __init__(self, base_uri: str | None = None) -> None:
+    def __init__(self, *, base_uri: str | None = None) -> None:
         if base_uri is not None:
             raise NotImplementedError(
                 "'--base-uri' was used with '--metaschema'. "
