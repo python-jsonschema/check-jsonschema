@@ -12,6 +12,21 @@ from ..parsers import ParserSet
 from ..utils import filename2path
 
 
+def ref_url_to_cache_filename(ref_url: str) -> str:
+    """
+    Given a $ref URL, convert it to the filename in the refs/ cache dir.
+    Rules are as follows:
+    - the base filename is an md5 hash of the URL
+    - if the filename ends in an extension (.json, .yaml, etc) that extension
+      is appended to the hash
+    """
+    filename = hashlib.md5(ref_url.encode()).hexdigest()
+    if "." in (last_part := ref_url.rpartition("/")[-1]):
+        _, _, extension = last_part.rpartition(".")
+        filename = f"{filename}.{extension}"
+    return filename
+
+
 def make_reference_registry(
     parsers: ParserSet, retrieval_uri: str | None, schema: dict, disable_cache: bool
 ) -> referencing.Registry:
@@ -75,7 +90,7 @@ def create_retrieve_callable(
 
             bound_downloader = downloader.bind(
                 full_uri,
-                hashlib.md5(full_uri.encode()).hexdigest(),
+                ref_url_to_cache_filename(full_uri),
                 validation_callback,
             )
             with bound_downloader.open() as fp:

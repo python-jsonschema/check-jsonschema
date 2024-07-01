@@ -1,8 +1,9 @@
-import hashlib
 import json
 
 import pytest
 import responses
+
+from check_jsonschema.schema_loader.resolver import ref_url_to_cache_filename
 
 CASES = {
     "case1": {
@@ -34,10 +35,6 @@ CASES = {
         "failing_document": {"test": {"foo": "bar"}},
     },
 }
-
-
-def _md5(s):
-    return hashlib.md5(s.encode()).hexdigest()
 
 
 @pytest.mark.parametrize("check_passes", (True, False))
@@ -95,7 +92,9 @@ def test_remote_ref_resolution_cache_control(
 
     cache_locs = []
     for ref_loc in ref_locs:
-        cache_locs.append(cache_dir / "check_jsonschema" / "refs" / _md5(ref_loc))
+        cache_locs.append(
+            cache_dir / "check_jsonschema" / "refs" / ref_url_to_cache_filename(ref_loc)
+        )
     assert cache_locs  # sanity check
     if disable_cache:
         for loc in cache_locs:
@@ -126,7 +125,7 @@ def test_remote_ref_resolution_loads_from_cache(
         ref_locs.append(other_schema_loc)
 
         # but populate the cache with "good data"
-        cache_loc = ref_cache_dir / _md5(other_schema_loc)
+        cache_loc = ref_cache_dir / ref_url_to_cache_filename(other_schema_loc)
         cache_locs.append(cache_loc)
         cache_loc.write_text(json.dumps(subschema))
 
