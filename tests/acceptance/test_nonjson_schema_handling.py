@@ -1,8 +1,10 @@
 import json
 
 import pytest
+import responses
 
 from check_jsonschema.parsers.json5 import ENABLED as JSON5_ENABLED
+from check_jsonschema.schema_loader.resolver import ref_url_to_cache_filename
 
 SIMPLE_SCHEMA = {
     "$schema": "http://json-schema.org/draft-07/schema",
@@ -87,3 +89,79 @@ def test_can_load_json5_schema(run_line, tmp_path, passing_data):
         ["check-jsonschema", "--schemafile", str(main_schemafile), str(doc)]
     )
     assert result.exit_code == (0 if passing_data else 1)
+
+
+@pytest.mark.parametrize("passing_data", [True, False])
+def test_can_load_remote_yaml_schema(run_line, tmp_path, passing_data):
+    retrieval_uri = "https://example.org/retrieval/schemas/main.yaml"
+    responses.add(
+        "GET",
+        retrieval_uri,
+        body="""\
+"$schema": "http://json-schema.org/draft-07/schema"
+properties:
+  title: {"type": "string"}
+additionalProperties: false
+""",
+    )
+
+    doc = tmp_path / "doc.json"
+    doc.write_text(json.dumps(PASSING_DOCUMENT if passing_data else FAILING_DOCUMENT))
+
+    result = run_line(["check-jsonschema", "--schemafile", retrieval_uri, str(doc)])
+    assert result.exit_code == (0 if passing_data else 1)
+
+
+@pytest.mark.parametrize("passing_data", [True, False])
+def test_can_load_remote_yaml_schema_ref(run_line, tmp_path, passing_data):
+    retrieval_uri = "https://example.org/retrieval/schemas/main.yaml"
+    responses.add(
+        "GET",
+        retrieval_uri,
+        body="""\
+"$schema": "http://json-schema.org/draft-07/schema"
+properties:
+  "title": {"$ref": "./title_schema.yaml"}
+additionalProperties: false
+""",
+    )
+    responses.add(
+        "GET",
+        "https://example.org/retrieval/schemas/title_schema.yaml",
+        body="type: string",
+    )
+
+    doc = tmp_path / "doc.json"
+    doc.write_text(json.dumps(PASSING_DOCUMENT if passing_data else FAILING_DOCUMENT))
+
+    result = run_line(["check-jsonschema", "--schemafile", retrieval_uri, str(doc)])
+    assert result.exit_code == (0 if passing_data else 1)
+
+
+def test_can_load_remote_yaml_schema_ref_from_cache(run_line, cache_dir, tmp_path):
+    retrieval_uri = "https://example.org/retrieval/schemas/main.yaml"
+    responses.add(
+        "GET",
+        retrieval_uri,
+        body="""\
+"$schema": "http://json-schema.org/draft-07/schema"
+properties:
+  "title": {"$ref": "./title_schema.yaml"}
+additionalProperties: false
+""",
+    )
+
+    ref_loc = "https://example.org/retrieval/schemas/title_schema.yaml"
+    # populate a bad schema, but then "override" that with a good cache value
+    # this can only pass (in the success case) if the cache loading really works
+    responses.add("GET", ref_loc, body="false")
+    ref_cache_dir = cache_dir / "check_jsonschema" / "refs"
+    ref_cache_dir.mkdir(parents=True)
+    ref_path = ref_cache_dir / ref_url_to_cache_filename(ref_loc)
+    ref_path.write_text("type: string")
+
+    doc = tmp_path / "doc.json"
+    doc.write_text(json.dumps(PASSING_DOCUMENT))
+
+    result = run_line(["check-jsonschema", "--schemafile", retrieval_uri, str(doc)])
+    assert result.exit_code == 0
