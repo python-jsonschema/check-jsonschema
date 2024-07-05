@@ -21,6 +21,7 @@ def test_simple_positive_cases(timestr):
 @pytest.mark.parametrize(
     "timestr",
     (
+        object(),
         "12:34:56",
         "23:59:60Z",
         "23:59:59+24:00",
