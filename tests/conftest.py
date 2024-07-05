@@ -60,3 +60,53 @@ def patch_cache_dir(monkeypatch, cache_dir):
             "check_jsonschema.cachedownloader._base_cache_dir", lambda: str(cache_dir)
         )
         yield m
+
+
+@pytest.fixture
+def downloads_cache_dir(tmp_path):
+    return tmp_path / ".cache" / "check_jsonschema" / "downloads"
+
+
+@pytest.fixture
+def get_download_cache_loc(downloads_cache_dir):
+    def _get(uri):
+        return downloads_cache_dir / uri.split("/")[-1]
+
+    return _get
+
+
+@pytest.fixture
+def inject_cached_download(downloads_cache_dir, get_download_cache_loc):
+    def _write(uri, content):
+        downloads_cache_dir.mkdir(parents=True)
+        path = get_download_cache_loc(uri)
+        if isinstance(content, str):
+            path.write_text(content)
+        else:
+            path.write_bytes(content)
+
+    return _write
+
+
+@pytest.fixture
+def refs_cache_dir(tmp_path):
+    return tmp_path / ".cache" / "check_jsonschema" / "refs"
+
+
+@pytest.fixture
+def get_ref_cache_loc(refs_cache_dir):
+    from check_jsonschema.schema_loader.resolver import ref_url_to_cache_filename
+
+    def _get(uri):
+        return refs_cache_dir / ref_url_to_cache_filename(uri)
+
+    return _get
+
+
+@pytest.fixture
+def inject_cached_ref(refs_cache_dir, get_ref_cache_loc):
+    def _write(uri, content):
+        refs_cache_dir.mkdir(parents=True)
+        get_ref_cache_loc(uri).write_text(content)
+
+    return _write
