@@ -147,3 +147,28 @@ def test_custom_validator_class_can_pass_when_valid(run_line, tmp_path):
         ],
     )
     assert result.exit_code == 0  # pass
+
+
+@pytest.mark.parametrize(
+    "add_opts",
+    (
+        ["--builtin-schema", "vendor.github-workflows"],
+        ["--check-metaschema"],
+    ),
+)
+def test_custom_validator_class_is_incompatible_with_schema_opts(
+    run_line, tmp_path, add_opts
+):
+    doc = tmp_path / "instance.json"
+    doc.write_text("{}")
+    result = run_line(
+        [
+            "check-jsonschema",
+            "--validator-class",
+            "foo:MyValidator",
+            str(doc),
+        ]
+        + add_opts
+    )
+    assert result.exit_code == 2
+    assert "--validator-class can only be used with --schemafile" in result.stderr
