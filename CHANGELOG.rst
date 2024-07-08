@@ -11,6 +11,11 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2024-07-07)
+- Improve caching to include caching of remote ``$ref`` downloads. This should
+  improve performance in cases where a schema has many remote refs and is used
+  in repeat invocations. The ``$ref`` cache can be disabled via the same
+  ``--no-cache`` flag which disables use of the pre-existing cache. Thanks
+  :user:`alex1701c`! (:issue:`452`, :pr:`454`)
 - Fix an ordering bug which caused caching to be ineffective, resulting in
   repeated downloads of remote schemas even when the cache was populated.
   Thanks :user:`alex1701c` for reporting! (:issue:`453`)
