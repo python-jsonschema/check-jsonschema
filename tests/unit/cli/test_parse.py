@@ -4,7 +4,6 @@ from unittest import mock
 
 import click
 import pytest
-from click.testing import CliRunner
 
 from check_jsonschema import main as cli_main
 from check_jsonschema.cli.parse_result import ParseResult, SchemaLoadingMode
@@ -41,11 +40,6 @@ def mock_cli_exec(boxed_context):
         "check_jsonschema.cli.main_command.execute", side_effect=get_ctx
     ) as m:
         yield m
-
-
-@pytest.fixture
-def runner() -> CliRunner:
-    return CliRunner(mix_stderr=False)
 
 
 @pytest.mark.parametrize(

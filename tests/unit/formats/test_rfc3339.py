@@ -22,6 +22,7 @@ def test_simple_positive_cases(datestr):
 @pytest.mark.parametrize(
     "datestr",
     (
+        object(),
         "2018-12-31T23:59:59",
         "2018-12-31T23:59:59+00:00Z",
         "2018-12-31 23:59:59",
