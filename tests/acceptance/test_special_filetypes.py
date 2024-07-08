@@ -6,8 +6,6 @@ import sys
 import pytest
 import responses
 
-from check_jsonschema import cachedownloader
-
 
 @pytest.mark.skipif(
     platform.system() != "Linux", reason="test requires /proc/self/ mechanism"
@@ -81,21 +79,11 @@ def test_schema_and_instance_in_fifos(tmp_path, run_line, check_succeeds):
 
 
 @pytest.mark.parametrize("check_passes", (True, False))
-def test_remote_schema_requiring_retry(run_line, check_passes, tmp_path, monkeypatch):
+def test_remote_schema_requiring_retry(run_line, check_passes, tmp_path):
     """
     a "remote schema" (meaning HTTPS) with bad data, therefore requiring that a retry
     fires in order to parse
     """
-
-    def _fake_compute_default_cache_dir(self):
-        return str(tmp_path)
-
-    monkeypatch.setattr(
-        cachedownloader.CacheDownloader,
-        "_compute_default_cache_dir",
-        _fake_compute_default_cache_dir,
-    )
-
     schema_loc = "https://example.com/schema1.json"
     responses.add("GET", schema_loc, body="", match_querystring=None)
     responses.add(

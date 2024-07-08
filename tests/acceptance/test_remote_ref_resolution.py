@@ -3,8 +3,6 @@ import json
 import pytest
 import responses
 
-from check_jsonschema import cachedownloader
-
 CASES = {
     "case1": {
         "main_schema": {
@@ -37,18 +35,6 @@ CASES = {
 }
 
 
-@pytest.fixture(autouse=True)
-def _mock_schema_cache_dir(monkeypatch, tmp_path):
-    def _fake_compute_default_cache_dir(self):
-        return str(tmp_path)
-
-    monkeypatch.setattr(
-        cachedownloader.CacheDownloader,
-        "_compute_default_cache_dir",
-        _fake_compute_default_cache_dir,
-    )
-
-
 @pytest.mark.parametrize("check_passes", (True, False))
 @pytest.mark.parametrize("casename", ("case1", "case2"))
 def test_remote_ref_resolution_simple_case(run_line, check_passes, casename, tmp_path):
@@ -67,6 +53,83 @@ def test_remote_ref_resolution_simple_case(run_line, check_passes, casename, tmp
         )
     )
 
+    result = run_line(
+        ["check-jsonschema", "--schemafile", main_schema_loc, str(instance_path)]
+    )
+    output = f"\nstdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+    if check_passes:
+        assert result.exit_code == 0, output
+    else:
+        assert result.exit_code == 1, output
+
+
+@pytest.mark.parametrize("casename", ("case1", "case2"))
+@pytest.mark.parametrize("disable_cache", (True, False))
+def test_remote_ref_resolution_cache_control(
+    run_line, tmp_path, get_ref_cache_loc, casename, disable_cache
+):
+    main_schema_loc = "https://example.com/main.json"
+    responses.add("GET", main_schema_loc, json=CASES[casename]["main_schema"])
+
+    ref_locs = []
+    for name, subschema in CASES[casename]["other_schemas"].items():
+        other_schema_loc = f"https://example.com/{name}.json"
+        responses.add("GET", other_schema_loc, json=subschema)
+        ref_locs.append(other_schema_loc)
+
+    instance_path = tmp_path / "instance.json"
+    instance_path.write_text(json.dumps(CASES[casename]["passing_document"]))
+
+    # run the command
+    result = run_line(
+        ["check-jsonschema", "--schemafile", main_schema_loc, str(instance_path)]
+        + (["--no-cache"] if disable_cache else [])
+    )
+    output = f"\nstdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+    assert result.exit_code == 0, output
+
+    cache_locs = []
+    for ref_loc in ref_locs:
+        cache_locs.append(get_ref_cache_loc(ref_loc))
+    assert cache_locs  # sanity check
+    if disable_cache:
+        for loc in cache_locs:
+            assert not loc.exists()
+    else:
+        for loc in cache_locs:
+            assert loc.exists()
+
+
+@pytest.mark.parametrize("casename", ("case1", "case2"))
+@pytest.mark.parametrize("check_passes", (True, False))
+def test_remote_ref_resolution_loads_from_cache(
+    run_line, tmp_path, get_ref_cache_loc, inject_cached_ref, casename, check_passes
+):
+    main_schema_loc = "https://example.com/main.json"
+    responses.add("GET", main_schema_loc, json=CASES[casename]["main_schema"])
+
+    ref_locs = []
+    cache_locs = []
+    for name, subschema in CASES[casename]["other_schemas"].items():
+        other_schema_loc = f"https://example.com/{name}.json"
+        # intentionally populate the HTTP location with "bad data"
+        responses.add("GET", other_schema_loc, json="{}")
+        ref_locs.append(other_schema_loc)
+
+        # but populate the cache with "good data"
+        inject_cached_ref(other_schema_loc, json.dumps(subschema))
+        cache_locs.append(get_ref_cache_loc(other_schema_loc))
+
+    instance_path = tmp_path / "instance.json"
+    instance_path.write_text(
+        json.dumps(
+            CASES[casename]["passing_document"]
+            if check_passes
+            else CASES[casename]["failing_document"]
+        )
+    )
+
+    # run the command
     result = run_line(
         ["check-jsonschema", "--schemafile", main_schema_loc, str(instance_path)]
     )
