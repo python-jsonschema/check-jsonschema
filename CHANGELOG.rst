@@ -10,7 +10,10 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-07-07)
+0.29.0
+------
+
+- Update vendored schemas: github-workflows, renovate, woodpecker-ci (2024-07-07)
 - Improve caching to include caching of remote ``$ref`` downloads. This should
   improve performance in cases where a schema has many remote refs and is used
   in repeat invocations. The ``$ref`` cache can be disabled via the same
