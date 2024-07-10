@@ -83,6 +83,7 @@ class ParseResult:
     def format_opts(self) -> FormatOptions:
         return FormatOptions(
             enabled=not self.disable_all_formats,
+            email_variant=self.format_email,
             regex_variant=self.format_regex,
             disabled_formats=self.disable_formats,
         )

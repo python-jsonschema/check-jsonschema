@@ -9,7 +9,7 @@ import jsonschema
 import jsonschema.validators
 import regress
 
-from .implementations import validate_rfc3339, validate_time
+from .implementations import validate_rfc3339, validate_rfc5321, validate_rfc6531, validate_time
 
 # all known format strings except for a selection from draft3 which have either
 # been renamed or removed:
@@ -37,6 +37,32 @@ KNOWN_FORMATS: tuple[str, ...] = (
     "uri-template",
     "uuid",
 )
+
+
+class EmailVariantName(enum.Enum):
+    default = "default"
+    full = "full"
+
+
+class EmailImplementation:
+    def __init__(self, variant: EmailVariantName) -> None:
+        self.variant = variant
+
+    def check_format_email(self, instance: t.Any) -> bool:
+        if not isinstance(instance, str):
+            return True
+        if self.variant == EmailVariantName.default:
+            return "@" in instance
+        else:
+            return validate_rfc5321(instance)
+
+    def check_format_idn_email(self, instance: t.Any) -> bool:
+        if not isinstance(instance, str):
+            return True
+        if self.variant == EmailVariantName.default:
+            return "@" in instance
+        else:
+            return validate_rfc6531(instance)
 
 
 class RegexVariantName(enum.Enum):
@@ -70,10 +96,12 @@ class FormatOptions:
         self,
         *,
         enabled: bool = True,
+        email_variant: EmailVariantName = EmailVariantName.default,
         regex_variant: RegexVariantName = RegexVariantName.default,
         disabled_formats: tuple[str, ...] = (),
     ) -> None:
         self.enabled = enabled
+        self.email_variant = email_variant
         self.regex_variant = regex_variant
         self.disabled_formats = disabled_formats
 
@@ -101,7 +129,10 @@ def make_format_checker(
 
     # replace the regex check
     del checker.checkers["regex"]
+    email_impl = EmailImplementation(opts.email_variant)
     regex_impl = RegexImplementation(opts.regex_variant)
+    checker.checks("email")(email_impl.check_format_email)
+    checker.checks("idn-email")(email_impl.check_format_idn_email)
     checker.checks("regex")(regex_impl.check_format)
     checker.checks("date-time")(validate_rfc3339)
     checker.checks("time")(validate_time)
