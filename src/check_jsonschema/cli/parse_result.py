@@ -6,7 +6,7 @@ import typing as t
 import click
 import jsonschema
 
-from ..formats import FormatOptions, RegexVariantName
+from ..formats import EmailVariantName, FormatOptions, RegexVariantName
 from ..transforms import Transform
 
 
@@ -36,6 +36,7 @@ class ParseResult:
         # regex format options
         self.disable_all_formats: bool = False
         self.disable_formats: tuple[str, ...] = ()
+        self.format_email: EmailVariantName = EmailVariantName.default
         self.format_regex: RegexVariantName = RegexVariantName.default
         # error and output controls
         self.verbosity: int = 1
