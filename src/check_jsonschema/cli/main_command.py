@@ -74,7 +74,7 @@ including the following formats by default:
     date, date-time, email, ipv4, ipv6, regex, uuid
 
 \b
-For the "email" and "idn-email" formats, there are multiple modes which can be specified with
+For the "email" and "idn-email" formats, there are multiple modes which can be specified
 '--format-email':
     default  |  only check that the string contains "@"
     full     |  check the string against RFC 5321 (email) or RFC 6531 (idn-email)
