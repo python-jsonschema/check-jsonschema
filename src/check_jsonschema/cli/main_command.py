@@ -10,7 +10,7 @@ import jsonschema
 
 from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from ..checker import SchemaChecker
-from ..formats import KNOWN_FORMATS, RegexVariantName, EmailVariantName
+from ..formats import KNOWN_FORMATS, EmailVariantName, RegexVariantName
 from ..instance_loader import InstanceLoader
 from ..parsers import SUPPORTED_FILE_FORMATS
 from ..reporter import REPORTER_BY_NAME, Reporter
