@@ -5,15 +5,11 @@ RFC6531_REGEX = re.compile(
     ^
     # local part
     (
-    ([0-9a-z!#$%&'*+-\/=?^_`\{|\}~\u{80}-\u{10FFFF}]+(\.[0-9a-z!#$%&'*+-\/=?^_`\{|\}~\u{80}-\u{10FFFF}]+)*)
+    ([0-9a-z!#$%&'*+-\/=?^_`\{|\}~\u0080-\U0010FFFF]+(\.[0-9a-z!#$%&'*+-\/=?^_`\{|\}~\u0080-\U0010FFFF]+)*)
     |
     # quoted string
-    ("(
-    [\x20-\x21\x23-\x5B\x5D-\x7E\u{80}-\u{10FFFF}]
-    |
-    \\[\x20-\x7E]
-    )*")
-    )(?<!.{64,})
+    "([\x20-\x21\x23-\x5B\x5D-\x7E\u0080-\U0010FFFF]|\\[\x20-\x7E])*"
+    )
     @
     # Domain/address
     (
@@ -36,11 +32,11 @@ RFC6531_REGEX = re.compile(
     )\])
     |
     # Domain
-    ((?!.{256,})(([0-9a-z\u{80}-\u{10FFFF}]([0-9a-z-\u{80}-\u{10FFFF}]*[0-9a-z\u{80}-\u{10FFFF}])?))(\.([0-9a-z\u{80}-\u{10FFFF}]([0-9a-z-\u{80}-\u{10FFFF}]*[0-9a-z\u{80}-\u{10FFFF}])?))*)
+    ((?!.{256,})(([0-9a-z\u0080-\U0010FFFF]([0-9a-z-\u0080-\U0010FFFF]*[0-9a-z\u0080-\U0010FFFF])?))(\.([0-9a-z\u0080-\U0010FFFF]([0-9a-z-\u0080-\U0010FFFF]*[0-9a-z\u0080-\U0010FFFF])?))*)
     )
     $
-""",
-    re.VERBOSE | re.ASCII,
+    """,
+    re.VERBOSE | re.UNICODE,
 )
 
 
@@ -55,9 +51,7 @@ if __name__ == "__main__":
     import timeit
 
     N = 100_000
-    tests = (
-        ("basic", "user@example.com"),
-    )
+    tests = (("basic", "user@example.com"),)
 
     print("benchmarking")
     for name, val in tests:

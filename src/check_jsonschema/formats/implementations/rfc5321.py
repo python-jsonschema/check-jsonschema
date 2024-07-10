@@ -15,7 +15,7 @@ RFC5321_REGEX = re.compile(
     \[[\t -Z^-~]*]
     )
     $
-""",
+    """,
     re.VERBOSE | re.ASCII,
 )
 
@@ -31,9 +31,7 @@ if __name__ == "__main__":
     import timeit
 
     N = 100_000
-    tests = (
-        ("basic", "user@example.com"),
-    )
+    tests = (("basic", "user@example.com"),)
 
     print("benchmarking")
     for name, val in tests:

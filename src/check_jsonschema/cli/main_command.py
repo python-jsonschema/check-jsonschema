@@ -10,7 +10,7 @@ import jsonschema
 
 from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from ..checker import SchemaChecker
-from ..formats import KNOWN_FORMATS, RegexVariantName
+from ..formats import KNOWN_FORMATS, RegexVariantName, EmailVariantName
 from ..instance_loader import InstanceLoader
 from ..parsers import SUPPORTED_FILE_FORMATS
 from ..reporter import REPORTER_BY_NAME, Reporter
@@ -283,7 +283,7 @@ def main(
     else:
         args.disable_formats = normalized_disable_formats
 
-    args.format_email = RegexVariantName(format_email)
+    args.format_email = EmailVariantName(format_email)
     args.format_regex = RegexVariantName(format_regex)
     args.disable_cache = no_cache
     args.default_filetype = default_filetype

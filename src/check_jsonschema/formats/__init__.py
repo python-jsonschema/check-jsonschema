@@ -9,7 +9,12 @@ import jsonschema
 import jsonschema.validators
 import regress
 
-from .implementations import validate_rfc3339, validate_rfc5321, validate_rfc6531, validate_time
+from .implementations import (
+    validate_rfc3339,
+    validate_rfc5321,
+    validate_rfc6531,
+    validate_time,
+)
 
 # all known format strings except for a selection from draft3 which have either
 # been renamed or removed:
