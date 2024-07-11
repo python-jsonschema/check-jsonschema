@@ -44,7 +44,7 @@ def validate(email_str: object) -> bool:
     """Validate a string as a RFC6531 email address."""
     if not isinstance(email_str, str):
         return False
-    return not not RFC6531_REGEX.match(email_str)
+    return RFC6531_REGEX.match(email_str)
 
 
 if __name__ == "__main__":
