@@ -970,7 +970,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:10.12.0"
+      "default": "ghcr.io/containerbase/sidecar:10.15.6"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1989,6 +1989,16 @@
       },
       "$ref": "#"
     },
+    "mise": {
+      "description": "Configuration object for the mise manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.mise\\.toml$"
+        ]
+      },
+      "$ref": "#"
+    },
     "mix": {
       "description": "Configuration object for the mix manager",
       "type": "object",
@@ -2760,6 +2770,7 @@
           "gomodTidy1.17",
           "gomodTidyE",
           "gomodUpdateImportPaths",
+          "gomodSkipVendor",
           "helmUpdateSubChartArchives",
           "npmDedupe",
           "pnpmDedupe",
