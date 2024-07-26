@@ -1,18 +1,26 @@
 import re
 
+# ([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")
+# @
+# ([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])
+#
+# [a-zA-Z0-9!#$%&'*+/=?^_`{|}~-] == Alphanumeric characters and most special characters except [ (),.:;<>@\[\]\t]
+# [a-zA-Z0-9 !#$%&'()*+,./:;<=>?@\[\]^_`{|}~\t-] == All printable characters except for " and \
+# [\t -~] == All printable characters
+# [a-zA-Z0-9 !"#$%&'()*+,./:;<=>?@^_`{|}~\t-] == All printable characters except for the following characters []\
 RFC5321_REGEX = re.compile(
     r"""
     ^
     (
-    [!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*
+    [a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*
     |
-    "([]!#-[^-~ \t]|(\\[\t -~]))+"
+    "([a-zA-Z0-9 !#$%&'()*+,./:;<=>?@\[\]^_`{|}~\t-]|\\[\t -~])+"
     )
     @
     (
-    [!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*
+    [a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*
     |
-    \[[\t -Z^-~]*]
+    \[[a-zA-Z0-9 !"#$%&'()*+,./:;<=>?@^_`{|}~\t-]*\]
     )
     $
     """,
@@ -24,7 +32,22 @@ def validate(email_str: object) -> bool:
     """Validate a string as a RFC5321 email address."""
     if not isinstance(email_str, str):
         return False
-    return RFC5321_REGEX.match(email_str)
+    match = RFC5321_REGEX.match(email_str)
+    if not match:
+        return False
+    # Local part of email address is limited to 64 octets
+    local = str(match.groups()[0])
+    if len(local) > 64:
+        return False
+    # Domain names are limited to 253 octets
+    domain = str(match.groups()[3])
+    if len(domain) > 253:
+        return False
+    for domain_part in domain.split('.'):
+        # DNS Labels are limited to 63 octets
+        if len(domain_part) > 63:
+            return False
+    return True
 
 
 if __name__ == "__main__":

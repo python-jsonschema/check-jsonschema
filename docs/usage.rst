@@ -198,23 +198,6 @@ follows:
    * - python
      - Require the regex to be valid in Python regex syntax.
 
-``--format-email``
-~~~~~~~~~~~~~~~~~~
-
-Set a mode for handling of the ``"email"`` and ``"idn-email"`` values for ``"format"``. The modes are as
-follows:
-
-.. list-table:: Email Options
-   :widths: 15 30
-   :header-rows: 1
-
-   * - mode
-     - description
-   * - default
-     - Require the email address to pass a basic sanity check
-   * - full
-     - Require the email to match RFC5321 for ``"email"`` or RFC6531 for ``"idn-email"```
-
 Other Options
 --------------
 

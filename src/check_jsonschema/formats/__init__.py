@@ -43,31 +43,19 @@ KNOWN_FORMATS: tuple[str, ...] = (
     "uuid",
 )
 
-
-class EmailVariantName(enum.Enum):
-    default = "default"
-    full = "full"
-
-
 class EmailImplementation:
-    def __init__(self, variant: EmailVariantName) -> None:
-        self.variant = variant
+    def __init__(self) -> None:
+        pass
 
     def check_format_email(self, instance: t.Any) -> bool:
         if not isinstance(instance, str):
             return True
-        if self.variant == EmailVariantName.default:
-            return "@" in instance
-        else:
-            return validate_rfc5321(instance)
+        return validate_rfc5321(instance)
 
     def check_format_idn_email(self, instance: t.Any) -> bool:
         if not isinstance(instance, str):
             return True
-        if self.variant == EmailVariantName.default:
-            return "@" in instance
-        else:
-            return validate_rfc6531(instance)
+        return validate_rfc6531(instance)
 
 
 class RegexVariantName(enum.Enum):
@@ -101,12 +89,10 @@ class FormatOptions:
         self,
         *,
         enabled: bool = True,
-        email_variant: EmailVariantName = EmailVariantName.default,
         regex_variant: RegexVariantName = RegexVariantName.default,
         disabled_formats: tuple[str, ...] = (),
     ) -> None:
         self.enabled = enabled
-        self.email_variant = email_variant
         self.regex_variant = regex_variant
         self.disabled_formats = disabled_formats
 
@@ -134,7 +120,7 @@ def make_format_checker(
 
     # replace the regex check
     del checker.checkers["regex"]
-    email_impl = EmailImplementation(opts.email_variant)
+    email_impl = EmailImplementation()
     regex_impl = RegexImplementation(opts.regex_variant)
     checker.checks("email")(email_impl.check_format_email)
     checker.checks("idn-email")(email_impl.check_format_idn_email)

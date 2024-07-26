@@ -10,7 +10,7 @@ import jsonschema
 
 from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from ..checker import SchemaChecker
-from ..formats import KNOWN_FORMATS, EmailVariantName, RegexVariantName
+from ..formats import KNOWN_FORMATS, RegexVariantName
 from ..instance_loader import InstanceLoader
 from ..parsers import SUPPORTED_FILE_FORMATS
 from ..reporter import REPORTER_BY_NAME, Reporter
@@ -74,11 +74,6 @@ including the following formats by default:
     date, date-time, email, ipv4, ipv6, regex, uuid
 
 \b
-For the "email" and "idn-email" formats, there are multiple modes which can be specified
-'--format-email':
-    default  |  only check that the string contains "@"
-    full     |  check the string against RFC 5321 (email) or RFC 6531 (idn-email)
-
 For the "regex" format, there are multiple modes which can be specified with
 '--format-regex':
     default  |  check that the string is a valid ECMAScript regex
@@ -159,16 +154,6 @@ The '--disable-formats' flag supports the following formats:
     ),
     default=RegexVariantName.default.value,
     type=click.Choice([x.value for x in RegexVariantName], case_sensitive=False),
-)
-@click.option(
-    "--format-email",
-    help=(
-        "Set the mode of format validation for email addresses. "
-        "If `--disable-formats email` or `--disable-formats idn-email` is "
-        "used, this option has no effect on the disabled format."
-    ),
-    default=EmailVariantName.default.value,
-    type=click.Choice([x.value for x in EmailVariantName], case_sensitive=False),
 )
 @click.option(
     "--default-filetype",
@@ -255,7 +240,6 @@ def main(
     no_cache: bool,
     cache_filename: str | None,
     disable_formats: tuple[list[str], ...],
-    format_email: Literal["full", "default"],
     format_regex: Literal["python", "default"],
     default_filetype: Literal["json", "yaml", "toml", "json5"],
     traceback_mode: Literal["full", "short"],
@@ -283,7 +267,6 @@ def main(
     else:
         args.disable_formats = normalized_disable_formats
 
-    args.format_email = EmailVariantName(format_email)
     args.format_regex = RegexVariantName(format_regex)
     args.disable_cache = no_cache
     args.default_filetype = default_filetype
