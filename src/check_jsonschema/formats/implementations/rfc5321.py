@@ -43,7 +43,7 @@ def validate(email_str: object) -> bool:
     domain = str(match.groups()[3])
     if len(domain) > 253:
         return False
-    for domain_part in domain.split('.'):
+    for domain_part in domain.split("."):
         # DNS Labels are limited to 63 octets
         if len(domain_part) > 63:
             return False

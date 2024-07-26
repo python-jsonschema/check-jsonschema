@@ -43,6 +43,7 @@ KNOWN_FORMATS: tuple[str, ...] = (
     "uuid",
 )
 
+
 class EmailImplementation:
     def __init__(self) -> None:
         pass
