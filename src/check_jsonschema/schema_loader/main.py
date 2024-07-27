@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 import pathlib
 import typing as t
 import urllib.error
@@ -131,10 +132,20 @@ class SchemaLoader(SchemaLoaderBase):
         format_opts: FormatOptions,
         fill_defaults: bool,
     ) -> jsonschema.protocols.Validator:
+        return self._get_validator(format_opts, fill_defaults)
+
+    @functools.lru_cache
+    def _get_validator(
+        self,
+        format_opts: FormatOptions,
+        fill_defaults: bool,
+    ) -> jsonschema.protocols.Validator:
         retrieval_uri = self.get_schema_retrieval_uri()
         schema = self.get_schema()
 
         schema_dialect = schema.get("$schema")
+        if schema_dialect is not None and not isinstance(schema_dialect, str):
+            schema_dialect = None
 
         # format checker (which may be None)
         format_checker = make_format_checker(format_opts, schema_dialect)
