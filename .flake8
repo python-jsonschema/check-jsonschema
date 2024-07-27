@@ -1,11 +1,5 @@
 [flake8]
-exclude = .git,.tox,__pycache__,.eggs,dist,.venv*,docs,build,_build
-# we enforce 80 char width with `black` "loosely", so flake8 should be set to
-# not fail on up to 90 chars of width
+exclude = .git,.tox,__pycache__,dist,.venv*,docs,build
 max-line-length = 90
-
-# based on the flake8 conf for `black` itself:
-#   https://github.com/ambv/black/blob/master/.flake8
-#
-# W503/W504 conflict, black causes E203
-ignore = W503,W504,E203,
+# black related: W503/W504 conflict, black causes E203
+ignore = W503,W504,E203,B019
