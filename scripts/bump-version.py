@@ -4,19 +4,19 @@ import sys
 
 
 def get_old_version():
-    with open("setup.cfg") as fp:
+    with open("pyproject.toml") as fp:
         content = fp.read()
-    match = re.search(r"^version = (\d+\.\d+\.\d+)$", content, flags=re.MULTILINE)
+    match = re.search(r'^version = "(\d+\.\d+\.\d+)"$', content, flags=re.MULTILINE)
     assert match
     return match.group(1)
 
 
-def replace_version(filename, prefix, old_version, new_version):
+def replace_version(filename, formatstr, old_version, new_version):
     print(f"updating {filename}")
     with open(filename) as fp:
         content = fp.read()
-    old_str = prefix + old_version
-    new_str = prefix + new_version
+    old_str = formatstr.format(old_version)
+    new_str = formatstr.format(new_version)
     content = content.replace(old_str, new_str)
     with open(filename, "w") as fp:
         fp.write(content)
@@ -68,10 +68,10 @@ def main():
     print(f"old = {old_version}, new = {new_version}")
     comparse_versions(old_version, new_version)
 
-    replace_version("setup.cfg", "version = ", old_version, new_version)
-    replace_version("README.md", "rev: ", old_version, new_version)
-    replace_version("docs/precommit_usage.rst", "rev: ", old_version, new_version)
-    replace_version("docs/optional_parsers.rst", "rev: ", old_version, new_version)
+    replace_version("pyproject.toml", 'version = "{}"', old_version, new_version)
+    replace_version("README.md", "rev: {}", old_version, new_version)
+    replace_version("docs/precommit_usage.rst", "rev: {}", old_version, new_version)
+    replace_version("docs/optional_parsers.rst", "rev: {}", old_version, new_version)
     update_changelog(new_version)
 
 

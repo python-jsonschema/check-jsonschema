@@ -1,4 +1,4 @@
-PKG_VERSION=$(shell grep '^version' setup.cfg | cut -d '=' -f2 | tr -d ' ')
+PKG_VERSION=$(shell grep '^version' pyproject.toml | head -n1 | cut -d '"' -f2)
 
 .PHONY: lint test vendor-schemas generate-hooks release showvars
 lint:
