@@ -79,8 +79,8 @@ def create_retrieve_callable(
         else:
             full_uri = uri
 
-        if full_uri in cache._cache:
-            return cache[uri]
+        if full_uri in cache:
+            return cache[full_uri]
 
         full_uri_scheme = urllib.parse.urlsplit(full_uri).scheme
         if full_uri_scheme in ("http", "https"):
@@ -100,8 +100,8 @@ def create_retrieve_callable(
         else:
             parsed_object = get_local_file(full_uri)
 
-        cache[uri] = parsed_object
-        return cache[uri]
+        cache[full_uri] = parsed_object
+        return cache[full_uri]
 
     return retrieve_reference
 
