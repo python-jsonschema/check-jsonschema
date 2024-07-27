@@ -11,6 +11,12 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas (2024-07-21)
+- Fix a bug which could result in local file URI resolution failing on
+  non-Windows platforms in certain cases. Thanks :user:`bukzor`! (:pr:`465`)
+- Fix caching behaviors to ensure that caches are correctly preserved across
+  instancefiles during `--schemafile` evaluation. This also fixes a bug in the
+  remote ``$ref`` cache. Thanks :user:`alex1701c` for reporting! (:issue:`463`,
+  :pr:`466`)
 
 0.29.0
 ------
