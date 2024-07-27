@@ -73,6 +73,8 @@ def filename2path(filename: str) -> pathlib.Path:
             netloc = ""
         elif WINDOWS:
             netloc = "\\\\" + urlinfo.netloc
+        else:
+            netloc = urlinfo.netloc
 
         filename = urllib.request.url2pathname(netloc + urlinfo.path)
 
