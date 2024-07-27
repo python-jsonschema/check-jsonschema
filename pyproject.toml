@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "check-jsonschema"
+version = "0.29.1"
+description = "A jsonschema CLI and pre-commit hook"
+authors = [
+    { name = "Stephen Rosen", email = "sirosen0@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">=3.8"
+dependencies = [
+    'importlib-resources>=1.4.0;python_version<"3.9"',
+    'tomli>=2.0;python_version<"3.11"',
+    "ruamel.yaml==0.18.6",
+    "jsonschema>=4.18.0,<5.0",
+    "regress>=0.4.0",
+    "requests<3.0",
+    "click>=8,<9",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/python-jsonschema/check-jsonschema"
+
+[project.optional-dependencies]
+dev = [
+    "pytest<9",
+    'click-type-test==0.0.7;python_version>="3.10"',
+    "coverage<8",
+    "pytest-xdist<4",
+    "responses==0.25.3",
+]
+docs = [
+    "sphinx<8",
+    "sphinx-issues<5",
+    "furo==2024.7.18",
+]
+
+[project.scripts]
+check-jsonschema = "check_jsonschema:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+# strict = true  # TODO: enable
+disallow_untyped_defs = true
+ignore_missing_imports = true
+warn_unreachable = true
+warn_no_return = true
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+    # dateutil has a Python 3.12 compatibility issue.
+    'ignore:datetime\.datetime\.utcfromtimestamp\(\) is deprecated:DeprecationWarning',
+]
