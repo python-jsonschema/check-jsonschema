@@ -374,6 +374,16 @@
       },
       "$ref": "#"
     },
+    "bitrise": {
+      "description": "Configuration object for the bitrise manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)bitrise\\.ya?ml$"
+        ]
+      },
+      "$ref": "#"
+    },
     "branchConcurrentLimit": {
       "description": "Limit to a maximum of x concurrent branches. 0 means no limit, `null` (default) inherits value from `prConcurrentLimit`.",
       "type": "integer",
@@ -970,7 +980,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:10.15.6"
+      "default": "ghcr.io/containerbase/sidecar:11.1.2"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1831,15 +1841,6 @@
       "type": "string",
       "default": null
     },
-    "logFile": {
-      "description": "Log file path.",
-      "type": "string"
-    },
-    "logFileLevel": {
-      "description": "Set the log file log level.",
-      "type": "string",
-      "default": "debug"
-    },
     "logLevelRemap": {
       "description": "Remap log levels to different levels.",
       "type": "array",
@@ -1994,7 +1995,8 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)\\.mise\\.toml$"
+          "(^|/)\\.?mise\\.toml$",
+          "(^|/)\\.?mise/config\\.toml$"
         ]
       },
       "$ref": "#"
@@ -2136,8 +2138,13 @@
     },
     "onboardingNoDeps": {
       "description": "Onboard the repository even if no dependencies are found.",
-      "type": "boolean",
-      "default": false
+      "type": "string",
+      "enum": [
+        "auto",
+        "enabled",
+        "disabled"
+      ],
+      "default": "auto"
     },
     "onboardingPrTitle": {
       "description": "Change this value to override the default onboarding PR title.",
@@ -2197,110 +2204,8 @@
                 "type": "string"
               },
               "changelogUrl": {
-                "description": "If set, Renovate will use this URL to fetch changelogs for a matched dependency. Valid only within a `packageRules` object.",
+                "description": "Set a custom URL for the changelog. Renovate will put this URL in the PR body text.",
                 "type": "string"
-              },
-              "excludeDepNames": {
-                "description": "Dep names to exclude. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "excludeDepPatterns": {
-                "description": "Dep name patterns to exclude. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "regex"
-                    }
-                  },
-                  {
-                    "type": "string",
-                    "format": "regex"
-                  }
-                ]
-              },
-              "excludeDepPrefixes": {
-                "description": "Dep names prefixes to exclude. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "excludePackageNames": {
-                "description": "Package names to exclude. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "excludePackagePatterns": {
-                "description": "Package name patterns to exclude. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "regex"
-                    }
-                  },
-                  {
-                    "type": "string",
-                    "format": "regex"
-                  }
-                ]
-              },
-              "excludePackagePrefixes": {
-                "description": "Package name prefixes to exclude. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "excludeRepositories": {
-                "description": "List of repositories to exclude (e.g. `[\"**/*-archived\"]`). Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
               },
               "matchBaseBranches": {
                 "description": "List of strings containing exact matches (e.g. `[\"main\"]`) and/or regex expressions (e.g. `[\"/^release/.*/\"]`). Valid only within a `packageRules` object.",
@@ -2396,36 +2301,6 @@
                   }
                 ]
               },
-              "matchDepPatterns": {
-                "description": "Dep name patterns to match. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "regex"
-                    }
-                  },
-                  {
-                    "type": "string",
-                    "format": "regex"
-                  }
-                ]
-              },
-              "matchDepPrefixes": {
-                "description": "Dep names prefixes to match. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
               "matchDepTypes": {
                 "description": "List of depTypes to match (e.g. [`peerDependencies`]). Valid only within `packageRules` object.",
                 "oneOf": [
@@ -2479,52 +2354,8 @@
                   }
                 ]
               },
-              "matchPackagePatterns": {
-                "description": "Package name patterns to match. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "regex"
-                    }
-                  },
-                  {
-                    "type": "string",
-                    "format": "regex"
-                  }
-                ]
-              },
-              "matchPackagePrefixes": {
-                "description": "Package name prefixes to match. Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
               "matchRepositories": {
                 "description": "List of repositories to match (e.g. `[\"**/*-archived\"]`). Valid only within a `packageRules` object.",
-                "oneOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              },
-              "matchSourceUrlPrefixes": {
-                "description": "A list of source URL prefixes to match against, commonly used to group monorepos or packages from the same organization.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2745,8 +2576,13 @@
     },
     "platformCommit": {
       "description": "Use platform API to perform commits instead of using Git directly.",
-      "type": "boolean",
-      "default": false
+      "type": "string",
+      "enum": [
+        "auto",
+        "disabled",
+        "enabled"
+      ],
+      "default": "auto"
     },
     "poetry": {
       "description": "Configuration object for the poetry manager",
@@ -3462,11 +3298,6 @@
       "description": "Repository Auth Token.",
       "type": "string"
     },
-    "transitiveRemediation": {
-      "description": "Enable remediation of transitive dependencies.",
-      "type": "boolean",
-      "default": false
-    },
     "travis": {
       "description": "Configuration object for the travis manager",
       "type": "object",
@@ -3629,7 +3460,7 @@
         "minimumReleaseAge": null,
         "rangeStrategy": "update-lockfile",
         "commitMessageSuffix": "[SECURITY]",
-        "branchTopic": "{{{datasource}}}-{{{depName}}}-vulnerability",
+        "branchTopic": "{{{datasource}}}-{{{depNameSanitized}}}-vulnerability",
         "prCreation": "immediate"
       },
       "$ref": "#"
