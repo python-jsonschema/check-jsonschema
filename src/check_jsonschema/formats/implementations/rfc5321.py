@@ -35,7 +35,7 @@ def validate(email_str: object) -> bool:
     match = RFC5321_REGEX.match(email_str)
     if not match:
         return False
-    local, domain = match.group('local', 'domain')
+    local, domain = match.group("local", "domain")
     # Local part of email address is limited to 64 octets
     if len(local) > 64:
         return False
