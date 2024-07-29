@@ -11,14 +11,14 @@ import re
 RFC5321_REGEX = re.compile(
     r"""
     ^
-    (
-    [a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*
+    (?P<local>
+    [a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*
     |
-    "([a-zA-Z0-9 !#$%&'()*+,./:;<=>?@\[\]^_`{|}~\t-]|\\[\t -~])+"
+    "(?:[a-zA-Z0-9 !#$%&'()*+,./:;<=>?@\[\]^_`{|}~\t-]|\\[\t -~])+"
     )
     @
-    (
-    [a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*
+    (?P<domain>
+    [a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*
     |
     \[[a-zA-Z0-9 !"#$%&'()*+,./:;<=>?@^_`{|}~\t-]*\]
     )
@@ -35,12 +35,11 @@ def validate(email_str: object) -> bool:
     match = RFC5321_REGEX.match(email_str)
     if not match:
         return False
+    local, domain = match.group('local', 'domain')
     # Local part of email address is limited to 64 octets
-    local = str(match.groups()[0])
     if len(local) > 64:
         return False
     # Domain names are limited to 253 octets
-    domain = str(match.groups()[3])
     if len(domain) > 253:
         return False
     for domain_part in domain.split("."):
