@@ -37,6 +37,13 @@ ALWAYS_PASSING_EMAILS = [
 
 IDN_ONLY_EMAILS = [
     {"email": r"I❤️CHOCOLATE@example.com"},
+    {"email": r"用户@例子.广告"},
+    {"email": r"ಬೆಂಬಲ@ಡೇಟಾಮೇಲ್.ಭಾರತ"},
+    {"email": r"अजय@डाटा.भारत"},
+    {"email": r"квіточка@пошта.укр"},
+    {"email": r"χρήστης@παράδειγμα.ελ"},
+    {"email": r"Dörte@Sörensen.example.com"},
+    {"email": r"коля@пример.рф"},
 ]
 
 ALWAYS_FAILING_EMAILS = [
