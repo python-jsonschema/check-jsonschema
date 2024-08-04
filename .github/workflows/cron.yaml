@@ -1,4 +1,4 @@
-name: daily
+name: weekly
 on:
   # build on Sunday at 4:00 AM UTC
   schedule:
