@@ -1274,6 +1274,9 @@
         "notify": {
           "$ref": "#/definitions/commonOptions/buildNotify"
         },
+        "skip": {
+          "$ref": "#/definitions/commonOptions/skip"
+        },
         "steps": {
           "type": "array",
           "description": "A list of steps",
@@ -1312,9 +1315,6 @@
     },
     "notify": {
       "$ref": "#/definitions/commonOptions/buildNotify"
-    },
-    "skip": {
-      "$ref": "#/definitions/commonOptions/skip"
     },
     "steps": {
       "description": "A list of steps",
