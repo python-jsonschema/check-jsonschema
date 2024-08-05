@@ -28,7 +28,7 @@ jobs:
           cache: "pip"
           cache-dependency-path: |
             .github/workflows/build.yaml
-            setup.cfg
+            pyproject.toml
             tox.ini
             cachedate.txt
 
@@ -49,12 +49,12 @@ jobs:
       - name: build and unpack sdist
         run: |
           python -m build --sdist
-          version="$(grep '^version' setup.cfg |  cut -d '=' -f2 | tr -d ' ')"
+          version="$(grep '^version' pyproject.toml | head -n1 | cut -d'"' -f2)"
           cd dist
           tar -xzf "check_jsonschema-${version}.tar.gz"
       - name: test
         run: |
-          version="$(grep '^version' setup.cfg |  cut -d '=' -f2 | tr -d ' ')"
+          version="$(grep '^version' pyproject.toml | head -n1 | cut -d'"' -f2)"
           cd "dist/check_jsonschema-${version}"
           python -m tox run -m ci
 
@@ -79,7 +79,7 @@ jobs:
           cache: "pip"
           cache-dependency-path: |
             .github/workflows/build.yaml
-            setup.cfg
+            pyproject.toml
             tox.ini
             cachedate.txt
 
@@ -93,7 +93,7 @@ jobs:
             tox
             os=${{ runner.os }}
             python=${{ steps.setup-python.outputs.python-version }}
-            hash=${{ hashFiles('.github/workflows/build.yaml', 'setup.cfg', 'tox.ini', 'cachedate.txt') }}
+            hash=${{ hashFiles('.github/workflows/build.yaml', 'pyproject.toml', 'tox.ini', 'cachedate.txt') }}
 
       - name: test
         run: |
@@ -141,7 +141,7 @@ jobs:
           cache: "pip"
           cache-dependency-path: |
             .github/workflows/build.yaml
-            setup.cfg
+            pyproject.toml
             tox.ini
             cachedate.txt
 
@@ -169,7 +169,7 @@ jobs:
           cache: "pip"
           cache-dependency-path: |
             .github/workflows/build.yaml
-            setup.cfg
+            pyproject.toml
             tox.ini
             cachedate.txt
 
