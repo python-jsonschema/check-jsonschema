@@ -980,7 +980,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:11.1.2"
+      "default": "ghcr.io/containerbase/sidecar:11.6.5"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1308,6 +1308,17 @@
         "fileMatch": [
           "\\.gitlab-ci\\.ya?ml$"
         ]
+      },
+      "$ref": "#"
+    },
+    "gleam": {
+      "description": "Configuration object for the gleam manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)gleam.toml$"
+        ],
+        "versioning": "hex"
       },
       "$ref": "#"
     },
