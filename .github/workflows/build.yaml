@@ -11,7 +11,7 @@ jobs:
         py: ["3.x"]
         include:
           - toxenv: py-mindeps
-            py: "3.8"
+            py: "3.10"
 
     runs-on: ubuntu-latest
     name: "Run '${{ matrix.toxenv }}' on python ${{ matrix.py }}"
