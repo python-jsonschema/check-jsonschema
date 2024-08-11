@@ -673,6 +673,17 @@
       "description": "The directory where Renovate stores its containerbase cache. If left empty, Renovate creates a subdirectory within the `cacheDir`.",
       "type": "string"
     },
+    "copier": {
+      "description": "Configuration object for the copier manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.copier-answers(\\..+)?\\.ya?ml"
+        ],
+        "versioning": "pep440"
+      },
+      "$ref": "#"
+    },
     "cpanfile": {
       "description": "Configuration object for the cpanfile manager",
       "type": "object",
@@ -980,7 +991,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:11.1.2"
+      "default": "ghcr.io/containerbase/sidecar:11.9.0"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1308,6 +1319,17 @@
         "fileMatch": [
           "\\.gitlab-ci\\.ya?ml$"
         ]
+      },
+      "$ref": "#"
+    },
+    "gleam": {
+      "description": "Configuration object for the gleam manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)gleam.toml$"
+        ],
+        "versioning": "hex"
       },
       "$ref": "#"
     },

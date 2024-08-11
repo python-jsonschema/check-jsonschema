@@ -9,6 +9,8 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+
+- Update vendored schemas (2024-08-11)
 - Convert from ``setup.cfg`` to ``pyproject.toml`` for python package metadata
 
 - Update vendored schemas (2024-07-28)
