@@ -968,7 +968,8 @@
             "automatic": {
               "anyOf": [
                 {
-                  "type": "boolean"
+                  "type": ["boolean", "string"],
+                  "pattern": "^(true|false)$"
                 },
                 {
                   "$ref": "#/definitions/commonOptions/automaticRetry"
@@ -992,18 +993,21 @@
               "description": "Whether to allow a job to be retried manually",
               "anyOf": [
                 {
-                  "type": "boolean"
+                  "type": ["boolean", "string"],
+                  "pattern": "^(true|false)$"
                 },
                 {
                   "type": "object",
                   "properties": {
                     "allowed": {
-                      "type": "boolean",
+                      "type": ["boolean", "string"],
+                      "pattern": "^(true|false)$",
                       "description": "Whether or not this job can be retried manually",
                       "default": true
                     },
                     "permit_on_passed": {
-                      "type": "boolean",
+                      "type": ["boolean", "string"],
+                      "pattern": "^(true|false)$",
                       "description": "Whether or not this job can be retried after it has passed",
                       "default": true
                     },
