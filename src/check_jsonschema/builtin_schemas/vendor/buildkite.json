@@ -113,6 +113,49 @@
           [ "feature/*", "chore/*" ]
         ]
       },
+      "cache": {
+        "description": "The paths for the caches to be used in the step",
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "paths": {
+                "anyOf": [
+                  { "type": "string" },
+                  {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                ]
+              },
+              "size": {
+                "type": "string",
+                "pattern": "^\\d+g$"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["paths"]
+          }
+        ],
+        "examples": [
+          "dist/",
+          [ ".build/*", "assets/*" ],
+          {
+            "name": "cool-cache",
+            "size": "20g",
+            "paths": ["/path/one", "/path/two"]
+          }
+        ]
+      },
       "cancelOnBuildFailing": {
         "type": "boolean",
         "description": "Whether to cancel the job as soon as the build is marked as failing",

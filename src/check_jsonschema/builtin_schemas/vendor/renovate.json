@@ -455,6 +455,17 @@
       },
       "$ref": "#"
     },
+    "bun-version": {
+      "description": "Configuration object for the bun-version manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)\\.bun-version$"
+        ],
+        "versioning": "npm"
+      },
+      "$ref": "#"
+    },
     "bundler": {
       "description": "Configuration object for the bundler manager",
       "type": "object",
@@ -1001,7 +1012,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:11.11.6"
+      "default": "ghcr.io/containerbase/sidecar:11.11.11"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
