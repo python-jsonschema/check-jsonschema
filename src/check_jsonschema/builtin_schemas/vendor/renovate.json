@@ -333,6 +333,11 @@
       },
       "$ref": "#"
     },
+    "bbAutoResolvePrTasks": {
+      "description": "The PR tasks will be automatically completed after the PR is raised.",
+      "type": "boolean",
+      "default": false
+    },
     "bbUseDefaultReviewers": {
       "description": "Use the default reviewers (Bitbucket only).",
       "type": "boolean",
@@ -1012,7 +1017,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:11.11.11"
+      "default": "ghcr.io/containerbase/sidecar:11.11.26"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -3521,9 +3526,43 @@
         "rangeStrategy": "update-lockfile",
         "commitMessageSuffix": "[SECURITY]",
         "branchTopic": "{{{datasource}}}-{{{depNameSanitized}}}-vulnerability",
-        "prCreation": "immediate"
+        "prCreation": "immediate",
+        "vulnerabilityFixStrategy": "lowest"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "vulnerabilityFixStrategy": {
+                "description": "Strategy to use when fixing vulnerabilities. `lowest` will propose the earliest version with a fix, `highest` will always pick the latest version.",
+                "type": "string",
+                "enum": [
+                  "lowest",
+                  "highest"
+                ],
+                "default": "lowest"
+              }
+            }
+          }
+        ]
+      }
     },
     "woodpecker": {
       "description": "Configuration object for the woodpecker manager",
