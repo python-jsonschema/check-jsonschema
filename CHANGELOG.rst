@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-09-29)
+0.29.3
+------
+
+- Update vendored schemas: buildkite, circle-ci, dependabot, gitlab-ci,
+  renovate, taskfile, woodpecker-ci (2024-09-29)
 
 0.29.2
 ------
