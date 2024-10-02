@@ -1,0 +1,9 @@
+pull_request_rules:
+  - name: add label when author is jd
+    description: jd needs his own label because reasons
+    conditions:
+      - author = jd
+    actions:
+      label:
+        add:
+          - jd

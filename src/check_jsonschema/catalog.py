@@ -140,6 +140,18 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "mergify": {
+        "url": "https://docs.mergify.com/mergify-configuration-schema.json",
+        "hook_config": {
+            "name": "Validate Mergify config",
+            "files": [
+                r"\.mergify\.yml",
+                r"\.mergify/config\.yml",
+                r"\.github/mergify\.yml",
+            ],
+            "types": "yaml",
+        },
+    },
     "readthedocs": {
         "url": _githubusercontent_url(
             "readthedocs",
