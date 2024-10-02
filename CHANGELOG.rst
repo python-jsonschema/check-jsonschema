@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Fix the renovate hook to allow for `.renovaterc.json5` as well. Thanks
+  :user:`tpansino`! (:pr:`491`)
+
 0.29.3
 ------
 
