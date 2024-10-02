@@ -12,6 +12,8 @@ Unreleased
 
 - Fix the renovate hook to allow for `.renovaterc.json5` as well. Thanks
   :user:`tpansino`! (:pr:`491`)
+- Add Mergify schema and pre-commit hook. Thanks :user:`hofbi` and :user:`jd`
+  for the issue and feedback! (:issue:`487`)
 
 0.29.3
 ------
