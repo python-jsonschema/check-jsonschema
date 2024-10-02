@@ -97,6 +97,7 @@ SchemaStore and other sources:
 - ``vendor.github-actions``
 - ``vendor.github-workflows``
 - ``vendor.gitlab-ci``
+- ``vendor.mergify``
 - ``vendor.readthedocs``
 - ``vendor.renovate``
 - ``vendor.taskfile``
