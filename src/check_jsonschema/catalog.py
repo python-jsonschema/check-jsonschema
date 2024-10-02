@@ -168,7 +168,8 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "files": [
                 r"renovate\.(json|json5)",
                 r"\.(github|gitlab)/renovate\.(json|json5)",
-                r"\.renovaterc(\.json)?",
+                r"\.renovaterc",
+                r"\.renovaterc\.(json|json5)",
             ],
         },
     },
