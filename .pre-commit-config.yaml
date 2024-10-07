@@ -14,12 +14,12 @@ repos:
       args: ["--schemafile", "tests/example-files/config_schema.json"]
       files: ^tests/example-files/.*/_config.yaml$
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
-  rev: v4.6.0
+  rev: v5.0.0
   hooks:
     - id: check-merge-conflict
     - id: trailing-whitespace
 - repo: https://github.com/psf/black-pre-commit-mirror
-  rev: 24.8.0
+  rev: 24.10.0
   hooks:
     - id: black
 - repo: https://github.com/PyCQA/flake8
