@@ -1017,7 +1017,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:11.11.26"
+      "default": "ghcr.io/containerbase/sidecar:11.11.29"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -2524,6 +2524,14 @@
         "fileMatch": [
           "(^|/)pyproject\\.toml$"
         ]
+      },
+      "$ref": "#"
+    },
+    "pep723": {
+      "description": "Configuration object for the pep723 manager",
+      "type": "object",
+      "default": {
+        "fileMatch": []
       },
       "$ref": "#"
     },
