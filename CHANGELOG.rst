@@ -10,8 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-10-06)
+0.29.4
+------
 
+- Update vendored schemas: azure-pipelines, github-workflows, gitlab-ci,
+  mergify, renovate (2024-10-06)
 - Fix the renovate hook to allow for `.renovaterc.json5` as well. Thanks
   :user:`tpansino`! (:pr:`491`)
 - Add Mergify schema and pre-commit hook. Thanks :user:`hofbi` and :user:`jd`
