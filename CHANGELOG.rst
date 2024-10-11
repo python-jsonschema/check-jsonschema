@@ -15,7 +15,7 @@ Unreleased
 
 - Update vendored schemas: azure-pipelines, github-workflows, gitlab-ci,
   mergify, renovate (2024-10-06)
-- Fix the renovate hook to allow for `.renovaterc.json5` as well. Thanks
+- Fix the renovate hook to allow for ``.renovaterc.json5`` as well. Thanks
   :user:`tpansino`! (:pr:`491`)
 - Add Mergify schema and pre-commit hook. Thanks :user:`hofbi` and :user:`jd`
   for the issue and feedback! (:issue:`487`)
@@ -41,7 +41,7 @@ Unreleased
 - Fix a bug which could result in local file URI resolution failing on
   non-Windows platforms in certain cases. Thanks :user:`bukzor`! (:pr:`465`)
 - Fix caching behaviors to ensure that caches are correctly preserved across
-  instancefiles during `--schemafile` evaluation. This also fixes a bug in the
+  instancefiles during ``--schemafile`` evaluation. This also fixes a bug in the
   remote ``$ref`` cache.
   Thanks :user:`alex1701c` for reporting! (:issue:`463`, :pr:`466`)
 
@@ -105,16 +105,16 @@ Unreleased
 
 - Update vendored schemas: cloudbuild, dependabot, gitlab-ci, readthedocs,
   renovate (2024-02-06)
-- Include built-in, efficient implementations of `date-time` format validation
-  (RFC 3339) and `time` format validation (ISO 8601). This makes the `date-time`
-  and `time` formats always available for validation. (:issue:`378`)
-- Support the use of `orjson` for faster JSON parsing when it is installed.
+- Include built-in, efficient implementations of ``date-time`` format validation
+  (RFC 3339) and ``time`` format validation (ISO 8601). This makes the ``date-time``
+  and ``time`` formats always available for validation. (:issue:`378`)
+- Support the use of ``orjson`` for faster JSON parsing when it is installed.
   This makes it an optional parser which is preferred over the default
-  `json` module when it is available.
+  ``json`` module when it is available.
 - TOML parsing is now always available (rather than an optional parser).
-  This change adds a dependency on `tomli` on older Python versions, ensuring
+  This change adds a dependency on ``tomli`` on older Python versions, ensuring
   that TOML formatted data is always supported. Users should no longer need
-  to install `tomli` manually in order to use TOML files.
+  to install ``tomli`` manually in order to use TOML files.
 
 0.27.4
 ------
@@ -140,7 +140,7 @@ Unreleased
 - Add official support for Python 3.12
 - Add Google Cloud Build schema and pre-commit hook. Thanks :user:`nikolaik`!
   (:pr:`339`)
-- Fix a bug in the custom `github-workflows-require-timeout` schema which forbade
+- Fix a bug in the custom ``github-workflows-require-timeout`` schema which forbade
   the use of GitHub expression syntax for the timeout value. (:issue:`354`)
 
 0.27.1
@@ -206,12 +206,12 @@ Unreleased
 - Update vendored schemas: github-actions, gitlab-ci, readthedocs, renovate,
   travis (2023-08-08)
 - Remove support for python3.7
-- The minimum supported version of the `jsonschema` library is now `4.18.0`,
-  which introduces new `$ref` resolution behavior and fixes. That behavior is
+- The minimum supported version of the ``jsonschema`` library is now ``4.18.0``,
+  which introduces new ``$ref`` resolution behavior and fixes. That behavior is
   used in all cases, which should result in faster evaluation especially on
   large schemas.
-- `$ref` usage may now refer to YAML, TOML, or JSON5 files, or any other
-  non-JSON format supported by `check-jsonschema`. The file type is inferred
+- ``$ref`` usage may now refer to YAML, TOML, or JSON5 files, or any other
+  non-JSON format supported by ``check-jsonschema``. The file type is inferred
   only from the file extension in these cases and defaults to JSON if there is
   no recognizable extension.
 - Remote schemafiles (http/s) now support YAML, TOML, and JSON5 formats, if the
@@ -269,7 +269,7 @@ Unreleased
   The metaschema's schema dialect is chosen correctly now, and metaschema
   formats are now checked by default. This can be disabled with
   ``--disable-format``.
-- Fix the resolution of `$schema` dialect to format checker classes
+- Fix the resolution of ``$schema`` dialect to format checker classes
 - Fix package dependency lower bounds, including setting ``jsonschema>=4.5.1``
 - Output colorization can now be controlled with
   ``--color [never|always|auto]``. Thanks :user:`WillDaSilva`!
@@ -351,7 +351,7 @@ Unreleased
 
 - Update vendored schemas: renovate (2022-07-13)
 - Update check-github-worfklows match rule to exclude subdirectories of the
-  `.github/workflows/` directory. (:issue:`113`)
+  ``.github/workflows/`` directory. (:issue:`113`)
 
 0.17.0
 ------
