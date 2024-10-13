@@ -257,6 +257,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
+          "(^|/).azuredevops/.+\\.ya?ml$",
           "azure.*pipelines?.*\\.ya?ml$"
         ],
         "enabled": false
@@ -1017,7 +1018,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:11.11.29"
+      "default": "ghcr.io/containerbase/sidecar:11.11.30"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -2378,6 +2379,13 @@
                   "type": "string"
                 }
               },
+              "matchJsonata": {
+                "description": "A JSONata expression to match against the full config object. Valid only within a `packageRules` object.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "matchManagers": {
                 "description": "List of package managers to match (e.g. `[\"pipenv\"]`). Valid only within a `packageRules` object.",
                 "oneOf": [
@@ -2475,6 +2483,18 @@
                     ]
                   }
                 ]
+              },
+              "overrideDatasource": {
+                "description": "Override the datasource value.",
+                "type": "string"
+              },
+              "overrideDepName": {
+                "description": "Override the depName value.",
+                "type": "string"
+              },
+              "overridePackageName": {
+                "description": "Override the packageName value.",
+                "type": "string"
               },
               "prPriority": {
                 "description": "Set sorting priority for PR creation. PRs with higher priority are created first, negative priority last.",

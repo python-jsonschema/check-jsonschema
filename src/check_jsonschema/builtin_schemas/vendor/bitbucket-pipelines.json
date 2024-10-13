@@ -37,6 +37,16 @@
         "type": "array"
       },
       "cache": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/cache_path"
+          },
+          {
+            "$ref": "#/components/schemas/cache_expanded"
+          }
+        ]
+      },
+      "cache_expanded": {
         "properties": {
           "key": {
             "properties": {
@@ -57,9 +67,7 @@
             "type": "object"
           },
           "path": {
-            "description": "Path to the directory to be cached, can be absolute or relative to the clone directory.",
-            "title": "Cache Path",
-            "type": "string"
+            "$ref": "#/components/schemas/cache_path"
           }
         },
         "required": [
@@ -67,6 +75,11 @@
         ],
         "title": "Cache",
         "type": "object"
+      },
+      "cache_path": {
+        "description": "Path to the directory to be cached, can be absolute or relative to the clone directory.",
+        "title": "Cache Path",
+        "type": "string"
       },
       "clone": {
         "description": "Settings for cloning a repository into a container.",
@@ -158,6 +171,10 @@
             "default": false,
             "description": "Whether it uses Atlassian ip ranges.",
             "type": "boolean"
+          },
+          "version": {
+            "description": "Cloud Runtime version.",
+            "type": "string"
           }
         },
         "title": "Cloud step runtime",
@@ -604,7 +621,7 @@
               },
               "pull-requests": {
                 "additionalProperties": {
-                  "$ref": "#/components/schemas/pipeline"
+                  "$ref": "#/components/schemas/pull_requests_pipeline"
                 },
                 "description": "Pull-request-specific build pipelines.",
                 "title": "Pull Request Pipelines",
@@ -624,6 +641,24 @@
           }
         },
         "type": "object"
+      },
+      "pull_requests_pipeline": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/items"
+          },
+          {
+            "properties": {
+              "destinations": {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/pipeline"
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        ]
       },
       "runs_on": {
         "oneOf": [
