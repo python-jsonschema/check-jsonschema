@@ -100,7 +100,9 @@ class FailedDownloadError(Exception):
 
 
 class CacheDownloader:
-    def __init__(self, cache_dir: str | None = None, disable_cache: bool = False):
+    def __init__(
+        self, cache_dir: str | None = None, disable_cache: bool = False
+    ) -> None:
         if cache_dir is None:
             self._cache_dir = _resolve_cache_dir()
         else:
@@ -170,7 +172,7 @@ class BoundCacheDownloader:
         downloader: CacheDownloader,
         *,
         validation_callback: t.Callable[[bytes], t.Any] | None = None,
-    ):
+    ) -> None:
         self._file_url = file_url
         self._filename = filename or file_url.split("/")[-1]
         self._downloader = downloader

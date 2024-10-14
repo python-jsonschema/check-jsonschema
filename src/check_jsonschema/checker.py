@@ -17,7 +17,7 @@ from .schema_loader import SchemaLoaderBase, SchemaParseError, UnsupportedUrlSch
 
 
 class _Exit(Exception):
-    def __init__(self, code: int):
+    def __init__(self, code: int) -> None:
         self.code = code
 
 
@@ -31,7 +31,7 @@ class SchemaChecker:
         format_opts: FormatOptions | None = None,
         traceback_mode: str = "short",
         fill_defaults: bool = False,
-    ):
+    ) -> None:
         self._schema_loader = schema_loader
         self._instance_loader = instance_loader
         self._reporter = reporter
