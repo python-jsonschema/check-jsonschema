@@ -117,7 +117,7 @@ class CustomLazyFile(click.utils.LazyFile):
         encoding: str | None = None,
         errors: str | None = "strict",
         atomic: bool = False,
-    ):
+    ) -> None:
         self.name: str = os.fspath(filename)
         self.mode = mode
         self.encoding = encoding

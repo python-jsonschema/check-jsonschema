@@ -10,7 +10,7 @@ class Transform:
         self,
         *,
         on_data: t.Callable[[list | dict], list | dict] | None = None,
-    ):
+    ) -> None:
         self.on_data = on_data
 
     def modify_yaml_implementation(self, implementation: ruamel.yaml.YAML) -> None:
