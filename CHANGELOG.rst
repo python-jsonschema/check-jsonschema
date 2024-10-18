@@ -9,6 +9,9 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+- Rename ``--format-regex`` to ``--regex-variant`` and convert
+  ``--format-regex`` to a deprecated alias.
+  It will be removed in a future release.
 
 - Update vendored schemas (2024-12-22)
 - Drop support for Python 3.8

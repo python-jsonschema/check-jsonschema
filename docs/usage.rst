@@ -183,11 +183,11 @@ Example usage:
     # disables all three of time, date-time, and iri
     --disable-formats time,date-time --disable-formats iri
 
-``--format-regex``
+``--regex-variant``
 ~~~~~~~~~~~~~~~~~~
 
-Set a mode for handling of the ``"regex"`` value for ``"format"``. The modes are as
-follows:
+Set a mode for handling of the ``"regex"`` value for ``"format"`` and the mode
+for ``"pattern"`` interpretation. The modes are as follows:
 
 .. list-table:: Regex Options
    :widths: 15 30
@@ -196,9 +196,15 @@ follows:
    * - mode
      - description
    * - default
-     - Require the regex to be valid in ECMAScript regex syntax.
+     - Use ECMAScript regex syntax.
    * - python
-     - Require the regex to be valid in Python regex syntax.
+     - Use Python regex syntax.
+
+.. note::
+
+    This only controls the regex mode used for ``format`` and ``pattern``.
+    ``patternProperties`` is not currently controlled, and always uses the
+    Python engine.
 
 Other Options
 --------------
