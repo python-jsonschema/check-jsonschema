@@ -9,6 +9,9 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+- Rename ``--format-regex`` to ``--regex-variant`` and convert
+  ``--format-regex`` to a deprecated alias.
+  It will be removed in a future release.
 
 0.29.4
 ------

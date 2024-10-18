@@ -28,7 +28,7 @@ class SchemaChecker:
         instance_loader: InstanceLoader,
         reporter: Reporter,
         *,
-        format_opts: FormatOptions | None = None,
+        format_opts: FormatOptions,
         traceback_mode: str = "short",
         fill_defaults: bool = False,
     ) -> None:

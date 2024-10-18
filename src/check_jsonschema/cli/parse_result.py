@@ -1,13 +1,20 @@
 from __future__ import annotations
 
 import enum
+import sys
 import typing as t
 
 import click
 import jsonschema
 
-from ..formats import FormatOptions, RegexVariantName
+from ..formats import FormatOptions
+from ..regex_variants import RegexVariantName
 from ..transforms import Transform
+
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
 
 
 class SchemaLoadingMode(enum.Enum):
@@ -36,11 +43,21 @@ class ParseResult:
         # regex format options
         self.disable_all_formats: bool = False
         self.disable_formats: tuple[str, ...] = ()
-        self.format_regex: RegexVariantName = RegexVariantName.default
+        self.regex_variant: RegexVariantName = RegexVariantName.default
         # error and output controls
         self.verbosity: int = 1
         self.traceback_mode: str = "short"
         self.output_format: str = "text"
+
+    def set_regex_variant(
+        self,
+        variant_opt: Literal["python", "default"] | None,
+        *,
+        legacy_opt: Literal["python", "default"] | None = None,
+    ) -> None:
+        variant_name: Literal["python", "default"] | None = variant_opt or legacy_opt
+        if variant_name:
+            self.regex_variant = RegexVariantName(variant_name)
 
     def set_schema(
         self, schemafile: str | None, builtin_schema: str | None, check_metaschema: bool
@@ -83,6 +100,6 @@ class ParseResult:
     def format_opts(self) -> FormatOptions:
         return FormatOptions(
             enabled=not self.disable_all_formats,
-            regex_variant=self.format_regex,
+            regex_variant=self.regex_variant,
             disabled_formats=self.disable_formats,
         )
