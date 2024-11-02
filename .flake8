@@ -2,4 +2,4 @@
 exclude = .git,.tox,__pycache__,dist,.venv*,docs,build
 max-line-length = 90
 # black related: W503/W504 conflict, black causes E203
-ignore = W503,W504,E203,B019
+extend-ignore = W503,W504,E203,B019
