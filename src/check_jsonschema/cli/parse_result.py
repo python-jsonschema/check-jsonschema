@@ -8,7 +8,7 @@ import click
 import jsonschema
 
 from ..formats import FormatOptions
-from ..regex_variants import RegexVariantName
+from ..regex_variants import RegexImplementation, RegexVariantName
 from ..transforms import Transform
 
 if sys.version_info >= (3, 8):
@@ -99,7 +99,7 @@ class ParseResult:
     @property
     def format_opts(self) -> FormatOptions:
         return FormatOptions(
+            regex_impl=RegexImplementation(self.regex_variant),
             enabled=not self.disable_all_formats,
-            regex_variant=self.regex_variant,
             disabled_formats=self.disable_formats,
         )
