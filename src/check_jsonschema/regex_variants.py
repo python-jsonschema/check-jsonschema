@@ -2,6 +2,7 @@ import enum
 import re
 import typing as t
 
+import jsonschema
 import regress
 
 
@@ -29,3 +30,32 @@ class RegexImplementation:
             return False
 
         return True
+
+    def pattern_keyword(
+        self, validator: t.Any, pattern: str, instance: str, schema: t.Any
+    ) -> t.Iterator[jsonschema.ValidationError]:
+        if not validator.is_type(instance, "string"):
+            return
+
+        if self.variant == RegexVariantName.default:
+            try:
+                regress_pattern = regress.Regex(pattern)
+            except regress.RegressError:  # type: ignore[attr-defined]
+                yield jsonschema.ValidationError(
+                    f"pattern {pattern!r} failed to compile"
+                )
+            if not regress_pattern.find(instance):
+                yield jsonschema.ValidationError(
+                    f"{instance!r} does not match {pattern!r}"
+                )
+        else:
+            try:
+                re_pattern = re.compile(pattern)
+            except re.error:
+                yield jsonschema.ValidationError(
+                    f"pattern {pattern!r} failed to compile"
+                )
+            if not re_pattern.search(instance):
+                yield jsonschema.ValidationError(
+                    f"{instance!r} does not match {pattern!r}"
+                )

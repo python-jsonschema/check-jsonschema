@@ -11,6 +11,7 @@ from . import utils
 from .formats import FormatOptions
 from .instance_loader import InstanceLoader
 from .parsers import ParseError
+from .regex_variants import RegexImplementation
 from .reporter import Reporter
 from .result import CheckResult
 from .schema_loader import SchemaLoaderBase, SchemaParseError, UnsupportedUrlScheme
@@ -29,6 +30,7 @@ class SchemaChecker:
         reporter: Reporter,
         *,
         format_opts: FormatOptions,
+        regex_impl: RegexImplementation,
         traceback_mode: str = "short",
         fill_defaults: bool = False,
     ) -> None:
@@ -36,7 +38,8 @@ class SchemaChecker:
         self._instance_loader = instance_loader
         self._reporter = reporter
 
-        self._format_opts = format_opts if format_opts is not None else FormatOptions()
+        self._format_opts = format_opts
+        self._regex_impl = regex_impl
         self._traceback_mode = traceback_mode
         self._fill_defaults = fill_defaults
 
@@ -51,7 +54,7 @@ class SchemaChecker:
     ) -> jsonschema.protocols.Validator:
         try:
             return self._schema_loader.get_validator(
-                path, doc, self._format_opts, self._fill_defaults
+                path, doc, self._format_opts, self._regex_impl, self._fill_defaults
             )
         except SchemaParseError as e:
             self._fail("Error: schemafile could not be parsed as JSON", e)

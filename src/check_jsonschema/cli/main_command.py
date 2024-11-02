@@ -9,9 +9,10 @@ import jsonschema
 
 from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from ..checker import SchemaChecker
-from ..formats import KNOWN_FORMATS, RegexVariantName
+from ..formats import KNOWN_FORMATS
 from ..instance_loader import InstanceLoader
 from ..parsers import SUPPORTED_FILE_FORMATS
+from ..regex_variants import RegexImplementation, RegexVariantName
 from ..reporter import REPORTER_BY_NAME, Reporter
 from ..schema_loader import (
     BuiltinSchemaLoader,
@@ -327,6 +328,7 @@ def build_checker(args: ParseResult) -> SchemaChecker:
         instance_loader,
         reporter,
         format_opts=args.format_opts,
+        regex_impl=RegexImplementation(args.regex_variant),
         traceback_mode=args.traceback_mode,
         fill_defaults=args.fill_defaults,
     )

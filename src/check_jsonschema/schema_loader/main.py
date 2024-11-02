@@ -11,6 +11,7 @@ import jsonschema
 from ..builtin_schemas import get_builtin_schema
 from ..formats import FormatOptions, make_format_checker
 from ..parsers import ParserSet
+from ..regex_variants import RegexImplementation
 from ..utils import is_url_ish
 from .errors import UnsupportedUrlScheme
 from .readers import HttpSchemaReader, LocalSchemaReader, StdinSchemaReader
@@ -45,12 +46,23 @@ def _extend_with_default(
     )
 
 
+def _extend_with_pattern_implementation(
+    validator_class: type[jsonschema.protocols.Validator],
+    regex_impl: RegexImplementation,
+) -> type[jsonschema.Validator]:
+    return jsonschema.validators.extend(
+        validator_class,
+        {"pattern": regex_impl.pattern_keyword},
+    )
+
+
 class SchemaLoaderBase:
     def get_validator(
         self,
         path: pathlib.Path | str,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
+        regex_impl: RegexImplementation,
         fill_defaults: bool,
     ) -> jsonschema.protocols.Validator:
         raise NotImplementedError
@@ -124,14 +136,16 @@ class SchemaLoader(SchemaLoaderBase):
         path: pathlib.Path | str,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
+        regex_impl: RegexImplementation,
         fill_defaults: bool,
     ) -> jsonschema.protocols.Validator:
-        return self._get_validator(format_opts, fill_defaults)
+        return self._get_validator(format_opts, regex_impl, fill_defaults)
 
     @functools.lru_cache
     def _get_validator(
         self,
         format_opts: FormatOptions,
+        regex_impl: RegexImplementation,
         fill_defaults: bool,
     ) -> jsonschema.protocols.Validator:
         retrieval_uri = self.get_schema_retrieval_uri()
@@ -167,6 +181,9 @@ class SchemaLoader(SchemaLoaderBase):
         # extend the validator class with default-filling behavior if appropriate
         if fill_defaults:
             validator_cls = _extend_with_default(validator_cls)
+
+        # set the regex variant for 'pattern' keywords
+        validator_cls = _extend_with_pattern_implementation(validator_cls, regex_impl)
 
         # now that we know it's safe to try to create the validator instance, do it
         validator = validator_cls(
@@ -206,6 +223,7 @@ class MetaSchemaLoader(SchemaLoaderBase):
         path: pathlib.Path | str,
         instance_doc: dict[str, t.Any],
         format_opts: FormatOptions,
+        regex_impl: RegexImplementation,
         fill_defaults: bool,
     ) -> jsonschema.protocols.Validator:
         schema_validator = jsonschema.validators.validator_for(instance_doc)

@@ -5,7 +5,7 @@ import copy
 import jsonschema
 import jsonschema.validators
 
-from ..regex_variants import RegexImplementation, RegexVariantName
+from ..regex_variants import RegexImplementation
 from .implementations import validate_rfc3339, validate_time
 
 # all known format strings except for a selection from draft3 which have either
@@ -40,12 +40,12 @@ class FormatOptions:
     def __init__(
         self,
         *,
+        regex_impl: RegexImplementation,
         enabled: bool = True,
-        regex_variant: RegexVariantName = RegexVariantName.default,
         disabled_formats: tuple[str, ...] = (),
     ) -> None:
         self.enabled = enabled
-        self.regex_variant = regex_variant
+        self.regex_impl = regex_impl
         self.disabled_formats = disabled_formats
 
 
@@ -72,8 +72,7 @@ def make_format_checker(
 
     # replace the regex check
     del checker.checkers["regex"]
-    regex_impl = RegexImplementation(opts.regex_variant)
-    checker.checks("regex")(regex_impl.check_format)
+    checker.checks("regex")(opts.regex_impl.check_format)
     checker.checks("date-time")(validate_rfc3339)
     checker.checks("time")(validate_time)
 
