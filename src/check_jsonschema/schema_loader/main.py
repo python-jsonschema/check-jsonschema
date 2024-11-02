@@ -167,7 +167,7 @@ class SchemaLoader(SchemaLoaderBase):
         if self.validator_class is None:
             # get the correct validator class and check the schema under its metaschema
             validator_cls = jsonschema.validators.validator_for(schema)
-            validator_cls.check_schema(schema)
+            validator_cls.check_schema(schema, format_checker=format_checker)
         else:
             # for a user-provided validator class, don't check_schema
             # on the grounds that it might *not* be valid but the user wants to use

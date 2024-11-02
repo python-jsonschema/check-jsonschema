@@ -63,7 +63,7 @@ def test_hook_positive_examples(case_name, run_line):
 
     hook_id = POSITIVE_HOOK_CASES[case_name]
     ret = run_line(HOOK_CONFIG[hook_id] + [rcase.path] + rcase.add_args)
-    assert ret.exit_code == 0, _format_cli_result(rcase, ret)
+    assert ret.exit_code == 0, _format_cli_result(ret, rcase)
 
 
 @pytest.mark.parametrize("case_name", NEGATIVE_HOOK_CASES.keys())
@@ -72,7 +72,7 @@ def test_hook_negative_examples(case_name, run_line):
 
     hook_id = NEGATIVE_HOOK_CASES[case_name]
     ret = run_line(HOOK_CONFIG[hook_id] + [rcase.path] + rcase.add_args)
-    assert ret.exit_code == 1, _format_cli_result(rcase, ret)
+    assert ret.exit_code == 1, _format_cli_result(ret, rcase)
 
 
 @pytest.mark.parametrize("case_name", _get_explicit_cases("positive"))
@@ -102,7 +102,37 @@ def test_explicit_positive_examples(case_name, run_line):
             str(instance),
         ]
     )
-    assert ret.exit_code == 0
+    assert ret.exit_code == 0, _format_cli_result(ret)
+
+
+@pytest.mark.parametrize("case_name", _get_explicit_cases("negative"))
+def test_explicit_negative_examples(case_name, run_line):
+    _check_file_format_skip(case_name)
+    casedir = EXAMPLE_EXPLICIT_FILES / "negative" / case_name
+
+    instance = casedir / "instance.json"
+    if not instance.exists():
+        instance = casedir / "instance.yaml"
+    if not instance.exists():
+        instance = casedir / "instance.toml"
+    if not instance.exists():
+        raise Exception("could not find an instance file for test case")
+
+    schema = casedir / "schema.json"
+    if not schema.exists():
+        schema = casedir / "schema.yaml"
+    if not schema.exists():
+        raise Exception("could not find a schema file for test case")
+
+    ret = run_line(
+        [
+            "check-jsonschema",
+            "--schemafile",
+            str(schema),
+            str(instance),
+        ]
+    )
+    assert ret.exit_code == 1, _format_cli_result(ret)
 
 
 def _check_file_format_skip(case_name):
@@ -166,10 +196,12 @@ def _package_is_installed(pkg: str) -> bool:
     return True
 
 
-def _format_cli_result(rcase: ResolvedCase, result) -> str:
+def _format_cli_result(result, rcase: ResolvedCase | None = None) -> str:
+    prefix = ""
+    if rcase is not None:
+        prefix = f"config.add_args={rcase.add_args}\n"
     return (
-        "\n"
-        f"config.add_args={rcase.add_args}\n"
+        f"\n{prefix}"
         f"{result.exit_code=}\n"
         f"result.stdout={result.output}\n"
         f"{result.stderr=}"
