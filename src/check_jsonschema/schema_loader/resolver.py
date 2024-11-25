@@ -66,7 +66,7 @@ def create_retrieve_callable(
         base_uri = retrieval_uri
 
     cache = ResourceCache()
-    downloader = CacheDownloader("refs", disable_cache)
+    downloader = CacheDownloader("refs", disable_cache=disable_cache)
 
     def get_local_file(uri: str) -> t.Any:
         path = filename2path(uri)

@@ -33,7 +33,7 @@ def _base_cache_dir() -> str | None:
     return cache_dir
 
 
-def _resolve_cache_dir(dirname: str = "downloads") -> str | None:
+def _resolve_cache_dir(dirname: str) -> str | None:
     cache_dir = _base_cache_dir()
     if cache_dir:
         cache_dir = os.path.join(cache_dir, "check_jsonschema", dirname)
@@ -100,13 +100,8 @@ class FailedDownloadError(Exception):
 
 
 class CacheDownloader:
-    def __init__(
-        self, cache_dir: str | None = None, disable_cache: bool = False
-    ) -> None:
-        if cache_dir is None:
-            self._cache_dir = _resolve_cache_dir()
-        else:
-            self._cache_dir = _resolve_cache_dir(cache_dir)
+    def __init__(self, cache_dir: str, *, disable_cache: bool = False) -> None:
+        self._cache_dir = _resolve_cache_dir(cache_dir)
         self._disable_cache = disable_cache
 
     def _download(

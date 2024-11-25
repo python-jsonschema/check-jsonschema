@@ -79,7 +79,7 @@ class HttpSchemaReader:
         self.url = url
         self.parsers = ParserSet()
         self.downloader = CacheDownloader(
-            disable_cache=disable_cache,
+            "downloads", disable_cache=disable_cache
         ).bind(url, cache_filename, validation_callback=self._parse)
         self._parsed_schema: dict | _UnsetType = _UNSET
 
