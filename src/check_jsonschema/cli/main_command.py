@@ -130,11 +130,7 @@ The '--disable-formats' flag supports the following formats:
     help="Disable schema caching. Always download remote schemas.",
 )
 @click.option(
-    "--cache-filename",
-    help=(
-        "The name to use for caching a remote schema. "
-        "Defaults to the last slash-delimited part of the URI."
-    ),
+    "--cache-filename", help="Deprecated. This option no longer has any effect."
 )
 @click.option(
     "--disable-formats",
@@ -271,8 +267,6 @@ def main(
     args.disable_cache = no_cache
     args.default_filetype = default_filetype
     args.fill_defaults = fill_defaults
-    if cache_filename is not None:
-        args.cache_filename = cache_filename
     if data_transform is not None:
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
 
@@ -300,7 +294,6 @@ def build_schema_loader(args: ParseResult) -> SchemaLoaderBase:
         assert args.schema_path is not None
         return SchemaLoader(
             args.schema_path,
-            cache_filename=args.cache_filename,
             disable_cache=args.disable_cache,
             base_uri=args.base_uri,
             validator_class=args.validator_class,

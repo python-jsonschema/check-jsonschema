@@ -73,14 +73,13 @@ class HttpSchemaReader:
     def __init__(
         self,
         url: str,
-        cache_filename: str | None,
         disable_cache: bool,
     ) -> None:
         self.url = url
         self.parsers = ParserSet()
-        self.downloader = CacheDownloader(
-            "downloads", disable_cache=disable_cache
-        ).bind(url, cache_filename, validation_callback=self._parse)
+        self.downloader = CacheDownloader("schemas", disable_cache=disable_cache).bind(
+            url, validation_callback=self._parse
+        )
         self._parsed_schema: dict | _UnsetType = _UNSET
 
     def _parse(self, schema_bytes: bytes) -> t.Any:

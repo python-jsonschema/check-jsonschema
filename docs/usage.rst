@@ -118,6 +118,10 @@ Downloading and Caching
 By default, when ``--schemafile`` is used to refer to an ``http://`` or
 ``https://`` location, the schema is downloaded and cached based on the
 schema's Last-Modified time.
+
+Additionally, when ``$ref``\s are looked up during schema resolution, they are
+similarly cached.
+
 The following options control caching behaviors.
 
 .. list-table:: Caching Options
@@ -128,9 +132,6 @@ The following options control caching behaviors.
      - Description
    * - ``--no-cache``
      - Disable caching.
-   * - ``--cache-filename``
-     - The name to use for caching a remote schema.
-       Defaults to using the last slash-delimited part of the URI.
 
 "format" Validation Options
 ---------------------------

@@ -64,14 +64,12 @@ class SchemaLoader(SchemaLoaderBase):
         self,
         schemafile: str,
         *,
-        cache_filename: str | None = None,
         base_uri: str | None = None,
         validator_class: type[jsonschema.protocols.Validator] | None = None,
         disable_cache: bool = True,
     ) -> None:
         # record input parameters (these are not to be modified)
         self.schemafile = schemafile
-        self.cache_filename = cache_filename
         self.disable_cache = disable_cache
         self.base_uri = base_uri
         self.validator_class = validator_class
@@ -105,11 +103,7 @@ class SchemaLoader(SchemaLoaderBase):
             return LocalSchemaReader(self.schemafile)
 
         if self.url_info.scheme in ("http", "https"):
-            return HttpSchemaReader(
-                self.schemafile,
-                self.cache_filename,
-                self.disable_cache,
-            )
+            return HttpSchemaReader(self.schemafile, self.disable_cache)
         else:
             raise UnsupportedUrlScheme(
                 "check-jsonschema only supports http, https, and local files. "
