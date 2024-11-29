@@ -10,7 +10,17 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-11-29)
+0.30.0
+------
+
+- Update vendored schemas: azure-pipelines, bitbucket-pipelines, buildkite,
+  circle-ci, cloudbuild, dependabot, github-workflows, gitlab-ci, mergify,
+  readthedocs, renovate, taskfile, woodpecker-ci (2024-11-29)
+- Fix caching behavior to always use URL hashes as cache keys. This fixes a
+  cache confusion bug in which the wrong schema could be retrieved from the
+  cache. This resolves :cve:`2024-53848`. Thanks :user:`sethmlarson` for reporting!
+- Deprecate the ``--cache-filename`` flag. It no longer has any effect and will
+  be removed in a future release.
 
 0.29.4
 ------
