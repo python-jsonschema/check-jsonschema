@@ -63,14 +63,24 @@ def patch_cache_dir(monkeypatch, cache_dir):
 
 
 @pytest.fixture
+def url2cachepath():
+    from check_jsonschema.cachedownloader import url_to_cache_filename
+
+    def _get(cache_dir, url):
+        return cache_dir / url_to_cache_filename(url)
+
+    return _get
+
+
+@pytest.fixture
 def downloads_cache_dir(tmp_path):
     return tmp_path / ".cache" / "check_jsonschema" / "downloads"
 
 
 @pytest.fixture
-def get_download_cache_loc(downloads_cache_dir):
-    def _get(uri):
-        return downloads_cache_dir / uri.split("/")[-1]
+def get_download_cache_loc(downloads_cache_dir, url2cachepath):
+    def _get(url):
+        return url2cachepath(downloads_cache_dir, url)
 
     return _get
 
@@ -94,11 +104,9 @@ def refs_cache_dir(tmp_path):
 
 
 @pytest.fixture
-def get_ref_cache_loc(refs_cache_dir):
-    from check_jsonschema.schema_loader.resolver import ref_url_to_cache_filename
-
-    def _get(uri):
-        return refs_cache_dir / ref_url_to_cache_filename(uri)
+def get_ref_cache_loc(refs_cache_dir, url2cachepath):
+    def _get(url):
+        return url2cachepath(refs_cache_dir, url)
 
     return _get
 

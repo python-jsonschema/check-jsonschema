@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import contextlib
+import hashlib
 import io
 import os
 import platform
@@ -33,7 +34,7 @@ def _base_cache_dir() -> str | None:
     return cache_dir
 
 
-def _resolve_cache_dir(dirname: str = "downloads") -> str | None:
+def _resolve_cache_dir(dirname: str) -> str | None:
     cache_dir = _base_cache_dir()
     if cache_dir:
         cache_dir = os.path.join(cache_dir, "check_jsonschema", dirname)
@@ -95,18 +96,32 @@ def _cache_hit(cachefile: str, response: requests.Response) -> bool:
     return local_mtime >= remote_mtime
 
 
+def url_to_cache_filename(ref_url: str) -> str:
+    """
+    Given a schema URL, convert it to a filename for caching in a cache dir.
+
+    Rules are as follows:
+    - the base filename is an sha256 hash of the URL
+    - if the filename ends in an extension (.json, .yaml, etc) that extension
+      is appended to the hash
+
+    Preserving file extensions preserves the extension-based logic used for parsing, and
+    it also helps a local editor (browsing the cache) identify filetypes.
+    """
+    filename = hashlib.sha256(ref_url.encode()).hexdigest()
+    if "." in (last_part := ref_url.rpartition("/")[-1]):
+        _, _, extension = last_part.rpartition(".")
+        filename = f"{filename}.{extension}"
+    return filename
+
+
 class FailedDownloadError(Exception):
     pass
 
 
 class CacheDownloader:
-    def __init__(
-        self, cache_dir: str | None = None, disable_cache: bool = False
-    ) -> None:
-        if cache_dir is None:
-            self._cache_dir = _resolve_cache_dir()
-        else:
-            self._cache_dir = _resolve_cache_dir(cache_dir)
+    def __init__(self, cache_dir: str, *, disable_cache: bool = False) -> None:
+        self._cache_dir = _resolve_cache_dir(cache_dir)
         self._disable_cache = disable_cache
 
     def _download(
@@ -160,7 +175,7 @@ class CacheDownloader:
         validation_callback: t.Callable[[bytes], t.Any] | None = None,
     ) -> BoundCacheDownloader:
         return BoundCacheDownloader(
-            file_url, filename, self, validation_callback=validation_callback
+            file_url, self, filename=filename, validation_callback=validation_callback
         )
 
 
@@ -168,13 +183,13 @@ class BoundCacheDownloader:
     def __init__(
         self,
         file_url: str,
-        filename: str | None,
         downloader: CacheDownloader,
         *,
+        filename: str | None = None,
         validation_callback: t.Callable[[bytes], t.Any] | None = None,
     ) -> None:
         self._file_url = file_url
-        self._filename = filename or file_url.split("/")[-1]
+        self._filename = filename or url_to_cache_filename(file_url)
         self._downloader = downloader
         self._validation_callback = validation_callback
 

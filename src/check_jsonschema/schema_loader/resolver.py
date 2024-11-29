@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import typing as t
 import urllib.parse
 
@@ -10,21 +9,6 @@ from referencing.jsonschema import DRAFT202012, Schema
 from ..cachedownloader import CacheDownloader
 from ..parsers import ParserSet
 from ..utils import filename2path
-
-
-def ref_url_to_cache_filename(ref_url: str) -> str:
-    """
-    Given a $ref URL, convert it to the filename in the refs/ cache dir.
-    Rules are as follows:
-    - the base filename is an md5 hash of the URL
-    - if the filename ends in an extension (.json, .yaml, etc) that extension
-      is appended to the hash
-    """
-    filename = hashlib.md5(ref_url.encode()).hexdigest()
-    if "." in (last_part := ref_url.rpartition("/")[-1]):
-        _, _, extension = last_part.rpartition(".")
-        filename = f"{filename}.{extension}"
-    return filename
 
 
 def make_reference_registry(
@@ -66,7 +50,7 @@ def create_retrieve_callable(
         base_uri = retrieval_uri
 
     cache = ResourceCache()
-    downloader = CacheDownloader("refs", disable_cache)
+    downloader = CacheDownloader("refs", disable_cache=disable_cache)
 
     def get_local_file(uri: str) -> t.Any:
         path = filename2path(uri)
@@ -89,9 +73,7 @@ def create_retrieve_callable(
                 parser_set.parse_data_with_path(content, full_uri, "json")
 
             bound_downloader = downloader.bind(
-                full_uri,
-                ref_url_to_cache_filename(full_uri),
-                validation_callback,
+                full_uri, validation_callback=validation_callback
             )
             with bound_downloader.open() as fp:
                 data = fp.read()
