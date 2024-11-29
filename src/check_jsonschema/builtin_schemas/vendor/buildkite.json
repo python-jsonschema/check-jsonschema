@@ -61,11 +61,11 @@
               "enum": [ "*" ]
             },
             {
-              "type": "number"
+              "type": "integer"
             },
             {
               "type": "array",
-              "items": { "type": "number" }
+              "items": { "type": "integer" }
             }
           ]
         },
@@ -198,11 +198,6 @@
         { "NODE_ENV": "test" }
       ]
     },
-    "identifier": {
-      "type": "string",
-      "description": "A string identifier",
-      "examples": [ "an-id" ]
-    },
     "if": {
       "type": "string",
       "description": "A boolean expression that omits the step when false",
@@ -211,7 +206,8 @@
     "key": {
       "type": "string",
       "description": "A unique identifier for a step, must not resemble a UUID",
-      "examples": [ "deploy-staging", "test-integration" ]
+      "examples": [ "deploy-staging", "test-integration" ],
+      "pattern": "^(?!^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$).*$"
     },
     "label": {
       "type": "string",
@@ -528,25 +524,21 @@
         {
           "type": "array",
           "items": {
-            "anyOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "exit_status": {
-                    "description": "The exit status number that will cause this job to soft-fail",
-                    "anyOf": [
-                      {
-                        "type": "string",
-                        "enum": [ "*" ]
-                      },
-                      {
-                        "type": "number"
-                      }
-                    ]
+            "type": "object",
+            "properties": {
+              "exit_status": {
+                "description": "The exit status number that will cause this job to soft-fail",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [ "*" ]
+                  },
+                  {
+                    "type": "integer"
                   }
-                }
+                ]
               }
-            ]
+            }
           }
         }
       ]
@@ -575,17 +567,18 @@
         "fields": {
           "$ref": "#/definitions/fields"
         },
-        "id": {
-          "$ref": "#/definitions/identifier"
-        },
-        "identifier": {
-          "$ref": "#/definitions/identifier"
-        },
         "if": {
           "$ref": "#/definitions/if"
         },
         "key": {
           "$ref": "#/definitions/key"
+        },
+        "identifier": {
+          "$ref": "#/definitions/blockStep/properties/key"
+        },
+        "id": {
+          "$ref": "#/definitions/blockStep/properties/key",
+          "deprecated": true
         },
         "label": {
           "$ref": "#/definitions/label"
@@ -636,17 +629,18 @@
         "fields": {
           "$ref": "#/definitions/fields"
         },
-        "id": {
-          "$ref": "#/definitions/identifier"
-        },
-        "identifier": {
-          "$ref": "#/definitions/identifier"
-        },
         "if": {
           "$ref": "#/definitions/if"
         },
         "key": {
           "$ref": "#/definitions/key"
+        },
+        "identifier": {
+          "$ref": "#/definitions/inputStep/properties/key"
+        },
+        "id": {
+          "$ref": "#/definitions/inputStep/properties/key",
+          "deprecated": true
         },
         "label": {
           "$ref": "#/definitions/label"
@@ -754,17 +748,18 @@
         "env": {
           "$ref": "#/definitions/env"
         },
-        "id": {
-          "$ref": "#/definitions/identifier"
-        },
-        "identifier": {
-          "$ref": "#/definitions/identifier"
-        },
         "if": {
           "$ref": "#/definitions/if"
         },
         "key": {
           "$ref": "#/definitions/key"
+        },
+        "identifier": {
+          "$ref": "#/definitions/commandStep/properties/key"
+        },
+        "id": {
+          "$ref": "#/definitions/commandStep/properties/key",
+          "deprecated": true
         },
         "label": {
           "$ref": "#/definitions/label"
@@ -1130,17 +1125,24 @@
         "depends_on": {
           "$ref": "#/definitions/dependsOn"
         },
-        "id": {
-          "$ref": "#/definitions/identifier"
-        },
-        "identifier": {
-          "$ref": "#/definitions/identifier"
-        },
         "if": {
           "$ref": "#/definitions/if"
         },
         "key": {
           "$ref": "#/definitions/key"
+        },
+        "label": {
+          "$ref": "#/definitions/label"
+        },
+        "name": {
+          "$ref": "#/definitions/label"
+        },
+        "identifier": {
+          "$ref": "#/definitions/waitStep/properties/key"
+        },
+        "id": {
+          "$ref": "#/definitions/waitStep/properties/key",
+          "deprecated": true
         },
         "type": {
           "type": "string",
@@ -1235,17 +1237,18 @@
         "depends_on": {
           "$ref": "#/definitions/dependsOn"
         },
-        "id": {
-          "$ref": "#/definitions/identifier"
-        },
-        "identifier": {
-          "$ref": "#/definitions/identifier"
-        },
         "if": {
           "$ref": "#/definitions/if"
         },
         "key": {
           "$ref": "#/definitions/key"
+        },
+        "identifier": {
+          "$ref": "#/definitions/triggerStep/properties/key"
+        },
+        "id": {
+          "$ref": "#/definitions/triggerStep/properties/key",
+          "deprecated": true
         },
         "label": {
           "$ref": "#/definitions/label"
@@ -1268,7 +1271,10 @@
           "$ref": "#/definitions/softFail"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "required": [
+        "trigger"
+      ]
     },
     "nestedTriggerStep": {
       "type": "object",
@@ -1290,17 +1296,18 @@
           "description": "The name to give to this group of steps",
           "examples": [ "Tests" ]
         },
-        "id": {
-          "$ref": "#/definitions/identifier"
-        },
-        "identifier": {
-          "$ref": "#/definitions/identifier"
-        },
         "if": {
           "$ref": "#/definitions/if"
         },
         "key": {
           "$ref": "#/definitions/key"
+        },
+        "identifier": {
+          "$ref": "#/definitions/groupStep/properties/key"
+        },
+        "id": {
+          "$ref": "#/definitions/groupStep/properties/key",
+          "deprecated": true
         },
         "label": {
           "$ref": "#/definitions/groupStep/properties/group"
@@ -1322,27 +1329,29 @@
           "description": "A list of steps",
           "items": {
             "anyOf": [
-              { "$ref": "#/definitions/stringBlockStep" },
               { "$ref": "#/definitions/blockStep" },
-              { "$ref": "#/definitions/commandStep" },
-              { "$ref": "#/definitions/nestedCommandStep" },
-              { "$ref": "#/definitions/triggerStep" },
-              { "$ref": "#/definitions/nestedTriggerStep" },
-              { "$ref": "#/definitions/stringInputStep" },
+              { "$ref": "#/definitions/nestedBlockStep" },
+              { "$ref": "#/definitions/stringBlockStep" },
               { "$ref": "#/definitions/inputStep" },
               { "$ref": "#/definitions/nestedInputStep" },
-              { "$ref": "#/definitions/stringWaitStep" },
+              { "$ref": "#/definitions/stringInputStep" },
+              { "$ref": "#/definitions/commandStep" },
+              { "$ref": "#/definitions/nestedCommandStep" },
               { "$ref": "#/definitions/waitStep" },
-              { "$ref": "#/definitions/nestedWaitStep" }
+              { "$ref": "#/definitions/nestedWaitStep" },
+              { "$ref": "#/definitions/stringWaitStep" },
+              { "$ref": "#/definitions/triggerStep" },
+              { "$ref": "#/definitions/nestedTriggerStep" }
             ]
           },
-          "minSize": 1
+          "minItems": 1
         },
         "type": {
-          "type": [ "string" ],
+          "type": "string",
           "enum": [ "group" ]
         }
       },
+      "required": ["steps"],
       "additionalProperties": false
     }
   },
@@ -1369,9 +1378,9 @@
           { "$ref": "#/definitions/stringInputStep" },
           { "$ref": "#/definitions/commandStep" },
           { "$ref": "#/definitions/nestedCommandStep" },
-          { "$ref": "#/definitions/stringWaitStep" },
           { "$ref": "#/definitions/waitStep" },
           { "$ref": "#/definitions/nestedWaitStep" },
+          { "$ref": "#/definitions/stringWaitStep" },
           { "$ref": "#/definitions/triggerStep" },
           { "$ref": "#/definitions/nestedTriggerStep" },
           { "$ref": "#/definitions/groupStep" }

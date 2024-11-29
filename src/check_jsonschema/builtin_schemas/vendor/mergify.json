@@ -884,9 +884,6 @@
             },
             {
               "const": "from_requested_reviewers",
-              "enum": [
-                "from_requested_reviewers"
-              ],
               "type": "string"
             }
           ],
@@ -908,9 +905,6 @@
             },
             {
               "const": "from_requested_reviewers",
-              "enum": [
-                "from_requested_reviewers"
-              ],
               "type": "string"
             }
           ],
@@ -1646,16 +1640,10 @@
           "anyOf": [
             {
               "const": "NONE",
-              "enum": [
-                "NONE"
-              ],
               "type": "string"
             },
             {
               "const": "PR_MERGED",
-              "enum": [
-                "PR_MERGED"
-              ],
               "type": "string"
             },
             {
@@ -2511,9 +2499,6 @@
           "anyOf": [
             {
               "const": "fast-forward",
-              "enum": [
-                "fast-forward"
-              ],
               "type": "string"
             },
             {
@@ -2525,6 +2510,7 @@
           "title": "Queue Branch Merge Method"
         },
         "queue_branch_prefix": {
+          "default": "mergify/merge-queue/",
           "title": "Queue Branch Prefix",
           "type": "string"
         },
@@ -2774,9 +2760,6 @@
           "anyOf": [
             {
               "const": "fast-forward",
-              "enum": [
-                "fast-forward"
-              ],
               "type": "string"
             },
             {
@@ -2788,6 +2771,7 @@
           "title": "Queue Branch Merge Method"
         },
         "queue_branch_prefix": {
+          "default": "mergify/merge-queue/",
           "title": "Queue Branch Prefix",
           "type": "string"
         },
