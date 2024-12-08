@@ -9,6 +9,7 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+- Add ``--format-email`` option to allow full validation of email/idn-email formats
 
 0.30.0
 ------
