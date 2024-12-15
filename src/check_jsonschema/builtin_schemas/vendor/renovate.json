@@ -1062,7 +1062,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.0.22"
+      "default": "ghcr.io/containerbase/sidecar:13.4.3"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -2150,8 +2150,7 @@
       "default": {
         "fileMatch": [
           "(^|/)mix\\.exs$"
-        ],
-        "versioning": "hex"
+        ]
       },
       "$ref": "#"
     },
@@ -3642,6 +3641,7 @@
             "pep440",
             "perl",
             "poetry",
+            "pvp",
             "python",
             "redhat",
             "regex",

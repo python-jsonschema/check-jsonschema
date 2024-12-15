@@ -21,7 +21,7 @@
   ],
   "definitions": {
     "allowDependencyFailure": {
-      "type": "boolean",
+      "enum": [true, false, "true", "false"],
       "description": "Whether to proceed with this step and further steps if a step named in the depends_on attribute fails",
       "default": false
     },
@@ -131,13 +131,8 @@
           "type": "object",
           "properties": {
             "paths": {
-              "anyOf": [
-                { "type": "string" },
-                {
-                  "type": "array",
-                  "items": { "type": "string" }
-                }
-              ]
+              "type": "array",
+              "items": { "type": "string" }
             },
             "size": {
               "type": "string",
@@ -161,7 +156,7 @@
       ]
     },
     "cancelOnBuildFailing": {
-      "type": "boolean",
+      "enum": [true, false, "true", "false"],
       "description": "Whether to cancel the job as soon as the build is marked as failing",
       "default": false
     },
@@ -180,7 +175,7 @@
                 "properties": {
                   "step": { "type": "string" },
                   "allow_failure": {
-                    "type": "boolean",
+                    "enum": [true, false, "true", "false"],
                     "default": false
                   }
                 },
@@ -207,7 +202,9 @@
       "type": "string",
       "description": "A unique identifier for a step, must not resemble a UUID",
       "examples": [ "deploy-staging", "test-integration" ],
-      "pattern": "^(?!^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$).*$"
+      "not": {
+        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+      }
     },
     "label": {
       "type": "string",
@@ -311,7 +308,8 @@
                     "description": "GitHub commit status name",
                     "type": "string"
                   }
-                }
+                },
+                "additionalProperties": false
               },
               "if": {
                 "$ref": "#/definitions/if"
@@ -379,7 +377,7 @@
                 ]
               },
               "required": {
-                "type": "boolean",
+                "enum": [true, false, "true", "false"],
                 "default": true,
                 "description": "Whether the field is required for form submission"
               },
@@ -435,12 +433,13 @@
                 ]
               },
               "multiple": {
-                "type": "boolean",
+                "enum": [true, false, "true", "false"],
                 "description": "Whether more than one option may be selected",
                 "default": false
                 },
               "options": {
                 "type": "array",
+                "minItems": 1,
                 "items": {
                   "type": "object",
                   "properties": {
@@ -462,7 +461,7 @@
                       ]
                     },
                     "required": {
-                      "type": "boolean",
+                      "enum": [true, false, "true", "false"],
                       "default": true,
                       "description": "Whether the field is required for form submission"
                     }
@@ -475,7 +474,7 @@
                 }
               },
               "required": {
-                "type": "boolean",
+                "enum": [true, false, "true", "false"],
                 "default": true,
                 "description": "Whether the field is required for form submission"
               }
@@ -508,7 +507,7 @@
         { "type": "boolean" },
         { "type": "string" }
       ],
-      "description": "Whether this step should be skipped. You can specify a reason for using a string.",
+      "description": "Whether this step should be skipped. Passing a string provides a reason for skipping this command",
       "examples": [
         true,
         false,
@@ -519,7 +518,7 @@
       "description": "The conditions for marking the step as a soft-fail.",
       "anyOf": [
         {
-          "type": "boolean"
+          "enum": [true, false, "true", "false"]
         },
         {
           "type": "array",
@@ -555,6 +554,7 @@
         },
         "blocked_state": {
           "type": "string",
+          "default": "passed",
           "description": "The state that the build is set to when the build is blocked by this block step",
           "enum": [ "passed", "failed", "running" ]
         },
@@ -581,10 +581,10 @@
           "deprecated": true
         },
         "label": {
-          "$ref": "#/definitions/label"
+          "$ref": "#/definitions/blockStep/properties/block"
         },
         "name": {
-          "$ref": "#/definitions/label"
+          "$ref": "#/definitions/blockStep/properties/block"
         },
         "prompt": {
           "$ref": "#/definitions/prompt"
@@ -643,10 +643,10 @@
           "deprecated": true
         },
         "label": {
-          "$ref": "#/definitions/label"
+          "$ref": "#/definitions/inputStep/properties/input"
         },
         "name": {
-          "$ref": "#/definitions/label"
+          "$ref": "#/definitions/inputStep/properties/input"
         },
         "prompt": {
           "$ref": "#/definitions/prompt"
@@ -699,9 +699,6 @@
         },
         "branches": {
           "$ref": "#/definitions/branches"
-        },
-        "cache": {
-          "$ref": "#/definitions/cache"
         },
         "cache": {
           "$ref": "#/definitions/cache"
@@ -880,7 +877,7 @@
           ]
         },
         "name": {
-          "$ref": "#/definitions/label"
+          "$ref": "#/definitions/commandStep/properties/label"
         },
         "notify": {
           "type": "array",
@@ -923,7 +920,8 @@
                           "message": {
                             "type": "string"
                           }
-                        }
+                        },
+                        "additionalProperties": false
                       }
                     ]
                   },
@@ -943,7 +941,8 @@
                         "description": "GitHub commit status name",
                         "type": "string"
                       }
-                    }
+                    },
+                    "additionalProperties": false
                   },
                   "if": {
                     "$ref": "#/definitions/if"
@@ -1015,8 +1014,7 @@
             "automatic": {
               "anyOf": [
                 {
-                  "type": ["boolean", "string"],
-                  "pattern": "^(true|false)$"
+                  "enum": [true, false, "true", "false"]
                 },
                 {
                   "$ref": "#/definitions/automaticRetry"
@@ -1040,21 +1038,18 @@
               "description": "Whether to allow a job to be retried manually",
               "anyOf": [
                 {
-                  "type": ["boolean", "string"],
-                  "pattern": "^(true|false)$"
+                  "enum": [true, false, "true", "false"]
                 },
                 {
                   "type": "object",
                   "properties": {
                     "allowed": {
-                      "type": ["boolean", "string"],
-                      "pattern": "^(true|false)$",
+                      "enum": [true, false, "true", "false"],
                       "description": "Whether or not this job can be retried manually",
                       "default": true
                     },
                     "permit_on_passed": {
-                      "type": ["boolean", "string"],
-                      "pattern": "^(true|false)$",
+                      "enum": [true, false, "true", "false"],
                       "description": "Whether or not this job can be retried after it has passed",
                       "default": true
                     },
@@ -1068,9 +1063,11 @@
                   },
                   "additionalProperties": false
                 }
-              ]
+              ],
+              "default": true
             }
-          }
+          },
+          "additionalProperties": false
         },
         "skip": {
           "$ref": "#/definitions/skip"
@@ -1118,9 +1115,13 @@
         "allow_dependency_failure": {
           "$ref": "#/definitions/allowDependencyFailure"
         },
+        "branches": {
+          "$ref": "#/definitions/branches"
+        },
         "continue_on_failure": {
           "description": "Continue to the next steps, even if the previous group of steps fail",
-          "type": "boolean"
+          "enum": [true, false, "true", "false"],
+          "default": false
         },
         "depends_on": {
           "$ref": "#/definitions/dependsOn"
@@ -1132,10 +1133,10 @@
           "$ref": "#/definitions/key"
         },
         "label": {
-          "$ref": "#/definitions/label"
+          "$ref": "#/definitions/waitStep/properties/wait"
         },
         "name": {
-          "$ref": "#/definitions/label"
+          "$ref": "#/definitions/waitStep/properties/wait"
         },
         "identifier": {
           "$ref": "#/definitions/waitStep/properties/key"
@@ -1150,16 +1151,10 @@
         },
         "wait": {
           "description": "Waits for previous steps to pass before continuing",
-          "anyOf": [
-            { "type": "null" },
-            { "type": "string", "enum": [ "" ] }
-          ]
+          "type": ["string", "null"]
         },
         "waiter": {
-          "anyOf": [
-            { "type": "null" },
-            { "type": "string", "enum": [ "" ] }
-          ]
+          "type": ["string", "null"]
         }
       },
       "additionalProperties": false
@@ -1184,7 +1179,7 @@
           "$ref": "#/definitions/allowDependencyFailure"
         },
         "async": {
-          "type": "boolean",
+          "enum": [true, false, "true", "false"],
           "default": false,
           "description": "Whether to continue the build without waiting for the triggered step to complete"
         },
@@ -1254,7 +1249,7 @@
           "$ref": "#/definitions/label"
         },
         "name": {
-          "$ref": "#/definitions/label"
+          "$ref": "#/definitions/triggerStep/properties/label"
         },
         "type": {
           "type": "string",
@@ -1268,7 +1263,9 @@
           "$ref": "#/definitions/skip"
         },
         "soft_fail": {
-          "$ref": "#/definitions/softFail"
+          "enum": [true, false, "true", "false"],
+          "description": "The conditions for marking the step as a soft-fail.",
+          "default": false
         }
       },
       "additionalProperties": false,
@@ -1313,7 +1310,7 @@
           "$ref": "#/definitions/groupStep/properties/group"
         },
         "name": {
-          "$ref": "#/definitions/groupStep/properties/label"
+          "$ref": "#/definitions/groupStep/properties/group"
         },
         "allow_dependency_failure": {
           "$ref": "#/definitions/allowDependencyFailure"
@@ -1345,13 +1342,9 @@
             ]
           },
           "minItems": 1
-        },
-        "type": {
-          "type": "string",
-          "enum": [ "group" ]
         }
       },
-      "required": ["steps"],
+      "required": ["group", "steps"],
       "additionalProperties": false
     }
   },
