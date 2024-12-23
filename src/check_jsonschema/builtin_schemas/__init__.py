@@ -1,12 +1,6 @@
 from __future__ import annotations
 
-try:
-    # first, try to import the installed package version
-    import importlib_resources
-except ImportError:
-    # if it's not installed, assume that the stdlib version is new enough (e.g. py3.10)
-    import importlib.resources as importlib_resources  # type: ignore[no-redef]
-
+import importlib.resources
 import json
 import typing as t
 
@@ -20,7 +14,7 @@ def _get(package: str, resource: str, name: str) -> dict[str, t.Any]:
         return t.cast(
             "dict[str, t.Any]",
             json.loads(
-                importlib_resources.files(package).joinpath(resource).read_bytes()
+                importlib.resources.files(package).joinpath(resource).read_bytes()
             ),
         )
     except (FileNotFoundError, ModuleNotFoundError):

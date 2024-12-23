@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-import sys
 import textwrap
 import typing as t
 
@@ -23,11 +22,6 @@ from ..schema_loader import (
 from ..transforms import TRANSFORM_LIBRARY
 from .param_types import CommaDelimitedList, LazyBinaryReadFile, ValidatorClassName
 from .parse_result import ParseResult, SchemaLoadingMode
-
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
     f"custom.{k}" for k in CUSTOM_SCHEMA_NAMES
@@ -236,13 +230,13 @@ def main(
     no_cache: bool,
     cache_filename: str | None,
     disable_formats: tuple[list[str], ...],
-    format_regex: Literal["python", "default"],
-    default_filetype: Literal["json", "yaml", "toml", "json5"],
-    traceback_mode: Literal["full", "short"],
-    data_transform: Literal["azure-pipelines", "gitlab-ci"] | None,
+    format_regex: t.Literal["python", "default"],
+    default_filetype: t.Literal["json", "yaml", "toml", "json5"],
+    traceback_mode: t.Literal["full", "short"],
+    data_transform: t.Literal["azure-pipelines", "gitlab-ci"] | None,
     fill_defaults: bool,
     validator_class: type[jsonschema.protocols.Validator] | None,
-    output_format: Literal["text", "json"],
+    output_format: t.Literal["text", "json"],
     verbose: int,
     quiet: int,
     instancefiles: tuple[t.IO[bytes], ...],
