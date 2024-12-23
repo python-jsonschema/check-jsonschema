@@ -340,7 +340,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)MODULE\\.bazel$"
+          "(^|/|\\.)MODULE\\.bazel$"
         ]
       },
       "$ref": "#"
@@ -486,7 +486,7 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)bun\\.lockb$"
+          "(^|/)bun\\.lockb?$"
         ],
         "digest": {
           "prBodyDefinitions": {
@@ -594,6 +594,16 @@
       "description": "Set to `true` to initialize submodules during repository clone.",
       "type": "boolean",
       "default": false
+    },
+    "cloneSubmodulesFilter": {
+      "description": "List of submodules names or patterns to clone when cloneSubmodules=true.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "*"
+      ]
     },
     "cloudbuild": {
       "description": "Configuration object for the cloudbuild manager",
@@ -1062,7 +1072,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.4.3"
+      "default": "ghcr.io/containerbase/sidecar:13.5.0"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -2779,6 +2789,7 @@
           "gomodTidyE",
           "gomodUpdateImportPaths",
           "gomodSkipVendor",
+          "gomodVendor",
           "helmUpdateSubChartArchives",
           "npmDedupe",
           "pnpmDedupe",
@@ -3621,6 +3632,7 @@
             "conan",
             "deb",
             "debian",
+            "devbox",
             "docker",
             "git",
             "glasskube",
