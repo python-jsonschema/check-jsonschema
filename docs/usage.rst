@@ -187,7 +187,8 @@ Example usage:
 ~~~~~~~~~~~~~~~~~~
 
 Set a mode for handling of the ``"regex"`` value for ``"format"`` and the mode
-for ``"pattern"`` interpretation. The modes are as follows:
+for ``"pattern"`` and ``"patternProperties"`` interpretation.
+The modes are as follows:
 
 .. list-table:: Regex Options
    :widths: 15 30
@@ -201,12 +202,6 @@ for ``"pattern"`` interpretation. The modes are as follows:
      - Use ECMAScript regex syntax, but without unicode escapes enabled.
    * - python
      - Use Python regex syntax.
-
-.. note::
-
-    This only controls the regex mode used for ``format`` and ``pattern``.
-    ``patternProperties`` is not currently controlled, and always uses the
-    Python engine.
 
 Other Options
 --------------

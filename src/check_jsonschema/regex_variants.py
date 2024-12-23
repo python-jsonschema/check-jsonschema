@@ -19,6 +19,14 @@ class _ConcreteImplementation(t.Protocol):
         self, validator: t.Any, pattern: str, instance: str, schema: t.Any
     ) -> t.Iterator[jsonschema.ValidationError]: ...
 
+    def patternProperties_keyword(
+        self,
+        validator: t.Any,
+        patternProperties: dict[str, t.Any],
+        instance: dict[str, t.Any],
+        schema: t.Any,
+    ) -> t.Iterator[jsonschema.ValidationError]: ...
+
 
 class RegexImplementation:
     """
@@ -40,6 +48,9 @@ class RegexImplementation:
 
         self.check_format = self._real_implementation.check_format
         self.pattern_keyword = self._real_implementation.pattern_keyword
+        self.patternProperties_keyword = (
+            self._real_implementation.patternProperties_keyword
+        )
 
 
 class _UnicodeRegressImplementation:
@@ -65,6 +76,27 @@ class _UnicodeRegressImplementation:
         if not regress_pattern.find(instance):
             yield jsonschema.ValidationError(f"{instance!r} does not match {pattern!r}")
 
+    def patternProperties_keyword(
+        self,
+        validator: t.Any,
+        patternProperties: dict[str, t.Any],
+        instance: dict[str, t.Any],
+        schema: t.Any,
+    ) -> t.Iterator[jsonschema.ValidationError]:
+        if not validator.is_type(instance, "object"):
+            return
+
+        for pattern, subschema in patternProperties.items():
+            regress_pattern = regress.Regex(pattern, flags="u")
+            for k, v in instance.items():
+                if regress_pattern.find(k):
+                    yield from validator.descend(
+                        v,
+                        subschema,
+                        path=k,
+                        schema_path=pattern,
+                    )
+
 
 class _NonunicodeRegressImplementation:
     def check_format(self, instance: t.Any) -> bool:
@@ -89,6 +121,27 @@ class _NonunicodeRegressImplementation:
         if not regress_pattern.find(instance):
             yield jsonschema.ValidationError(f"{instance!r} does not match {pattern!r}")
 
+    def patternProperties_keyword(
+        self,
+        validator: t.Any,
+        patternProperties: dict[str, t.Any],
+        instance: dict[str, t.Any],
+        schema: t.Any,
+    ) -> t.Iterator[jsonschema.ValidationError]:
+        if not validator.is_type(instance, "object"):
+            return
+
+        for pattern, subschema in patternProperties.items():
+            regress_pattern = regress.Regex(pattern)
+            for k, v in instance.items():
+                if regress_pattern.find(k):
+                    yield from validator.descend(
+                        v,
+                        subschema,
+                        path=k,
+                        schema_path=pattern,
+                    )
+
 
 class _PythonImplementation:
     def check_format(self, instance: t.Any) -> bool:
@@ -112,3 +165,23 @@ class _PythonImplementation:
             yield jsonschema.ValidationError(f"pattern {pattern!r} failed to compile")
         if not re_pattern.search(instance):
             yield jsonschema.ValidationError(f"{instance!r} does not match {pattern!r}")
+
+    def patternProperties_keyword(
+        self,
+        validator: t.Any,
+        patternProperties: dict[str, t.Any],
+        instance: dict[str, t.Any],
+        schema: t.Any,
+    ) -> t.Iterator[jsonschema.ValidationError]:
+        if not validator.is_type(instance, "object"):
+            return
+
+        for pattern, subschema in patternProperties.items():
+            for k, v in instance.items():
+                if re.search(pattern, k):
+                    yield from validator.descend(
+                        v,
+                        subschema,
+                        path=k,
+                        schema_path=pattern,
+                    )

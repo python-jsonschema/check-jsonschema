@@ -52,7 +52,10 @@ def _extend_with_pattern_implementation(
 ) -> type[jsonschema.Validator]:
     return jsonschema.validators.extend(
         validator_class,
-        {"pattern": regex_impl.pattern_keyword},
+        {
+            "pattern": regex_impl.pattern_keyword,
+            "patternProperties": regex_impl.patternProperties_keyword,
+        },
     )
 
 
