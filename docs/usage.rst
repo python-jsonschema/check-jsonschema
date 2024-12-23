@@ -197,6 +197,8 @@ for ``"pattern"`` interpretation. The modes are as follows:
      - description
    * - default
      - Use ECMAScript regex syntax.
+   * - nonunicode
+     - Use ECMAScript regex syntax, but without unicode escapes enabled.
    * - python
      - Use Python regex syntax.
 

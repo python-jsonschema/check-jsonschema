@@ -8,6 +8,7 @@ import regress
 
 class RegexVariantName(enum.Enum):
     default = "default"
+    nonunicode = "nonunicode"
     python = "python"
 
 
@@ -31,7 +32,9 @@ class RegexImplementation:
         self.variant = variant
 
         if self.variant == RegexVariantName.default:
-            self._real_implementation = _RegressImplementation()
+            self._real_implementation = _UnicodeRegressImplementation()
+        elif self.variant == RegexVariantName.nonunicode:
+            self._real_implementation = _NonunicodeRegressImplementation()
         else:
             self._real_implementation = _PythonImplementation()
 
@@ -39,15 +42,37 @@ class RegexImplementation:
         self.pattern_keyword = self._real_implementation.pattern_keyword
 
 
-class _RegressImplementation:
+class _UnicodeRegressImplementation:
+    def check_format(self, instance: t.Any) -> bool:
+        if not isinstance(instance, str):
+            return True
+        try:
+            regress.Regex(instance, flags="u")
+        except regress.RegressError:
+            return False
+        return True
+
+    def pattern_keyword(
+        self, validator: t.Any, pattern: str, instance: str, schema: t.Any
+    ) -> t.Iterator[jsonschema.ValidationError]:
+        if not validator.is_type(instance, "string"):
+            return
+
+        try:
+            regress_pattern = regress.Regex(pattern, flags="u")
+        except regress.RegressError:
+            yield jsonschema.ValidationError(f"pattern {pattern!r} failed to compile")
+        if not regress_pattern.find(instance):
+            yield jsonschema.ValidationError(f"{instance!r} does not match {pattern!r}")
+
+
+class _NonunicodeRegressImplementation:
     def check_format(self, instance: t.Any) -> bool:
         if not isinstance(instance, str):
             return True
         try:
             regress.Regex(instance)
-        # something is wrong with RegressError getting into the published types
-        # needs investigation... for now, ignore the error
-        except regress.RegressError:  # type: ignore[attr-defined]
+        except regress.RegressError:
             return False
         return True
 
@@ -59,7 +84,7 @@ class _RegressImplementation:
 
         try:
             regress_pattern = regress.Regex(pattern)
-        except regress.RegressError:  # type: ignore[attr-defined]
+        except regress.RegressError:
             yield jsonschema.ValidationError(f"pattern {pattern!r} failed to compile")
         if not regress_pattern.find(instance):
             yield jsonschema.ValidationError(f"{instance!r} does not match {pattern!r}")

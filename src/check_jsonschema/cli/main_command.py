@@ -71,8 +71,9 @@ including the following formats by default:
 \b
 For handling of regexes, there are multiple modes which can be specified with
 '--regex-variant':
-    default  |  use ECMAScript regex syntax (via regress)
-    python   |  use python regex syntax
+    default    |  use ECMAScript regex syntax (via regress)
+    nonunicode |  use ECMAScript regex syntax, but in non-unicode mode (via regress)
+    python     |  use python regex syntax
 
 \b
 The '--builtin-schema' flag supports the following schema names:
@@ -238,8 +239,8 @@ def main(
     no_cache: bool,
     cache_filename: str | None,
     disable_formats: tuple[list[str], ...],
-    format_regex: t.Literal["python", "default"] | None,
-    regex_variant: t.Literal["python", "default"] | None,
+    format_regex: t.Literal["python", "nonunicode", "default"] | None,
+    regex_variant: t.Literal["python", "nonunicode", "default"] | None,
     default_filetype: t.Literal["json", "yaml", "toml", "json5"],
     traceback_mode: t.Literal["full", "short"],
     data_transform: t.Literal["azure-pipelines", "gitlab-ci"] | None,

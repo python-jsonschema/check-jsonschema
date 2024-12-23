@@ -51,11 +51,13 @@ class ParseResult:
 
     def set_regex_variant(
         self,
-        variant_opt: Literal["python", "default"] | None,
+        variant_opt: Literal["python", "nonunicode", "default"] | None,
         *,
-        legacy_opt: Literal["python", "default"] | None = None,
+        legacy_opt: Literal["python", "nonunicode", "default"] | None = None,
     ) -> None:
-        variant_name: Literal["python", "default"] | None = variant_opt or legacy_opt
+        variant_name: Literal["python", "nonunicode", "default"] | None = (
+            variant_opt or legacy_opt
+        )
         if variant_name:
             self.regex_variant = RegexVariantName(variant_name)
 
