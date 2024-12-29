@@ -2529,7 +2529,9 @@
         },
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
-          "title": "Queue Branch Prefix",
+          "description": "Prefix for the merge queue branch name",
+          "format": "template",
+          "title": "Template",
           "type": "string"
         },
         "allow_queue_branch_edit": {
@@ -2790,7 +2792,9 @@
         },
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
-          "title": "Queue Branch Prefix",
+          "description": "Prefix for the merge queue branch name",
+          "format": "template",
+          "title": "Template",
           "type": "string"
         },
         "allow_queue_branch_edit": {

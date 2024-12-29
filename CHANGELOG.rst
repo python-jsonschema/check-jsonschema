@@ -10,7 +10,7 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2024-12-22)
+- Update vendored schemas (2024-12-29)
 - Drop support for Python 3.8
 
 0.30.0
