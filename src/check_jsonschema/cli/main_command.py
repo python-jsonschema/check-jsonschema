@@ -9,9 +9,10 @@ import jsonschema
 
 from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from ..checker import SchemaChecker
-from ..formats import KNOWN_FORMATS, RegexVariantName
+from ..formats import KNOWN_FORMATS
 from ..instance_loader import InstanceLoader
 from ..parsers import SUPPORTED_FILE_FORMATS
+from ..regex_variants import RegexImplementation, RegexVariantName
 from ..reporter import REPORTER_BY_NAME, Reporter
 from ..schema_loader import (
     BuiltinSchemaLoader,
@@ -68,10 +69,11 @@ including the following formats by default:
     date, date-time, email, ipv4, ipv6, regex, uuid
 
 \b
-For the "regex" format, there are multiple modes which can be specified with
-'--format-regex':
-    default  |  check that the string is a valid ECMAScript regex
-    python   |  check that the string is a valid python regex
+For handling of regexes, there are multiple modes which can be specified with
+'--regex-variant':
+    default    |  use ECMAScript regex syntax (via regress)
+    nonunicode |  use ECMAScript regex syntax, but in non-unicode mode (via regress)
+    python     |  use python regex syntax
 
 \b
 The '--builtin-schema' flag supports the following schema names:
@@ -138,11 +140,18 @@ The '--disable-formats' flag supports the following formats:
 )
 @click.option(
     "--format-regex",
+    hidden=True,
+    help="Legacy name for `--regex-variant`.",
+    default=None,
+    type=click.Choice([x.value for x in RegexVariantName], case_sensitive=False),
+)
+@click.option(
+    "--regex-variant",
     help=(
-        "Set the mode of format validation for regexes. "
-        "If `--disable-formats regex` is used, this option has no effect."
+        "Name of which regex dialect should be used for format checking "
+        "and 'pattern' matching."
     ),
-    default=RegexVariantName.default.value,
+    default=None,
     type=click.Choice([x.value for x in RegexVariantName], case_sensitive=False),
 )
 @click.option(
@@ -230,7 +239,8 @@ def main(
     no_cache: bool,
     cache_filename: str | None,
     disable_formats: tuple[list[str], ...],
-    format_regex: t.Literal["python", "default"],
+    format_regex: t.Literal["python", "nonunicode", "default"] | None,
+    regex_variant: t.Literal["python", "nonunicode", "default"] | None,
     default_filetype: t.Literal["json", "yaml", "toml", "json5"],
     traceback_mode: t.Literal["full", "short"],
     data_transform: t.Literal["azure-pipelines", "gitlab-ci"] | None,
@@ -242,6 +252,8 @@ def main(
     instancefiles: tuple[t.IO[bytes], ...],
 ) -> None:
     args = ParseResult()
+
+    args.set_regex_variant(regex_variant, legacy_opt=format_regex)
 
     args.set_schema(schemafile, builtin_schema, check_metaschema)
     args.set_validator(validator_class)
@@ -257,7 +269,6 @@ def main(
     else:
         args.disable_formats = normalized_disable_formats
 
-    args.format_regex = RegexVariantName(format_regex)
     args.disable_cache = no_cache
     args.default_filetype = default_filetype
     args.fill_defaults = fill_defaults
@@ -318,6 +329,7 @@ def build_checker(args: ParseResult) -> SchemaChecker:
         instance_loader,
         reporter,
         format_opts=args.format_opts,
+        regex_impl=RegexImplementation(args.regex_variant),
         traceback_mode=args.traceback_mode,
         fill_defaults=args.fill_defaults,
     )
