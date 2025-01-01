@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import enum
-import sys
 import typing as t
 
 import click
@@ -10,11 +9,6 @@ import jsonschema
 from ..formats import FormatOptions
 from ..regex_variants import RegexImplementation, RegexVariantName
 from ..transforms import Transform
-
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
 
 
 class SchemaLoadingMode(enum.Enum):
@@ -51,11 +45,11 @@ class ParseResult:
 
     def set_regex_variant(
         self,
-        variant_opt: Literal["python", "nonunicode", "default"] | None,
+        variant_opt: t.Literal["python", "nonunicode", "default"] | None,
         *,
-        legacy_opt: Literal["python", "nonunicode", "default"] | None = None,
+        legacy_opt: t.Literal["python", "nonunicode", "default"] | None = None,
     ) -> None:
-        variant_name: Literal["python", "nonunicode", "default"] | None = (
+        variant_name: t.Literal["python", "nonunicode", "default"] | None = (
             variant_opt or legacy_opt
         )
         if variant_name:
