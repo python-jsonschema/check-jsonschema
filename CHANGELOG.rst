@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2025-01-07)
+0.31.0
+------
+
+- Update vendored schemas: azure-pipelines, bamboo-spec, buildkite, circle-ci,
+  dependabot, gitlab-ci, mergify, readthedocs, renovate, taskfile (2025-01-07)
 - Drop support for Python 3.8
 - Rename ``--format-regex`` to ``--regex-variant`` and convert
   ``--format-regex`` to a deprecated alias.
