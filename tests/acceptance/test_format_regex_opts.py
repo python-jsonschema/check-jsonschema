@@ -1,6 +1,6 @@
 # test on a JavaScript regex which is not a valid python regex
-# `--format-regex=default` should accept it
-# `--format-regex=python` should reject it
+# `--regex-variant=default` should accept it
+# `--regex-variant=python` should reject it
 #
 # check these options against documents with invalid and valid python regexes to confirm
 # that they are behaving as expected
@@ -43,6 +43,10 @@ RENOVATE_DOCUMENT = {
         ("--disable-formats", "regex"),
         ("--format-regex", "default"),
         ("--format-regex", "python"),
+        ("--regex-variant", "python"),
+        ("--regex-variant", "default"),
+        ("--regex-variant", "default", "--format-regex", "python"),
+        ("--regex-variant", "python", "--format-regex", "default"),
     ]
 )
 def regexopts(request):
@@ -108,7 +112,10 @@ def test_regex_format_js_specific(run_line, tmp_path, regexopts):
     doc = tmp_path / "doc.json"
     doc.write_text(json.dumps(JS_REGEX_DOCUMENT))
 
-    expect_ok = regexopts != ("--format-regex", "python")
+    expect_ok = regexopts[:2] not in (
+        ("--format-regex", "python"),
+        ("--regex-variant", "python"),
+    )
 
     res = run_line(
         [

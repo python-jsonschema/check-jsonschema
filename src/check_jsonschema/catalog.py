@@ -31,7 +31,12 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
                 "Validate Azure Pipelines config against the schema provided "
                 "by Microsoft"
             ),
-            "add_args": ["--data-transform", "azure-pipelines"],
+            "add_args": [
+                "--data-transform",
+                "azure-pipelines",
+                "--regex-variant",
+                "nonunicode",
+            ],
             "files": r"^(\.)?azure-pipelines\.(yml|yaml)$",
             "types": "yaml",
         },

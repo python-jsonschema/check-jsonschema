@@ -66,24 +66,32 @@ def _foo_module(mock_module):
         """\
 import jsonschema
 
-class MyValidator:
-    def __init__(self, schema, *args, **kwargs):
-        self.schema = schema
-        self.real_validator = jsonschema.validators.Draft7Validator(
-            schema, *args, **kwargs
-        )
 
-    def iter_errors(self, data, *args, **kwargs):
-        yield from self.real_validator.iter_errors(data, *args, **kwargs)
-        for event in data["events"]:
-            if "Occult" in event["title"]:
+def check_occult_properties(validator, properties, instance, schema):
+    if not validator.is_type(instance, "object"):
+        return
+
+    for property, subschema in properties.items():
+        if property in instance:
+            if property == "title" and "Occult" in instance["title"]:
                 yield jsonschema.exceptions.ValidationError(
                     "Error! Occult event detected! Run!",
-                    validator=None,
+                    validator=validator,
                     validator_value=None,
-                    instance=event,
-                    schema=self.schema,
+                    instance=instance,
+                    schema=schema,
                 )
+            yield from validator.descend(
+                instance[property],
+                subschema,
+                path=property,
+                schema_path=property,
+            )
+
+MyValidator = jsonschema.validators.extend(
+    jsonschema.validators.Draft7Validator,
+    {"properties": check_occult_properties},
+)
 """,
     )
 
@@ -115,7 +123,7 @@ def test_custom_validator_class_can_detect_custom_conditions(run_line, tmp_path)
             str(doc),
         ],
     )
-    assert result.exit_code == 1  # fail
+    assert result.exit_code == 1, result.stdout  # fail
     assert "Occult event detected" in result.stdout, result.stdout
 
 

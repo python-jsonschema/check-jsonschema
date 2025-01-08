@@ -9,9 +9,21 @@ Unreleased
 ----------
 
 .. vendor-insert-here
-
 - Update vendored schemas (2024-12-22)
 - Drop support for Python 3.8
+- Rename ``--format-regex`` to ``--regex-variant`` and convert
+  ``--format-regex`` to a deprecated alias.
+  It will be removed in a future release.
+- Regular expression interpretation in ``"pattern"``, ``"patternProperties"``, and
+  ``"format": "regex"`` usages now uses unicode-mode JS regular expressions by
+  default. (:issue:`353`)
+
+  - Use ``--regex-variant nonunicode`` to get non-unicode JS regular
+    expressions, the default behavior from previous versions.
+  - Custom validators may be impacted by the new regular expression
+    features. Validators are now always modified with the ``jsonschema``
+    library's ``extend()`` API to control the ``pattern`` and
+    ``patternProperties`` keywords.
 
 0.30.0
 ------

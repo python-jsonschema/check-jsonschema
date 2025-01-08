@@ -1,14 +1,11 @@
 from __future__ import annotations
 
 import copy
-import enum
-import re
-import typing as t
 
 import jsonschema
 import jsonschema.validators
-import regress
 
+from ..regex_variants import RegexImplementation
 from .implementations import validate_rfc3339, validate_time
 
 # all known format strings except for a selection from draft3 which have either
@@ -39,42 +36,16 @@ KNOWN_FORMATS: tuple[str, ...] = (
 )
 
 
-class RegexVariantName(enum.Enum):
-    default = "default"
-    python = "python"
-
-
-class RegexImplementation:
-    def __init__(self, variant: RegexVariantName) -> None:
-        self.variant = variant
-
-    def check_format(self, instance: t.Any) -> bool:
-        if not isinstance(instance, str):
-            return True
-
-        try:
-            if self.variant == RegexVariantName.default:
-                regress.Regex(instance)
-            else:
-                re.compile(instance)
-        # something is wrong with RegressError getting into the published types
-        # needs investigation... for now, ignore the error
-        except (regress.RegressError, re.error):  # type: ignore[attr-defined]
-            return False
-
-        return True
-
-
 class FormatOptions:
     def __init__(
         self,
         *,
+        regex_impl: RegexImplementation,
         enabled: bool = True,
-        regex_variant: RegexVariantName = RegexVariantName.default,
         disabled_formats: tuple[str, ...] = (),
     ) -> None:
         self.enabled = enabled
-        self.regex_variant = regex_variant
+        self.regex_impl = regex_impl
         self.disabled_formats = disabled_formats
 
 
@@ -95,14 +66,10 @@ def make_format_checker(
     if not opts.enabled:
         return None
 
-    # copy the base checker
-    base_checker = get_base_format_checker(schema_dialect)
-    checker = copy.deepcopy(base_checker)
+    # customize around regex checking first
+    checker = format_checker_for_regex_impl(opts.regex_impl)
 
-    # replace the regex check
-    del checker.checkers["regex"]
-    regex_impl = RegexImplementation(opts.regex_variant)
-    checker.checks("regex")(regex_impl.check_format)
+    # add other custom format checks
     checker.checks("date-time")(validate_rfc3339)
     checker.checks("time")(validate_time)
 
@@ -111,5 +78,20 @@ def make_format_checker(
         if checkname not in checker.checkers:
             continue
         del checker.checkers[checkname]
+
+    return checker
+
+
+def format_checker_for_regex_impl(
+    regex_impl: RegexImplementation, schema_dialect: str | None = None
+) -> jsonschema.FormatChecker:
+    # convert to a schema-derived format checker, and copy it
+    # for safe modification
+    base_checker = get_base_format_checker(schema_dialect)
+    checker = copy.deepcopy(base_checker)
+
+    # replace the regex check
+    del checker.checkers["regex"]
+    checker.checks("regex")(regex_impl.check_format)
 
     return checker

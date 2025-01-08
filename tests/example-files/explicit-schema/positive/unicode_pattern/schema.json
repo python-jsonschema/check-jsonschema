@@ -1,0 +1,20 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "key": {
+      "description": "some key",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\p{L}\\p{Z}\\p{N}$",
+      "type": "string"
+    },
+    "value": {
+      "description": "some value",
+      "maxLength": 256,
+      "minLength": 0,
+      "pattern": "^\\p{L}\\p{Z}\\p{N}$",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}
