@@ -1688,7 +1688,8 @@
                 "DRAFT_PULL_REQUEST_CHANGED",
                 "PULL_REQUEST_UPDATED",
                 "MERGE_QUEUE_RESET",
-                "INCOMPATIBILITY_WITH_BRANCH_PROTECTIONS"
+                "INCOMPATIBILITY_WITH_BRANCH_PROTECTIONS",
+                "PR_MANUALLY_MERGED"
               ],
               "type": "string"
             },
