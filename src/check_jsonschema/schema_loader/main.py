@@ -9,7 +9,7 @@ import urllib.parse
 import jsonschema
 
 from ..builtin_schemas import get_builtin_schema
-from ..formats import FormatOptions, make_format_checker
+from ..formats import FormatOptions, format_checker_for_regex_impl, make_format_checker
 from ..parsers import ParserSet
 from ..regex_variants import RegexImplementation
 from ..utils import is_url_ish
@@ -153,10 +153,7 @@ class SchemaLoader(SchemaLoaderBase):
     ) -> jsonschema.protocols.Validator:
         retrieval_uri = self.get_schema_retrieval_uri()
         schema = self.get_schema()
-
-        schema_dialect = schema.get("$schema")
-        if schema_dialect is not None and not isinstance(schema_dialect, str):
-            schema_dialect = None
+        schema_dialect = _dialect_of_schema(schema)
 
         # format checker (which may be None)
         format_checker = make_format_checker(format_opts, schema_dialect)
@@ -170,12 +167,8 @@ class SchemaLoader(SchemaLoaderBase):
         if self.validator_class is None:
             # get the correct validator class and check the schema under its metaschema
             validator_cls = jsonschema.validators.validator_for(schema)
-            _check_schema(
-                validator_cls,
-                schema,
-                format_checker=format_checker,
-                regex_impl=regex_impl,
-            )
+
+            _check_schema(validator_cls, schema, regex_impl=regex_impl)
         else:
             # for a user-provided validator class, don't check_schema
             # on the grounds that it might *not* be valid but the user wants to use
@@ -206,11 +199,11 @@ def _check_schema(
     validator_cls: type[jsonschema.protocols.Validator],
     schema: dict[str, t.Any],
     *,
-    format_checker: jsonschema.FormatChecker | None,
     regex_impl: RegexImplementation,
 ) -> None:
     """A variant definition of Validator.check_schema which uses the regex
     implementation and format checker specified."""
+    # construct the metaschema validator class (with customized regex impl)
     schema_validator_cls = jsonschema.validators.validator_for(
         validator_cls.META_SCHEMA, default=validator_cls
     )
@@ -218,14 +211,26 @@ def _check_schema(
         schema_validator_cls, regex_impl
     )
 
-    if format_checker is None:
-        format_checker = schema_validator_cls.FORMAT_CHECKER
+    # construct a specialized format checker (again, customized regex impl)
+    metaschema_dialect = _dialect_of_schema(validator_cls.META_SCHEMA)
+    format_checker = format_checker_for_regex_impl(regex_impl, metaschema_dialect)
 
+    # now, construct and apply the actual validator
     schema_validator = schema_validator_cls(
         validator_cls.META_SCHEMA, format_checker=format_checker
     )
     for error in schema_validator.iter_errors(schema):
         raise jsonschema.exceptions.SchemaError.create_from(error)
+
+
+def _dialect_of_schema(schema: dict[str, t.Any] | bool) -> str | None:
+    if not isinstance(schema, dict):
+        return None
+
+    schema_dialect = schema.get("$schema")
+    if schema_dialect is not None and not isinstance(schema_dialect, str):
+        schema_dialect = None
+    return schema_dialect
 
 
 class BuiltinSchemaLoader(SchemaLoader):

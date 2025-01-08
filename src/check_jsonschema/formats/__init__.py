@@ -66,13 +66,10 @@ def make_format_checker(
     if not opts.enabled:
         return None
 
-    # copy the base checker
-    base_checker = get_base_format_checker(schema_dialect)
-    checker = copy.deepcopy(base_checker)
+    # customize around regex checking first
+    checker = format_checker_for_regex_impl(opts.regex_impl)
 
-    # replace the regex check
-    del checker.checkers["regex"]
-    checker.checks("regex")(opts.regex_impl.check_format)
+    # add other custom format checks
     checker.checks("date-time")(validate_rfc3339)
     checker.checks("time")(validate_time)
 
@@ -81,5 +78,20 @@ def make_format_checker(
         if checkname not in checker.checkers:
             continue
         del checker.checkers[checkname]
+
+    return checker
+
+
+def format_checker_for_regex_impl(
+    regex_impl: RegexImplementation, schema_dialect: str | None = None
+) -> jsonschema.FormatChecker:
+    # convert to a schema-derived format checker, and copy it
+    # for safe modification
+    base_checker = get_base_format_checker(schema_dialect)
+    checker = copy.deepcopy(base_checker)
+
+    # replace the regex check
+    del checker.checkers["regex"]
+    checker.checks("regex")(regex_impl.check_format)
 
     return checker
