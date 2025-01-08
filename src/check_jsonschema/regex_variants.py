@@ -70,10 +70,7 @@ class _RegressImplementation:
         if not validator.is_type(instance, "string"):
             return
 
-        try:
-            regress_pattern = self._compile_pattern(pattern)
-        except regress.RegressError:
-            yield jsonschema.ValidationError(f"pattern {pattern!r} failed to compile")
+        regress_pattern = self._compile_pattern(pattern)
         if not regress_pattern.find(instance):
             yield jsonschema.ValidationError(f"{instance!r} does not match {pattern!r}")
 
@@ -120,10 +117,7 @@ class _PythonImplementation:
         if not validator.is_type(instance, "string"):
             return
 
-        try:
-            re_pattern = re.compile(pattern)
-        except re.error:
-            yield jsonschema.ValidationError(f"pattern {pattern!r} failed to compile")
+        re_pattern = re.compile(pattern)
         if not re_pattern.search(instance):
             yield jsonschema.ValidationError(f"{instance!r} does not match {pattern!r}")
 

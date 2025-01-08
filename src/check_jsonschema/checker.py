@@ -59,7 +59,7 @@ class SchemaChecker:
         except SchemaParseError as e:
             self._fail("Error: schemafile could not be parsed as JSON", e)
         except jsonschema.SchemaError as e:
-            self._fail(f"Error: schemafile was not valid: {e}\n", e)
+            self._fail("Error: schemafile was not valid\n", e)
         except UnsupportedUrlScheme as e:
             self._fail(f"Error: {e}\n", e)
         except Exception as e:
