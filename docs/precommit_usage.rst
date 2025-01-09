@@ -43,6 +43,20 @@ Validate JSON Schema files against their matching metaschema, as specified in th
 .. generated-hook-list-start
 
 
+``check-amazon-ecs-intellisense-schema``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate AWS ECS Task Definitions against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.31.0
+      hooks:
+        - id: check-amazon-ecs-intellisense-schema
+
+
 ``check-azure-pipelines``
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -1,0 +1,24 @@
+{
+  "requiresCompatibilities": [
+    "EXTERNAL"
+  ],
+  "containerDefinitions": [
+    {
+      "name": "nginx",
+      "image": "public.ecr.aws/nginx/nginx:latest",
+      "memory": 256,
+      "cpu": 256,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ],
+  "networkMode": "bridge",
+  "family": "nginx",
+  "tags": []
+}

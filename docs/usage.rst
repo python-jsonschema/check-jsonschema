@@ -86,6 +86,7 @@ SchemaStore and other sources:
 
 .. vendored-schema-list-start
 
+- ``vendor.amazon-ecs-intellisense-schema``
 - ``vendor.azure-pipelines``
 - ``vendor.bamboo-spec``
 - ``vendor.bitbucket-pipelines``

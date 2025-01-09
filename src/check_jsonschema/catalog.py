@@ -21,6 +21,19 @@ CUSTOM_SCHEMA_NAMES = [
 #
 # Additional config could be associated with the schemas in the future.
 SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
+    "amazon-ecs-intellisense-schema": {
+        "url": _githubusercontent_url(
+            "awslabs",
+            "amazon-ecs-intellisense-schema",
+            "mainline",
+            "src/model/schema/schema.json",
+        ),
+        "hook_config": {
+            "name": "Validate AWS ECS Task Definitions",
+            "files": r".*task.*definition.json",
+            "types": "json",
+        },
+    },
     "azure-pipelines": {
         "url": _githubusercontent_url(
             "microsoft", "azure-pipelines-vscode", "main", "service-schema.json"
