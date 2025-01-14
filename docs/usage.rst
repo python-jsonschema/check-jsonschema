@@ -92,6 +92,7 @@ SchemaStore and other sources:
 - ``vendor.buildkite``
 - ``vendor.circle-ci``
 - ``vendor.cloudbuild``
+- ``vendor.compose-spec``
 - ``vendor.dependabot``
 - ``vendor.drone-ci``
 - ``vendor.github-actions``
