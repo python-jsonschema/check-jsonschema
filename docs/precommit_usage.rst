@@ -127,6 +127,20 @@ Validate Google Cloud Build config against the schema provided by SchemaStore
         - id: check-cloudbuild
 
 
+``check-compose-spec``
+~~~~~~~~~~~~~~~~~~~~~~
+
+Validate Docker Compose files against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.31.0
+      hooks:
+        - id: check-compose-spec
+
+
 ``check-dependabot``
 ~~~~~~~~~~~~~~~~~~~~
 

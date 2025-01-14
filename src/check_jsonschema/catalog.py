@@ -98,6 +98,22 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types_or": ["json", "yaml"],
         },
     },
+    "compose-spec": {
+        "url": _githubusercontent_url(
+            "compose-spec",
+            "compose-spec",
+            "master",
+            "schema/compose-spec.json",
+        ),
+        "hook_config": {
+            "name": "Validate Docker Compose files",
+            "files": [
+                r"([^/]*/)*docker-compose(\.[\.a-zA-Z0-9_-]*)*\.(yml|yaml)",
+                r"([^/]*/)*compose(\.[\.a-zA-Z0-9_-]*)*\.(yml|yaml)",
+            ],
+            "types": "yaml",
+        },
+    },
     "dependabot": {
         "url": "https://json.schemastore.org/dependabot-2.0.json",
         "hook_config": {

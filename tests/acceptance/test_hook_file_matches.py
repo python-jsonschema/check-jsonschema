@@ -63,6 +63,22 @@ _HOOKID_PATH_MAP = {
             "bamboo-specs/README.md",
         ),
     },
+    "check-compose-spec": {
+        "good": (
+            "compose.yml",
+            "compose.yaml",
+            "docker-compose.yml",
+            "docker-compose.yaml",
+            "compose.override.yml",
+            "docker-compose.override.yml",
+            "path/to/compose.yml",
+        ),
+        "bad": (
+            "docker.compose.yml",
+            "docker.md",
+            "Dockerfile",
+        ),
+    },
     "check-dependabot": {
         "good": (".github/dependabot.yml", ".github/dependabot.yaml"),
         "bad": (".dependabot.yaml", ".dependabot.yml"),
