@@ -1,7 +1,7 @@
 repos:
 # dogfood
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.30.0
+  rev: 0.31.0
   hooks:
     - id: check-dependabot
     - id: check-github-workflows
@@ -9,6 +9,11 @@ repos:
     - id: check-metaschema
       name: Validate Vendored Schemas
       files: ^src/check_jsonschema/builtin_schemas/vendor/.*\.json$
+      exclude: ^src/check_jsonschema/builtin_schemas/vendor/azure-pipelines\.json$
+    - id: check-metaschema
+      name: Validate Vendored Schemas (nonunicode regexes)
+      files: ^src/check_jsonschema/builtin_schemas/vendor/azure-pipelines\.json$
+      args: ["--regex-variant", "nonunicode"]
     - id: check-jsonschema
       name: Validate Test Configs
       args: ["--schemafile", "tests/example-files/config_schema.json"]
