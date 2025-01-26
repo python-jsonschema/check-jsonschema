@@ -1553,9 +1553,21 @@
           "type": "boolean"
         },
         "branch-protection-review-decision": {
+          "anyOf": [
+            {
+              "enum": [
+                "APPROVED",
+                "CHANGES_REQUESTED",
+                "REVIEW_REQUIRED"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "description": "The review decision. This indicates if `CODEOWNERS` have reviewed the pull request when the `Require Review from Code Owners` branch protection rule is enabled.",
-          "title": "Branch protection review decision",
-          "type": "boolean"
+          "title": "Branch protection review decision"
         },
         "queue-frozen": {
           "description": "Whether the pull request is in a queue that is frozen.",
