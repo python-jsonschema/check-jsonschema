@@ -22,6 +22,11 @@
         "type": "string"
       }
     },
+    "allowCommandTemplating": {
+      "description": "Set this to `false` to disable template compilation for post-upgrade commands.",
+      "type": "boolean",
+      "default": true
+    },
     "allowCustomCrateRegistries": {
       "description": "Set this to `true` to allow custom crate registries.",
       "type": "boolean",
@@ -32,15 +37,18 @@
       "type": "boolean",
       "default": false
     },
-    "allowPostUpgradeCommandTemplating": {
-      "description": "Set this to `false` to disable template compilation for post-upgrade commands.",
-      "type": "boolean",
-      "default": true
-    },
     "allowScripts": {
       "description": "Set this to `true` if repositories are allowed to run install scripts.",
       "type": "boolean",
       "default": false
+    },
+    "allowedCommands": {
+      "description": "A list of regular expressions that decide which commands are allowed in post-upgrade tasks.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
     },
     "allowedEnv": {
       "description": "List of allowed patterns for environment variable names in repository env config.",
@@ -59,14 +67,6 @@
       "default": [
         "X-*"
       ]
-    },
-    "allowedPostUpgradeCommands": {
-      "description": "A list of regular expressions that decide which post-upgrade tasks are allowed.",
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "default": []
     },
     "ansible": {
       "description": "Configuration object for the ansible manager",
@@ -1072,7 +1072,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.5.8"
+      "default": "ghcr.io/containerbase/sidecar:13.7.1"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1520,6 +1520,17 @@
         "null"
       ],
       "default": null
+    },
+    "haskell-cabal": {
+      "description": "Configuration object for the haskell-cabal manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "\\.cabal$"
+        ],
+        "pinDigests": false
+      },
+      "$ref": "#"
     },
     "helm-requirements": {
       "description": "Configuration object for the helm-requirements manager",

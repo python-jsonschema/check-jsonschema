@@ -321,16 +321,7 @@
             "type": "object",
             "properties": {
               "github_check": {
-                "type": "object",
-                "properties": {
-                  "context": {
-                    "description": "GitHub commit status name",
-                    "type": "string"
-                  }
-                }
-              },
-              "if": {
-                "$ref": "#/definitions/if"
+                "type": "object"
               }
             },
             "additionalProperties": false
@@ -954,16 +945,7 @@
                 "type": "object",
                 "properties": {
                   "github_check": {
-                    "type": "object",
-                    "properties": {
-                      "context": {
-                        "description": "GitHub commit status name",
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "if": {
-                    "$ref": "#/definitions/if"
+                    "type": "object"
                   }
                 },
                 "additionalProperties": false
@@ -1000,7 +982,8 @@
             },
             {
               "type": "object",
-              "description": "A map of plugins for this step. Deprecated: please use the array syntax."
+              "description": "A map of plugins for this step. Deprecated: please use the array syntax.",
+              "deprecated": true
             }
           ]
         },
@@ -1151,9 +1134,6 @@
         },
         "wait": {
           "description": "Waits for previous steps to pass before continuing",
-          "type": ["string", "null"]
-        },
-        "waiter": {
           "type": ["string", "null"]
         }
       },
