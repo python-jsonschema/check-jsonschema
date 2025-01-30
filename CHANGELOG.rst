@@ -10,7 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas (2025-01-26)
+0.31.1
+------
+
+- Update vendored schemas: buildkite, cloudbuild, compose-spec, mergify,
+  renovate (2025-01-26)
 - Update the ``gitlab`` and ``renovate`` hooks to use
   ``--regex-variant nonunicode``. Thanks :user:`quentin-ag` and :user:`Callek`
   for reporting! (:issue:`516`, :issue:`518`)
