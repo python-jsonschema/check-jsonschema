@@ -14,6 +14,8 @@ Unreleased
 - Update the ``gitlab`` and ``renovate`` hooks to use
   ``--regex-variant nonunicode``. Thanks :user:`quentin-ag` and :user:`Callek`
   for reporting! (:issue:`516`, :issue:`518`)
+- Update the required ``ruamel.yaml`` version to a range,
+  ``>=0.18.10,<0.19.0``.
 
 0.31.0
 ------
