@@ -156,7 +156,12 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         ),
         "hook_config": {
             "name": "Validate GitLab CI config",
-            "add_args": ["--data-transform", "gitlab-ci"],
+            "add_args": [
+                "--data-transform",
+                "gitlab-ci",
+                "--regex-variant",
+                "nonunicode",
+            ],
             "files": r"^.*\.gitlab-ci\.yml$",
             "types": "yaml",
         },
@@ -198,6 +203,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
                 "Validate Renovate config against the schema provided by "
                 "Renovate (does not support renovate config in package.json)"
             ),
+            "add_args": ["--regex-variant", "nonunicode"],
             "files": [
                 r"renovate\.(json|json5)",
                 r"\.(github|gitlab)/renovate\.(json|json5)",
