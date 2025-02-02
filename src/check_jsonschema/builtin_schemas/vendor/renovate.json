@@ -860,6 +860,7 @@
                 "description": "Custom manager to use. Valid only within a `customManagers` object.",
                 "type": "string",
                 "enum": [
+                  "jsonata",
                   "regex"
                 ]
               },
@@ -879,12 +880,18 @@
                 "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               },
+              "fileFormat": {
+                "description": "It specifies the syntax of the package file being managed by the custom JSONata manager.",
+                "type": "string",
+                "enum": [
+                  "json"
+                ]
+              },
               "matchStrings": {
-                "description": "Regex capture rule to use. Valid only within a `customManagers` object.",
+                "description": "Queries to use. Valid only within a `customManagers` object.",
                 "type": "array",
                 "items": {
-                  "type": "string",
-                  "format": "regex"
+                  "type": "string"
                 }
               },
               "matchStringsStrategy": {
@@ -1072,7 +1079,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.7.1"
+      "default": "ghcr.io/containerbase/sidecar:13.7.2"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1908,6 +1915,14 @@
       },
       "$ref": "#"
     },
+    "jsonata": {
+      "description": "Configuration object for the jsonata manager",
+      "type": "object",
+      "default": {
+        "pinDigests": false
+      },
+      "$ref": "#"
+    },
     "jsonnet-bundler": {
       "description": "Configuration object for the jsonnet-bundler manager",
       "type": "object",
@@ -2213,7 +2228,8 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)package\\.json$"
+          "(^|/)package\\.json$",
+          "(^|/)pnpm-workspace\\.yaml$"
         ],
         "digest": {
           "prBodyDefinitions": {
