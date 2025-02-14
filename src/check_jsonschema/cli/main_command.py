@@ -17,6 +17,7 @@ from ..reporter import REPORTER_BY_NAME, Reporter
 from ..schema_loader import (
     BuiltinSchemaLoader,
     MetaSchemaLoader,
+    ModelineSchemaLoader,
     SchemaLoader,
     SchemaLoaderBase,
 )
@@ -111,6 +112,11 @@ The '--disable-formats' flag supports the following formats:
     help="The name of an internal schema to use for '--schemafile'",
     type=click.Choice(BUILTIN_SCHEMA_CHOICES, case_sensitive=False),
     metavar="BUILTIN_SCHEMA_NAME",
+)
+@click.option(
+    "--modeline-schema",
+    is_flag=True,
+    help="Use the schema defined in the modeline.",
 )
 @click.option(
     "--check-metaschema",
@@ -235,6 +241,7 @@ def main(
     schemafile: str | None,
     builtin_schema: str | None,
     base_uri: str | None,
+    modeline_schema: bool,
     check_metaschema: bool,
     no_cache: bool,
     cache_filename: str | None,
@@ -255,7 +262,7 @@ def main(
 
     args.set_regex_variant(regex_variant, legacy_opt=format_regex)
 
-    args.set_schema(schemafile, builtin_schema, check_metaschema)
+    args.set_schema(schemafile, builtin_schema, check_metaschema, modeline_schema)
     args.set_validator(validator_class)
 
     args.base_uri = base_uri
@@ -292,6 +299,8 @@ def main(
 def build_schema_loader(args: ParseResult) -> SchemaLoaderBase:
     if args.schema_mode == SchemaLoadingMode.metaschema:
         return MetaSchemaLoader(base_uri=args.base_uri)
+    if args.schema_mode == SchemaLoadingMode.modeline:
+        return ModelineSchemaLoader(instancefiles=args.instancefiles)
     elif args.schema_mode == SchemaLoadingMode.builtin:
         assert args.schema_path is not None
         return BuiltinSchemaLoader(args.schema_path, base_uri=args.base_uri)
