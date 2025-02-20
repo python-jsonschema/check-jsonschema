@@ -23,7 +23,7 @@ files.
 
 ```yaml
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.31.1
+  rev: 0.31.2
   hooks:
     - id: check-github-workflows
       args: ["--verbose"]

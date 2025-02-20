@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.31.2
+------
+
 - Update vendored schemas: dependabot, github-workflows, gitlab-ci, mergify, renovate,
   woodpecker-ci (2025-02-19)
 
