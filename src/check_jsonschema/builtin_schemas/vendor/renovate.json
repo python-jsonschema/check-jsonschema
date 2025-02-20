@@ -860,6 +860,7 @@
                 "description": "Custom manager to use. Valid only within a `customManagers` object.",
                 "type": "string",
                 "enum": [
+                  "jsonata",
                   "regex"
                 ]
               },
@@ -879,12 +880,19 @@
                 "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               },
+              "fileFormat": {
+                "description": "It specifies the syntax of the package file being managed by the custom JSONata manager.",
+                "type": "string",
+                "enum": [
+                  "json",
+                  "yaml"
+                ]
+              },
               "matchStrings": {
-                "description": "Regex capture rule to use. Valid only within a `customManagers` object.",
+                "description": "Queries to use. Valid only within a `customManagers` object.",
                 "type": "array",
                 "items": {
-                  "type": "string",
-                  "format": "regex"
+                  "type": "string"
                 }
               },
               "matchStringsStrategy": {
@@ -1024,6 +1032,16 @@
       "type": "boolean",
       "default": false
     },
+    "devbox": {
+      "description": "Configuration object for the devbox manager",
+      "type": "object",
+      "default": {
+        "fileMatch": [
+          "(^|/)devbox\\.json$"
+        ]
+      },
+      "$ref": "#"
+    },
     "devcontainer": {
       "description": "Configuration object for the devcontainer manager",
       "type": "object",
@@ -1072,7 +1090,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.7.1"
+      "default": "ghcr.io/containerbase/sidecar:13.7.2"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1908,6 +1926,14 @@
       },
       "$ref": "#"
     },
+    "jsonata": {
+      "description": "Configuration object for the jsonata manager",
+      "type": "object",
+      "default": {
+        "pinDigests": false
+      },
+      "$ref": "#"
+    },
     "jsonnet-bundler": {
       "description": "Configuration object for the jsonnet-bundler manager",
       "type": "object",
@@ -2191,7 +2217,7 @@
         "fileMatch": [
           "(^|/)flake\\.nix$"
         ],
-        "commitMessageTopic": "nixpkgs",
+        "commitMessageTopic": "nix",
         "commitMessageExtra": "to {{newValue}}",
         "enabled": false
       },
@@ -2213,7 +2239,8 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)package\\.json$"
+          "(^|/)package\\.json$",
+          "(^|/)pnpm-workspace\\.yaml$"
         ],
         "digest": {
           "prBodyDefinitions": {
@@ -3165,6 +3192,15 @@
       },
       "$ref": "#"
     },
+    "replacementApproach": {
+      "description": "Select whether to perform a direct replacement or alias replacement.",
+      "type": "string",
+      "enum": [
+        "replace",
+        "alias"
+      ],
+      "default": "replace"
+    },
     "reportPath": {
       "description": "Path to where the file should be written. In case of `s3` this has to be a full S3 URI.",
       "type": [
@@ -3635,6 +3671,7 @@
       "oneOf": [
         {
           "enum": [
+            "aws-eks-addon",
             "aws-machine-image",
             "azure-rest-api",
             "bazel-module",
