@@ -6,6 +6,7 @@ import hashlib
 import os
 import re
 import subprocess
+import textwrap
 
 import requests
 
@@ -17,8 +18,9 @@ VENDOR_SLUG = "\n.. vendor-insert-here\n"
 
 EXISTING_CHANGELINE_PATTERN = re.compile(
     re.escape(VENDOR_SLUG)
-    + "\n?- Update vendored schemas"
-    + r" \(\d{4}-\d{2}-\d{2}\)"
+    + "\n?- Update vendored schemas: "
+    + r"([\w-]+(,\s+[\w-]+)*) "
+    + r"\(\d{4}-\d{2}-\d{2}\)"
     + "\n",
     flags=re.MULTILINE,
 )
@@ -121,12 +123,30 @@ def update_changelog() -> None:
     print("changes were made, updating changelog")
     with open("CHANGELOG.rst", encoding="utf-8") as fp:
         content = fp.read()
-    new_slug = VENDOR_SLUG + f"\n- Update vendored schemas ({TODAY})\n"
 
-    if EXISTING_CHANGELINE_PATTERN.search(content):
-        content = EXISTING_CHANGELINE_PATTERN.sub(new_slug, content)
+    new_item_prefix = "- Update vendored schemas:"
+
+    if match := EXISTING_CHANGELINE_PATTERN.search(content):
+        updated_schemas = {s.rstrip(",") for s in match.group(1).split()}
+        updated_schemas.update(SCHEMAS_WITH_NEW_HASHES)
     else:
-        content = content.replace(VENDOR_SLUG, new_slug)
+        updated_schemas = SCHEMAS_WITH_NEW_HASHES
+
+    schema_list = sorted(updated_schemas)
+    new_item = new_item_prefix + f" {', '.join(schema_list)} ({TODAY})\n"
+
+    new_item = "\n".join(
+        textwrap.wrap(
+            new_item, break_on_hyphens=False, subsequent_indent="  ", width=88
+        )
+    )
+    new_item = f"{VENDOR_SLUG}\n{new_item}\n"
+
+    if match:
+        content = EXISTING_CHANGELINE_PATTERN.sub(new_item, content)
+    else:
+        content = content.replace(VENDOR_SLUG, new_item)
+
     with open("CHANGELOG.rst", "w", encoding="utf-8") as fp:
         fp.write(content)
 
