@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: renovate, taskfile (2025-02-23)
+
 0.31.2
 ------
 
