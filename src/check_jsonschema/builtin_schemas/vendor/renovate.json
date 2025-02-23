@@ -3045,6 +3045,15 @@
       "description": "Path to the Server-side old private key.",
       "type": "string"
     },
+    "processEnv": {
+      "description": "Environment variables to be used in global config only.",
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "type": "string"
+      },
+      "$ref": "#"
+    },
     "productLinks": {
       "description": "Links which are used in PRs, issues and comments.",
       "type": "object",
