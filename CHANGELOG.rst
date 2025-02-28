@@ -10,7 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: renovate, taskfile (2025-02-23)
+- Update vendored schemas: circle-ci, github-workflows, mergify, renovate, taskfile
+  (2025-02-28)
 
 0.31.2
 ------
