@@ -14,7 +14,7 @@ jobs:
             py: "3.9"
 
     runs-on: ubuntu-latest
-    name: "Run '${{ matrix.toxenv }}' on python ${{ matrix.py }}"
+    name: "'${{ matrix.toxenv }}' on py${{ matrix.py }}"
     steps:
       - uses: actions/checkout@v4
 
@@ -61,10 +61,10 @@ jobs:
   ci-test-matrix:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu, windows, macos]
         py: ['3.9', '3.10', '3.11', '3.12', '3.13']
-    name: "Run tests on ${{ matrix.os }}, py${{ matrix.py }}"
-    runs-on: ${{ matrix.os }}
+    name: "Test on ${{ matrix.os }}, py${{ matrix.py }}"
+    runs-on: "${{ matrix.os }}-latest"
     steps:
       - uses: actions/checkout@v4
 
