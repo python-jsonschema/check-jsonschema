@@ -182,7 +182,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "url": _githubusercontent_url(
             "readthedocs",
             "readthedocs.org",
-            "master",
+            "main",
             "readthedocs/rtd_tests/fixtures/spec/v2/schema.json",
         ),
         "hook_config": {
