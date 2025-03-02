@@ -98,7 +98,7 @@ jobs:
       - name: test
         run: |
           python -m tox run -m ci -- --junitxml pytest.{envname}.xml
-          python -m tox run -e cov
+          python -m tox run -e cov_combine,cov_report
 
       - uses: actions/upload-artifact@v4
         with:
