@@ -19,7 +19,7 @@ VENDOR_SLUG = "\n.. vendor-insert-here\n"
 EXISTING_CHANGELINE_PATTERN = re.compile(
     re.escape(VENDOR_SLUG)
     + "\n?- Update vendored schemas: "
-    + r"([\w-]+(,\s+[\w-]+)*) "
+    + r"([\w-]+(,\s+[\w-]+)*)\s+"
     + r"\(\d{4}-\d{2}-\d{2}\)"
     + "\n",
     flags=re.MULTILINE,

@@ -347,7 +347,7 @@
           "default": [
             "check"
           ],
-          "description": "List of reporting modes for the action's result.",
+          "description": "Reporting modes for the action's result. Check will create a check on the pull request, and comment will post a comment on the pull request.",
           "items": {
             "enum": [
               "check",
@@ -812,7 +812,7 @@
           "default": [
             "check"
           ],
-          "description": "List of reporting modes for the action's result.",
+          "description": "Reporting modes for the action's result. Check will create a check on the pull request, and comment will post a comment on the pull request.",
           "items": {
             "enum": [
               "check",
@@ -1706,7 +1706,8 @@
                 "PULL_REQUEST_UPDATED",
                 "MERGE_QUEUE_RESET",
                 "INCOMPATIBILITY_WITH_BRANCH_PROTECTIONS",
-                "PR_MANUALLY_MERGED"
+                "PR_MANUALLY_MERGED",
+                "DRAFT_PULL_REQUEST_CREATION_FAILED"
               ],
               "type": "string"
             },
