@@ -140,6 +140,10 @@ _HOOKID_PATH_MAP = {
             ".renovate.json",
         ),
     },
+    "check-snapcraft": {
+        "good": ("snapcraft.yaml", "snap/snapcraft.yaml", "foo/bar/snapcraft.yaml"),
+        "bad": ("snapcraft.yml", "snap.yaml", "snapcraft"),
+    },
     "check-travis": {
         "good": (
             ".travis.yml",

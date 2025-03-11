@@ -1,0 +1,6 @@
+name: broken
+base: core22
+version: '1.2'
+summary: Broken snap file
+description: |
+  Broken snap file which is missing a parts block.
