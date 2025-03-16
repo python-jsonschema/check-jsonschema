@@ -1693,7 +1693,6 @@
                 "CHECKS_FAILED",
                 "QUEUE_RULE_MISSING",
                 "UNEXPECTED_QUEUE_CHANGE",
-                "PR_FROZEN_NO_CASCADING",
                 "BASE_BRANCH_MISSING",
                 "BASE_BRANCH_CHANGED",
                 "PR_UNEXPECTEDLY_FAILED_TO_MERGE",

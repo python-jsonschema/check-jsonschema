@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: dependabot, gitlab-ci, mergify, renovate (2025-03-16)
+
 0.31.3
 ------
 
