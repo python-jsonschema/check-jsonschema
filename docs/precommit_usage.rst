@@ -211,6 +211,20 @@ Validate GitLab CI config against the schema provided by SchemaStore
         - id: check-gitlab-ci
 
 
+``check-meltano``
+~~~~~~~~~~~~~~~~~
+
+Validate Meltano config against the schema provided by Meltano
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.31.3
+      hooks:
+        - id: check-meltano
+
+
 ``check-mergify``
 ~~~~~~~~~~~~~~~~~
 

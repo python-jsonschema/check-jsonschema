@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Add Meltano schema and pre-commit hook (:issue:`540`).
+
 0.31.3
 ------
 

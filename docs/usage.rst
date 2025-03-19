@@ -98,6 +98,7 @@ SchemaStore and other sources:
 - ``vendor.github-actions``
 - ``vendor.github-workflows``
 - ``vendor.gitlab-ci``
+- ``vendor.meltano``
 - ``vendor.mergify``
 - ``vendor.readthedocs``
 - ``vendor.renovate``
@@ -185,7 +186,7 @@ Example usage:
     --disable-formats time,date-time --disable-formats iri
 
 ``--regex-variant``
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 
 Set a mode for handling of the ``"regex"`` value for ``"format"`` and the mode
 for ``"pattern"`` and ``"patternProperties"`` interpretation.
