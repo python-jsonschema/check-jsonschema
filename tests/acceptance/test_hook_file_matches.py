@@ -79,6 +79,20 @@ _HOOKID_PATH_MAP = {
             "Dockerfile",
         ),
     },
+    "check-meltano": {
+        "good": (
+            "meltano.yml",
+            "data/meltano.yml",
+            "extractors.meltano.yml",
+            "meltano-manifest.json",
+            "meltano-manifest.prod.json",
+        ),
+        "bad": (
+            "meltano.yaml",
+            "meltano.yml.md",
+            "meltano-manifest.yml",
+        ),
+    },
     "check-dependabot": {
         "good": (".github/dependabot.yml", ".github/dependabot.yaml"),
         "bad": (".dependabot.yaml", ".dependabot.yml"),

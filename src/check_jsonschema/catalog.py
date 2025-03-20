@@ -166,6 +166,26 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "meltano": {
+        "url": _githubusercontent_url(
+            "meltano",
+            "meltano",
+            "main",
+            "src/meltano/schemas/meltano.schema.json",
+        ),
+        "hook_config": {
+            "name": "Validate Meltano Config",
+            "description": (
+                "Validate Meltano config against the schema provided by Meltano"
+            ),
+            "files": [
+                r".*meltano\.yml",
+                r"meltano-manifest\.json",
+                r"meltano-manifest\..+\.json",
+            ],
+            "types": ["json", "yaml"],
+        },
+    },
     "mergify": {
         "url": "https://docs.mergify.com/mergify-configuration-schema.json",
         "hook_config": {
