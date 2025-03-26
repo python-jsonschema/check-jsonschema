@@ -37,6 +37,7 @@ dev = [
     "pytest<9",
     'click-type-test==1.1.0;python_version>="3.10"',
     "coverage<8",
+    "identify>=2.6.9",
     "pytest-xdist<4",
     "responses==0.25.6",
 ]

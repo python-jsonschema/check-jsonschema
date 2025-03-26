@@ -3,6 +3,7 @@ from __future__ import annotations
 import pathlib
 import re
 
+from identify.identify import tags_from_filename
 import pytest
 import ruamel.yaml
 
@@ -27,6 +28,22 @@ def check_pattern_match(
         pytest.fail(f"'{pattern}' did not match '{value}' (expected match)")
     else:
         pytest.fail(f"'{pattern}' matched '{value}' (expected no match)")
+
+
+def check_types_match(
+    types: list[str],
+    types_or: list[str],
+    path: str,
+) -> None:
+    __tracebackhide__ = True
+
+    tags = tags_from_filename(path)
+
+    if types and not tags.issuperset(types):
+        pytest.fail(f"types={types} did not match '{path}' (expected match)")
+
+    if types_or and not tags.intersection(types_or):
+        pytest.fail(f"types_or={types_or} did not match '{path}' (expected match)")
 
 
 def get_hook_config(hookid):
@@ -182,6 +199,7 @@ _HOOKID_PATH_MAP = {
 def test_hook_matches_known_good_paths(hookid, filepath):
     config = get_hook_config(hookid)
     check_pattern_match(config["files"], filepath)
+    check_types_match(config.get("types", []), config.get("types_or", []), filepath)
 
 
 @pytest.mark.parametrize(
