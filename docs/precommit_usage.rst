@@ -267,6 +267,20 @@ Validate Renovate config against the schema provided by Renovate (does not suppo
         - id: check-renovate
 
 
+``check-snapcraft``
+~~~~~~~~~~~~~~~~~~~
+
+Validate snapcraft files against the schema provided by Canonical
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.31.3
+      hooks:
+        - id: check-snapcraft
+
+
 ``check-taskfile``
 ~~~~~~~~~~~~~~~~~~
 

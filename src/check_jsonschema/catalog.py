@@ -232,6 +232,19 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             ],
         },
     },
+    "snapcraft": {
+        "url": _githubusercontent_url(
+            "canonical", "snapcraft", "main", "schema/snapcraft.json"
+        ),
+        "hook_config": {
+            "name": "Validate snapcraft files",
+            "description": (
+                "Validate snapcraft files against the schema provided by Canonical"
+            ),
+            "files": r"^(.+/)?snapcraft\.yaml$",
+            "types": "yaml",
+        },
+    },
     "taskfile": {
         "url": "https://taskfile.dev/schema.json",
         "hook_config": {

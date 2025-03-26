@@ -102,6 +102,7 @@ SchemaStore and other sources:
 - ``vendor.mergify``
 - ``vendor.readthedocs``
 - ``vendor.renovate``
+- ``vendor.snapcraft``
 - ``vendor.taskfile``
 - ``vendor.travis``
 - ``vendor.woodpecker-ci``
