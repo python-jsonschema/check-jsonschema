@@ -3,9 +3,9 @@ from __future__ import annotations
 import pathlib
 import re
 
-from identify.identify import tags_from_filename
 import pytest
 import ruamel.yaml
+from identify.identify import tags_from_filename
 
 yaml = ruamel.yaml.YAML(typ="safe")
 
