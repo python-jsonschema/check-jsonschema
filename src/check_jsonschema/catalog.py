@@ -183,7 +183,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
                 r"meltano-manifest\.json",
                 r"meltano-manifest\..+\.json",
             ],
-            "types": ["json", "yaml"],
+            "types_or": ["json", "yaml"],
         },
     },
     "mergify": {
