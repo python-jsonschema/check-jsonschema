@@ -256,7 +256,7 @@ Validate Renovate config against the schema provided by Renovate (does not suppo
 ``check-snapcraft``
 ~~~~~~~~~~~~~~~~~~~
 
-Validate snapcraft files against the schema provided by SchemaStore
+Validate snapcraft files against the schema provided by Canonical
 
 .. code-block:: yaml
     :caption: example config

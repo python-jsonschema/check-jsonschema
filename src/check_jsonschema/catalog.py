@@ -218,7 +218,10 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         ),
         "hook_config": {
             "name": "Validate snapcraft files",
-            "files": [r"([^/]*/)*snapcraft.yaml"],
+            "description": (
+                "Validate snapcraft files against the schema provided by Canonical"
+            ),
+            "files": r"^(.+/)?snapcraft\.yaml$",
             "types": "yaml",
         },
     },
