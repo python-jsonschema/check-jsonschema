@@ -10,6 +10,12 @@ Unreleased
 
 .. vendor-insert-here
 
+0.32.1
+------
+
+- Fix the ``check-meltano`` hook to use ``types_or``. Thanks
+  :user:`edgarrmondragon`! (:pr:`543`)
+
 0.32.0
 ------
 
