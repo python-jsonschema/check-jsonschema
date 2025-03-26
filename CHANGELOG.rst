@@ -10,10 +10,13 @@ Unreleased
 
 .. vendor-insert-here
 
+0.32.0
+------
+
 - Update vendored schemas: circle-ci, compose-spec, dependabot, github-workflows,
   gitlab-ci, mergify, renovate, taskfile (2025-03-25)
-
-- Add Meltano schema and pre-commit hook (:issue:`540`).
+- Add Meltano schema and pre-commit hook. Thanks :user:`edgarrmondragon`! (:issue:`540`)
+- Add Snapcraft schema and pre-commit hook. Thanks :user:`fabolhak`! (:issue:`535`)
 
 0.31.3
 ------
