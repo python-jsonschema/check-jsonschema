@@ -2841,6 +2841,7 @@
           "gomodSkipVendor",
           "gomodVendor",
           "helmUpdateSubChartArchives",
+          "kustomizeInflateHelmArchives",
           "npmDedupe",
           "pnpmDedupe",
           "yarnDedupeFewer",
