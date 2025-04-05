@@ -5,6 +5,7 @@ import pathlib
 import typing as t
 import urllib.error
 import urllib.parse
+from abc import ABC, abstractmethod
 
 import jsonschema
 
@@ -59,7 +60,8 @@ def _extend_with_pattern_implementation(
     )
 
 
-class SchemaLoaderBase:
+class SchemaLoaderBase(ABC):
+    @abstractmethod
     def get_validator(
         self,
         path: pathlib.Path | str,
@@ -68,7 +70,7 @@ class SchemaLoaderBase:
         regex_impl: RegexImplementation,
         fill_defaults: bool,
     ) -> jsonschema.protocols.Validator:
-        raise NotImplementedError
+        """Get a validator for the given instance document."""
 
 
 class SchemaLoader(SchemaLoaderBase):
