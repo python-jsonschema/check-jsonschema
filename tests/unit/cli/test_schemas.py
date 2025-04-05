@@ -13,7 +13,7 @@ def test_check_schema_builtin(name):
     Test that the buildin schema is valid
     """
     if name == "vendor.compose-spec":
-        pytest.skip("vendor.compose-spec does not work")
+        pytest.xfail("vendor.compose-spec does not work")
         return
     regex_name = (
         RegexVariantName.nonunicode
