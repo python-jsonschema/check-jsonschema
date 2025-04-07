@@ -60,6 +60,13 @@ namespaces = false
 [tool.isort]
 profile = "black"
 
+[tool.ruff]
+select = [
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "TYP", # flake8-typing-as-t
+]
+
 [tool.mypy]
 # strict = true  # TODO: enable
 disallow_untyped_defs = true
