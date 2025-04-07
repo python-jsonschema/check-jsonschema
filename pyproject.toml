@@ -73,3 +73,6 @@ filterwarnings = [
     # dateutil has a Python 3.12 compatibility issue.
     'ignore:datetime\.datetime\.utcfromtimestamp\(\) is deprecated:DeprecationWarning',
 ]
+addopts = [
+    "--color=yes",
+]
