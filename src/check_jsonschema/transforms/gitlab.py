@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import typing as t
 
-import ruamel.yaml
-
 from .base import Transform
+
+if t.TYPE_CHECKING:
+    import ruamel.yaml
 
 
 class GitLabReferenceExpectationViolation(ValueError):

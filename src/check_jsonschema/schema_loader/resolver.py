@@ -7,8 +7,10 @@ import referencing
 from referencing.jsonschema import DRAFT202012, Schema
 
 from ..cachedownloader import CacheDownloader
-from ..parsers import ParserSet
 from ..utils import filename2path
+
+if t.TYPE_CHECKING:
+    from ..parsers import ParserSet
 
 
 def make_reference_registry(

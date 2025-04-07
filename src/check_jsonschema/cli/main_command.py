@@ -5,7 +5,6 @@ import textwrap
 import typing as t
 
 import click
-import jsonschema
 
 from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from ..checker import SchemaChecker
@@ -30,6 +29,9 @@ BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
 BUILTIN_SCHEMA_CHOICES = (
     BUILTIN_SCHEMA_NAMES + list(SCHEMA_CATALOG.keys()) + CUSTOM_SCHEMA_NAMES
 )
+
+if t.TYPE_CHECKING:
+    import jsonschema
 
 
 def set_color_mode(ctx: click.Context, param: str, value: str) -> None:

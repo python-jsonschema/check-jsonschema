@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import io
-import pathlib
 import typing as t
-
-import ruamel.yaml
 
 from ..identify_filetype import path_to_type
 from . import json5, json_, toml, yaml
+
+if t.TYPE_CHECKING:
+    import pathlib
+
+    import ruamel.yaml
 
 _PARSER_ERRORS: set[type[Exception]] = {
     json_.JSONDecodeError,

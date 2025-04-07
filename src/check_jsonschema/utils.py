@@ -11,7 +11,9 @@ import urllib.parse
 import urllib.request
 
 import click
-import jsonschema
+
+if t.TYPE_CHECKING:
+    import jsonschema
 
 WINDOWS = os.name == "nt"
 

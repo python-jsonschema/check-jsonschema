@@ -3,7 +3,8 @@ from __future__ import annotations
 import typing as t
 import warnings
 
-import click
+if t.TYPE_CHECKING:
+    import click
 
 
 def deprecation_warning_callback(

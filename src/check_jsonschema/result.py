@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-import pathlib
+import typing
 
-import jsonschema
+if typing.TYPE_CHECKING:
+    import pathlib
 
-from .parsers import ParseError
+    import jsonschema
+
+    from .parsers import ParseError
 
 
 class CheckResult:

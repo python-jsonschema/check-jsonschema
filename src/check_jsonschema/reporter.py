@@ -13,9 +13,11 @@ import typing as t
 import click
 import jsonschema
 
-from .parsers import ParseError
-from .result import CheckResult
 from .utils import format_error, iter_validation_error
+
+if t.TYPE_CHECKING:
+    from .parsers import ParseError
+    from .result import CheckResult
 
 
 class Reporter(abc.ABC):

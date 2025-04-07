@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import functools
-import pathlib
 import typing as t
 import urllib.error
 import urllib.parse
@@ -11,11 +10,15 @@ import jsonschema
 from ..builtin_schemas import get_builtin_schema
 from ..formats import FormatOptions, format_checker_for_regex_impl, make_format_checker
 from ..parsers import ParserSet
-from ..regex_variants import RegexImplementation
 from ..utils import is_url_ish
 from .errors import UnsupportedUrlScheme
 from .readers import HttpSchemaReader, LocalSchemaReader, StdinSchemaReader
 from .resolver import make_reference_registry
+
+if t.TYPE_CHECKING:
+    import pathlib
+
+    from ..regex_variants import RegexImplementation
 
 
 def _extend_with_default(
@@ -144,7 +147,7 @@ class SchemaLoader(SchemaLoaderBase):
     ) -> jsonschema.protocols.Validator:
         return self._get_validator(format_opts, regex_impl, fill_defaults)
 
-    @functools.lru_cache
+    @functools.lru_cache  # noqa: B019
     def _get_validator(
         self,
         format_opts: FormatOptions,

@@ -4,11 +4,14 @@ import enum
 import typing as t
 
 import click
-import jsonschema
 
 from ..formats import FormatOptions
 from ..regex_variants import RegexImplementation, RegexVariantName
-from ..transforms import Transform
+
+if t.TYPE_CHECKING:
+    import jsonschema
+
+    from ..transforms import Transform
 
 
 class SchemaLoadingMode(enum.Enum):

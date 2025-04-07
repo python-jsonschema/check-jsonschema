@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import pathlib
 import typing as t
 
 import click
@@ -8,11 +7,7 @@ import jsonschema
 import referencing.exceptions
 
 from . import utils
-from .formats import FormatOptions
-from .instance_loader import InstanceLoader
 from .parsers import ParseError
-from .regex_variants import RegexImplementation
-from .reporter import Reporter
 from .result import CheckResult
 from .schema_loader import SchemaLoaderBase, SchemaParseError, UnsupportedUrlScheme
 
@@ -20,6 +15,15 @@ from .schema_loader import SchemaLoaderBase, SchemaParseError, UnsupportedUrlSch
 class _Exit(Exception):
     def __init__(self, code: int) -> None:
         self.code = code
+
+
+if t.TYPE_CHECKING:
+    import pathlib
+
+    from .formats import FormatOptions
+    from .instance_loader import InstanceLoader
+    from .regex_variants import RegexImplementation
+    from .reporter import Reporter
 
 
 class SchemaChecker:

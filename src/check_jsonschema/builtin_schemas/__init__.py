@@ -17,8 +17,8 @@ def _get(package: str, resource: str, name: str) -> dict[str, t.Any]:
                 importlib.resources.files(package).joinpath(resource).read_bytes()
             ),
         )
-    except (FileNotFoundError, ModuleNotFoundError):
-        raise NoSuchSchemaError(f"no builtin schema named {name} was found")
+    except (FileNotFoundError, ModuleNotFoundError) as err:
+        raise NoSuchSchemaError(f"no builtin schema named {name} was found") from err
 
 
 def _get_vendored_schema(name: str) -> dict[str, t.Any]:

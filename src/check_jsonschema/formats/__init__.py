@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import copy
+import typing
 
 import jsonschema
 import jsonschema.validators
 
-from ..regex_variants import RegexImplementation
 from .implementations import validate_rfc3339, validate_time
+
+if typing.TYPE_CHECKING:
+    from ..regex_variants import RegexImplementation
 
 # all known format strings except for a selection from draft3 which have either
 # been renamed or removed:

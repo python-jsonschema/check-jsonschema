@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import typing as t
 
-import ruamel.yaml
+if t.TYPE_CHECKING:
+    import ruamel.yaml
 
 
 class Transform:
