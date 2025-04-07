@@ -1,3 +1,5 @@
+import warnings
+
 import jsonschema
 import pytest
 
@@ -10,16 +12,15 @@ from check_jsonschema.schema_loader.main import _check_schema
 @pytest.mark.parametrize("name", BUILTIN_SCHEMA_NAMES)
 def test_check_schema_builtin(name):
     """
-    Test that the buildin schema is valid
+    Test that the builtin schema is valid
     """
-    if name == "vendor.compose-spec":
-        pytest.xfail("vendor.compose-spec does not work")
-        return
-    regex_name = (
-        RegexVariantName.nonunicode
-        if "azure-pipelines" in name
-        else RegexVariantName.default
-    )
+    regex_name = RegexVariantName.default
+    if "azure-pipelines" in name:
+        regex_name = RegexVariantName.nonunicode
+    elif name == "vendor.compose-spec":
+        # supress DeprecationWarning: The metaschema specified by $schema was not found.
+        # This is likely due to the schema being a draft-07 schema.
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
     regex_impl = RegexImplementation(regex_name)
     schema = get_builtin_schema(name)
 
