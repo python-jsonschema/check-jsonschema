@@ -221,6 +221,14 @@ no extension should be treated as YAML.
 By default, this is not set and files without a detected type of JSON or YAML
 will fail.
 
+``--force-filetype``
+~~~~~~~~~~~~~~~~~~~~~~
+
+Set a filetype to use for instance files instead of detecting types.
+
+For example, ``--force-filetype json5`` will use the JSON5 parser, even on
+files ending in ``.json``.
+
 ``--data-transform``
 ~~~~~~~~~~~~~~~~~~~~
 
