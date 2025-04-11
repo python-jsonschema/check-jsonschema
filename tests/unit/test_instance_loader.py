@@ -79,11 +79,47 @@ a:
     ],
 )
 def test_instanceloader_toml_data(tmp_path, filename, default_filetype, open_wide):
-    f = tmp_path / "foo.toml"
+    f = tmp_path / filename
     f.write_text('[foo]\nbar = "baz"\n')
     loader = InstanceLoader(open_wide(f), default_filetype=default_filetype)
     data = list(loader.iter_files())
     assert data == [(str(f), {"foo": {"bar": "baz"}})]
+
+
+@pytest.mark.parametrize(
+    "filename, force_filetype",
+    [
+        ("foo.test", "toml"),
+        ("foo", "toml"),
+    ],
+)
+def test_instanceloader_force_filetype_toml(
+    tmp_path, filename, force_filetype, open_wide
+):
+    f = tmp_path / filename
+    f.write_text('[foo]\nbar = "baz"\n')
+    loader = InstanceLoader(open_wide(f), force_filetype=force_filetype)
+    data = list(loader.iter_files())
+    assert data == [(str(f), {"foo": {"bar": "baz"}})]
+
+
+@pytest.mark.skipif(not JSON5_ENABLED, reason="test requires json5")
+@pytest.mark.parametrize(
+    "filename, force_filetype",
+    [
+        ("foo.test", "json5"),
+        ("foo.json", "json5"),
+    ],
+)
+def test_instanceloader_force_filetype_json(
+    tmp_path, filename, force_filetype, open_wide
+):
+    f = tmp_path / filename
+    f.write_text("// a comment\n{}")
+    loader = InstanceLoader(open_wide(f), force_filetype=force_filetype)
+    data = list(loader.iter_files())
+    print(data)
+    assert data == [(str(f), {})]
 
 
 def test_instanceloader_unknown_type_nonjson_content(tmp_path, open_wide):

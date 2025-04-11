@@ -65,9 +65,15 @@ class ParserSet:
             }
 
     def get(
-        self, path: pathlib.Path | str, default_filetype: str
+        self,
+        path: pathlib.Path | str,
+        default_filetype: str,
+        force_filetype: str | None = None,
     ) -> t.Callable[[t.IO[bytes]], t.Any]:
-        filetype = path_to_type(path, default_type=default_filetype)
+        if force_filetype:
+            filetype = force_filetype
+        else:
+            filetype = path_to_type(path, default_type=default_filetype)
 
         if filetype in self._by_tag:
             return self._by_tag[filetype]
@@ -83,9 +89,13 @@ class ParserSet:
         )
 
     def parse_data_with_path(
-        self, data: t.IO[bytes] | bytes, path: pathlib.Path | str, default_filetype: str
+        self,
+        data: t.IO[bytes] | bytes,
+        path: pathlib.Path | str,
+        default_filetype: str,
+        force_filetype: str | None = None,
     ) -> t.Any:
-        loadfunc = self.get(path, default_filetype)
+        loadfunc = self.get(path, default_filetype, force_filetype)
         try:
             if isinstance(data, bytes):
                 data = io.BytesIO(data)
@@ -93,6 +103,11 @@ class ParserSet:
         except LOADING_FAILURE_ERROR_TYPES as e:
             raise FailedFileLoadError(f"Failed to parse {path}") from e
 
-    def parse_file(self, path: pathlib.Path | str, default_filetype: str) -> t.Any:
+    def parse_file(
+        self,
+        path: pathlib.Path | str,
+        default_filetype: str,
+        force_filetype: str | None = None,
+    ) -> t.Any:
         with open(path, "rb") as fp:
-            return self.parse_data_with_path(fp, path, default_filetype)
+            return self.parse_data_with_path(fp, path, default_filetype, force_filetype)
