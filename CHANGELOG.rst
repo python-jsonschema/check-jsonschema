@@ -10,8 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: buildkite, circle-ci, mergify, renovate, taskfile,
-  woodpecker-ci (2025-04-06)
+- Update vendored schemas: bitbucket-pipelines, buildkite, circle-ci, compose-spec,
+  github-workflows, mergify, renovate, taskfile, woodpecker-ci (2025-04-11)
 - A new option, ``--force-filetype``, is now supported and allows users to
   explicitly specify which parser should be used for instance files. Thanks
   :user:`mschoettle`! (:pr:`557`, :issue:`341`)

@@ -1091,7 +1091,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.8.9"
+      "default": "ghcr.io/containerbase/sidecar:13.8.13"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -2649,6 +2649,10 @@
               },
               "replacementVersion": {
                 "description": "The version of the new dependency that replaces the old deprecated dependency.",
+                "type": "string"
+              },
+              "replacementVersionTemplate": {
+                "description": "Template field for the version of the new dependency that replaces the old deprecated dependency.",
                 "type": "string"
               },
               "sourceDirectory": {

@@ -1717,7 +1717,8 @@
                 "MERGE_QUEUE_RESET",
                 "INCOMPATIBILITY_WITH_BRANCH_PROTECTIONS",
                 "PR_MANUALLY_MERGED",
-                "DRAFT_PULL_REQUEST_CREATION_FAILED"
+                "DRAFT_PULL_REQUEST_CREATION_FAILED",
+                "CONFIGURATION_CHANGED"
               ],
               "type": "string"
             },
