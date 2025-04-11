@@ -103,6 +103,7 @@ def test_instanceloader_force_filetype_toml(
     assert data == [(str(f), {"foo": {"bar": "baz"}})]
 
 
+@pytest.mark.skipif(not JSON5_ENABLED, reason="test requires json5")
 @pytest.mark.parametrize(
     "filename, force_filetype",
     [
@@ -113,8 +114,6 @@ def test_instanceloader_force_filetype_toml(
 def test_instanceloader_force_filetype_json(
     tmp_path, filename, force_filetype, open_wide
 ):
-    if not JSON5_ENABLED:
-        pytest.skip("test requires json5")
     f = tmp_path / filename
     f.write_text("// a comment\n{}")
     loader = InstanceLoader(open_wide(f), force_filetype=force_filetype)

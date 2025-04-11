@@ -54,7 +54,7 @@ def create_retrieve_callable(
 
     def get_local_file(uri: str) -> t.Any:
         path = filename2path(uri)
-        return parser_set.parse_file(path, "json", None)
+        return parser_set.parse_file(path, "json")
 
     def retrieve_reference(uri: str) -> referencing.Resource[Schema]:
         scheme = urllib.parse.urlsplit(uri).scheme
@@ -70,7 +70,7 @@ def create_retrieve_callable(
         if full_uri_scheme in ("http", "https"):
 
             def validation_callback(content: bytes) -> None:
-                parser_set.parse_data_with_path(content, full_uri, "json", None)
+                parser_set.parse_data_with_path(content, full_uri, "json")
 
             bound_downloader = downloader.bind(
                 full_uri, validation_callback=validation_callback
@@ -78,9 +78,7 @@ def create_retrieve_callable(
             with bound_downloader.open() as fp:
                 data = fp.read()
 
-            parsed_object = parser_set.parse_data_with_path(
-                data, full_uri, "json", None
-            )
+            parsed_object = parser_set.parse_data_with_path(data, full_uri, "json")
         else:
             parsed_object = get_local_file(full_uri)
 

@@ -68,13 +68,14 @@ class ParserSet:
         self,
         path: pathlib.Path | str,
         default_filetype: str,
-        force_filetype: str | None,
+        force_filetype: str | None = None,
     ) -> t.Callable[[t.IO[bytes]], t.Any]:
-        filetype = path_to_type(path, default_type=default_filetype)
+        if force_filetype:
+            filetype = force_filetype
+        else:
+            filetype = path_to_type(path, default_type=default_filetype)
 
         if filetype in self._by_tag:
-            filetype = force_filetype or filetype
-
             return self._by_tag[filetype]
 
         if filetype in MISSING_SUPPORT_MESSAGES:
@@ -92,7 +93,7 @@ class ParserSet:
         data: t.IO[bytes] | bytes,
         path: pathlib.Path | str,
         default_filetype: str,
-        force_filetype: str | None,
+        force_filetype: str | None = None,
     ) -> t.Any:
         loadfunc = self.get(path, default_filetype, force_filetype)
         try:
@@ -106,7 +107,7 @@ class ParserSet:
         self,
         path: pathlib.Path | str,
         default_filetype: str,
-        force_filetype: str | None,
+        force_filetype: str | None = None,
     ) -> t.Any:
         with open(path, "rb") as fp:
             return self.parse_data_with_path(fp, path, default_filetype, force_filetype)

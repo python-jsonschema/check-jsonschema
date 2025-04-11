@@ -44,9 +44,7 @@ class LocalSchemaReader:
         return self.path.as_uri()
 
     def _read_impl(self) -> t.Any:
-        return self.parsers.parse_file(
-            self.path, default_filetype="json", force_filetype=None
-        )
+        return self.parsers.parse_file(self.path, default_filetype="json")
 
     def read_schema(self) -> dict:
         if self._parsed_schema is _UNSET:
@@ -86,10 +84,7 @@ class HttpSchemaReader:
 
     def _parse(self, schema_bytes: bytes) -> t.Any:
         return self.parsers.parse_data_with_path(
-            io.BytesIO(schema_bytes),
-            self.url,
-            default_filetype="json",
-            force_filetype=None,
+            io.BytesIO(schema_bytes), self.url, default_filetype="json"
         )
 
     def get_retrieval_uri(self) -> str | None:

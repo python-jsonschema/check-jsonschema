@@ -163,7 +163,7 @@ The '--disable-formats' flag supports the following formats:
 )
 @click.option(
     "--force-filetype",
-    help="Force a file typr to use for the file",
+    help="Force a file type to use when parsing instance files",
     type=click.Choice(SUPPORTED_FILE_FORMATS, case_sensitive=True),
 )
 @click.option(
