@@ -10,7 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: buildkite, renovate, taskfile, woodpecker-ci (2025-03-30)
+- Update vendored schemas: buildkite, circle-ci, mergify, renovate, taskfile,
+  woodpecker-ci (2025-04-06)
 
 0.32.1
 ------

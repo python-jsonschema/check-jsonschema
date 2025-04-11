@@ -1311,6 +1311,16 @@
           "minimum": 1,
           "title": "Max Parallel Checks",
           "type": "integer"
+        },
+        "reset_on_external_merge": {
+          "default": "always",
+          "description": "Defines the behavior of the merge queue when something is merged outside of the queue.\n\"always\": The queue is reset when an external merge is detected. All queued pull requests are re-evaluated to ensure correctness based on the new base branch state.\n\"never\": The queue remains unchanged. It does not reset or re-evaluate based on the external merge.\n",
+          "enum": [
+            "never",
+            "always"
+          ],
+          "title": "Reset On External Merge",
+          "type": "string"
         }
       },
       "title": "MergeQueueModel",
@@ -1684,6 +1694,7 @@
             {
               "enum": [
                 "PR_DEQUEUED",
+                "PR_DEQUEUED_FROM_PARTITION",
                 "PR_AHEAD_DEQUEUED",
                 "PR_AHEAD_FAILED_TO_MERGE",
                 "PR_WITH_HIGHER_PRIORITY_QUEUED",
@@ -1867,6 +1878,22 @@
             "type": "string"
           },
           "title": "Commits unverified",
+          "type": "array"
+        },
+        "deployment-success": {
+          "description": "The list of deployments that successfully passed for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Deployment success",
+          "type": "array"
+        },
+        "deployment-failure": {
+          "description": "The list of deployments that failed for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Deployment failure",
           "type": "array"
         },
         "review-threads-resolved": {
@@ -2133,6 +2160,8 @@
         "check",
         "check-stale",
         "commits-unverified",
+        "deployment-success",
+        "deployment-failure",
         "review-threads-resolved",
         "review-threads-unresolved",
         "files",

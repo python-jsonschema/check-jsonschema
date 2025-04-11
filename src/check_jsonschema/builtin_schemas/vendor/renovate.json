@@ -1091,7 +1091,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.8.8"
+      "default": "ghcr.io/containerbase/sidecar:13.8.9"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -2841,7 +2841,7 @@
           "gomodSkipVendor",
           "gomodVendor",
           "helmUpdateSubChartArchives",
-          "kustomizeInflateHelmArchives",
+          "kustomizeInflateHelmCharts",
           "npmDedupe",
           "pnpmDedupe",
           "yarnDedupeFewer",
