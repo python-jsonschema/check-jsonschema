@@ -18,5 +18,6 @@ def test_annotations_match_click_params():
             # force default_filetype to be a Literal including `json5`, which is only
             # included in the choices if a parser is installed
             "default_filetype": t.Literal["json", "yaml", "toml", "json5"],
+            "force_filetype": t.Literal["json", "yaml", "toml", "json5"] | None,
         },
     )

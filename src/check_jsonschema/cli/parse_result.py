@@ -29,6 +29,7 @@ class ParseResult:
         self.cache_filename: str | None = None
         # filetype detection (JSON, YAML, TOML, etc)
         self.default_filetype: str = "json"
+        self.force_filetype: str | None = None
         # data-transform (for Azure Pipelines and potentially future transforms)
         self.data_transform: Transform | None = None
         # validation behavioral controls

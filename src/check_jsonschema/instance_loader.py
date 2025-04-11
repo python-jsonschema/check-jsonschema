@@ -14,10 +14,12 @@ class InstanceLoader:
         self,
         files: t.Sequence[t.IO[bytes] | CustomLazyFile],
         default_filetype: str = "json",
+        force_filetype: str | None = None,
         data_transform: Transform | None = None,
     ) -> None:
         self._files = files
         self._default_filetype = default_filetype
+        self._force_filetype = force_filetype
         self._data_transform = (
             data_transform if data_transform is not None else Transform()
         )
@@ -46,7 +48,7 @@ class InstanceLoader:
 
                 try:
                     data: t.Any = self._parsers.parse_data_with_path(
-                        stream, name, self._default_filetype
+                        stream, name, self._default_filetype, self._force_filetype
                     )
                 except ParseError as err:
                     data = err

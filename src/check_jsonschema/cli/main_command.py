@@ -162,6 +162,11 @@ The '--disable-formats' flag supports the following formats:
     type=click.Choice(SUPPORTED_FILE_FORMATS, case_sensitive=True),
 )
 @click.option(
+    "--force-filetype",
+    help="Force a file typr to use for the file",
+    type=click.Choice(SUPPORTED_FILE_FORMATS, case_sensitive=True),
+)
+@click.option(
     "--traceback-mode",
     help=(
         "Set the mode of presentation for error traces. "
@@ -242,6 +247,7 @@ def main(
     format_regex: t.Literal["python", "nonunicode", "default"] | None,
     regex_variant: t.Literal["python", "nonunicode", "default"] | None,
     default_filetype: t.Literal["json", "yaml", "toml", "json5"],
+    force_filetype: t.Literal["json", "yaml", "toml", "json5"] | None,
     traceback_mode: t.Literal["full", "short"],
     data_transform: t.Literal["azure-pipelines", "gitlab-ci"] | None,
     fill_defaults: bool,
@@ -271,6 +277,7 @@ def main(
 
     args.disable_cache = no_cache
     args.default_filetype = default_filetype
+    args.force_filetype = force_filetype
     args.fill_defaults = fill_defaults
     if data_transform is not None:
         args.data_transform = TRANSFORM_LIBRARY[data_transform]
@@ -311,6 +318,7 @@ def build_instance_loader(args: ParseResult) -> InstanceLoader:
     return InstanceLoader(
         args.instancefiles,
         default_filetype=args.default_filetype,
+        force_filetype=args.force_filetype,
         data_transform=args.data_transform,
     )
 
