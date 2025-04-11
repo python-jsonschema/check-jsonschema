@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.33.0
+------
+
 - Update vendored schemas: bitbucket-pipelines, buildkite, circle-ci, compose-spec,
   github-workflows, mergify, renovate, taskfile, woodpecker-ci (2025-04-11)
 - A new option, ``--force-filetype``, is now supported and allows users to

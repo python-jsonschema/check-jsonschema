@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "check-jsonschema"
-version = "0.32.1"
+version = "0.33.0"
 description = "A jsonschema CLI and pre-commit hook"
 authors = [
     { name = "Stephen Rosen", email = "sirosen0@gmail.com" },
