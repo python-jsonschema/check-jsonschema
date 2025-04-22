@@ -3175,6 +3175,7 @@
     "shared": {
       "anyOf": [
         {
+          "additionalProperties": true,
           "type": "object"
         },
         {

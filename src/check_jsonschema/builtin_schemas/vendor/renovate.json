@@ -486,7 +486,8 @@
       "type": "object",
       "default": {
         "fileMatch": [
-          "(^|/)bun\\.lockb?$"
+          "(^|/)bun\\.lockb?$",
+          "(^|/)package\\.json$"
         ],
         "digest": {
           "prBodyDefinitions": {
@@ -723,7 +724,9 @@
       "description": "Configuration object to define language or manager version constraints.",
       "type": "object",
       "default": {},
-      "$ref": "#"
+      "additionalProperties": {
+        "type": "string"
+      }
     },
     "constraintsFiltering": {
       "description": "Perform release filtering based on language constraints.",

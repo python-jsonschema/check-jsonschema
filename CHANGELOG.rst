@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: mergify, renovate (2025-04-20)
+
 0.33.0
 ------
 
