@@ -10,7 +10,7 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: mergify, renovate (2025-04-20)
+- Update vendored schemas: compose-spec, mergify, renovate, woodpecker-ci (2025-04-27)
 
 0.33.0
 ------
