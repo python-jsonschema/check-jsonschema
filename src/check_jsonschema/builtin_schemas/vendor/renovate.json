@@ -22,11 +22,6 @@
         "type": "string"
       }
     },
-    "allowCommandTemplating": {
-      "description": "Set this to `false` to disable template compilation for post-upgrade commands.",
-      "type": "boolean",
-      "default": true
-    },
     "allowCustomCrateRegistries": {
       "description": "Set this to `true` to allow custom crate registries.",
       "type": "boolean",
@@ -716,9 +711,9 @@
       "default": false
     },
     "configWarningReuseIssue": {
-      "description": "Set this to `false` to make Renovate create a new issue for each config warning, instead of reopening or reusing an existing issue.",
+      "description": "Set this to `true` to make Renovate reuse/reopen an existing closed Config Warning issue, instead of opening a new one each time.",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "constraints": {
       "description": "Configuration object to define language or manager version constraints.",
@@ -1094,7 +1089,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.8.17"
+      "default": "ghcr.io/containerbase/sidecar:13.8.18"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
