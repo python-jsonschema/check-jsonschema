@@ -3,7 +3,7 @@
   description: 'Validate JSON or YAML files against a jsonschema on disk or fetched via HTTP(S)'
   entry: check-jsonschema
   language: python
-  types_or: [json,yaml]
+  types_or: [json,yaml,toml]
   # we need types_or support
   minimum_pre_commit_version: 2.9.0
 
