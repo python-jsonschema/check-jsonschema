@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import calendar
 import contextlib
 import hashlib
 import io
@@ -43,7 +44,7 @@ def _resolve_cache_dir(dirname: str) -> str | None:
 
 def _lastmod_from_response(response: requests.Response) -> float:
     try:
-        return time.mktime(
+        return calendar.timegm(
             time.strptime(response.headers["last-modified"], _LASTMOD_FMT)
         )
     # OverflowError: time outside of platform-specific bounds

@@ -274,10 +274,10 @@ def test_cachedownloader_handles_bad_lastmod_header(
     elif failure_mode == "time_overflow":
         add_default_response()
 
-        def fake_mktime(*args):
+        def fake_timegm(*args):
             raise OverflowError("uh-oh")
 
-        monkeypatch.setattr("time.mktime", fake_mktime)
+        monkeypatch.setattr("calendar.timegm", fake_timegm)
     else:
         raise NotImplementedError
 
