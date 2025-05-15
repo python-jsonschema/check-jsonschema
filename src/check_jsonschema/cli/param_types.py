@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 import importlib
 import os
 import re
@@ -9,6 +10,18 @@ import typing as t
 import click
 import jsonschema
 from click._compat import open_stream
+
+C = t.TypeVar("C", bound=t.Callable[..., t.Any])
+
+
+def _shim_click_8_2_get_metavar(func: C) -> C:
+    @functools.wraps(func)
+    def wrapper(*args: t.Any, **kwargs: t.Any) -> None:
+        if len(args) > 1 or "ctx" in kwargs:
+            return func(*args, **kwargs)
+        return func(*args, ctx=None, **kwargs)
+
+    return wrapper  # type: ignore[return-value]
 
 
 class CommaDelimitedList(click.ParamType):
@@ -24,7 +37,8 @@ class CommaDelimitedList(click.ParamType):
         self.convert_values = convert_values
         self.choices = list(choices) if choices is not None else None
 
-    def get_metavar(self, param: click.Parameter) -> str:
+    @_shim_click_8_2_get_metavar
+    def get_metavar(self, param: click.Parameter, ctx: click.Context | None) -> str:
         if self.choices is not None:
             return "{" + ",".join(self.choices) + "}"
         return "TEXT,TEXT,..."

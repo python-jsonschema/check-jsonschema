@@ -1,9 +1,20 @@
+import inspect
 import os
 import pathlib
 import sys
 
 import pytest
 import responses
+from click.testing import CliRunner
+
+
+@pytest.fixture
+def cli_runner():
+    # compatibility for click==8.2.0 vs click<=8.1
+    sig = inspect.signature(CliRunner)
+    if "mix_stderr" in sig.parameters:
+        return CliRunner(mix_stderr=False)
+    return CliRunner()
 
 
 @pytest.fixture(autouse=True)
