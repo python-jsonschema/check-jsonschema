@@ -22,11 +22,6 @@
         "type": "string"
       }
     },
-    "allowCommandTemplating": {
-      "description": "Set this to `false` to disable template compilation for post-upgrade commands.",
-      "type": "boolean",
-      "default": true
-    },
     "allowCustomCrateRegistries": {
       "description": "Set this to `true` to allow custom crate registries.",
       "type": "boolean",
@@ -72,8 +67,8 @@
       "description": "Configuration object for the ansible manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)tasks/[^/]+\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)tasks/[^/]+\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -82,8 +77,8 @@
       "description": "Configuration object for the ansible-galaxy manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)(galaxy|requirements)(\\.ansible)?\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)(galaxy|requirements)(\\.ansible)?\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -92,7 +87,7 @@
       "description": "Configuration object for the argocd manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "managerFilePatterns": []
       },
       "$ref": "#"
     },
@@ -100,8 +95,8 @@
       "description": "Configuration object for the asdf manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.tool-versions$"
+        "managerFilePatterns": [
+          "/(^|/)\\.tool-versions$/"
         ]
       },
       "$ref": "#"
@@ -278,9 +273,9 @@
       "description": "Configuration object for the azure-pipelines manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/).azuredevops/.+\\.ya?ml$",
-          "azure.*pipelines?.*\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/).azuredevops/.+\\.ya?ml$/",
+          "/azure.*pipelines?.*\\.ya?ml$/"
         ],
         "enabled": false
       },
@@ -306,8 +301,8 @@
       "description": "Configuration object for the batect manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)batect(-bundle)?\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)batect(-bundle)?\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -316,8 +311,8 @@
       "description": "Configuration object for the batect-wrapper manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)batect$"
+        "managerFilePatterns": [
+          "/(^|/)batect$/"
         ],
         "versioning": "semver"
       },
@@ -327,10 +322,10 @@
       "description": "Configuration object for the bazel manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)WORKSPACE(|\\.bazel|\\.bzlmod)$",
-          "\\.WORKSPACE\\.bazel$",
-          "\\.bzl$"
+        "managerFilePatterns": [
+          "/(^|/)WORKSPACE(|\\.bazel|\\.bzlmod)$/",
+          "/\\.WORKSPACE\\.bazel$/",
+          "/\\.bzl$/"
         ]
       },
       "$ref": "#"
@@ -339,8 +334,8 @@
       "description": "Configuration object for the bazel-module manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/|\\.)MODULE\\.bazel$"
+        "managerFilePatterns": [
+          "/(^|/|\\.)MODULE\\.bazel$/"
         ]
       },
       "$ref": "#"
@@ -349,8 +344,8 @@
       "description": "Configuration object for the bazelisk manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.bazelversion$"
+        "managerFilePatterns": [
+          "/(^|/)\\.bazelversion$/"
         ],
         "pinDigests": false,
         "versioning": "semver"
@@ -376,8 +371,8 @@
       "description": "Configuration object for the bicep manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "\\.bicep$"
+        "managerFilePatterns": [
+          "/\\.bicep$/"
         ]
       },
       "$ref": "#"
@@ -397,8 +392,8 @@
       "description": "Configuration object for the bitbucket-pipelines manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.?bitbucket-pipelines\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)\\.?bitbucket-pipelines\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -407,8 +402,8 @@
       "description": "Configuration object for the bitrise manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)bitrise\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)bitrise\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -450,9 +445,9 @@
       "description": "Configuration object for the buildkite manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "buildkite\\.ya?ml",
-          "\\.buildkite/.+\\.ya?ml$"
+        "managerFilePatterns": [
+          "/buildkite\\.ya?ml/",
+          "/\\.buildkite/.+\\.ya?ml$/"
         ],
         "commitMessageTopic": "buildkite plugin {{depName}}",
         "commitMessageExtra": "to {{#if isMajor}}{{{prettyNewMajor}}}{{else}}{{{newValue}}}{{/if}}"
@@ -464,8 +459,8 @@
       "type": "object",
       "default": {
         "commitMessageTopic": "buildpack {{depName}}",
-        "fileMatch": [
-          "(^|/)project\\.toml$"
+        "managerFilePatterns": [
+          "/(^|/)project\\.toml$/"
         ],
         "pinDigests": false
       },
@@ -481,13 +476,69 @@
         "prerelease"
       ]
     },
+    "bumpVersions": {
+      "description": "A list of bumpVersion config options to bump generic version numbers.",
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "bumpType": {
+                "description": "The semver level to use when bumping versions. This is used by the `bumpVersions` feature.",
+                "type": "string",
+                "default": "patch"
+              },
+              "filePatterns": {
+                "description": "A list of patterns to match files that contain the version string.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "matchStrings": {
+                "description": "Queries to use. Valid only within `bumpVersions` or `customManagers` object.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "name": {
+                "description": "A name for the bumpVersion config. This is used for logging and debugging.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": null
+              }
+            }
+          }
+        ]
+      },
+      "default": []
+    },
     "bun": {
       "description": "Configuration object for the bun manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)bun\\.lockb?$",
-          "(^|/)package\\.json$"
+        "managerFilePatterns": [
+          "/(^|/)bun\\.lockb?$/",
+          "/(^|/)package\\.json$/"
         ],
         "digest": {
           "prBodyDefinitions": {
@@ -504,8 +555,8 @@
       "description": "Configuration object for the bun-version manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.bun-version$"
+        "managerFilePatterns": [
+          "/(^|/)\\.bun-version$/"
         ],
         "versioning": "npm"
       },
@@ -515,8 +566,8 @@
       "description": "Configuration object for the bundler manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)Gemfile$"
+        "managerFilePatterns": [
+          "/(^|/)Gemfile$/"
         ],
         "versioning": "ruby"
       },
@@ -546,8 +597,8 @@
       "description": "Configuration object for the cake manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "\\.cake$"
+        "managerFilePatterns": [
+          "/\\.cake$/"
         ]
       },
       "$ref": "#"
@@ -557,8 +608,8 @@
       "type": "object",
       "default": {
         "commitMessageTopic": "Rust crate {{depName}}",
-        "fileMatch": [
-          "(^|/)Cargo\\.toml$"
+        "managerFilePatterns": [
+          "/(^|/)Cargo\\.toml$/"
         ],
         "versioning": "cargo"
       },
@@ -568,7 +619,7 @@
       "description": "Configuration object for the cdnurl manager",
       "type": "object",
       "default": {
-        "fileMatch": [],
+        "managerFilePatterns": [],
         "versioning": "semver"
       },
       "$ref": "#"
@@ -585,8 +636,8 @@
       "description": "Configuration object for the circleci manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.circleci/.+\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)\\.circleci/.+\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -610,8 +661,8 @@
       "description": "Configuration object for the cloudbuild manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)cloudbuild\\.ya?ml"
+        "managerFilePatterns": [
+          "/(^|/)cloudbuild\\.ya?ml/"
         ]
       },
       "$ref": "#"
@@ -620,8 +671,8 @@
       "description": "Configuration object for the cocoapods manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)Podfile$"
+        "managerFilePatterns": [
+          "/(^|/)Podfile$/"
         ],
         "versioning": "ruby"
       },
@@ -677,8 +728,8 @@
       "description": "Configuration object for the composer manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)([\\w-]*)composer\\.json$"
+        "managerFilePatterns": [
+          "/(^|/)([\\w-]*)composer\\.json$/"
         ],
         "versioning": "composer"
       },
@@ -696,8 +747,8 @@
       "description": "Configuration object for the conan manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)conanfile\\.(txt|py)$"
+        "managerFilePatterns": [
+          "/(^|/)conanfile\\.(txt|py)$/"
         ],
         "datasource": "conan",
         "versioning": "conan",
@@ -716,9 +767,9 @@
       "default": false
     },
     "configWarningReuseIssue": {
-      "description": "Set this to `false` to make Renovate create a new issue for each config warning, instead of reopening or reusing an existing issue.",
+      "description": "Set this to `true` to make Renovate reuse/reopen an existing closed Config Warning issue, instead of opening a new one each time.",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "constraints": {
       "description": "Configuration object to define language or manager version constraints.",
@@ -745,8 +796,8 @@
       "description": "Configuration object for the copier manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.copier-answers(\\..+)?\\.ya?ml"
+        "managerFilePatterns": [
+          "/(^|/)\\.copier-answers(\\..+)?\\.ya?ml/"
         ],
         "versioning": "pep440"
       },
@@ -756,8 +807,8 @@
       "description": "Configuration object for the cpanfile manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)cpanfile$"
+        "managerFilePatterns": [
+          "/(^|/)cpanfile$/"
         ]
       },
       "$ref": "#"
@@ -766,7 +817,7 @@
       "description": "Configuration object for the crossplane manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "managerFilePatterns": []
       },
       "$ref": "#"
     },
@@ -893,7 +944,7 @@
                 ]
               },
               "matchStrings": {
-                "description": "Queries to use. Valid only within a `customManagers` object.",
+                "description": "Queries to use. Valid only within `bumpVersions` or `customManagers` object.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -1005,8 +1056,8 @@
       "description": "Configuration object for the deps-edn manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)(?:deps|bb)\\.edn$"
+        "managerFilePatterns": [
+          "/(^|/)(?:deps|bb)\\.edn$/"
         ],
         "versioning": "maven"
       },
@@ -1040,8 +1091,8 @@
       "description": "Configuration object for the devbox manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)devbox\\.json$"
+        "managerFilePatterns": [
+          "/(^|/)devbox\\.json$/"
         ]
       },
       "$ref": "#"
@@ -1050,9 +1101,9 @@
       "description": "Configuration object for the devcontainer manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "^.devcontainer/devcontainer.json$",
-          "^.devcontainer.json$"
+        "managerFilePatterns": [
+          "/^.devcontainer/devcontainer.json$/",
+          "/^.devcontainer.json$/"
         ]
       },
       "$ref": "#"
@@ -1071,8 +1122,8 @@
       "description": "Configuration object for the docker-compose manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)(?:docker-)?compose[^/]*\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)(?:docker-)?compose[^/]*\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -1094,7 +1145,7 @@
     "dockerSidecarImage": {
       "description": "Change this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.8.17"
+      "default": "ghcr.io/containerbase/sidecar:13.8.23"
     },
     "dockerUser": {
       "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -1104,9 +1155,9 @@
       "description": "Configuration object for the dockerfile manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
-          "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
+        "managerFilePatterns": [
+          "/(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$/",
+          "/(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$/"
         ]
       },
       "$ref": "#"
@@ -1120,8 +1171,8 @@
       "description": "Configuration object for the droneci manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.drone\\.yml$"
+        "managerFilePatterns": [
+          "/(^|/)\\.drone\\.yml$/"
         ]
       },
       "$ref": "#"
@@ -1230,22 +1281,6 @@
       ],
       "default": "pr"
     },
-    "fileMatch": {
-      "description": "RegEx (`re2`) pattern for matching manager files.",
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "regex"
-          }
-        },
-        {
-          "type": "string",
-          "format": "regex"
-        }
-      ]
-    },
     "filterUnavailableUsers": {
       "description": "Filter reviewers and assignees based on their availability.",
       "type": "boolean",
@@ -1255,8 +1290,8 @@
       "description": "Configuration object for the fleet manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)fleet\\.ya?ml"
+        "managerFilePatterns": [
+          "/(^|/)fleet\\.ya?ml/"
         ]
       },
       "$ref": "#"
@@ -1265,8 +1300,8 @@
       "description": "Configuration object for the flux manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(?:^|/)gotk-components\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(?:^|/)gotk-components\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -1317,9 +1352,9 @@
       "description": "Configuration object for the fvm manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.fvm/fvm_config\\.json$",
-          "(^|/)\\.fvmrc$"
+        "managerFilePatterns": [
+          "/(^|/)\\.fvm/fvm_config\\.json$/",
+          "/(^|/)\\.fvmrc$/"
         ],
         "versioning": "semver"
       },
@@ -1331,8 +1366,8 @@
       "default": {
         "enabled": false,
         "versioning": "git",
-        "fileMatch": [
-          "(^|/)\\.gitmodules$"
+        "managerFilePatterns": [
+          "/(^|/)\\.gitmodules$/"
         ]
       },
       "$ref": "#"
@@ -1402,9 +1437,9 @@
       "description": "Configuration object for the github-actions manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$",
-          "(^|/)action\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$/",
+          "/(^|/)action\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -1418,8 +1453,8 @@
       "description": "Configuration object for the gitlabci manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "\\.gitlab-ci\\.ya?ml$"
+        "managerFilePatterns": [
+          "/\\.gitlab-ci\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -1428,8 +1463,8 @@
       "description": "Configuration object for the gitlabci-include manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "\\.gitlab-ci\\.ya?ml$"
+        "managerFilePatterns": [
+          "/\\.gitlab-ci\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -1438,7 +1473,7 @@
       "description": "Configuration object for the glasskube manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "managerFilePatterns": []
       },
       "$ref": "#"
     },
@@ -1446,8 +1481,8 @@
       "description": "Configuration object for the gleam manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)gleam.toml$"
+        "managerFilePatterns": [
+          "/(^|/)gleam.toml$/"
         ],
         "versioning": "hex"
       },
@@ -1474,8 +1509,8 @@
       "description": "Configuration object for the gomod manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)go\\.mod$"
+        "managerFilePatterns": [
+          "/(^|/)go\\.mod$/"
         ],
         "pinDigests": false
       },
@@ -1485,14 +1520,14 @@
       "description": "Configuration object for the gradle manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "\\.gradle(\\.kts)?$",
-          "(^|/)gradle\\.properties$",
-          "(^|/)gradle/.+\\.toml$",
-          "(^|/)buildSrc/.+\\.kt$",
-          "\\.versions\\.toml$",
-          "(^|/)versions.props$",
-          "(^|/)versions.lock$"
+        "managerFilePatterns": [
+          "/\\.gradle(\\.kts)?$/",
+          "/(^|/)gradle\\.properties$/",
+          "/(^|/)gradle/.+\\.toml$/",
+          "/(^|/)buildSrc/.+\\.kt$/",
+          "/\\.versions\\.toml$/",
+          "/(^|/)versions.props$/",
+          "/(^|/)versions.lock$/"
         ],
         "timeout": 600,
         "versioning": "gradle"
@@ -1503,8 +1538,8 @@
       "description": "Configuration object for the gradle-wrapper manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)gradle/wrapper/gradle-wrapper\\.properties$"
+        "managerFilePatterns": [
+          "/(^|/)gradle/wrapper/gradle-wrapper\\.properties$/"
         ],
         "versioning": "gradle"
       },
@@ -1547,8 +1582,8 @@
       "description": "Configuration object for the haskell-cabal manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "\\.cabal$"
+        "managerFilePatterns": [
+          "/\\.cabal$/"
         ],
         "pinDigests": false
       },
@@ -1562,8 +1597,8 @@
           "stable": "https://charts.helm.sh/stable"
         },
         "commitMessageTopic": "helm chart {{depName}}",
-        "fileMatch": [
-          "(^|/)requirements\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)requirements\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -1573,8 +1608,8 @@
       "type": "object",
       "default": {
         "commitMessageTopic": "helm values {{depName}}",
-        "fileMatch": [
-          "(^|/)values\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)values\\.ya?ml$/"
         ],
         "pinDigests": false
       },
@@ -1588,8 +1623,8 @@
           "stable": "https://charts.helm.sh/stable"
         },
         "commitMessageTopic": "helm chart {{depName}}",
-        "fileMatch": [
-          "(^|/)helmfile\\.ya?ml(?:\\.gotmpl)?$"
+        "managerFilePatterns": [
+          "/(^|/)helmfile\\.ya?ml(?:\\.gotmpl)?$/"
         ]
       },
       "$ref": "#"
@@ -1598,7 +1633,7 @@
       "description": "Configuration object for the helmsman manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "managerFilePatterns": []
       },
       "$ref": "#"
     },
@@ -1610,8 +1645,8 @@
           "stable": "https://charts.helm.sh/stable"
         },
         "commitMessageTopic": "helm chart {{depName}}",
-        "fileMatch": [
-          "(^|/)Chart\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)Chart\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -1620,8 +1655,8 @@
       "description": "Configuration object for the hermit manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)bin/hermit$"
+        "managerFilePatterns": [
+          "/(^|/)bin/hermit$/"
         ],
         "excludeCommitPaths": [
           "**/bin/hermit"
@@ -1635,8 +1670,8 @@
       "type": "object",
       "default": {
         "commitMessageTopic": "Homebrew Formula {{depName}}",
-        "fileMatch": [
-          "^Formula/[^/]+[.]rb$"
+        "managerFilePatterns": [
+          "/^Formula/[^/]+[.]rb$/"
         ]
       },
       "$ref": "#"
@@ -1787,8 +1822,8 @@
       "description": "Configuration object for the html manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "\\.html?$"
+        "managerFilePatterns": [
+          "/\\.html?$/"
         ],
         "versioning": "semver",
         "digest": {
@@ -1924,8 +1959,8 @@
       "description": "Configuration object for the jenkins manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)plugins\\.(txt|ya?ml)$"
+        "managerFilePatterns": [
+          "/(^|/)plugins\\.(txt|ya?ml)$/"
         ]
       },
       "$ref": "#"
@@ -1942,8 +1977,8 @@
       "description": "Configuration object for the jsonnet-bundler manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)jsonnetfile\\.json$"
+        "managerFilePatterns": [
+          "/(^|/)jsonnetfile\\.json$/"
         ],
         "datasource": "git-tags"
       },
@@ -1957,8 +1992,8 @@
       "description": "Configuration object for the kotlin-script manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "^.+\\.main\\.kts$"
+        "managerFilePatterns": [
+          "/^.+\\.main\\.kts$/"
         ]
       },
       "$ref": "#"
@@ -1967,7 +2002,7 @@
       "description": "Configuration object for the kubernetes manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "managerFilePatterns": []
       },
       "$ref": "#"
     },
@@ -1975,8 +2010,8 @@
       "description": "Configuration object for the kustomize manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)kustomization\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)kustomization\\.ya?ml$/"
         ],
         "pinDigests": false
       },
@@ -1993,8 +2028,8 @@
       "description": "Configuration object for the leiningen manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)project\\.clj$"
+        "managerFilePatterns": [
+          "/(^|/)project\\.clj$/"
         ],
         "versioning": "maven"
       },
@@ -2079,14 +2114,28 @@
       "default": {},
       "$ref": "#"
     },
+    "managerFilePatterns": {
+      "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
     "maven": {
       "description": "Configuration object for the maven manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/|\\.)pom\\.xml$",
-          "^(((\\.mvn)|(\\.m2))/)?settings\\.xml$",
-          "(^|/)\\.mvn/extensions\\.xml$"
+        "managerFilePatterns": [
+          "/(^|/|\\.)pom\\.xml$/",
+          "/^(((\\.mvn)|(\\.m2))/)?settings\\.xml$/",
+          "/(^|/)\\.mvn/extensions\\.xml$/"
         ],
         "versioning": "maven"
       },
@@ -2096,8 +2145,8 @@
       "description": "Configuration object for the maven-wrapper manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|\\/).mvn/wrapper/maven-wrapper.properties$"
+        "managerFilePatterns": [
+          "/(^|\\/).mvn/wrapper/maven-wrapper.properties$/"
         ],
         "versioning": "maven"
       },
@@ -2137,8 +2186,8 @@
       "description": "Configuration object for the meteor manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)package\\.js$"
+        "managerFilePatterns": [
+          "/(^|/)package\\.js$/"
         ]
       },
       "$ref": "#"
@@ -2178,8 +2227,8 @@
       "description": "Configuration object for the mint manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)Mintfile$"
+        "managerFilePatterns": [
+          "/(^|/)Mintfile$/"
         ]
       },
       "$ref": "#"
@@ -2188,9 +2237,9 @@
       "description": "Configuration object for the mise manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.?mise\\.toml$",
-          "(^|/)\\.?mise/config\\.toml$"
+        "managerFilePatterns": [
+          "/(^|/)\\.?mise\\.toml$/",
+          "/(^|/)\\.?mise/config\\.toml$/"
         ]
       },
       "$ref": "#"
@@ -2199,8 +2248,8 @@
       "description": "Configuration object for the mix manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)mix\\.exs$"
+        "managerFilePatterns": [
+          "/(^|/)mix\\.exs$/"
         ]
       },
       "$ref": "#"
@@ -2218,8 +2267,8 @@
       "description": "Configuration object for the nix manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)flake\\.nix$"
+        "managerFilePatterns": [
+          "/(^|/)flake\\.nix$/"
         ],
         "commitMessageTopic": "nix",
         "commitMessageExtra": "to {{newValue}}",
@@ -2231,8 +2280,8 @@
       "description": "Configuration object for the nodenv manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.node-version$"
+        "managerFilePatterns": [
+          "/(^|/)\\.node-version$/"
         ],
         "versioning": "node"
       },
@@ -2242,9 +2291,9 @@
       "description": "Configuration object for the npm manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)package\\.json$",
-          "(^|/)pnpm-workspace\\.yaml$"
+        "managerFilePatterns": [
+          "/(^|/)package\\.json$/",
+          "/(^|/)pnpm-workspace\\.yaml$/"
         ],
         "digest": {
           "prBodyDefinitions": {
@@ -2274,11 +2323,11 @@
       "description": "Configuration object for the nuget manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "\\.(?:cs|fs|vb)proj$",
-          "\\.(?:props|targets)$",
-          "(^|/)dotnet-tools\\.json$",
-          "(^|/)global\\.json$"
+        "managerFilePatterns": [
+          "/\\.(?:cs|fs|vb)proj$/",
+          "/\\.(?:props|targets)$/",
+          "/(^|/)dotnet-tools\\.json$/",
+          "/(^|/)global\\.json$/"
         ]
       },
       "$ref": "#"
@@ -2287,8 +2336,8 @@
       "description": "Configuration object for the nvm manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.nvmrc$"
+        "managerFilePatterns": [
+          "/(^|/)\\.nvmrc$/"
         ],
         "versioning": "node",
         "pinDigests": false
@@ -2299,7 +2348,7 @@
       "description": "Configuration object for the ocb manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "managerFilePatterns": []
       },
       "$ref": "#"
     },
@@ -2362,8 +2411,8 @@
       "description": "Configuration object for the osgi manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)src/main/features/.+\\.json$"
+        "managerFilePatterns": [
+          "/(^|/)src/main/features/.+\\.json$/"
         ]
       },
       "$ref": "#"
@@ -2685,8 +2734,8 @@
       "description": "Configuration object for the pep621 manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)pyproject\\.toml$"
+        "managerFilePatterns": [
+          "/(^|/)pyproject\\.toml$/"
         ]
       },
       "$ref": "#"
@@ -2695,7 +2744,7 @@
       "description": "Configuration object for the pep723 manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "managerFilePatterns": []
       },
       "$ref": "#"
     },
@@ -2742,7 +2791,7 @@
       "description": "Configuration object for the pip-compile manager",
       "type": "object",
       "default": {
-        "fileMatch": [],
+        "managerFilePatterns": [],
         "lockFileMaintenance": {
           "enabled": true,
           "branchTopic": "pip-compile-refresh",
@@ -2755,8 +2804,8 @@
       "description": "Configuration object for the pip_requirements manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)[\\w-]*requirements([-.]\\w+)?\\.(txt|pip)$"
+        "managerFilePatterns": [
+          "/(^|/)[\\w-]*requirements([-.]\\w+)?\\.(txt|pip)$/"
         ]
       },
       "$ref": "#"
@@ -2765,8 +2814,8 @@
       "description": "Configuration object for the pip_setup manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)setup\\.py$"
+        "managerFilePatterns": [
+          "/(^|/)setup\\.py$/"
         ]
       },
       "$ref": "#"
@@ -2775,8 +2824,8 @@
       "description": "Configuration object for the pipenv manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)Pipfile$"
+        "managerFilePatterns": [
+          "/(^|/)Pipfile$/"
         ]
       },
       "$ref": "#"
@@ -2785,9 +2834,9 @@
       "description": "Configuration object for the pixi manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)pyproject\\.toml$",
-          "(^|/)pixi\\.toml$"
+        "managerFilePatterns": [
+          "/(^|/)pyproject\\.toml$/",
+          "/(^|/)pixi\\.toml$/"
         ]
       },
       "$ref": "#"
@@ -2827,8 +2876,8 @@
       "description": "Configuration object for the poetry manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)pyproject\\.toml$"
+        "managerFilePatterns": [
+          "/(^|/)pyproject\\.toml$/"
         ]
       },
       "$ref": "#"
@@ -3030,8 +3079,8 @@
       "default": {
         "commitMessageTopic": "pre-commit hook {{depName}}",
         "enabled": false,
-        "fileMatch": [
-          "(^|/)\\.pre-commit-config\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)\\.pre-commit-config\\.ya?ml$/"
         ],
         "prBodyNotes": [
           "Note: The `pre-commit` manager in Renovate is not supported by the `pre-commit` maintainers or community. Please do not report any problems there, instead [create a Discussion in the Renovate repository](https://github.com/renovatebot/renovate/discussions/new) if you have any questions."
@@ -3102,8 +3151,8 @@
       "description": "Configuration object for the pub manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)pubspec\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)pubspec\\.ya?ml$/"
         ],
         "versioning": "npm"
       },
@@ -3113,8 +3162,8 @@
       "description": "Configuration object for the puppet manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)Puppetfile$"
+        "managerFilePatterns": [
+          "/(^|/)Puppetfile$/"
         ]
       },
       "$ref": "#"
@@ -3123,8 +3172,8 @@
       "description": "Configuration object for the pyenv manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.python-version$"
+        "managerFilePatterns": [
+          "/(^|/)\\.python-version$/"
         ],
         "versioning": "docker",
         "pinDigests": false
@@ -3207,6 +3256,24 @@
         "type": "string"
       },
       "default": null
+    },
+    "renovate-config-presets": {
+      "description": "Configuration object for the renovate-config-presets manager",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "renovate.json",
+          "renovate.json5",
+          ".github/renovate.json",
+          ".github/renovate.json5",
+          ".gitlab/renovate.json",
+          ".gitlab/renovate.json5",
+          ".renovaterc",
+          ".renovaterc.json",
+          ".renovaterc.json5"
+        ]
+      },
+      "$ref": "#"
     },
     "replacement": {
       "description": "Configuration to apply when replacing a dependency.",
@@ -3327,8 +3394,8 @@
       "description": "Configuration object for the ruby-version manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.ruby-version$"
+        "managerFilePatterns": [
+          "/(^|/)\\.ruby-version$/"
         ],
         "versioning": "ruby"
       },
@@ -3338,8 +3405,8 @@
       "description": "Configuration object for the runtime-version manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)runtime.txt$"
+        "managerFilePatterns": [
+          "/(^|/)runtime.txt$/"
         ],
         "pinDigests": false
       },
@@ -3358,11 +3425,11 @@
       "description": "Configuration object for the sbt manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "\\.sbt$",
-          "project/[^/]*\\.scala$",
-          "project/build\\.properties$",
-          "(^|/)repositories$"
+        "managerFilePatterns": [
+          "/\\.sbt$/",
+          "/project/[^/]*\\.scala$/",
+          "/project/build\\.properties$/",
+          "/(^|/)repositories$/"
         ],
         "versioning": "ivy"
       },
@@ -3372,8 +3439,8 @@
       "description": "Configuration object for the scalafmt manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.scalafmt.conf$"
+        "managerFilePatterns": [
+          "/(^|/)\\.scalafmt.conf$/"
         ]
       },
       "$ref": "#"
@@ -3448,8 +3515,8 @@
       "description": "Configuration object for the setup-cfg manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)setup\\.cfg$"
+        "managerFilePatterns": [
+          "/(^|/)setup\\.cfg$/"
         ],
         "versioning": "pep440"
       },
@@ -3502,7 +3569,7 @@
       "description": "Configuration object for the sveltos manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "managerFilePatterns": []
       },
       "$ref": "#"
     },
@@ -3510,8 +3577,8 @@
       "description": "Configuration object for the swift manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)Package\\.swift"
+        "managerFilePatterns": [
+          "/(^|/)Package\\.swift/"
         ],
         "versioning": "swift",
         "pinDigests": false
@@ -3522,7 +3589,7 @@
       "description": "Configuration object for the tekton manager",
       "type": "object",
       "default": {
-        "fileMatch": []
+        "managerFilePatterns": []
       },
       "$ref": "#"
     },
@@ -3531,8 +3598,8 @@
       "type": "object",
       "default": {
         "commitMessageTopic": "Terraform {{depName}}",
-        "fileMatch": [
-          "\\.tf$"
+        "managerFilePatterns": [
+          "/\\.tf$/"
         ],
         "pinDigests": false
       },
@@ -3542,8 +3609,8 @@
       "description": "Configuration object for the terraform-version manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.terraform-version$"
+        "managerFilePatterns": [
+          "/(^|/)\\.terraform-version$/"
         ],
         "versioning": "hashicorp",
         "extractVersion": "^v(?<version>.*)$"
@@ -3555,8 +3622,8 @@
       "type": "object",
       "default": {
         "commitMessageTopic": "Terragrunt dependency {{depName}}",
-        "fileMatch": [
-          "(^|/)terragrunt\\.hcl$"
+        "managerFilePatterns": [
+          "/(^|/)terragrunt\\.hcl$/"
         ]
       },
       "$ref": "#"
@@ -3565,8 +3632,8 @@
       "description": "Configuration object for the terragrunt-version manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.terragrunt-version$"
+        "managerFilePatterns": [
+          "/(^|/)\\.terragrunt-version$/"
         ],
         "versioning": "hashicorp",
         "extractVersion": "^v(?<version>.+)$"
@@ -3578,8 +3645,8 @@
       "type": "object",
       "default": {
         "commitMessageTopic": "TFLint plugin {{depName}}",
-        "fileMatch": [
-          "\\.tflint\\.hcl$"
+        "managerFilePatterns": [
+          "/\\.tflint\\.hcl$/"
         ],
         "extractVersion": "^v(?<version>.*)$"
       },
@@ -3597,8 +3664,8 @@
       "description": "Configuration object for the travis manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "^\\.travis\\.ya?ml$"
+        "managerFilePatterns": [
+          "/^\\.travis\\.ya?ml$/"
         ],
         "major": {
           "enabled": false
@@ -3672,8 +3739,8 @@
       "description": "Configuration object for the velaci manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "(^|/)\\.vela\\.ya?ml$"
+        "managerFilePatterns": [
+          "/(^|/)\\.vela\\.ya?ml$/"
         ]
       },
       "$ref": "#"
@@ -3683,8 +3750,8 @@
       "type": "object",
       "default": {
         "commitMessageTopic": "vendir {{depName}}",
-        "fileMatch": [
-          "(^|/)vendir\\.yml$"
+        "managerFilePatterns": [
+          "/(^|/)vendir\\.yml$/"
         ]
       },
       "$ref": "#"
@@ -3722,6 +3789,7 @@
             "hex",
             "ivy",
             "kubernetes-api",
+            "lambda-node",
             "loose",
             "maven",
             "nixpkgs",
@@ -3805,8 +3873,8 @@
       "description": "Configuration object for the woodpecker manager",
       "type": "object",
       "default": {
-        "fileMatch": [
-          "^\\.woodpecker(?:/[^/]+)?\\.ya?ml$"
+        "managerFilePatterns": [
+          "/^\\.woodpecker(?:/[^/]+)?\\.ya?ml$/"
         ]
       },
       "$ref": "#"

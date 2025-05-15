@@ -10,7 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: compose-spec, mergify, renovate, woodpecker-ci (2025-04-27)
+- Update vendored schemas: bitbucket-pipelines, circle-ci, compose-spec, dependabot,
+  github-workflows, gitlab-ci, mergify, renovate, woodpecker-ci (2025-05-11)
 
 0.33.0
 ------
