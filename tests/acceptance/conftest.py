@@ -1,7 +1,6 @@
 import textwrap
 
 import pytest
-from click.testing import CliRunner
 
 from check_jsonschema import main as cli_main
 
@@ -14,11 +13,6 @@ output:
 stderr:
 {textwrap.indent(result.stderr, "  ")}
 """
-
-
-@pytest.fixture
-def cli_runner():
-    return CliRunner(mix_stderr=False)
 
 
 @pytest.fixture

@@ -12,6 +12,7 @@ Unreleased
 
 - Update vendored schemas: bitbucket-pipelines, circle-ci, compose-spec, dependabot,
   github-workflows, gitlab-ci, mergify, renovate, woodpecker-ci (2025-05-11)
+- Fix: support ``click==8.2.0``
 
 0.33.0
 ------

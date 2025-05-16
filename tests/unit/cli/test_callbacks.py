@@ -22,23 +22,23 @@ def mycli(bar, baz):
         print(baz)
 
 
-def test_deprecation_warning_callback_on_missing_opts(runner):
-    result = runner.invoke(mycli, [])
+def test_deprecation_warning_callback_on_missing_opts(cli_runner):
+    result = cli_runner.invoke(mycli, [])
     assert result.exit_code == 0
     assert result.stdout == "False\n"
 
 
-def test_deprecation_warning_callback_on_flag(runner):
+def test_deprecation_warning_callback_on_flag(cli_runner):
     with pytest.warns(
         UserWarning,
         match="'--bar' is deprecated and will be removed in a future release",
     ):
-        result = runner.invoke(mycli, ["--bar"], catch_exceptions=False)
+        result = cli_runner.invoke(mycli, ["--bar"], catch_exceptions=False)
     assert result.exit_code == 0, result.stdout
     assert result.stdout == "True\n"
 
 
-def test_deprecation_warning_callback_added_message(runner):
+def test_deprecation_warning_callback_added_message(cli_runner):
     with pytest.warns(
         UserWarning,
         match=(
@@ -46,6 +46,6 @@ def test_deprecation_warning_callback_added_message(runner):
             "Use --frob instead!"
         ),
     ):
-        result = runner.invoke(mycli, ["--baz", "ok"], catch_exceptions=False)
+        result = cli_runner.invoke(mycli, ["--baz", "ok"], catch_exceptions=False)
     assert result.exit_code == 0, result.stdout
     assert result.stdout == "False\nok\n"

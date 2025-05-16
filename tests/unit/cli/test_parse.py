@@ -67,14 +67,16 @@ def test_parse_result_set_schema(
         assert args.schema_path is None
 
 
-def test_requires_some_args(runner):
-    result = runner.invoke(cli_main, [])
+def test_requires_some_args(cli_runner):
+    result = cli_runner.invoke(cli_main, [])
     assert result.exit_code == 2
 
 
-def test_schemafile_and_instancefile(runner, mock_parse_result, in_tmp_dir, tmp_path):
+def test_schemafile_and_instancefile(
+    cli_runner, mock_parse_result, in_tmp_dir, tmp_path
+):
     touch_files(tmp_path, "foo.json")
-    runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
+    cli_runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
     assert mock_parse_result.schema_mode == SchemaLoadingMode.filepath
     assert mock_parse_result.schema_path == "schema.json"
     assert isinstance(mock_parse_result.instancefiles, tuple)
@@ -83,25 +85,27 @@ def test_schemafile_and_instancefile(runner, mock_parse_result, in_tmp_dir, tmp_
     assert tuple(f.name for f in mock_parse_result.instancefiles) == ("foo.json",)
 
 
-def test_requires_at_least_one_instancefile(runner):
-    result = runner.invoke(cli_main, ["--schemafile", "schema.json"])
+def test_requires_at_least_one_instancefile(cli_runner):
+    result = cli_runner.invoke(cli_main, ["--schemafile", "schema.json"])
     assert result.exit_code == 2
 
 
-def test_requires_schemafile(runner, in_tmp_dir, tmp_path):
+def test_requires_schemafile(cli_runner, in_tmp_dir, tmp_path):
     touch_files(tmp_path, "foo.json")
-    result = runner.invoke(cli_main, ["foo.json"])
+    result = cli_runner.invoke(cli_main, ["foo.json"])
     assert result.exit_code == 2
 
 
-def test_no_cache_defaults_false(runner, mock_parse_result):
-    runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
+def test_no_cache_defaults_false(cli_runner, mock_parse_result):
+    cli_runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
     assert mock_parse_result.disable_cache is False
 
 
-def test_no_cache_flag_is_true(runner, mock_parse_result, in_tmp_dir, tmp_path):
+def test_no_cache_flag_is_true(cli_runner, mock_parse_result, in_tmp_dir, tmp_path):
     touch_files(tmp_path, "foo.json")
-    runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json", "--no-cache"])
+    cli_runner.invoke(
+        cli_main, ["--schemafile", "schema.json", "foo.json", "--no-cache"]
+    )
     assert mock_parse_result.disable_cache is True
 
 
@@ -133,9 +137,9 @@ def test_no_cache_flag_is_true(runner, mock_parse_result, in_tmp_dir, tmp_path):
         ],
     ],
 )
-def test_mutex_schema_opts(runner, cmd_args, in_tmp_dir, tmp_path):
+def test_mutex_schema_opts(cli_runner, cmd_args, in_tmp_dir, tmp_path):
     touch_files(tmp_path, "foo.json")
-    result = runner.invoke(cli_main, cmd_args + ["foo.json"])
+    result = cli_runner.invoke(cli_main, cmd_args + ["foo.json"])
     assert result.exit_code == 2
     assert "are mutually exclusive" in result.stderr
 
@@ -148,8 +152,8 @@ def test_mutex_schema_opts(runner, cmd_args, in_tmp_dir, tmp_path):
         ["-h"],
     ],
 )
-def test_supports_common_option(runner, cmd_args):
-    result = runner.invoke(cli_main, cmd_args)
+def test_supports_common_option(cli_runner, cmd_args):
+    result = cli_runner.invoke(cli_main, cmd_args)
     assert result.exit_code == 0
 
 
@@ -157,7 +161,7 @@ def test_supports_common_option(runner, cmd_args):
     "setting,expect_value", [(None, None), ("1", False), ("0", False)]
 )
 def test_no_color_env_var(
-    runner, monkeypatch, setting, expect_value, boxed_context, in_tmp_dir, tmp_path
+    cli_runner, monkeypatch, setting, expect_value, boxed_context, in_tmp_dir, tmp_path
 ):
     if setting is None:
         monkeypatch.delenv("NO_COLOR", raising=False)
@@ -165,7 +169,7 @@ def test_no_color_env_var(
         monkeypatch.setenv("NO_COLOR", setting)
 
     touch_files(tmp_path, "foo.json")
-    runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
+    cli_runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
     assert boxed_context.ref.color == expect_value
 
 
@@ -174,22 +178,22 @@ def test_no_color_env_var(
     [(None, None), ("auto", None), ("always", True), ("never", False)],
 )
 def test_color_cli_option(
-    runner, setting, expected_value, boxed_context, in_tmp_dir, tmp_path
+    cli_runner, setting, expected_value, boxed_context, in_tmp_dir, tmp_path
 ):
     args = ["--schemafile", "schema.json", "foo.json"]
     if setting:
         args.extend(("--color", setting))
     touch_files(tmp_path, "foo.json")
-    runner.invoke(cli_main, args)
+    cli_runner.invoke(cli_main, args)
     assert boxed_context.ref.color == expected_value
 
 
 def test_no_color_env_var_overrides_cli_option(
-    runner, monkeypatch, mock_cli_exec, boxed_context, in_tmp_dir, tmp_path
+    cli_runner, monkeypatch, mock_cli_exec, boxed_context, in_tmp_dir, tmp_path
 ):
     monkeypatch.setenv("NO_COLOR", "1")
     touch_files(tmp_path, "foo.json")
-    runner.invoke(
+    cli_runner.invoke(
         cli_main, ["--color=always", "--schemafile", "schema.json", "foo.json"]
     )
     assert boxed_context.ref.color is False
@@ -200,11 +204,11 @@ def test_no_color_env_var_overrides_cli_option(
     [("auto", 0), ("always", 0), ("never", 0), ("anything_else", 2)],
 )
 def test_color_cli_option_is_choice(
-    runner, setting, expected_value, in_tmp_dir, tmp_path
+    cli_runner, setting, expected_value, in_tmp_dir, tmp_path
 ):
     touch_files(tmp_path, "foo.json")
     assert (
-        runner.invoke(
+        cli_runner.invoke(
             cli_main,
             ["--color", setting, "--schemafile", "schema.json", "foo.json"],
         ).exit_code
@@ -212,9 +216,11 @@ def test_color_cli_option_is_choice(
     )
 
 
-def test_formats_default_to_enabled(runner, mock_parse_result, in_tmp_dir, tmp_path):
+def test_formats_default_to_enabled(
+    cli_runner, mock_parse_result, in_tmp_dir, tmp_path
+):
     touch_files(tmp_path, "foo.json")
-    runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
+    cli_runner.invoke(cli_main, ["--schemafile", "schema.json", "foo.json"])
     assert mock_parse_result.disable_all_formats is False
     assert mock_parse_result.disable_formats == ()
 
@@ -232,10 +238,10 @@ def test_formats_default_to_enabled(runner, mock_parse_result, in_tmp_dir, tmp_p
     ),
 )
 def test_disable_selected_formats(
-    runner, mock_parse_result, addargs, in_tmp_dir, tmp_path
+    cli_runner, mock_parse_result, addargs, in_tmp_dir, tmp_path
 ):
     touch_files(tmp_path, "foo.json")
-    runner.invoke(
+    cli_runner.invoke(
         cli_main,
         [
             "--schemafile",
@@ -263,10 +269,12 @@ def test_disable_selected_formats(
         ["--disable-formats", "*,email"],
     ),
 )
-def test_disable_all_formats(runner, mock_parse_result, addargs, in_tmp_dir, tmp_path):
+def test_disable_all_formats(
+    cli_runner, mock_parse_result, addargs, in_tmp_dir, tmp_path
+):
     touch_files(tmp_path, "foo.json")
     # this should be an override, with or without other args
-    runner.invoke(
+    cli_runner.invoke(
         cli_main,
         [
             "--schemafile",
@@ -279,13 +287,13 @@ def test_disable_all_formats(runner, mock_parse_result, addargs, in_tmp_dir, tmp
 
 
 def test_can_specify_custom_validator_class(
-    runner, mock_parse_result, mock_module, in_tmp_dir, tmp_path
+    cli_runner, mock_parse_result, mock_module, in_tmp_dir, tmp_path
 ):
     mock_module("foo.py", "class MyValidator: pass")
     import foo
 
     touch_files(tmp_path, "foo.json")
-    result = runner.invoke(
+    result = cli_runner.invoke(
         cli_main,
         [
             "--schemafile",
@@ -303,7 +311,7 @@ def test_can_specify_custom_validator_class(
     "failmode", ("syntax", "import", "attr", "function", "non_callable")
 )
 def test_custom_validator_class_fails(
-    runner, mock_parse_result, mock_module, failmode, in_tmp_dir, tmp_path
+    cli_runner, mock_parse_result, mock_module, failmode, in_tmp_dir, tmp_path
 ):
     mock_module(
         "foo.py",
@@ -331,7 +339,7 @@ other_thing = 100
         raise NotImplementedError
 
     touch_files(tmp_path, "foo.json")
-    result = runner.invoke(
+    result = cli_runner.invoke(
         cli_main,
         ["--schemafile", "schema.json", "foo.json", "--validator-class", arg],
     )
