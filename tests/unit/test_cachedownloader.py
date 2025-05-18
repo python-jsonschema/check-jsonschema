@@ -11,17 +11,19 @@ from check_jsonschema.cachedownloader import (
     CacheDownloader,
     FailedDownloadError,
     _cache_hit,
+    _lastmod_from_response,
     url_to_cache_filename,
 )
 
 DEFAULT_RESPONSE_URL = "https://example.com/schema1.json"
+DEFAULT_LASTMOD = "Sun, 01 Jan 2000 00:00:01 GMT"
 
 
 def add_default_response():
     responses.add(
         "GET",
         DEFAULT_RESPONSE_URL,
-        headers={"Last-Modified": "Sun, 01 Jan 2000 00:00:01 GMT"},
+        headers={"Last-Modified": DEFAULT_LASTMOD},
         json={},
         match_querystring=None,
     )
@@ -274,10 +276,10 @@ def test_cachedownloader_handles_bad_lastmod_header(
     elif failure_mode == "time_overflow":
         add_default_response()
 
-        def fake_mktime(*args):
+        def fake_timegm(*args):
             raise OverflowError("uh-oh")
 
-        monkeypatch.setattr("time.mktime", fake_mktime)
+        monkeypatch.setattr("calendar.timegm", fake_timegm)
     else:
         raise NotImplementedError
 
@@ -341,3 +343,37 @@ def test_cachedownloader_validation_is_not_invoked_on_hit(
         assert fp.read() == b"{}"
     # assert that the validator was not run
     assert validator_ran is False
+
+
+def test_lastmod_from_header_uses_gmtime(request, monkeypatch, default_response):
+    """
+    Regression test for https://github.com/python-jsonschema/check-jsonschema/pull/565
+
+    The time was converted in local time, when UTC/GMT was desired.
+    """
+
+    def final_tzset():
+        time.tzset()
+
+    request.addfinalizer(final_tzset)
+
+    response = requests.get(DEFAULT_RESPONSE_URL, stream=True)
+
+    with monkeypatch.context() as m:
+        m.setenv("TZ", "GMT0")
+        time.tzset()
+        gmt_parsed_time = _lastmod_from_response(response)
+
+    with monkeypatch.context() as m:
+        m.setenv("TZ", "EST5")
+        time.tzset()
+        est_parsed_time = _lastmod_from_response(response)
+
+    with monkeypatch.context() as m:
+        m.setenv("TZ", "UTC0")
+        time.tzset()
+        utc_parsed_time = _lastmod_from_response(response)
+
+    # assert that they all match
+    assert gmt_parsed_time == utc_parsed_time
+    assert gmt_parsed_time == est_parsed_time
