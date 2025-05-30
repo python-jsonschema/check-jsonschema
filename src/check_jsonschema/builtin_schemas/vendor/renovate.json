@@ -3,6 +3,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
+    "abandonmentThreshold": {
+      "description": "Flags packages that have not been updated within this period as abandoned.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
+    },
     "addLabels": {
       "description": "Labels to add to Pull Request.",
       "type": "array",
