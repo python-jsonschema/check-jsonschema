@@ -1696,7 +1696,7 @@
                 "PR_DEQUEUED",
                 "PR_DEQUEUED_FROM_PARTITION",
                 "PR_AHEAD_DEQUEUED",
-                "PR_AHEAD_FAILED_TO_MERGE",
+                "BATCH_AHEAD_FAILED",
                 "PR_WITH_HIGHER_PRIORITY_QUEUED",
                 "PR_QUEUED_TWICE",
                 "SPECULATIVE_CHECK_NUMBER_REDUCED",
