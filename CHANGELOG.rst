@@ -11,8 +11,8 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas: bitbucket-pipelines, circle-ci, compose-spec, dependabot,
-  github-workflows, gitlab-ci, mergify, readthedocs, renovate, woodpecker-ci
-  (2025-05-18)
+  github-workflows, gitlab-ci, mergify, readthedocs, renovate, travis, woodpecker-ci
+  (2025-06-01)
 - Fix: support ``click==8.2.0``
 - Fix a bug in ``Last-Modified`` header parsing which used local time and could
   result in improper caching. Thanks :user:`fenuks`! (:pr:`565`)
