@@ -3,6 +3,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
+    "abandonmentThreshold": {
+      "description": "Flags packages that have not been updated within this period as abandoned.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
+    },
     "addLabels": {
       "description": "Labels to add to Pull Request.",
       "type": "array",
@@ -501,8 +509,7 @@
               },
               "bumpType": {
                 "description": "The semver level to use when bumping versions. This is used by the `bumpVersions` feature.",
-                "type": "string",
-                "default": "patch"
+                "type": "string"
               },
               "filePatterns": {
                 "description": "A list of patterns to match files that contain the version string.",
@@ -520,11 +527,7 @@
               },
               "name": {
                 "description": "A name for the bumpVersion config. This is used for logging and debugging.",
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "default": null
+                "type": "string"
               }
             }
           }
@@ -1046,6 +1049,11 @@
         "unresolved"
       ],
       "default": "none"
+    },
+    "dependencyDashboardReportAbandonment": {
+      "description": "Controls whether abandoned packages are reported in the dependency dashboard.",
+      "type": "boolean",
+      "default": true
     },
     "dependencyDashboardTitle": {
       "description": "Title for the Dependency Dashboard issue.",
@@ -2136,8 +2144,7 @@
           "/(^|/|\\.)pom\\.xml$/",
           "/^(((\\.mvn)|(\\.m2))/)?settings\\.xml$/",
           "/(^|/)\\.mvn/extensions\\.xml$/"
-        ],
-        "versioning": "maven"
+        ]
       },
       "$ref": "#"
     },
@@ -2622,7 +2629,7 @@
                 ]
               },
               "matchSourceUrls": {
-                "description": "A list of source URLs to exact match against.",
+                "description": "A list of exact match URLs (or URL patterns) to match sourceUrl against.",
                 "oneOf": [
                   {
                     "type": "array",
