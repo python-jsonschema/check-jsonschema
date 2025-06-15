@@ -1305,7 +1305,7 @@
       "additionalProperties": false,
       "properties": {
         "max_parallel_checks": {
-          "default": 1,
+          "default": 5,
           "description": "The maximum number of speculative checks allowed to run at the same time.",
           "maximum": 128,
           "minimum": 1,
@@ -1696,7 +1696,7 @@
                 "PR_DEQUEUED",
                 "PR_DEQUEUED_FROM_PARTITION",
                 "PR_AHEAD_DEQUEUED",
-                "PR_AHEAD_FAILED_TO_MERGE",
+                "BATCH_AHEAD_FAILED",
                 "PR_WITH_HIGHER_PRIORITY_QUEUED",
                 "PR_QUEUED_TWICE",
                 "SPECULATIVE_CHECK_NUMBER_REDUCED",
@@ -2661,19 +2661,6 @@
           "description": "For certain actions, such as rebasing branches, Mergify has to impersonate a GitHub user. You can specify the account to use with this option. If no `update_bot_account` is set, Mergify picks randomly one of the organization users instead. The user account **must** have already been logged in Mergify dashboard once. This option overrides the value defined in the queue rules section of the configuration.",
           "title": "Update Bot Account"
         },
-        "disallow_checks_interruption_from_queues": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `disallow_checks_interruption_from_queues` attribute in the `queue_rules` section. It has been replaced in favor of using `priority_rules` at the top-level of the configuration.\n> For more information: https://docs.mergify.com/merge-queue/priority/",
-            "deprecated_summary_saas_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `disallow_checks_interruption_from_queues` attribute in the `queue_rules` section. It has been replaced in favor of using `priority_rules` at the top-level of the configuration.\n> For more information: https://docs.mergify.com/merge-queue/priority/"
-          },
-          "deprecated": true,
-          "items": {
-            "type": "string"
-          },
-          "maxItems": 50,
-          "title": "Disallow Checks Interruption From Queues",
-          "type": "array"
-        },
         "name": {
           "title": "Name",
           "type": "string"
@@ -2897,19 +2884,6 @@
           "default": null,
           "description": "For certain actions, such as rebasing branches, Mergify has to impersonate a GitHub user. You can specify the account to use with this option. If no `update_bot_account` is set, Mergify picks randomly one of the organization users instead. The user account **must** have already been logged in Mergify dashboard once. This option overrides the value defined in the queue rules section of the configuration.",
           "title": "Update Bot Account"
-        },
-        "disallow_checks_interruption_from_queues": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `disallow_checks_interruption_from_queues` attribute in the `queue_rules` section. It has been replaced in favor of using `priority_rules` at the top-level of the configuration.\n> For more information: https://docs.mergify.com/merge-queue/priority/",
-            "deprecated_summary_saas_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `disallow_checks_interruption_from_queues` attribute in the `queue_rules` section. It has been replaced in favor of using `priority_rules` at the top-level of the configuration.\n> For more information: https://docs.mergify.com/merge-queue/priority/"
-          },
-          "deprecated": true,
-          "items": {
-            "type": "string"
-          },
-          "maxItems": 50,
-          "title": "Disallow Checks Interruption From Queues",
-          "type": "array"
         }
       },
       "title": "QueueRuleModelForDefaults",
