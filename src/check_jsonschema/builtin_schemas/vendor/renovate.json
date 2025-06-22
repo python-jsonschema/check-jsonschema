@@ -3,6 +3,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
+    "abandonmentThreshold": {
+      "description": "Flags packages that have not been updated within this period as abandoned.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
+    },
     "addLabels": {
       "description": "Labels to add to Pull Request.",
       "type": "array",
@@ -71,7 +79,45 @@
           "/(^|/)tasks/[^/]+\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "ansible-galaxy": {
       "description": "Configuration object for the ansible-galaxy manager",
@@ -81,7 +127,45 @@
           "/(^|/)(galaxy|requirements)(\\.ansible)?\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "argocd": {
       "description": "Configuration object for the argocd manager",
@@ -89,7 +173,45 @@
       "default": {
         "managerFilePatterns": []
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "asdf": {
       "description": "Configuration object for the asdf manager",
@@ -99,7 +221,45 @@
           "/(^|/)\\.tool-versions$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "assignAutomerge": {
       "description": "Assign reviewers and assignees even if the PR is to be automerged.",
@@ -279,7 +439,45 @@
         ],
         "enabled": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "azureWorkItemId": {
       "description": "The id of an existing work item on Azure Boards to link to each PR.",
@@ -305,7 +503,45 @@
           "/(^|/)batect(-bundle)?\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "batect-wrapper": {
       "description": "Configuration object for the batect-wrapper manager",
@@ -316,7 +552,45 @@
         ],
         "versioning": "semver"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "bazel": {
       "description": "Configuration object for the bazel manager",
@@ -328,7 +602,45 @@
           "/\\.bzl$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "bazel-module": {
       "description": "Configuration object for the bazel-module manager",
@@ -338,7 +650,45 @@
           "/(^|/|\\.)MODULE\\.bazel$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "bazelisk": {
       "description": "Configuration object for the bazelisk manager",
@@ -350,7 +700,45 @@
         "pinDigests": false,
         "versioning": "semver"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "bbAutoResolvePrTasks": {
       "description": "The PR tasks will be automatically completed after the PR is raised.",
@@ -375,7 +763,45 @@
           "/\\.bicep$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "binarySource": {
       "description": "Controls how third-party tools like npm or Gradle are called: directly, via Docker sidecar containers, or via dynamic install.",
@@ -396,7 +822,45 @@
           "/(^|/)\\.?bitbucket-pipelines\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "bitrise": {
       "description": "Configuration object for the bitrise manager",
@@ -406,7 +870,45 @@
           "/(^|/)bitrise\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "branchConcurrentLimit": {
       "description": "Limit to a maximum of x concurrent branches. 0 means no limit, `null` (default) inherits value from `prConcurrentLimit`.",
@@ -439,7 +941,7 @@
     "branchTopic": {
       "description": "Branch topic.",
       "type": "string",
-      "default": "{{{depNameSanitized}}}-{{{newMajor}}}{{#if separateMinorPatch}}{{#if isPatch}}.{{{newMinor}}}{{/if}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}"
+      "default": "{{{depNameSanitized}}}-{{{newMajor}}}{{#if separateMinorPatch}}{{#if isPatch}}.{{{newMinor}}}{{/if}}{{/if}}{{#if separateMultipleMinor}}{{#if isMinor}}.{{{newMinor}}}{{/if}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}"
     },
     "buildkite": {
       "description": "Configuration object for the buildkite manager",
@@ -452,7 +954,45 @@
         "commitMessageTopic": "buildkite plugin {{depName}}",
         "commitMessageExtra": "to {{#if isMajor}}{{{prettyNewMajor}}}{{else}}{{{newValue}}}{{/if}}"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "buildpacks": {
       "description": "Configuration object for the buildpacks manager",
@@ -464,7 +1004,45 @@
         ],
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "bumpVersion": {
       "description": "Bump the version in the package file being updated.",
@@ -501,8 +1079,7 @@
               },
               "bumpType": {
                 "description": "The semver level to use when bumping versions. This is used by the `bumpVersions` feature.",
-                "type": "string",
-                "default": "patch"
+                "type": "string"
               },
               "filePatterns": {
                 "description": "A list of patterns to match files that contain the version string.",
@@ -520,11 +1097,7 @@
               },
               "name": {
                 "description": "A name for the bumpVersion config. This is used for logging and debugging.",
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "default": null
+                "type": "string"
               }
             }
           }
@@ -549,7 +1122,45 @@
           "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
         }
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "bun-version": {
       "description": "Configuration object for the bun-version manager",
@@ -560,7 +1171,45 @@
         ],
         "versioning": "npm"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "bundler": {
       "description": "Configuration object for the bundler manager",
@@ -571,7 +1220,45 @@
         ],
         "versioning": "ruby"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "cacheDir": {
       "description": "The directory where Renovate stores its cache. If left empty, Renovate creates a subdirectory within the `baseDir`.",
@@ -601,7 +1288,45 @@
           "/\\.cake$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "cargo": {
       "description": "Configuration object for the cargo manager",
@@ -613,7 +1338,45 @@
         ],
         "versioning": "cargo"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "cdnurl": {
       "description": "Configuration object for the cdnurl manager",
@@ -622,7 +1385,45 @@
         "managerFilePatterns": [],
         "versioning": "semver"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "checkedBranches": {
       "description": "A list of branch names to mark for creation or rebasing as if it was selected in the Dependency Dashboard issue.",
@@ -640,7 +1441,45 @@
           "/(^|/)\\.circleci/.+\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "cloneSubmodules": {
       "description": "Set to `true` to initialize submodules during repository clone.",
@@ -665,7 +1504,45 @@
           "/(^|/)cloudbuild\\.ya?ml/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "cocoapods": {
       "description": "Configuration object for the cocoapods manager",
@@ -676,7 +1553,45 @@
         ],
         "versioning": "ruby"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "commitBody": {
       "description": "Commit message body template. Will be appended to commit message, separated by two line returns.",
@@ -733,7 +1648,45 @@
         ],
         "versioning": "composer"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "composerIgnorePlatformReqs": {
       "description": "Configure use of `--ignore-platform-reqs` or `--ignore-platform-req` for the Composer package manager.",
@@ -754,7 +1707,45 @@
         "versioning": "conan",
         "enabled": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "confidential": {
       "description": "If enabled, issues created by Renovate are set as confidential.",
@@ -801,7 +1792,45 @@
         ],
         "versioning": "pep440"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "cpanfile": {
       "description": "Configuration object for the cpanfile manager",
@@ -811,7 +1840,45 @@
           "/(^|/)cpanfile$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "crossplane": {
       "description": "Configuration object for the crossplane manager",
@@ -819,7 +1886,45 @@
       "default": {
         "managerFilePatterns": []
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "customDatasources": {
       "description": "Defines custom datasources for usage by managers.",
@@ -943,6 +2048,20 @@
                   "yaml"
                 ]
               },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
               "matchStrings": {
                 "description": "Queries to use. Valid only within `bumpVersions` or `customManagers` object.",
                 "type": "array",
@@ -1047,6 +2166,11 @@
       ],
       "default": "none"
     },
+    "dependencyDashboardReportAbandonment": {
+      "description": "Controls whether abandoned packages are reported in the dependency dashboard.",
+      "type": "boolean",
+      "default": true
+    },
     "dependencyDashboardTitle": {
       "description": "Title for the Dependency Dashboard issue.",
       "type": "string",
@@ -1061,7 +2185,45 @@
         ],
         "versioning": "maven"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "description": {
       "description": "Plain text description for a config or preset.",
@@ -1095,7 +2257,45 @@
           "/(^|/)devbox\\.json$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "devcontainer": {
       "description": "Configuration object for the devcontainer manager",
@@ -1106,7 +2306,45 @@
           "/^.devcontainer.json$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "digest": {
       "description": "Configuration to apply when updating a digest (no change in tag/version).",
@@ -1126,7 +2364,45 @@
           "/(^|/)(?:docker-)?compose[^/]*\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "dockerChildPrefix": {
       "description": "Change this value to add a prefix to the Renovate Docker sidecar container names and labels.",
@@ -1160,7 +2436,45 @@
           "/(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "draftPR": {
       "description": "If set to `true` then Renovate creates draft PRs, instead of normal status PRs.",
@@ -1175,7 +2489,45 @@
           "/(^|/)\\.drone\\.yml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "dryRun": {
       "description": "If enabled, perform a dry run by logging messages instead of creating/updating/deleting branches and PRs.",
@@ -1294,7 +2646,45 @@
           "/(^|/)fleet\\.ya?ml/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "flux": {
       "description": "Configuration object for the flux manager",
@@ -1304,7 +2694,45 @@
           "/(?:^|/)gotk-components\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "followTag": {
       "description": "If defined, packages will follow this release tag exactly.",
@@ -1358,7 +2786,45 @@
         ],
         "versioning": "semver"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "git-submodules": {
       "description": "Configuration object for the git-submodules manager",
@@ -1370,7 +2836,45 @@
           "/(^|/)\\.gitmodules$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "gitAuthor": {
       "description": "Author to use for Git commits. Must conform to [RFC5322](https://datatracker.ietf.org/doc/html/rfc5322).",
@@ -1442,7 +2946,45 @@
           "/(^|/)action\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "githubTokenWarn": {
       "description": "Display warnings about GitHub token not being set.",
@@ -1457,7 +2999,45 @@
           "/\\.gitlab-ci\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "gitlabci-include": {
       "description": "Configuration object for the gitlabci-include manager",
@@ -1467,7 +3047,45 @@
           "/\\.gitlab-ci\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "glasskube": {
       "description": "Configuration object for the glasskube manager",
@@ -1475,7 +3093,45 @@
       "default": {
         "managerFilePatterns": []
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "gleam": {
       "description": "Configuration object for the gleam manager",
@@ -1486,7 +3142,45 @@
         ],
         "versioning": "hex"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "globalExtends": {
       "description": "Configuration presets to use or extend for a self-hosted config.",
@@ -1514,7 +3208,45 @@
         ],
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "gradle": {
       "description": "Configuration object for the gradle manager",
@@ -1532,7 +3264,45 @@
         "timeout": 600,
         "versioning": "gradle"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "gradle-wrapper": {
       "description": "Configuration object for the gradle-wrapper manager",
@@ -1543,7 +3313,45 @@
         ],
         "versioning": "gradle"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "group": {
       "description": "Config if `groupName` is enabled.",
@@ -1587,7 +3395,45 @@
         ],
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "helm-requirements": {
       "description": "Configuration object for the helm-requirements manager",
@@ -1601,7 +3447,45 @@
           "/(^|/)requirements\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "helm-values": {
       "description": "Configuration object for the helm-values manager",
@@ -1613,7 +3497,45 @@
         ],
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "helmfile": {
       "description": "Configuration object for the helmfile manager",
@@ -1627,7 +3549,45 @@
           "/(^|/)helmfile\\.ya?ml(?:\\.gotmpl)?$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "helmsman": {
       "description": "Configuration object for the helmsman manager",
@@ -1635,7 +3595,45 @@
       "default": {
         "managerFilePatterns": []
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "helmv3": {
       "description": "Configuration object for the helmv3 manager",
@@ -1649,7 +3647,45 @@
           "/(^|/)Chart\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "hermit": {
       "description": "Configuration object for the hermit manager",
@@ -1663,7 +3699,45 @@
         ],
         "versioning": "hermit"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "homebrew": {
       "description": "Configuration object for the homebrew manager",
@@ -1674,7 +3748,45 @@
           "/^Formula/[^/]+[.]rb$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "hostRules": {
       "description": "Host rules/configuration including credentials.",
@@ -1831,7 +3943,45 @@
         },
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "httpCacheTtlDays": {
       "description": "Maximum duration in days to keep HTTP cache entries.",
@@ -1963,7 +4113,45 @@
           "/(^|/)plugins\\.(txt|ya?ml)$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "jsonata": {
       "description": "Configuration object for the jsonata manager",
@@ -1982,7 +4170,45 @@
         ],
         "datasource": "git-tags"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "keepUpdatedLabel": {
       "description": "If set, users can add this label to PRs to request they be kept updated with the base branch.",
@@ -1996,7 +4222,45 @@
           "/^.+\\.main\\.kts$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "kubernetes": {
       "description": "Configuration object for the kubernetes manager",
@@ -2004,7 +4268,45 @@
       "default": {
         "managerFilePatterns": []
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "kustomize": {
       "description": "Configuration object for the kustomize manager",
@@ -2015,7 +4317,45 @@
         ],
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "labels": {
       "description": "Labels to set in Pull Request.",
@@ -2033,7 +4373,45 @@
         ],
         "versioning": "maven"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "lockFileMaintenance": {
       "description": "Configuration for lock file maintenance.",
@@ -2114,20 +4492,6 @@
       "default": {},
       "$ref": "#"
     },
-    "managerFilePatterns": {
-      "description": "RegEx (`re2`) and glob patterns for matching manager files.",
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        {
-          "type": "string"
-        }
-      ]
-    },
     "maven": {
       "description": "Configuration object for the maven manager",
       "type": "object",
@@ -2136,10 +4500,47 @@
           "/(^|/|\\.)pom\\.xml$/",
           "/^(((\\.mvn)|(\\.m2))/)?settings\\.xml$/",
           "/(^|/)\\.mvn/extensions\\.xml$/"
-        ],
-        "versioning": "maven"
+        ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "maven-wrapper": {
       "description": "Configuration object for the maven-wrapper manager",
@@ -2150,7 +4551,45 @@
         ],
         "versioning": "maven"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "mergeConfidenceDatasources": {
       "description": "If set, Renovate will query the merge-confidence JSON API only for datasources that are part of this list.",
@@ -2190,7 +4629,45 @@
           "/(^|/)package\\.js$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "migratePresets": {
       "description": "Define presets here which have been removed or renamed and should be migrated automatically.",
@@ -2231,7 +4708,45 @@
           "/(^|/)Mintfile$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "mise": {
       "description": "Configuration object for the mise manager",
@@ -2242,7 +4757,45 @@
           "/(^|/)\\.?mise/config\\.toml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "mix": {
       "description": "Configuration object for the mix manager",
@@ -2252,7 +4805,45 @@
           "/(^|/)mix\\.exs$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "mode": {
       "description": "Mode of operation.",
@@ -2274,7 +4865,45 @@
         "commitMessageExtra": "to {{newValue}}",
         "enabled": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "nodenv": {
       "description": "Configuration object for the nodenv manager",
@@ -2285,7 +4914,45 @@
         ],
         "versioning": "node"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "npm": {
       "description": "Configuration object for the npm manager",
@@ -2304,7 +4971,45 @@
           "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
         }
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "npmToken": {
       "description": "npm token used to authenticate with the default registry.",
@@ -2330,7 +5035,45 @@
           "/(^|/)global\\.json$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "nvm": {
       "description": "Configuration object for the nvm manager",
@@ -2342,7 +5085,45 @@
         "versioning": "node",
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "ocb": {
       "description": "Configuration object for the ocb manager",
@@ -2350,7 +5131,45 @@
       "default": {
         "managerFilePatterns": []
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "onboarding": {
       "description": "Require a Configuration PR first.",
@@ -2415,7 +5234,45 @@
           "/(^|/)src/main/features/.+\\.json$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "osvVulnerabilityAlerts": {
       "description": "Use vulnerability alerts from `osv.dev`.",
@@ -2622,7 +5479,7 @@
                 ]
               },
               "matchSourceUrls": {
-                "description": "A list of source URLs to exact match against.",
+                "description": "A list of exact match URLs (or URL patterns) to match sourceUrl against.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2738,7 +5595,45 @@
           "/(^|/)pyproject\\.toml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "pep723": {
       "description": "Configuration object for the pep723 manager",
@@ -2746,7 +5641,45 @@
       "default": {
         "managerFilePatterns": []
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "persistRepoData": {
       "description": "If set to `true`: keep repository data between runs instead of deleting the data.",
@@ -2798,7 +5731,45 @@
           "commitMessageAction": "Refresh pip-compile outputs"
         }
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "pip_requirements": {
       "description": "Configuration object for the pip_requirements manager",
@@ -2808,7 +5779,45 @@
           "/(^|/)[\\w-]*requirements([-.]\\w+)?\\.(txt|pip)$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "pip_setup": {
       "description": "Configuration object for the pip_setup manager",
@@ -2818,7 +5827,45 @@
           "/(^|/)setup\\.py$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "pipenv": {
       "description": "Configuration object for the pipenv manager",
@@ -2828,7 +5875,45 @@
           "/(^|/)Pipfile$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "pixi": {
       "description": "Configuration object for the pixi manager",
@@ -2839,7 +5924,45 @@
           "/(^|/)pixi\\.toml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "platform": {
       "description": "Platform type of repository.",
@@ -2880,7 +6003,45 @@
           "/(^|/)pyproject\\.toml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "postUpdateOptions": {
       "description": "Enable post-update options to be run after package/artifact updating.",
@@ -2942,6 +6103,10 @@
                   "type": "string"
                 },
                 "default": []
+              },
+              "dataFileTemplate": {
+                "description": "A template to create post-upgrade command data file from.",
+                "type": "string"
               },
               "executionMode": {
                 "description": "Controls when the post upgrade tasks run: on every update, or once per upgrade branch.",
@@ -3086,7 +6251,45 @@
           "Note: The `pre-commit` manager in Renovate is not supported by the `pre-commit` maintainers or community. Please do not report any problems there, instead [create a Discussion in the Renovate repository](https://github.com/renovatebot/renovate/discussions/new) if you have any questions."
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "presetCachePersistence": {
       "description": "Cache resolved presets in package cache.",
@@ -3156,7 +6359,45 @@
         ],
         "versioning": "npm"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "puppet": {
       "description": "Configuration object for the puppet manager",
@@ -3166,7 +6407,45 @@
           "/(^|/)Puppetfile$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "pyenv": {
       "description": "Configuration object for the pyenv manager",
@@ -3178,7 +6457,45 @@
         "versioning": "docker",
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "rangeStrategy": {
       "description": "Determines how to modify or update existing ranges.",
@@ -3273,7 +6590,45 @@
           ".renovaterc.json5"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "replacement": {
       "description": "Configuration to apply when replacing a dependency.",
@@ -3399,7 +6754,45 @@
         ],
         "versioning": "ruby"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "runtime-version": {
       "description": "Configuration object for the runtime-version manager",
@@ -3410,7 +6803,45 @@
         ],
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "s3Endpoint": {
       "description": "If set, Renovate will use this string as the `endpoint` when creating the AWS S3 client instance.",
@@ -3433,7 +6864,45 @@
         ],
         "versioning": "ivy"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "scalafmt": {
       "description": "Configuration object for the scalafmt manager",
@@ -3443,7 +6912,45 @@
           "/(^|/)\\.scalafmt.conf$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "schedule": {
       "description": "Limit branch creation to these times of day or week.",
@@ -3520,7 +7027,45 @@
         ],
         "versioning": "pep440"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "skipInstalls": {
       "description": "Skip installing modules/dependencies if lock file updating is possible without a full install.",
@@ -3571,7 +7116,45 @@
       "default": {
         "managerFilePatterns": []
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "swift": {
       "description": "Configuration object for the swift manager",
@@ -3583,7 +7166,45 @@
         "versioning": "swift",
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "tekton": {
       "description": "Configuration object for the tekton manager",
@@ -3591,7 +7212,45 @@
       "default": {
         "managerFilePatterns": []
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "terraform": {
       "description": "Configuration object for the terraform manager",
@@ -3603,7 +7262,45 @@
         ],
         "pinDigests": false
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "terraform-version": {
       "description": "Configuration object for the terraform-version manager",
@@ -3615,7 +7312,45 @@
         "versioning": "hashicorp",
         "extractVersion": "^v(?<version>.*)$"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "terragrunt": {
       "description": "Configuration object for the terragrunt manager",
@@ -3626,7 +7361,45 @@
           "/(^|/)terragrunt\\.hcl$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "terragrunt-version": {
       "description": "Configuration object for the terragrunt-version manager",
@@ -3638,7 +7411,45 @@
         "versioning": "hashicorp",
         "extractVersion": "^v(?<version>.+)$"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "tflint-plugin": {
       "description": "Configuration object for the tflint-plugin manager",
@@ -3650,7 +7461,45 @@
         ],
         "extractVersion": "^v(?<version>.*)$"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "timezone": {
       "description": "Must conform to [IANA Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) format.",
@@ -3672,12 +7521,98 @@
         },
         "versioning": "node"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "unicodeEmoji": {
       "description": "Enable or disable Unicode emoji.",
       "type": "boolean",
       "default": true
+    },
+    "unity3d": {
+      "description": "Configuration object for the unity3d manager",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "**/ProjectSettings/ProjectVersion.txt"
+        ]
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "updateInternalDeps": {
       "description": "Whether to update internal dep versions in a monorepo. Works on Yarn Workspaces.",
@@ -3743,7 +7678,45 @@
           "/(^|/)\\.vela\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "vendir": {
       "description": "Configuration object for the vendir manager",
@@ -3754,7 +7727,45 @@
           "/(^|/)vendir\\.yml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "versionCompatibility": {
       "description": "A regex (`re2`) with named capture groups to show how version and compatibility are split from a raw version string.",
@@ -3877,7 +7888,45 @@
           "/^\\.woodpecker(?:/[^/]+)?\\.ya?ml$/"
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
     },
     "writeDiscoveredRepos": {
       "description": "Writes discovered repositories to a JSON file and then exit.",
