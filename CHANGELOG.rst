@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.33.1
+------
+
 - Update vendored schemas: bamboo-spec, bitbucket-pipelines, circle-ci, cloudbuild,
   compose-spec, dependabot, drone-ci, github-actions, github-workflows, gitlab-ci,
   mergify, readthedocs, renovate, taskfile, travis, woodpecker-ci (2025-06-22)
