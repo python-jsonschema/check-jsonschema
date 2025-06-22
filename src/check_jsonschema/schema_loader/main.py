@@ -187,7 +187,11 @@ class SchemaLoader(SchemaLoaderBase):
         validator_cls = _extend_with_pattern_implementation(validator_cls, regex_impl)
 
         # now that we know it's safe to try to create the validator instance, do it
-        validator = validator_cls(
+        #
+        # TODO: remove type ignore
+        #       mypy flags this because of an incorrect signature in typeshed
+        #       see: https://github.com/python/typeshed/pull/14327
+        validator = validator_cls(  # type: ignore[call-arg]
             schema,
             registry=reference_registry,
             format_checker=format_checker,

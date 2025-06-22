@@ -50,11 +50,16 @@ class FormatOptions:
 
 
 def get_base_format_checker(schema_dialect: str | None) -> jsonschema.FormatChecker:
+    # mypy does not consider a class whose instances match a protocol to match
+    # `type[$PROTOCOL]` so this is considered a mismatch
+    default_validator_cls: type[jsonschema.Validator] = (
+        jsonschema.Draft202012Validator  # type:ignore[assignment]
+    )
     # resolve the dialect, if given, to a validator class
     # default to the latest draft
     validator_class = jsonschema.validators.validator_for(
         {} if schema_dialect is None else {"$schema": schema_dialect},
-        default=jsonschema.Draft202012Validator,
+        default=default_validator_cls,
     )
     return validator_class.FORMAT_CHECKER
 
