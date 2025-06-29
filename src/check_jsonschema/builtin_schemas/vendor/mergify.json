@@ -2306,122 +2306,6 @@
           "default": null,
           "description": "The name of the queue where the pull request should be added. If no name is set, queue_conditions will be applied instead.",
           "title": "Name"
-        },
-        "merge_method": {
-          "anyOf": [
-            {
-              "enum": [
-                "merge",
-                "rebase",
-                "squash",
-                "fast-forward"
-              ],
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `merge_method` attribute of the queue action in one or more `pull_request_rules`. It must now be used under the `queue_rules` configuration.**\n> This option will be removed in a future version.\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules",
-            "deprecated_summary_saas_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `merge_method` attribute of the queue action in one or more `pull_request_rules`. It must now be used under the `queue_rules` configuration.**\n> This option will be removed on January 31st, 2025.\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules"
-          },
-          "default": null,
-          "deprecated": true,
-          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration. `fast-forward` is not supported on queues with `max_parallel_checks > 1, `batch_size > 1`, or with `allow_inplace_checks` set to `false`.",
-          "title": "Merge Method"
-        },
-        "merge_bot_account": {
-          "anyOf": [
-            {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "deprecated": true,
-          "description": "Mergify can impersonate a GitHub user to merge pull requests. If no `merge_bot_account` is set, Mergify merges the pull request itself. The user account **must** have already been logged in Mergify dashboard once and have **write** or **maintain** permission.",
-          "title": "Merge Bot Account"
-        },
-        "update_bot_account": {
-          "anyOf": [
-            {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `update_bot_account` attribute of the queue action in one or more `pull_request_rules`. It must now be used under the `queue_rules` configuration.**\n> This option will be removed in a future version.\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules",
-            "deprecated_summary_saas_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `update_bot_account` attribute of the queue action in one or more `pull_request_rules`. It must now be used under the `queue_rules` configuration.**\n> This option will be removed on January 31st, 2025.\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules"
-          },
-          "default": null,
-          "deprecated": true,
-          "description": "For certain actions, such as rebasing branches, Mergify has to impersonate a GitHub user. You can specify the account to use with this option. If no `update_bot_account` is set, Mergify picks randomly one of the organization users instead. The user account **must** have already been logged in Mergify dashboard once. This option overrides the value defined in the queue rules section of the configuration.",
-          "title": "Update Bot Account"
-        },
-        "update_method": {
-          "anyOf": [
-            {
-              "enum": [
-                "merge",
-                "rebase"
-              ],
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `update_method` attribute of the queue action in one or more `pull_request_rules`. It must now be used under the `queue_rules` configuration.**\n> This option will be removed in a future version.\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules",
-            "deprecated_summary_saas_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `update_method` attribute of the queue action in one or more `pull_request_rules`. It must now be used under the `queue_rules` configuration.**\n> This option will be removed on January 31st, 2025.\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules"
-          },
-          "default": null,
-          "deprecated": true,
-          "description": "Method to use to update the pull request with its base\nbranch when the check is done in place. Possible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nThis option overrides the value defined in the queue rules section of the configuration.\nThe default is rebase when the `merge_method` is `fast-forward`.",
-          "title": "Update Method"
-        },
-        "commit_message_template": {
-          "anyOf": [
-            {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `commit_message_template` attribute of the queue action in one or more `pull_request_rules`. It must now be used under the `queue_rules` configuration.**\n> This option will be removed in a future version.\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules",
-            "deprecated_summary_saas_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `commit_message_template` attribute of the queue action in one or more `pull_request_rules`. It must now be used under the `queue_rules` configuration.**\n> This option will be removed on January 31st, 2025.\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules"
-          },
-          "default": null,
-          "deprecated": true,
-          "description": "Template to use as the commit message when using the merge or squash merge method.",
-          "title": "Commit Message Template"
-        },
-        "allow_merging_configuration_change": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `allow_merging_configuration_change` attribute of the queue action in one or more `pull_request_rules`. It must be removed from the configuration.**\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules",
-            "deprecated_summary_saas_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `allow_merging_configuration_change` attribute of the queue action in one or more `pull_request_rules`. It must be removed from the configuration.**\n> This option will be removed on January 31st, 2025.\n> For more information: https://docs.mergify.com/configuration/file-format/#queue-rules"
-          },
-          "default": true,
-          "deprecated": true,
-          "description": "Allow merging the Mergify configuration file. *This option does not do anything and is only present for backward compatibility.*",
-          "title": "Allow Merging Configuration Change",
-          "type": "boolean"
         }
       },
       "title": "QueueActionModel",
@@ -2600,8 +2484,8 @@
           "anyOf": [
             {
               "enum": [
-                "merge",
-                "rebase"
+                "rebase",
+                "merge"
               ],
               "type": "string"
             },
@@ -2824,8 +2708,8 @@
           "anyOf": [
             {
               "enum": [
-                "merge",
-                "rebase"
+                "rebase",
+                "merge"
               ],
               "type": "string"
             },
