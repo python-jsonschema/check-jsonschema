@@ -7822,7 +7822,8 @@
             "semver-coerced",
             "swift",
             "ubuntu",
-            "unity3d"
+            "unity3d",
+            "unity3d-packages"
           ]
         },
         {

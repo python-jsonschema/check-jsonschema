@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: bitbucket-pipelines, mergify, renovate (2025-06-29)
+
 0.33.1
 ------
 
