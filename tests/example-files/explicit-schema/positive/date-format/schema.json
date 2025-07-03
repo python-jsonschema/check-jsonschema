@@ -1,0 +1,12 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "some_date": {
+            "type": ["string", "null"],
+            "format": "date-time"
+        }
+    },
+    "required": ["some_date"],
+    "additionalProperties": false
+}

@@ -9,6 +9,9 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+- Fix a bug in the evaluation of the ``date-time`` format on non-string data,
+  which incorrectly rejected values for which ``string`` was one of several
+  valid types. Thanks :user:`katylava`! (:issue:`571`)
 
 - Update vendored schemas: bitbucket-pipelines, mergify, renovate (2025-06-29)
 

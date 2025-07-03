@@ -57,7 +57,7 @@ RFC3339_REGEX = re.compile(
 def validate(date_str: object) -> bool:
     """Validate a string as a RFC3339 date-time."""
     if not isinstance(date_str, str):
-        return False
+        return True
     if not RFC3339_REGEX.match(date_str):
         return False
 
