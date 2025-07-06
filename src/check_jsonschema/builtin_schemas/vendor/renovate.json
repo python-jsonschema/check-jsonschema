@@ -100,6 +100,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -148,6 +153,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -193,6 +203,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -241,6 +256,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -460,6 +480,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -524,6 +549,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -572,6 +602,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -623,6 +658,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -670,6 +710,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -720,6 +765,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -784,6 +834,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -843,6 +898,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -890,6 +950,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -975,6 +1040,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -1024,6 +1094,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -1143,6 +1218,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -1192,6 +1272,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -1240,6 +1325,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -1309,6 +1399,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -1359,6 +1454,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -1405,6 +1505,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -1461,6 +1566,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -1525,6 +1635,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -1573,6 +1688,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -1669,6 +1789,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -1727,6 +1852,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -1813,6 +1943,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -1861,6 +1996,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -1906,6 +2046,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -2206,6 +2351,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -2278,6 +2428,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -2327,6 +2482,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -2354,7 +2514,36 @@
         "commitMessageExtra": "to {{newDigestShort}}",
         "commitMessageTopic": "{{{depName}}} digest"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        ]
+      }
     },
     "docker-compose": {
       "description": "Configuration object for the docker-compose manager",
@@ -2384,6 +2573,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -2457,6 +2651,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -2510,6 +2709,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -2543,7 +2747,7 @@
       "default": null
     },
     "enabled": {
-      "description": "Enable or disable Renovate bot.",
+      "description": "Enable or disable corresponding functionality.",
       "type": "boolean",
       "default": true
     },
@@ -2667,6 +2871,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -2714,6 +2923,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -2807,6 +3021,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -2856,6 +3075,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -2967,6 +3191,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3020,6 +3249,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3068,6 +3302,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3113,6 +3352,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -3162,6 +3406,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -3229,6 +3478,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3285,6 +3539,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3333,6 +3592,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -3416,6 +3680,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3468,6 +3737,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3517,6 +3791,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -3570,6 +3849,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3615,6 +3899,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -3668,6 +3957,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3720,6 +4014,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -3768,6 +4067,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -3859,6 +4163,11 @@
                 "description": "Enable got HTTP/2 support.",
                 "type": "boolean",
                 "default": false
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "headers": {
                 "description": "Put fields to be forwarded to the HTTP request headers in the headers config option.",
@@ -3963,6 +4272,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -4134,6 +4448,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -4191,6 +4510,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -4243,6 +4567,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -4288,6 +4617,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -4337,6 +4671,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -4394,6 +4733,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -4432,7 +4776,36 @@
           "Change": "All locks refreshed"
         }
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        ]
+      }
     },
     "logContext": {
       "description": "Add a global or per-repo log context to each log entry.",
@@ -4490,7 +4863,36 @@
       "description": "Configuration to apply when an update type is `major`.",
       "type": "object",
       "default": {},
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        ]
+      }
     },
     "maven": {
       "description": "Configuration object for the maven manager",
@@ -4522,6 +4924,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -4571,6 +4978,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -4650,6 +5062,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -4698,7 +5115,36 @@
       "description": "Configuration to apply when an update type is `minor`.",
       "type": "object",
       "default": {},
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        ]
+      }
     },
     "mint": {
       "description": "Configuration object for the mint manager",
@@ -4728,6 +5174,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -4778,6 +5229,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -4825,6 +5281,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -4886,6 +5347,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -4934,6 +5400,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -4991,6 +5462,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -5056,6 +5532,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -5106,6 +5587,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -5151,6 +5637,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -5255,6 +5746,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -5309,6 +5805,11 @@
               "changelogUrl": {
                 "description": "Set a custom URL for the changelog. Renovate will put this URL in the PR body text.",
                 "type": "string"
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "matchBaseBranches": {
                 "description": "List of strings containing exact matches (e.g. `[\"main\"]`) and/or regex expressions (e.g. `[\"/^release/.*/\"]`). Valid only within a `packageRules` object.",
@@ -5585,7 +6086,36 @@
       "description": "Configuration to apply when an update type is `patch`.",
       "type": "object",
       "default": {},
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        ]
+      }
     },
     "pep621": {
       "description": "Configuration object for the pep621 manager",
@@ -5615,6 +6145,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -5662,6 +6197,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -5699,7 +6239,36 @@
           "commitMessageExtra": ""
         }
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        ]
+      }
     },
     "pinDigest": {
       "description": "Configuration to apply when pinning a digest (no change in tag/version).",
@@ -5713,7 +6282,36 @@
           "commitMessageExtra": ""
         }
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        ]
+      }
     },
     "pinDigests": {
       "description": "Whether to add digests to Dockerfile source images.",
@@ -5751,6 +6349,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -5800,6 +6403,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -5847,6 +6455,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -5896,6 +6509,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -5944,6 +6562,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -6023,6 +6646,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -6272,6 +6900,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -6380,6 +7013,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -6427,6 +7065,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -6477,6 +7120,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -6611,6 +7259,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -6641,7 +7294,36 @@
           "This is a special PR that replaces `{{{depName}}}` with the community suggested minimal stable replacement version."
         ]
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        ]
+      }
     },
     "replacementApproach": {
       "description": "Select whether to perform a direct replacement or alias replacement.",
@@ -6738,7 +7420,36 @@
         "commitMessageAction": "Roll back",
         "semanticCommitType": "fix"
       },
-      "$ref": "#"
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        ]
+      }
     },
     "rollbackPrs": {
       "description": "Create PRs to roll back versions if the current version is not found in the registry.",
@@ -6774,6 +7485,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -6823,6 +7539,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -6885,6 +7606,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -6932,6 +7658,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -7048,6 +7779,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -7137,6 +7873,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -7187,6 +7928,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -7232,6 +7978,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -7283,6 +8034,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -7333,6 +8089,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -7381,6 +8142,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -7432,6 +8198,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -7481,6 +8252,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -7542,6 +8318,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -7594,6 +8375,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -7699,6 +8485,11 @@
                   }
                 ]
               },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
@@ -7747,6 +8538,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
@@ -7909,6 +8705,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
