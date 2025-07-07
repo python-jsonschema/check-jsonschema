@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: compose-spec, meltano, renovate (2025-07-06)
+
 0.33.2
 ------
 
