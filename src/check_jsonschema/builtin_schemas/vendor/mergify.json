@@ -1296,6 +1296,12 @@
           ],
           "title": "Reporting Method",
           "type": "string"
+        },
+        "post_comment": {
+          "default": true,
+          "description": "Whether to post merge protection status comments on pull requests",
+          "title": "Post Comment",
+          "type": "boolean"
         }
       },
       "title": "MergeProtectionsModel",
@@ -1306,7 +1312,7 @@
       "properties": {
         "max_parallel_checks": {
           "default": 5,
-          "description": "The maximum number of speculative checks allowed to run at the same time.",
+          "description": "The maximum number of speculative checks allowed to run at the same time. Setting this value to 1 disables speculative checks.",
           "maximum": 128,
           "minimum": 1,
           "title": "Max Parallel Checks",
@@ -2354,19 +2360,6 @@
           "title": "Branch Protection Injection Mode",
           "type": "string"
         },
-        "speculative_checks": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `speculative_checks` attribute in the `queue_rules` section. It has been replaced in favor of `max_parallel_checks` in the `merge_queue` section of the configuration.\n> For more information: https://docs.mergify.com/merge-queue/speculative-checks/",
-            "deprecated_summary_saas_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `speculative_checks` attribute in the `queue_rules` section. It has been replaced in favor of `max_parallel_checks` in the `merge_queue` section of the configuration.\n> For more information: https://docs.mergify.com/merge-queue/speculative-checks/"
-          },
-          "default": 1,
-          "deprecated": true,
-          "description": "The maximum number of checks to run in parallel in the queue. Must be between 1 and 128.",
-          "maximum": 128,
-          "minimum": 1,
-          "title": "Speculative Checks",
-          "type": "integer"
-        },
         "batch_size": {
           "default": 1,
           "description": "The maximum number of pull requests per speculative check in the queue. Must be between 1 and 128.",
@@ -2384,7 +2377,7 @@
         },
         "allow_inplace_checks": {
           "default": true,
-          "description": "Allow to update or rebase the original pull request to check its mergeability when first in the queue and not part of a batch or speculative check.",
+          "description": "Allow to update or rebase the original pull request to check its mergeability when first in the queue and not part of a batch (see: `batch_size`) or speculative check (see: `max_parallel_checks`).",
           "title": "Allow Inplace Checks",
           "type": "boolean"
         },
@@ -2578,19 +2571,6 @@
           "title": "Branch Protection Injection Mode",
           "type": "string"
         },
-        "speculative_checks": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `speculative_checks` attribute in the `queue_rules` section. It has been replaced in favor of `max_parallel_checks` in the `merge_queue` section of the configuration.\n> For more information: https://docs.mergify.com/merge-queue/speculative-checks/",
-            "deprecated_summary_saas_mode": "\n:bangbang: **Action Required** :bangbang:\n> **The configuration uses the deprecated `speculative_checks` attribute in the `queue_rules` section. It has been replaced in favor of `max_parallel_checks` in the `merge_queue` section of the configuration.\n> For more information: https://docs.mergify.com/merge-queue/speculative-checks/"
-          },
-          "default": 1,
-          "deprecated": true,
-          "description": "The maximum number of checks to run in parallel in the queue. Must be between 1 and 128.",
-          "maximum": 128,
-          "minimum": 1,
-          "title": "Speculative Checks",
-          "type": "integer"
-        },
         "batch_size": {
           "default": 1,
           "description": "The maximum number of pull requests per speculative check in the queue. Must be between 1 and 128.",
@@ -2608,7 +2588,7 @@
         },
         "allow_inplace_checks": {
           "default": true,
-          "description": "Allow to update or rebase the original pull request to check its mergeability when first in the queue and not part of a batch or speculative check.",
+          "description": "Allow to update or rebase the original pull request to check its mergeability when first in the queue and not part of a batch (see: `batch_size`) or speculative check (see: `max_parallel_checks`).",
           "title": "Allow Inplace Checks",
           "type": "boolean"
         },
@@ -2797,7 +2777,7 @@
             }
           ],
           "default": null,
-          "description": "To rebase, Mergify needs to impersonate a GitHub user. You can specify the account to use with this option. If no `bot_account` is set, Mergify picks the pull request author. The user account must have already been logged in Mergify dashboard once.",
+          "description": "To rebase, Mergify needs to impersonate a GitHub user. You can specify the account to use with this option. If no `bot_account` is set, Mergify picks the pull request author. The user account must have already been logged in Mergify dashboard once.\n\n**Warning:** Due to security on GitHub side, rebase cannot be performed on pull requests created by bot accounts without explicitly setting the `bot_account` impersonation option.",
           "title": "Bot Account"
         },
         "autosquash": {

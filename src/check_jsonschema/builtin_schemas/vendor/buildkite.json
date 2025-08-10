@@ -25,6 +25,15 @@
       "description": "Whether to proceed with this step and further steps if a step named in the depends_on attribute fails",
       "default": false
     },
+    "image": {
+      "type": "string",
+      "description": "(Kubernetes stack only) The container image to use for this pipeline or step",
+      "examples": [
+        "node:18-alpine",
+        "python:3.11",
+        "ubuntu:22.04"
+      ]
+    },
     "agents": {
       "oneOf": [
         { "$ref": "#/definitions/agentsObject" },
@@ -749,6 +758,9 @@
           "$ref": "#/definitions/commandStep/properties/key",
           "deprecated": true
         },
+        "image": {
+          "$ref": "#/definitions/image"
+        },
         "label": {
           "$ref": "#/definitions/label"
         },
@@ -1335,6 +1347,9 @@
     },
     "notify": {
       "$ref": "#/definitions/buildNotify"
+    },
+    "image": {
+      "$ref": "#/definitions/image"
     },
     "steps": {
       "description": "A list of steps",
