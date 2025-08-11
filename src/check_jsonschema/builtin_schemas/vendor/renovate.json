@@ -435,6 +435,7 @@
         "fast-forward",
         "merge-commit",
         "rebase",
+        "rebase-merge",
         "squash"
       ],
       "default": "auto"
@@ -509,7 +510,7 @@
       "type": "integer",
       "default": 0
     },
-    "baseBranches": {
+    "baseBranchPatterns": {
       "description": "List of one or more custom base branches defined as exact strings and/or via regex expressions.",
       "type": "array",
       "items": {
@@ -3144,6 +3145,10 @@
     },
     "gitPrivateKey": {
       "description": "PGP key to use for signing Git commits.",
+      "type": "string"
+    },
+    "gitPrivateKeyPassphrase": {
+      "description": "Passphrase for the `gitPrivateKey`",
       "type": "string"
     },
     "gitTimeout": {
@@ -6595,6 +6600,7 @@
         "bitbucket",
         "bitbucket-server",
         "codecommit",
+        "forgejo",
         "gerrit",
         "gitea",
         "github",
@@ -6778,7 +6784,7 @@
       "description": "Table column definitions to use in PR tables.",
       "type": "object",
       "default": {
-        "Package": "{{{depNameLinked}}}",
+        "Package": "{{{depNameLinked}}}{{#if newName}}{{#unless (equals depName newName)}} → {{{newNameLinked}}}{{/unless}}{{/if}}",
         "Type": "{{{depType}}}",
         "Update": "{{{updateType}}}",
         "Current value": "{{{currentValue}}}",
@@ -8449,12 +8455,22 @@
         "ignoreTopic": "Renovate Ignore Notification",
         "ignoreMajor": "Because you closed this PR without merging, Renovate will ignore this update. You will not get PRs for *any* future `{{{newMajor}}}.x` releases. But if you manually upgrade to `{{{newMajor}}}.x` then Renovate will re-enable `minor` and `patch` updates automatically.",
         "ignoreDigest": "Because you closed this PR without merging, Renovate will ignore this update. You will not get PRs for the `{{{depName}}}` `{{{newDigestShort}}}` update again.",
-        "ignoreOther": "Because you closed this PR without merging, Renovate will ignore this update (`{{{newValue}}}`). You will get a PR once a newer version is released. To ignore this dependency forever, add it to the `ignoreDeps` array of your Renovate config."
+        "ignoreOther": "Because you closed this PR without merging, Renovate will ignore this update (`{{{newValue}}}`). You will get a PR once a newer version is released. To ignore this dependency forever, add it to the `ignoreDeps` array of your Renovate config.",
+        "artifactErrorWarning": "You probably do not want to merge this PR as-is."
       }
     },
     "username": {
       "description": "Username for authentication.",
       "type": "string"
+    },
+    "variables": {
+      "description": "Object which holds variable name/value pairs.",
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "type": "string"
+      },
+      "$ref": "#"
     },
     "velaci": {
       "description": "Configuration object for the velaci manager",
@@ -8662,6 +8678,11 @@
                     "description": "A custom description for this configuration object"
                   }
                 ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
               },
               "vulnerabilityFixStrategy": {
                 "description": "Strategy to use when fixing vulnerabilities. `lowest` will propose the earliest version with a fix, `highest` will always pick the latest version.",
