@@ -7,6 +7,7 @@ import urllib.error
 import urllib.parse
 
 import jsonschema
+from referencing import Registry
 
 from ..builtin_schemas import get_builtin_schema
 from ..formats import FormatOptions, format_checker_for_regex_impl, make_format_checker
@@ -221,7 +222,9 @@ def _check_schema(
 
     # now, construct and apply the actual validator
     schema_validator = schema_validator_cls(
-        validator_cls.META_SCHEMA, format_checker=format_checker
+        validator_cls.META_SCHEMA,
+        registry=Registry(),
+        format_checker=format_checker,
     )
     for error in schema_validator.iter_errors(schema):
         raise jsonschema.exceptions.SchemaError.create_from(error)
@@ -279,6 +282,8 @@ class MetaSchemaLoader(SchemaLoaderBase):
         format_checker = make_format_checker(format_opts, meta_schema_dialect)
 
         meta_validator = meta_validator_class(
-            schema_validator.META_SCHEMA, format_checker=format_checker
+            schema_validator.META_SCHEMA,
+            registry=Registry(),
+            format_checker=format_checker,
         )
         return meta_validator
