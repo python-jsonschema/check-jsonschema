@@ -44,7 +44,7 @@ dev = [
 docs = [
     "sphinx<9",
     "sphinx-issues<6",
-    "furo==2024.8.6",
+    "furo==2025.7.19",
 ]
 
 [project.scripts]
