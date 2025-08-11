@@ -19,7 +19,7 @@ repos:
       args: ["--schemafile", "tests/example-files/config_schema.json"]
       files: ^tests/example-files/.*/_config.yaml$
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
-  rev: v5.0.0
+  rev: v6.0.0
   hooks:
     - id: check-merge-conflict
     - id: trailing-whitespace
