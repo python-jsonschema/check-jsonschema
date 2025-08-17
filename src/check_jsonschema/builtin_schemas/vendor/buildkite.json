@@ -34,6 +34,23 @@
         "ubuntu:22.04"
       ]
     },
+    "allowedTeams": {
+      "description": "A list of teams that are permitted to unblock this step, whose values are a list of one or more team slugs or IDs",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ],
+      "examples": [
+        "frontend-team",
+        "96176d08-f503-413f-8423-96094953b9e7",
+        ["frontend-team", "backend-team", "96176d08-f503-413f-8423-96094953b9e7"]
+      ]
+    },
     "agents": {
       "oneOf": [
         { "$ref": "#/definitions/agentsObject" },
@@ -589,6 +606,9 @@
         "prompt": {
           "$ref": "#/definitions/prompt"
         },
+        "allowed_teams": {
+          "$ref": "#/definitions/allowedTeams"
+        },
         "type": {
           "type": "string",
           "enum": [ "block" ]
@@ -650,6 +670,9 @@
         },
         "prompt": {
           "$ref": "#/definitions/prompt"
+        },
+        "allowed_teams": {
+          "$ref": "#/definitions/allowedTeams"
         },
         "type": {
           "type": "string",

@@ -11,7 +11,8 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas: bitbucket-pipelines, buildkite, compose-spec, dependabot,
-  github-actions, gitlab-ci, meltano, mergify, renovate (2025-08-10)
+  github-actions, gitlab-ci, meltano, mergify, renovate, taskfile, woodpecker-ci
+  (2025-08-17)
 
 0.33.2
 ------
