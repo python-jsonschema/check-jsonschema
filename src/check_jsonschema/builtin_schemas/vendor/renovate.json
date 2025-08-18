@@ -2072,6 +2072,59 @@
         ]
       }
     },
+    "crow": {
+      "description": "Configuration object for the crow manager",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "/^\\.crow(?:/[^/]+)?\\.ya?ml$/"
+        ]
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
     "customDatasources": {
       "description": "Defines custom datasources for usage by managers.",
       "type": "object",
@@ -2261,6 +2314,11 @@
         "type": "string"
       },
       "default": null
+    },
+    "deleteAdditionalConfigFile": {
+      "description": "If set to `true`, Renovate tries to delete the additional self-hosted config file after reading it.",
+      "type": "boolean",
+      "default": false
     },
     "deleteConfigFile": {
       "description": "If set to `true`, Renovate tries to delete the self-hosted config file after reading it.",
@@ -3830,7 +3888,8 @@
         },
         "commitMessageTopic": "helm chart {{depName}}",
         "managerFilePatterns": [
-          "/(^|/)helmfile\\.ya?ml(?:\\.gotmpl)?$/"
+          "/(^|/)helmfile\\.ya?ml(?:\\.gotmpl)?$/",
+          "/(^|/)helmfile\\.d/.+\\.ya?ml(?:\\.gotmpl)?$/"
         ]
       },
       "$ref": "#",
@@ -5107,6 +5166,11 @@
         "null"
       ],
       "default": null
+    },
+    "minimumGroupSize": {
+      "description": "The minimum number of updates which must be in a group for branches to be created.",
+      "type": "integer",
+      "default": 1
     },
     "minimumReleaseAge": {
       "description": "Time required before a new release is considered stable.",
@@ -6684,6 +6748,8 @@
         "type": "string",
         "enum": [
           "bundlerConservative",
+          "composerWithAll",
+          "dotnetWorkloadRestore",
           "gomodMassage",
           "gomodTidy",
           "gomodTidy1.17",
@@ -7809,6 +7875,11 @@
         ]
       }
     },
+    "skipArtifactsUpdate": {
+      "description": "Skip Renovate's automatic artifact updating.",
+      "type": "boolean",
+      "default": false
+    },
     "skipInstalls": {
       "description": "Skip installing modules/dependencies if lock file updating is possible without a full install.",
       "type": [
@@ -8015,7 +8086,8 @@
       "default": {
         "commitMessageTopic": "Terraform {{depName}}",
         "managerFilePatterns": [
-          "/\\.tf$/"
+          "**/*.tf",
+          "**/*.tofu"
         ],
         "pinDigests": false
       },
@@ -8410,11 +8482,6 @@
       "description": "Whether to update internal dep versions in a monorepo. Works on Yarn Workspaces.",
       "type": "boolean",
       "default": false
-    },
-    "updateLockFiles": {
-      "description": "Set to `false` to disable lock file updating.",
-      "type": "boolean",
-      "default": true
     },
     "updateNotScheduled": {
       "description": "Whether to update branches when not scheduled. Renovate will not create branches outside of the schedule.",
