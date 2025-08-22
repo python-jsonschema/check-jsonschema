@@ -238,7 +238,7 @@ checked. The following transforms are supported:
 - ``azure-pipelines``:
     "Unpack" compile-time expressions for Azure Pipelines files, skipping them
     for the purposes of validation. This transformation is based on Microsoft's
-    lanaguage-server for VSCode and how it handles expressions
+    language-server for VSCode and how it handles expressions
 
 - ``gitlab-ci``:
     Handle ``!reference`` tags in YAML data for gitlab-ci files. This transform
