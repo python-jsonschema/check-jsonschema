@@ -6760,6 +6760,7 @@
           "helmUpdateSubChartArchives",
           "kustomizeInflateHelmCharts",
           "npmDedupe",
+          "npmInstallTwice",
           "pnpmDedupe",
           "yarnDedupeFewer",
           "yarnDedupeHighest"
