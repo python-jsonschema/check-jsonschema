@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: bitbucket-pipelines, buildkite, dependabot, mergify, renovate
+  (2025-08-24)
+
 0.33.3
 ------
 
