@@ -96,6 +96,7 @@ SchemaStore and other sources:
 - ``vendor.dependabot``
 - ``vendor.drone-ci``
 - ``vendor.github-actions``
+- ``vendor.github-issue-forms``
 - ``vendor.github-workflows``
 - ``vendor.gitlab-ci``
 - ``vendor.meltano``
