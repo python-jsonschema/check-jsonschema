@@ -80,6 +80,23 @@ _HOOKID_PATH_MAP = {
             "bamboo-specs/README.md",
         ),
     },
+    "check-codecov": {
+        "good": (
+            "codecov.yml",
+            "codecov.yaml",
+            ".codecov.yml",
+            ".codecov.yaml",
+            ".github/codecov.yml",
+            ".github/codecov.yaml",
+            ".github/.codecov.yml",
+            ".github/.codecov.yaml",
+            "dev/codecov.yml",
+            "dev/codecov.yaml",
+            "dev/.codecov.yml",
+            "dev/.codecov.yaml",
+        ),
+        "bad": (".gitlab/codecov.yml",),
+    },
     "check-compose-spec": {
         "good": (
             "compose.yml",

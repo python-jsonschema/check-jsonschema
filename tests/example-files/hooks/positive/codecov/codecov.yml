@@ -1,0 +1,13 @@
+codecov:
+  notify:
+    after_n_builds: 13
+
+coverage:
+  status:
+    patch:
+      default:
+        target: 100%
+        informational: true # Once the project achieves high code coverage, consider making it a mandatory check.
+    project:
+      default:
+        target: auto

@@ -11,6 +11,7 @@ Unreleased
 .. vendor-insert-here
 
 - Add GitHub issue form schema and pre-commit hook (:issue:`588`).
+- Add Codecov config schema and pre-commit hook.
 
 0.33.3
 ------

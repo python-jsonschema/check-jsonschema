@@ -127,6 +127,20 @@ Validate Google Cloud Build config against the schema provided by SchemaStore
         - id: check-cloudbuild
 
 
+``check-codecov``
+~~~~~~~~~~~~~~~~~
+
+Validate Codecov config against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.33.3
+      hooks:
+        - id: check-codecov
+
+
 ``check-compose-spec``
 ~~~~~~~~~~~~~~~~~~~~~~
 

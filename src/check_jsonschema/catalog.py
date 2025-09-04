@@ -98,6 +98,16 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types_or": ["json", "yaml"],
         },
     },
+    "codecov": {
+        "url": "https://www.schemastore.org/codecov.json",
+        "hook_config": {
+            "name": "Validate Codecov config",
+            "files": [
+                r"^((\.github|dev)/)?\.?codecov\.ya?ml$",
+            ],
+            "types": "yaml",
+        },
+    },
     "compose-spec": {
         "url": _githubusercontent_url(
             "compose-spec",
