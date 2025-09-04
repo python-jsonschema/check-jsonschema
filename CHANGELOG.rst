@@ -10,6 +10,7 @@ Unreleased
 
 .. vendor-insert-here
 
+- Add GitHub issue config schema and pre-commit hook (:issue:`589`).
 - Add GitHub issue form schema and pre-commit hook (:issue:`588`).
 
 0.33.3
