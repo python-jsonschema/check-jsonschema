@@ -10,6 +10,10 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: bitbucket-pipelines, buildkite, compose-spec, dependabot,
+  drone-ci, github-issue-forms, gitlab-ci, meltano, mergify, renovate, woodpecker-ci
+  (2025-09-07)
+
 - Add GitHub issue form schema and pre-commit hook (:issue:`588`).
 
 0.33.3

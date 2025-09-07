@@ -6760,6 +6760,7 @@
           "helmUpdateSubChartArchives",
           "kustomizeInflateHelmCharts",
           "npmDedupe",
+          "npmInstallTwice",
           "pnpmDedupe",
           "yarnDedupeFewer",
           "yarnDedupeHighest"
@@ -6826,6 +6827,10 @@
                 "default": [
                   "**/*"
                 ]
+              },
+              "workingDirTemplate": {
+                "description": "A template describing the working directory in which post-upgrade tasks should be executed.",
+                "type": "string"
               }
             }
           }
