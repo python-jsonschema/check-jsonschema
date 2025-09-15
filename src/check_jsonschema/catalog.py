@@ -162,7 +162,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
                 "--regex-variant",
                 "nonunicode",
             ],
-            "files": r"^.*\.gitlab-ci\.yml$",
+            "files": r"^.*\.gitlab-ci\.(yml|yaml)$",
             "types": "yaml",
         },
     },
