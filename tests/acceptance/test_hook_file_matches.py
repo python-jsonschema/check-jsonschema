@@ -138,9 +138,9 @@ _HOOKID_PATH_MAP = {
             ".gitlab-ci.yml",
             ".gitlab/.gitlab-ci.yml",
             "gitlab/.gitlab-ci.yml",
+            ".gitlab-ci.yaml",
         ),
         "bad": (
-            ".gitlab-ci.yaml",
             "gitlab-ci.yml",
             ".gitlab/gitlab-ci.yml",
             "gitlab/gitlab-ci.yml",
