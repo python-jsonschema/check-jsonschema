@@ -141,6 +141,16 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "github-issue-config": {
+        "url": "https://www.schemastore.org/github-issue-config.json",
+        "hook_config": {
+            "name": "Validate GitHub issue config",
+            "files": [
+                r"^\.github/ISSUE_TEMPLATE/config\.yml$",
+            ],
+            "types": "yaml",
+        },
+    },
     "github-issue-forms": {
         "url": "https://www.schemastore.org/github-issue-forms.json",
         "hook_config": {
