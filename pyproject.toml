@@ -2,6 +2,21 @@
 requires = ["setuptools>=61.2"]
 build-backend = "setuptools.build_meta"
 
+[dependency-groups]
+dev = [
+    "pytest<9",
+    'click-type-test==1.1.0;python_version>="3.10"',
+    "coverage<8",
+    "identify>=2.6.9",
+    "pytest-xdist<4",
+    "responses==0.25.7",
+]
+docs = [
+    "sphinx<9",
+    "sphinx-issues<6",
+    "furo==2025.7.19",
+]
+
 [project]
 name = "check-jsonschema"
 version = "0.33.3"
@@ -31,21 +46,6 @@ content-type = "text/markdown"
 
 [project.urls]
 Homepage = "https://github.com/python-jsonschema/check-jsonschema"
-
-[project.optional-dependencies]
-dev = [
-    "pytest<9",
-    'click-type-test==1.1.0;python_version>="3.10"',
-    "coverage<8",
-    "identify>=2.6.9",
-    "pytest-xdist<4",
-    "responses==0.25.7",
-]
-docs = [
-    "sphinx<9",
-    "sphinx-issues<6",
-    "furo==2025.7.19",
-]
 
 [project.scripts]
 check-jsonschema = "check_jsonschema:main"
