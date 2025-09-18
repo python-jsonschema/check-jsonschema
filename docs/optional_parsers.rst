@@ -20,7 +20,7 @@ For example,
 .. code-block:: yaml
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.33.3
+      rev: 0.34.0
       hooks:
         - id: check-renovate
           additional_dependencies: ['pyjson5']
@@ -45,7 +45,7 @@ For example,
 .. code-block:: yaml
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.33.3
+      rev: 0.34.0
       hooks:
         - id: check-jsonschema
           name: 'Check GitHub Workflows'

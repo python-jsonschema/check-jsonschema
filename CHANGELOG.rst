@@ -9,6 +9,10 @@ Unreleased
 ----------
 
 .. vendor-insert-here
+
+0.34.0
+------
+
 - Update vendored schemas: bitbucket-pipelines, buildkite, compose-spec, dependabot,
   drone-ci, github-issue-forms, gitlab-ci, meltano, mergify, renovate, snapcraft,
   woodpecker-ci (2025-09-17)
