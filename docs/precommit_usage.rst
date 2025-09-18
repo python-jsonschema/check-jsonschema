@@ -197,6 +197,20 @@ Validate GitHub Actions against the schema provided by SchemaStore
         - id: check-github-actions
 
 
+``check-github-issue-config``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate GitHub issue config against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.33.3
+      hooks:
+        - id: check-github-issue-config
+
+
 ``check-github-issue-forms``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

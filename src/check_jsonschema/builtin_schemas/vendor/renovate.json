@@ -1431,8 +1431,7 @@
         "commitMessageTopic": "Rust crate {{depName}}",
         "managerFilePatterns": [
           "/(^|/)Cargo\\.toml$/"
-        ],
-        "versioning": "cargo"
+        ]
       },
       "$ref": "#",
       "items": {
@@ -2339,6 +2338,14 @@
       "description": "Set to `true` to let Renovate close the Dependency Dashboard issue if there are no more updates.",
       "type": "boolean",
       "default": false
+    },
+    "dependencyDashboardCategory": {
+      "description": "The category to group branches on the Dependency Dashboard issue.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
     },
     "dependencyDashboardFooter": {
       "description": "Any text added here will be placed last in the Dependency Dashboard issue body, with a divider separator before it.",
@@ -5018,7 +5025,8 @@
       "type": "object",
       "default": {
         "managerFilePatterns": [
-          "/(^|\\/).mvn/wrapper/maven-wrapper.properties$/"
+          "/(^|\\/).mvn/wrapper/maven-wrapper.properties$/",
+          "/(^|\\/)mvnw(.cmd)?$/"
         ],
         "versioning": "maven"
       },
@@ -6760,6 +6768,7 @@
           "helmUpdateSubChartArchives",
           "kustomizeInflateHelmCharts",
           "npmDedupe",
+          "npmInstallTwice",
           "pnpmDedupe",
           "yarnDedupeFewer",
           "yarnDedupeHighest"
@@ -6826,6 +6835,10 @@
                 "default": [
                   "**/*"
                 ]
+              },
+              "workingDirTemplate": {
+                "description": "A template describing the working directory in which post-upgrade tasks should be executed.",
+                "type": "string"
               }
             }
           }
@@ -7171,6 +7184,61 @@
         ],
         "versioning": "docker",
         "pinDigests": false
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "quadlet": {
+      "description": "Configuration object for the quadlet manager",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "/.+\\.container$/",
+          "/.+\\.image$/",
+          "/.+\\.volume$/"
+        ]
       },
       "$ref": "#",
       "items": {
@@ -8374,6 +8442,59 @@
           "enabled": false
         },
         "versioning": "node"
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "typst": {
+      "description": "Configuration object for the typst manager",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "/\\.typ$/"
+        ]
       },
       "$ref": "#",
       "items": {

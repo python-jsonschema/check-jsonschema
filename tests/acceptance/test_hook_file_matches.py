@@ -140,6 +140,13 @@ _HOOKID_PATH_MAP = {
         ),
         "bad": (".github/actions/foo/other.yaml",),
     },
+    "check-github-issue-config": {
+        "good": (".github/ISSUE_TEMPLATE/config.yml",),
+        "bad": (
+            ".github/ISSUE_TEMPLATE/config.yaml",
+            ".github/ISSUE_TEMPLATE/bug.yml",
+        ),
+    },
     "check-github-issue-forms": {
         "good": (
             ".github/ISSUE_TEMPLATE/feature.yaml",

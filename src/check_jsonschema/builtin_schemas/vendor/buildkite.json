@@ -16,9 +16,7 @@
     ".buildkite/pipeline.*.json"
   ],
   "type": "object",
-  "required": [
-    "steps"
-  ],
+  "required": ["steps"],
   "definitions": {
     "allowDependencyFailure": {
       "enum": [true, false, "true", "false"],
@@ -28,11 +26,7 @@
     "image": {
       "type": "string",
       "description": "(Kubernetes stack only) The container image to use for this pipeline or step",
-      "examples": [
-        "node:18-alpine",
-        "python:3.11",
-        "ubuntu:22.04"
-      ]
+      "examples": ["node:18-alpine", "python:3.11", "ubuntu:22.04"]
     },
     "allowedTeams": {
       "description": "A list of teams that are permitted to unblock this step, whose values are a list of one or more team slugs or IDs",
@@ -48,7 +42,11 @@
       "examples": [
         "frontend-team",
         "96176d08-f503-413f-8423-96094953b9e7",
-        ["frontend-team", "backend-team", "96176d08-f503-413f-8423-96094953b9e7"]
+        [
+          "frontend-team",
+          "backend-team",
+          "96176d08-f503-413f-8423-96094953b9e7"
+        ]
       ]
     },
     "agents": {
@@ -60,18 +58,12 @@
     "agentsObject": {
       "type": "object",
       "description": "Query rules to target specific agents",
-      "examples": [
-        { "queue": "deploy" },
-        { "ruby": "2*" }
-      ]
+      "examples": [{ "queue": "deploy" }, { "ruby": "2*" }]
     },
     "agentsList": {
       "type": "array",
       "description": "Query rules to target specific agents in k=v format",
-      "examples": [
-        "queue=default",
-        "xcode=true"
-      ],
+      "examples": ["queue=default", "xcode=true"],
       "items": {
         "type": "string"
       }
@@ -84,7 +76,7 @@
           "anyOf": [
             {
               "type": "string",
-              "enum": [ "*" ]
+              "enum": ["*"]
             },
             {
               "type": "integer"
@@ -104,12 +96,7 @@
         "signal": {
           "description": "The exit signal, if any, that may be retried",
           "type": "string",
-          "examples": [
-            "*",
-            "none",
-            "SIGKILL",
-            "term"
-          ]
+          "examples": ["*", "none", "SIGKILL", "term"]
         },
         "signal_reason": {
           "description": "The exit signal reason, if any, that may be retried",
@@ -138,10 +125,7 @@
           "items": { "type": "string" }
         }
       ],
-      "examples": [
-        "master",
-        [ "feature/*", "chore/*" ]
-      ]
+      "examples": ["master", ["feature/*", "chore/*"]]
     },
     "cache": {
       "description": "The paths for the caches to be used in the step",
@@ -173,7 +157,7 @@
       ],
       "examples": [
         "dist/",
-        [ ".build/*", "assets/*" ],
+        [".build/*", "assets/*"],
         {
           "name": "cool-cache",
           "size": "20g",
@@ -189,13 +173,13 @@
     "dependsOn": {
       "description": "The step keys for a step to depend on",
       "anyOf": [
-        {"type": "null"},
-        {"type": "string"},
+        { "type": "null" },
+        { "type": "string" },
         {
           "type": "array",
           "items": {
             "anyOf": [
-              {"type": "string"},
+              { "type": "string" },
               {
                 "type": "object",
                 "properties": {
@@ -215,19 +199,17 @@
     "env": {
       "type": "object",
       "description": "Environment variables for this step",
-      "examples": [
-        { "NODE_ENV": "test" }
-      ]
+      "examples": [{ "NODE_ENV": "test" }]
     },
     "if": {
       "type": "string",
       "description": "A boolean expression that omits the step when false",
-      "examples": [ "build.message != 'skip me'", "build.branch == 'master'" ]
+      "examples": ["build.message != 'skip me'", "build.branch == 'master'"]
     },
     "key": {
       "type": "string",
       "description": "A unique identifier for a step, must not resemble a UUID",
-      "examples": [ "deploy-staging", "test-integration" ],
+      "examples": ["deploy-staging", "test-integration"],
       "not": {
         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
       }
@@ -235,7 +217,120 @@
     "label": {
       "type": "string",
       "description": "The label that will be displayed in the pipeline visualisation in Buildkite. Supports emoji.",
-      "examples": [ ":docker: Build" ]
+      "examples": [":docker: Build"]
+    },
+    "notifySimple": {
+      "type": "string",
+      "enum": ["github_check", "github_commit_status"]
+    },
+    "notifyEmail": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "if": {
+          "$ref": "#/definitions/if"
+        }
+      },
+      "additionalProperties": false
+    },
+    "notifyBasecamp": {
+      "type": "object",
+      "properties": {
+        "basecamp_campfire": {
+          "type": "string"
+        },
+        "if": {
+          "$ref": "#/definitions/if"
+        }
+      },
+      "additionalProperties": false
+    },
+    "notifySlackObject": {
+      "type": "object",
+      "properties": {
+        "channels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "notifySlack": {
+      "type": "object",
+      "properties": {
+        "slack": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/notifySlackObject"
+            }
+          ]
+        },
+        "if": {
+          "$ref": "#/definitions/if"
+        }
+      },
+      "additionalProperties": false
+    },
+    "notifyWebhook": {
+      "type": "object",
+      "properties": {
+        "webhook": {
+          "type": "string"
+        },
+        "if": {
+          "$ref": "#/definitions/if"
+        }
+      },
+      "additionalProperties": false
+    },
+    "notifyPagerduty": {
+      "type": "object",
+      "properties": {
+        "pagerduty_change_event": {
+          "type": "string"
+        },
+        "if": {
+          "$ref": "#/definitions/if"
+        }
+      },
+      "additionalProperties": false
+    },
+    "notifyGithubCommitStatus": {
+      "type": "object",
+      "properties": {
+        "github_commit_status": {
+          "type": "object",
+          "properties": {
+            "context": {
+              "description": "GitHub commit status name",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "if": {
+          "$ref": "#/definitions/if"
+        }
+      },
+      "additionalProperties": false
+    },
+    "notifyGithubCheck": {
+      "type": "object",
+      "properties": {
+        "github_check": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
     },
     "buildNotify": {
       "type": "array",
@@ -243,114 +338,28 @@
       "items": {
         "oneOf": [
           {
-            "type": "string",
-            "enum": ["github_check", "github_commit_status"]
+            "$ref": "#/definitions/notifySimple"
           },
           {
-            "type": "object",
-            "properties": {
-              "email": {
-                "type": "string"
-              },
-              "if": {
-                "$ref": "#/definitions/if"
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/definitions/notifyEmail"
           },
           {
-            "type": "object",
-            "properties": {
-              "basecamp_campfire": {
-                "type": "string"
-              },
-              "if": {
-                "$ref": "#/definitions/if"
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/definitions/notifyBasecamp"
           },
           {
-            "type": "object",
-            "properties": {
-              "slack": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "channels": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "message": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                ]
-              },
-              "if": {
-                "$ref": "#/definitions/if"
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/definitions/notifySlack"
           },
           {
-            "type": "object",
-            "properties": {
-              "webhook": {
-                "type": "string"
-              },
-              "if": {
-                "$ref": "#/definitions/if"
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/definitions/notifyWebhook"
           },
           {
-            "type": "object",
-            "properties": {
-              "pagerduty_change_event": {
-                "type": "string"
-              },
-              "if": {
-                "$ref": "#/definitions/if"
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/definitions/notifyPagerduty"
           },
           {
-            "type": "object",
-            "properties": {
-              "github_commit_status": {
-                "type": "object",
-                "properties": {
-                  "context": {
-                    "description": "GitHub commit status name",
-                    "type": "string"
-                  }
-                },
-                "additionalProperties": false
-              },
-              "if": {
-                "$ref": "#/definitions/if"
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/definitions/notifyGithubCommitStatus"
           },
           {
-            "type": "object",
-            "properties": {
-              "github_check": {
-                "type": "object"
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/definitions/notifyGithubCheck"
           }
         ]
       }
@@ -366,17 +375,13 @@
               "text": {
                 "type": "string",
                 "description": "The text input name",
-                "examples": [
-                  "Release Name"
-                ]
+                "examples": ["Release Name"]
               },
               "key": {
                 "type": "string",
                 "description": "The meta-data key that stores the field's input",
                 "pattern": "^[a-zA-Z0-9-_]+$",
-                "examples": [
-                  "release-name"
-                ]
+                "examples": ["release-name"]
               },
               "hint": {
                 "type": "string",
@@ -389,9 +394,7 @@
                 "type": "string",
                 "description": "The format must be a regular expression implicitly anchored to the beginning and end of the input and is functionally equivalent to the HTML5 pattern attribute.",
                 "format": "regex",
-                "examples": [
-                  "[0-9a-f]+"
-                ]
+                "examples": ["[0-9a-f]+"]
               },
               "required": {
                 "enum": [true, false, "true", "false"],
@@ -401,15 +404,11 @@
               "default": {
                 "type": "string",
                 "description": "The value that is pre-filled in the text field",
-                "examples": [
-                  "Flying Dolphin"
-                ]
+                "examples": ["Flying Dolphin"]
               }
             },
             "additionalProperties": false,
-            "required": [
-              "key"
-            ]
+            "required": ["key"]
           },
           {
             "type": "object",
@@ -417,17 +416,13 @@
               "select": {
                 "type": "string",
                 "description": "The text input name",
-                "examples": [
-                  "Release Stream"
-                ]
+                "examples": ["Release Stream"]
               },
               "key": {
                 "type": "string",
                 "description": "The meta-data key that stores the field's input",
                 "pattern": "^[a-zA-Z0-9-_]+$",
-                "examples": [
-                  "release-stream"
-                ]
+                "examples": ["release-stream"]
               },
               "default": {
                 "oneOf": [
@@ -440,7 +435,7 @@
                   }
                 ],
                 "description": "The value of the option(s) that will be pre-selected in the dropdown",
-                "examples": [ "beta" , [ "alpha" , "beta" ] ]
+                "examples": ["beta", ["alpha", "beta"]]
               },
               "hint": {
                 "type": "string",
@@ -453,7 +448,7 @@
                 "enum": [true, false, "true", "false"],
                 "description": "Whether more than one option may be selected",
                 "default": false
-                },
+              },
               "options": {
                 "type": "array",
                 "minItems": 1,
@@ -463,12 +458,12 @@
                     "label": {
                       "type": "string",
                       "description": "The text displayed on the select list item",
-                      "examples": [ "Stable" ]
+                      "examples": ["Stable"]
                     },
                     "value": {
                       "type": "string",
                       "description": "The value to be stored as meta-data",
-                      "examples": [ "stable" ]
+                      "examples": ["stable"]
                     },
                     "hint": {
                       "type": "string",
@@ -484,10 +479,7 @@
                     }
                   },
                   "additionalProperties": false,
-                  "required": [
-                    "label",
-                    "value"
-                  ]
+                  "required": ["label", "value"]
                 }
               },
               "required": {
@@ -497,39 +489,38 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "key",
-              "options"
-            ]
+            "required": ["key", "options"]
           }
         ]
       }
     },
+    "if_changed": {
+      "type": "string",
+      "description": "Agent-applied attribute: A glob pattern that omits the step from a build if it does not match any files changed in the build.",
+      "examples": ["**.go", "go.mod", "go.sum", "fixtures/**"]
+    },
     "matrixElement": {
       "oneOf": [
-        {"type": "string"},
-        {"type": "integer"},
-        {"type": "boolean"}
+        { "type": "string" },
+        { "type": "integer" },
+        { "type": "boolean" }
       ]
     },
     "prompt": {
       "type": "string",
       "description": "The instructional message displayed in the dialog box when the unblock step is activated",
-      "examples": [
-        "Release to production?"
-      ]
+      "examples": ["Release to production?"]
     },
     "skip": {
       "anyOf": [
         { "type": "boolean" },
-        { "type": "string" }
+        {
+          "type": "string",
+          "maxLength": 70
+        }
       ],
       "description": "Whether this step should be skipped. Passing a string provides a reason for skipping this command",
-      "examples": [
-        true,
-        false,
-        "My reason"
-      ]
+      "examples": [true, false, "My reason"]
     },
     "softFail": {
       "description": "The conditions for marking the step as a soft-fail.",
@@ -547,7 +538,7 @@
                 "anyOf": [
                   {
                     "type": "string",
-                    "enum": [ "*" ]
+                    "enum": ["*"]
                   },
                   {
                     "type": "integer"
@@ -573,7 +564,7 @@
           "type": "string",
           "default": "passed",
           "description": "The state that the build is set to when the build is blocked by this block step",
-          "enum": [ "passed", "failed", "running" ]
+          "enum": ["passed", "failed", "running"]
         },
         "branches": {
           "$ref": "#/definitions/branches"
@@ -611,7 +602,7 @@
         },
         "type": {
           "type": "string",
-          "enum": [ "block" ]
+          "enum": ["block"]
         }
       },
       "additionalProperties": false
@@ -628,7 +619,7 @@
     "stringBlockStep": {
       "type": "string",
       "description": "Pauses the execution of a build and waits on a user to unblock it",
-      "enum": [ "block" ]
+      "enum": ["block"]
     },
     "inputStep": {
       "type": "object",
@@ -648,6 +639,12 @@
         },
         "fields": {
           "$ref": "#/definitions/fields"
+        },
+        "blocked_state": {
+          "type": "string",
+          "default": "passed",
+          "description": "The state that the build is set to when the build is blocked by this input step",
+          "enum": ["passed", "failed", "running"]
         },
         "if": {
           "$ref": "#/definitions/if"
@@ -676,7 +673,7 @@
         },
         "type": {
           "type": "string",
-          "enum": [ "input" ]
+          "enum": ["input"]
         }
       },
       "additionalProperties": false
@@ -693,7 +690,7 @@
     "stringInputStep": {
       "type": "string",
       "description": "Pauses the execution of a build and waits on a user to unblock it",
-      "enum": [ "input" ]
+      "enum": ["input"]
     },
     "commandStep": {
       "type": "object",
@@ -715,10 +712,7 @@
             }
           ],
           "description": "The glob path/s of artifacts to upload once this step has finished running",
-          "examples": [
-            [ "screenshots/*" ],
-            [ "dist/myapp.zip", "dist/myapp.tgz" ]
-          ]
+          "examples": [["screenshots/*"], ["dist/myapp.zip", "dist/myapp.tgz"]]
         },
         "branches": {
           "$ref": "#/definitions/branches"
@@ -743,24 +737,18 @@
         "concurrency": {
           "type": "integer",
           "description": "The maximum number of jobs created from this step that are allowed to run at the same time. If you use this attribute, you must also define concurrency_group.",
-          "examples": [
-            1
-          ]
+          "examples": [1]
         },
         "concurrency_group": {
           "type": "string",
           "description": "A unique name for the concurrency group that you are creating with the concurrency attribute",
-          "examples": [
-            "my-pipeline/deploy"
-          ]
+          "examples": ["my-pipeline/deploy"]
         },
         "concurrency_method": {
           "type": "string",
           "enum": ["ordered", "eager"],
           "description": "Control command order, allowed values are 'ordered' (default) and 'eager'.  If you use this attribute, you must also define concurrency_group and concurrency.",
-          "examples": [
-            "ordered"
-          ]
+          "examples": ["ordered"]
         },
         "depends_on": {
           "$ref": "#/definitions/dependsOn"
@@ -770,6 +758,9 @@
         },
         "if": {
           "$ref": "#/definitions/if"
+        },
+        "if_changed": {
+          "$ref": "#/definitions/if_changed"
         },
         "key": {
           "$ref": "#/definitions/key"
@@ -794,7 +785,7 @@
             "algorithm": {
               "type": "string",
               "description": "The algorithm used to generate the signature",
-              "examples": [ "HS512", "EdDSA", "PS256" ]
+              "examples": ["HS512", "EdDSA", "PS256"]
             },
             "value": {
               "type": "string",
@@ -806,7 +797,9 @@
               "items": {
                 "type": "string"
               },
-              "examples": [["command", "matrix", "plugins", "env::SOME_ENV_VAR"]]
+              "examples": [
+                ["command", "matrix", "plugins", "env::SOME_ENV_VAR"]
+              ]
             }
           }
         },
@@ -816,9 +809,7 @@
               "type": "array",
               "description": "List of elements for simple single-dimension Build Matrix",
               "items": { "$ref": "#/definitions/matrixElement" },
-              "examples": [
-                ["linux", "freebsd"]
-              ]
+              "examples": [["linux", "freebsd"]]
             },
             {
               "type": "object",
@@ -830,9 +821,7 @@
                       "type": "array",
                       "description": "List of elements for single-dimension Build Matrix",
                       "items": { "$ref": "#/definitions/matrixElement" },
-                      "examples": [
-                        ["linux", "freebsd"]
-                      ]
+                      "examples": [["linux", "freebsd"]]
                     },
                     {
                       "type": "object",
@@ -881,9 +870,7 @@
                               "type": "string",
                               "description": "Build Matrix dimension element"
                             },
-                            "examples": [
-                              { "os": "linux", "arch": "arm64" }
-                            ]
+                            "examples": [{ "os": "linux", "arch": "arm64" }]
                           }
                         ]
                       },
@@ -911,79 +898,19 @@
           "items": {
             "oneOf": [
               {
-                "type": "string",
-                "enum": ["github_check", "github_commit_status"]
+                "$ref": "#/definitions/notifySimple"
               },
               {
-                "type": "object",
-                "properties": {
-                  "basecamp_campfire": {
-                    "type": "string"
-                  },
-                  "if": {
-                    "$ref": "#/definitions/if"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/definitions/notifyBasecamp"
               },
               {
-                "type": "object",
-                "properties": {
-                  "slack": {
-                    "oneOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "channels": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          },
-                          "message": {
-                            "type": "string"
-                          }
-                        },
-                        "additionalProperties": false
-                      }
-                    ]
-                  },
-                  "if": {
-                    "$ref": "#/definitions/if"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/definitions/notifySlack"
               },
               {
-                "type": "object",
-                "properties": {
-                  "github_commit_status": {
-                    "type": "object",
-                    "properties": {
-                      "context": {
-                        "description": "GitHub commit status name",
-                        "type": "string"
-                      }
-                    },
-                    "additionalProperties": false
-                  },
-                  "if": {
-                    "$ref": "#/definitions/if"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/definitions/notifyGithubCommitStatus"
               },
               {
-                "type": "object",
-                "properties": {
-                  "github_check": {
-                    "type": "object"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/definitions/notifyGithubCheck"
               }
             ]
           }
@@ -991,9 +918,7 @@
         "parallelism": {
           "type": "integer",
           "description": "The number of parallel jobs that will be created based on this step",
-          "examples": [
-            42
-          ]
+          "examples": [42]
         },
         "plugins": {
           "anyOf": [
@@ -1008,9 +933,7 @@
                   {
                     "type": "object",
                     "maxProperties": 1,
-                    "examples": [
-                      { "docker-compose#v1.0.0": { "run": "app" } }
-                    ]
+                    "examples": [{ "docker-compose#v1.0.0": { "run": "app" } }]
                   }
                 ]
               }
@@ -1074,9 +997,7 @@
                     "reason": {
                       "type": "string",
                       "description": "A string that will be displayed in a tooltip on the Retry button in Buildkite. This will only be displayed if the allowed attribute is set to false.",
-                      "examples": [
-                        "No retries allowed on deploy steps"
-                      ]
+                      "examples": ["No retries allowed on deploy steps"]
                     }
                   },
                   "additionalProperties": false
@@ -1094,21 +1015,16 @@
           "type": "integer",
           "description": "The number of minutes to time out a job",
           "minimum": 1,
-          "examples": [
-            60
-          ]
+          "examples": [60]
         },
         "type": {
           "type": "string",
-          "enum": [ "script", "command", "commands" ]
+          "enum": ["script", "command", "commands"]
         },
         "priority": {
           "type": "integer",
           "description": "Priority of the job, higher priorities are assigned to agents",
-          "examples": [
-            -1,
-            1
-          ]
+          "examples": [-1, 1]
         }
       },
       "additionalProperties": false
@@ -1125,7 +1041,7 @@
     "stringWaitStep": {
       "type": "string",
       "description": "Waits for previous steps to pass before continuing",
-      "enum": [ "wait", "waiter" ]
+      "enum": ["wait", "waiter"]
     },
     "waitStep": {
       "type": "object",
@@ -1165,7 +1081,7 @@
         },
         "type": {
           "type": "string",
-          "enum": [ "wait", "waiter" ]
+          "enum": ["wait", "waiter"]
         },
         "wait": {
           "description": "Waits for previous steps to pass before continuing",
@@ -1209,19 +1125,13 @@
               "type": "string",
               "description": "The branch for the build",
               "default": "master",
-              "examples": [
-                "master",
-                "feature/xyz"
-              ]
+              "examples": ["master", "feature/xyz"]
             },
             "commit": {
               "type": "string",
               "description": "The commit hash for the build",
               "default": "HEAD",
-              "examples": [
-                "HEAD",
-                "b5fb108"
-              ]
+              "examples": ["HEAD", "b5fb108"]
             },
             "env": {
               "$ref": "#/definitions/env"
@@ -1230,16 +1140,12 @@
               "type": "string",
               "description": "The message for the build (supports emoji)",
               "default": "The label of the trigger step",
-              "examples": [
-                "Deployment 123 :rocket:"
-              ]
+              "examples": ["Deployment 123 :rocket:"]
             },
             "meta_data": {
               "type": "object",
               "description": "Meta-data for the build",
-              "examples": [
-                { "server": "i-b244e37160c" }
-              ]
+              "examples": [{ "server": "i-b244e37160c" }]
             }
           },
           "additionalProperties": false
@@ -1249,6 +1155,9 @@
         },
         "if": {
           "$ref": "#/definitions/if"
+        },
+        "if_changed": {
+          "$ref": "#/definitions/if_changed"
         },
         "key": {
           "$ref": "#/definitions/key"
@@ -1268,7 +1177,7 @@
         },
         "type": {
           "type": "string",
-          "enum": [ "trigger" ]
+          "enum": ["trigger"]
         },
         "trigger": {
           "type": "string",
@@ -1282,9 +1191,7 @@
         }
       },
       "additionalProperties": false,
-      "required": [
-        "trigger"
-      ]
+      "required": ["trigger"]
     },
     "nestedTriggerStep": {
       "type": "object",
@@ -1302,12 +1209,15 @@
           "$ref": "#/definitions/dependsOn"
         },
         "group": {
-          "type": [ "string", "null" ],
+          "type": ["string", "null"],
           "description": "The name to give to this group of steps",
-          "examples": [ "Tests" ]
+          "examples": ["Tests"]
         },
         "if": {
           "$ref": "#/definitions/if"
+        },
+        "if_changed": {
+          "$ref": "#/definitions/if_changed"
         },
         "key": {
           "$ref": "#/definitions/key"

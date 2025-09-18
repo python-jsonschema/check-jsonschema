@@ -9,9 +9,12 @@ Unreleased
 ----------
 
 .. vendor-insert-here
-
-- Add GitHub issue form schema and pre-commit hook (:issue:`588`).
-- Add Codecov config schema and pre-commit hook.
+- Update vendored schemas: bitbucket-pipelines, buildkite, compose-spec, dependabot,
+  drone-ci, github-issue-forms, gitlab-ci, meltano, mergify, renovate, snapcraft,
+  woodpecker-ci (2025-09-17)
+- Add GitHub issue config schema and pre-commit hook. Thanks :user:`vivodi`! (:issue:`589`).
+- Add GitHub issue form schema and pre-commit hook. Thanks :user:`vivodi`! (:issue:`588`).
+- Add Codecov config schema and pre-commit hook. Thanks :user:`vivodi`! (:pr:`598`)
 
 0.33.3
 ------
