@@ -2493,7 +2493,7 @@
             }
           ],
           "default": null,
-          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nThis option overrides the value defined in the queue rules section of the configuration.\nThe default is rebase when the `merge_method` is `fast-forward`.",
+          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase.",
           "title": "Update Method"
         },
         "commit_message_template": {
@@ -2710,7 +2710,7 @@
             }
           ],
           "default": null,
-          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nThis option overrides the value defined in the queue rules section of the configuration.\nThe default is rebase when the `merge_method` is `fast-forward`.",
+          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase.",
           "title": "Update Method"
         },
         "commit_message_template": {

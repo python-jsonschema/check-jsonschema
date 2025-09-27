@@ -1829,8 +1829,7 @@
           "/(^|/)conanfile\\.(txt|py)$/"
         ],
         "datasource": "conan",
-        "versioning": "conan",
-        "enabled": false
+        "versioning": "conan"
       },
       "$ref": "#",
       "items": {
