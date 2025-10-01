@@ -9,7 +9,7 @@ dev = [
     "coverage<8",
     "identify>=2.6.9",
     "pytest-xdist<4",
-    "responses==0.25.7",
+    "responses==0.25.8",
 ]
 docs = [
     "sphinx<9",
