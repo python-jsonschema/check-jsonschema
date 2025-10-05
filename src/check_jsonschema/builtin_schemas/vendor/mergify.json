@@ -1327,6 +1327,19 @@
           ],
           "title": "Reset On External Merge",
           "type": "string"
+        },
+        "queued_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "queued",
+          "description": "The label to add on pull requests when they are added to the merge queue.",
+          "title": "Queued Label"
         }
       },
       "title": "MergeQueueModel",
@@ -1747,18 +1760,6 @@
           "description": "The name of the queue containing the pull request.",
           "title": "Queue name"
         },
-        "queue-partition-name": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The name of the partitions the pull request is queued in.",
-          "title": "Queue partition name"
-        },
         "assignee": {
           "description": "The list of GitHub user or team login that are assigned to the pull request. Team logins are prefixed with the `@` character and must belong to the repository organization.",
           "items": {
@@ -2150,7 +2151,6 @@
         "repository-full-name",
         "queue-dequeue-reason",
         "queue-name",
-        "queue-partition-name",
         "assignee",
         "label",
         "review-requested",
@@ -2377,7 +2377,8 @@
         },
         "allow_inplace_checks": {
           "default": true,
-          "description": "Allow to update or rebase the original pull request to check its mergeability when first in the queue and not part of a batch (see: `batch_size`) or speculative check (see: `max_parallel_checks`).",
+          "deprecated": true,
+          "description": "Deprecated: this value is computed automatically. In-place checks are enabled only when:\n- `max_parallel_checks == 1`\n- every queue has `batch_size == 1`\n- every queue CI is single-step (no extra `merge_conditions`; either empty or identical to `queue_conditions`)",
           "title": "Allow Inplace Checks",
           "type": "boolean"
         },
@@ -2594,7 +2595,8 @@
         },
         "allow_inplace_checks": {
           "default": true,
-          "description": "Allow to update or rebase the original pull request to check its mergeability when first in the queue and not part of a batch (see: `batch_size`) or speculative check (see: `max_parallel_checks`).",
+          "deprecated": true,
+          "description": "Deprecated: this value is computed automatically. In-place checks are enabled only when:\n- `max_parallel_checks == 1`\n- every queue has `batch_size == 1`\n- every queue CI is single-step (no extra `merge_conditions`; either empty or identical to `queue_conditions`)",
           "title": "Allow Inplace Checks",
           "type": "boolean"
         },

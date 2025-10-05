@@ -2289,6 +2289,23 @@
                 "type": "string"
               }
             }
+          },
+          {
+            "if": {
+              "properties": {
+                "customType": {
+                  "const": "jsonata"
+                }
+              },
+              "required": [
+                "customType"
+              ]
+            },
+            "then": {
+              "required": [
+                "fileFormat"
+              ]
+            }
           }
         ]
       },
@@ -5507,7 +5524,8 @@
       "default": {
         "managerFilePatterns": [
           "/(^|/)package\\.json$/",
-          "/(^|/)pnpm-workspace\\.yaml$/"
+          "/(^|/)pnpm-workspace\\.yaml$/",
+          "/(^|/)\\.yarnrc\\.yml$/"
         ],
         "digest": {
           "prBodyDefinitions": {
