@@ -10,7 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: mergify, renovate (2025-09-21)
+- Update vendored schemas: azure-pipelines, drone-ci, gitlab-ci, meltano, mergify,
+  renovate, woodpecker-ci (2025-10-05)
 
 0.34.0
 ------
