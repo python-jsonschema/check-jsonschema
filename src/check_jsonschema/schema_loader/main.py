@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import functools
 import pathlib
+import re
 import typing as t
 import urllib.error
 import urllib.parse
@@ -238,6 +239,26 @@ def _dialect_of_schema(schema: dict[str, t.Any] | bool) -> str | None:
     if schema_dialect is not None and not isinstance(schema_dialect, str):
         schema_dialect = None
     return schema_dialect
+
+
+class ModelineSchemaLoader(SchemaLoader):
+    def __init__(self, *, instancefiles: tuple[t.IO[bytes], ...] | None = None) -> None:
+        if not instancefiles:
+            instancefiles = ()
+        if len(instancefiles) > 1:
+            raise NotImplementedError(
+                "'--modeline-schema' cannot be used on multiple files simultaneously."
+            )
+        self.schemafile = self._get_schema_from_modeline(instancefiles[0])
+        super().__init__(self.schemafile)
+
+    def _get_schema_from_modeline(self, instancefile: t.IO[bytes]) -> str:
+        modeline = instancefile.readline()
+        pattern = r"^# yaml-language-server: \$schema=(?P<schema>.*)$"
+        match = re.match(pattern, modeline.decode())
+        if not match:
+            raise Exception("Modeline with schema not found.")
+        return match.group("schema")
 
 
 class BuiltinSchemaLoader(SchemaLoader):
