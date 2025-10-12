@@ -1615,7 +1615,7 @@
           "type": "integer"
         },
         "queue-position": {
-          "description": "The position of the pull request in its queue if queued. The first pull request in the queue has position 0. The value is set to -1 if the pull request is not queued. If you are using partitions, this returns the maximum position of the pull request from all the partitions it is queued in.",
+          "description": "The position of the pull request in its queue if queued. The first pull request in the queue has position 0. The value is set to -1 if the pull request is not queued.",
           "title": "Queue position",
           "type": "integer"
         },
@@ -2099,7 +2099,7 @@
               "type": "null"
             }
           ],
-          "description": "The time the pull request mergeability checks have started at. This attribute does not work yet when using partition rules.",
+          "description": "The time the pull request mergeability checks have started at.",
           "title": "Queue merge started at"
         },
         "schedule": {
