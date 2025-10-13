@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.34.1
+------
+
 - Update vendored schemas: azure-pipelines, bamboo-spec, buildkite, circle-ci, drone-ci,
   github-workflows, gitlab-ci, meltano, mergify, renovate, woodpecker-ci (2025-10-13)
 
