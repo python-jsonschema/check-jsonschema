@@ -76,7 +76,9 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         },
     },
     "circle-ci": {
-        "url": "https://json.schemastore.org/circleciconfig.json",
+        "url": _githubusercontent_url(
+            "CircleCI-Public", "circleci-yaml-language-server", "main", "schema.json"
+        ),
         "hook_config": {
             "name": "Validate CircleCI config",
             "description": (
@@ -238,8 +240,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
         "hook_config": {
             "name": "Validate ReadTheDocs Config",
             "description": (
-                "Validate ReadTheDocs config against the schema "
-                "provided by ReadTheDocs"
+                "Validate ReadTheDocs config against the schema provided by ReadTheDocs"
             ),
             "files": r"^\.readthedocs\.(yml|yaml)$",
             "types": "yaml",
