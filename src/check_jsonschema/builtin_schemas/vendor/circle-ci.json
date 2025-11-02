@@ -6,11 +6,11 @@
             "oneOf": [
                 {
                     "type": "string",
-                    "description": "Job may be a string reference to another job"
+                    "markdownDescription": "A reference to a job defined elsewhere in the configuration, either in the `jobs` section or from an orb (e.g., `my-job` or `orb-name/job-name`)."
                 },
                 {
                     "type": "object",
-                    "description": "Job definition object",
+                    "markdownDescription": "https://circleci.com/docs/creating-orbs#creating-inline-orbs\n\nInline orbs can be handy during development of an orb or as a convenience for name-spacing jobs and commands in lengthy configurations, particularly if you later intend to share the orb with others.",
                     "properties": {
                         "type": {
                             "enum": [
@@ -21,7 +21,7 @@
                                 "approval",
                                 "no-op"
                             ],
-                            "description": "The job type. If not specified, defaults to build."
+                            "markdownDescription": "The job type. If not specified, defaults to build."
                         }
                     },
                     "if": {
@@ -35,14 +35,14 @@
                         }
                     },
                     "then": {
-                        "description": "Release job.",
+                        "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#job-type\n\nRelease job.",
                         "required": [
                             "plan_name"
                         ],
                         "properties": {
                             "plan_name": {
                                 "type": "string",
-                                "description": "Required plan name for release jobs."
+                                "markdownDescription": "Required plan name for release jobs."
                             }
                         },
                         "additionalProperties": true
@@ -62,14 +62,14 @@
                             }
                         },
                         "then": {
-                            "description": "A lock/unlock job",
+                            "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#job-type\n\nA lock/unlock job",
                             "required": [
                                 "key"
                             ],
                             "properties": {
                                 "key": {
                                     "type": "string",
-                                    "description": "Required key for lock/unlock jobs."
+                                    "markdownDescription": "Required key for lock/unlock jobs."
                                 }
                             },
                             "additionalProperties": true
@@ -89,12 +89,12 @@
                                 }
                             },
                             "then": {
-                                "description": "Approval/no-op jobs primarily act as workflow markers. Other keys like `steps:` are permitted but will be ignored in the final pipeline.",
+                                "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#job-type\n\nApproval/no-op jobs primarily act as workflow markers. Other keys like `steps:` are permitted but will be ignored in the final pipeline.",
                                 "additionalProperties": true
                             },
                             "else": {
                                 "if": {
-                                    "description": "Condition: The job must be of type 'build' or have no type specified.",
+                                    "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#job-type\n\nA build job. The job explicitly has type 'build' or defaults to build when no type specified.",
                                     "anyOf": [
                                         {
                                             "not": {
@@ -116,17 +116,17 @@
                                     ]
                                 },
                                 "then": {
-                                    "description": "Validation: The job must adhere to the structure of a build job.",
+                                    "markdownDescription": "Validation: The job must adhere to the structure of a build job.",
                                     "properties": {
                                         "description": {
                                             "type": "string"
                                         },
                                         "type": {
                                             "const": "build",
-                                            "description": "The job type. If not specified, defaults to build."
+                                            "markdownDescription": "The job type. If not specified, defaults to build."
                                         },
                                         "parallelism": {
-                                            "description": "A integer or a parameter evaluating to a integer",
+                                            "markdownDescription": "A integer or a parameter evaluating to a integer",
                                             "anyOf": [
                                                 {
                                                     "oneOf": [
@@ -213,14 +213,14 @@
                                                     "environment": {
                                                         "oneOf": [
                                                             {
-                                                                "description": "Allow null to account for empty `environment:` declarations.",
+                                                                "markdownDescription": "A map of environment variable names and values.",
                                                                 "type": [
                                                                     "string",
                                                                     "null"
                                                                 ]
                                                             },
                                                             {
-                                                                "description": "An array of strings in the form KEY=VALUE",
+                                                                "markdownDescription": "An array of strings in the form KEY=VALUE",
                                                                 "type": "array",
                                                                 "items": {
                                                                     "$ref": "#/definitions/environment"
@@ -228,7 +228,7 @@
                                                             },
                                                             {
                                                                 "type": "object",
-                                                                "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
+                                                                "markdownDescription": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
                                                                 "additionalProperties": {
                                                                     "type": [
                                                                         "string",
@@ -303,7 +303,8 @@
                                             "minItems": 1
                                         },
                                         "working_directory": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "markdownDescription": "In which directory to run the steps. (default: `~/project`. `project` is a literal string, not the name of the project.) You can also refer the directory with `$CIRCLE_WORKING_DIRECTORY` environment variable."
                                         },
                                         "retention": {
                                             "type": "object",
@@ -316,13 +317,13 @@
                                             "additionalProperties": false
                                         },
                                         "circleci_ip_ranges": {
-                                            "type": "boolean"
+                                            "type": "boolean",
+                                            "markdownDescription": "Enable running jobs with a set of well-defined IP address ranges."
                                         },
                                         "machine": {
-                                            "description": "Machine must be a boolean or a map",
+                                            "markdownDescription": "Use the default machine executor image",
                                             "oneOf": [
                                                 {
-                                                    "description": "A boolean or a template parameter evaluating to a boolean",
                                                     "anyOf": [
                                                         {
                                                             "type": "string",
@@ -343,7 +344,7 @@
                                                     "type": "object",
                                                     "properties": {
                                                         "enabled": {
-                                                            "description": "A boolean or a template parameter evaluating to a boolean",
+                                                            "markdownDescription": "A boolean or a template parameter evaluating to a boolean",
                                                             "anyOf": [
                                                                 {
                                                                     "type": "string",
@@ -364,7 +365,7 @@
                                                             "type": "string"
                                                         },
                                                         "docker_layer_caching": {
-                                                            "description": "A boolean or a template parameter evaluating to a boolean",
+                                                            "markdownDescription": "Set to `true` to enable [Docker Layer Caching](https://circleci.com/docs/docker-layer-caching). Note: If you haven't already, you must open a support ticket to have a CircleCI Sales representative contact you about enabling this feature on your account for an additional fee.",
                                                             "anyOf": [
                                                                 {
                                                                     "type": "string",
@@ -395,14 +396,14 @@
                                         "environment": {
                                             "oneOf": [
                                                 {
-                                                    "description": "Allow null to account for empty `environment:` declarations.",
+                                                    "markdownDescription": "A map of environment variable names and values.",
                                                     "type": [
                                                         "string",
                                                         "null"
                                                     ]
                                                 },
                                                 {
-                                                    "description": "An array of strings in the form KEY=VALUE",
+                                                    "markdownDescription": "An array of strings in the form KEY=VALUE",
                                                     "type": "array",
                                                     "items": {
                                                         "$ref": "#/definitions/environment"
@@ -410,7 +411,7 @@
                                                 },
                                                 {
                                                     "type": "object",
-                                                    "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
+                                                    "markdownDescription": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
                                                     "additionalProperties": {
                                                         "type": [
                                                             "string",
@@ -426,11 +427,11 @@
                                             "oneOf": [
                                                 {
                                                     "type": "string",
-                                                    "description": "short executor invocation, name of executor"
+                                                    "markdownDescription": "https://circleci.com/docs/reference/reusing-config/#executor\n\nThe name of the executor to use (defined via the top level executors map or from an orb)."
                                                 },
                                                 {
                                                     "type": "object",
-                                                    "description": "executor invocation with arguments, i.e. parameters",
+                                                    "markdownDescription": "Executor stanza to use for the job, with optional parameter overrides.",
                                                     "minProperties": 1,
                                                     "additionalProperties": true,
                                                     "properties": {
@@ -458,7 +459,7 @@
                                             ]
                                         },
                                         "parameters": {
-                                            "description": "Parameters given to a job.",
+                                            "markdownDescription": "https://circleci.com/docs/reusing-config#using-the-parameters-declaration\n\nA map of parameter keys.",
                                             "type": "object",
                                             "additionalProperties": {
                                                 "type": "object",
@@ -473,7 +474,8 @@
                                                             "executor",
                                                             "integer",
                                                             "env_var_name"
-                                                        ]
+                                                        ],
+                                                        "markdownDescription": "The parameter type. See [Parameter Types](https://circleci.com/docs/reusing-config#parameter-syntax) for details:\n- `boolean`: A boolean parameter\n- `string`: A string parameter  \n- `integer`: An integer parameter\n- `enum`: An enum parameter (list of allowed string values)\n- `executor`: An executor parameter (allows job to choose executor)\n- `steps`: A steps parameter (allows mixing predefined and user-defined steps)\n- `env_var_name`: An environment variable name parameter (must match POSIX_NAME regexp)"
                                                     },
                                                     "default": {
                                                         "oneOf": [
@@ -495,13 +497,16 @@
                                                         ]
                                                     },
                                                     "description": {
-                                                        "type": "string"
+                                                        "type": "string",
+                                                        "markdownDescription": "A description of the parameter"
                                                     },
                                                     "enum": {
                                                         "type": "array",
                                                         "items": {
                                                             "type": "string"
-                                                        }
+                                                        },
+                                                        "minItems": 1,
+                                                        "markdownDescription": "List of allowed values for an `enum` type parameter"
                                                     }
                                                 },
                                                 "additionalProperties": false,
@@ -518,7 +523,7 @@
                                     "additionalProperties": false,
                                     "anyOf": [
                                         {
-                                            "description": "A job must have one of `docker`, `machine`, `macos` or `executor` (which can provide docker/machine/macos information).",
+                                            "markdownDescription": "A job that uses an executor defined elsewhere in the configuration.",
                                             "type": "object",
                                             "required": [
                                                 "executor"
@@ -564,7 +569,7 @@
                     "type": "object",
                     "properties": {
                         "jobs": {
-                            "description": "Any string key is allowed as job name.",
+                            "markdownDescription": "Jobs are collections of steps. All of the steps in the job are executed in a single unit, either within a fresh container or VM.",
                             "type": "object",
                             "propertyNames": {
                                 "type": "string",
@@ -588,7 +593,7 @@
                                                 "type": "string"
                                             },
                                             "parameters": {
-                                                "description": "Parameters given to a step.",
+                                                "markdownDescription": "https://circleci.com/docs/reusing-config#using-the-parameters-declaration\n\nA map of parameter keys.",
                                                 "type": "object",
                                                 "additionalProperties": {
                                                     "type": "object",
@@ -656,7 +661,7 @@
                                     },
                                     {
                                         "type": "string",
-                                        "description": "Command may be a string reference to another command"
+                                        "markdownDescription": "Command may be a string reference to another command"
                                     }
                                 ]
                             }
@@ -742,14 +747,14 @@
                                                         "environment": {
                                                             "oneOf": [
                                                                 {
-                                                                    "description": "Allow null to account for empty `environment:` declarations.",
+                                                                    "markdownDescription": "A map of environment variable names and values.",
                                                                     "type": [
                                                                         "string",
                                                                         "null"
                                                                     ]
                                                                 },
                                                                 {
-                                                                    "description": "An array of strings in the form KEY=VALUE",
+                                                                    "markdownDescription": "An array of strings in the form KEY=VALUE",
                                                                     "type": "array",
                                                                     "items": {
                                                                         "$ref": "#/definitions/environment"
@@ -757,7 +762,7 @@
                                                                 },
                                                                 {
                                                                     "type": "object",
-                                                                    "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
+                                                                    "markdownDescription": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
                                                                     "additionalProperties": {
                                                                         "type": [
                                                                             "string",
@@ -828,10 +833,10 @@
                                                 "type": "string"
                                             },
                                             "machine": {
-                                                "description": "Machine must be a boolean or a map",
+                                                "markdownDescription": "Use the default machine executor image",
                                                 "oneOf": [
                                                     {
-                                                        "description": "A boolean or a template parameter evaluating to a boolean",
+                                                        "markdownDescription": "Specify an image tag.\n\nUsing CircleCI Cloud? Use of `machine: true` is deprecated. You must specify an image to use.",
                                                         "anyOf": [
                                                             {
                                                                 "type": "string",
@@ -852,7 +857,7 @@
                                                         "type": "object",
                                                         "properties": {
                                                             "enabled": {
-                                                                "description": "A boolean or a template parameter evaluating to a boolean",
+                                                                "markdownDescription": "A boolean or a template parameter evaluating to a boolean",
                                                                 "anyOf": [
                                                                     {
                                                                         "type": "string",
@@ -873,7 +878,7 @@
                                                                 "type": "string"
                                                             },
                                                             "docker_layer_caching": {
-                                                                "description": "A boolean or a template parameter evaluating to a boolean",
+                                                                "markdownDescription": "Set to `true` to enable [Docker Layer Caching](https://circleci.com/docs/docker-layer-caching). Note: If you haven't already, you must open a support ticket to have a CircleCI Sales representative contact you about enabling this feature on your account for an additional fee.",
                                                                 "anyOf": [
                                                                     {
                                                                         "type": "string",
@@ -904,14 +909,14 @@
                                             "environment": {
                                                 "oneOf": [
                                                     {
-                                                        "description": "Allow null to account for empty `environment:` declarations.",
+                                                        "markdownDescription": "A map of environment variable names and values.",
                                                         "type": [
                                                             "string",
                                                             "null"
                                                         ]
                                                     },
                                                     {
-                                                        "description": "An array of strings in the form KEY=VALUE",
+                                                        "markdownDescription": "An array of strings in the form KEY=VALUE",
                                                         "type": "array",
                                                         "items": {
                                                             "$ref": "#/definitions/environment"
@@ -919,7 +924,7 @@
                                                     },
                                                     {
                                                         "type": "object",
-                                                        "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
+                                                        "markdownDescription": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
                                                         "additionalProperties": {
                                                             "type": [
                                                                 "string",
@@ -945,7 +950,7 @@
                                                 ]
                                             },
                                             "parameters": {
-                                                "description": "Parameters given to a job.",
+                                                "markdownDescription": "https://circleci.com/docs/reusing-config#using-the-parameters-declaration\n\nA map of parameter keys.",
                                                 "type": "object",
                                                 "additionalProperties": {
                                                     "type": "object",
@@ -1003,7 +1008,7 @@
                                     },
                                     {
                                         "type": "string",
-                                        "description": "Executor may be a string reference to another executor"
+                                        "markdownDescription": "Executor may be a string reference to another executor"
                                     }
                                 ]
                             }
@@ -1018,14 +1023,14 @@
         "environment": {
             "oneOf": [
                 {
-                    "description": "Allow null to account for empty `environment:` declarations.",
+                    "markdownDescription": "A map of environment variable names and values.",
                     "type": [
                         "string",
                         "null"
                     ]
                 },
                 {
-                    "description": "An array of strings in the form KEY=VALUE",
+                    "markdownDescription": "An array of strings in the form KEY=VALUE",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/environment"
@@ -1033,7 +1038,7 @@
                 },
                 {
                     "type": "object",
-                    "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
+                    "markdownDescription": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
                     "additionalProperties": {
                         "type": [
                             "string",
@@ -1048,7 +1053,7 @@
         "logic": {
             "oneOf": [
                 {
-                    "description": "A boolean or a pipeline parameter evaluating to a boolean",
+                    "markdownDescription": "https://circleci.com/docs/configuration-reference#logic-statements\n\nA value or parameter reference to be used in a logical statement.",
                     "anyOf": [
                         {
                             "type": "string",
@@ -1067,7 +1072,7 @@
                 },
                 {
                     "type": "object",
-                    "description": "This is the object that represents the logical/comparison operators",
+                    "markdownDescription": "https://circleci.com/docs/configuration-reference#logic-statements\n\nA logical operator (and, or, not, equal, matches) to be used in dynamic configuration.",
                     "minProperties": 1,
                     "maxProperties": 1,
                     "additionalProperties": false,
@@ -1077,34 +1082,41 @@
                             "items": {
                                 "$ref": "#/definitions/logic"
                             },
-                            "minItems": 1
+                            "minItems": 1,
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#logic-statements\n\nLogical and: true when all statements in the list are true"
                         },
                         "or": {
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/logic"
                             },
-                            "minItems": 1
+                            "minItems": 1,
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#logic-statements\n\nLogical or: true when at least one statement in the list is true"
                         },
                         "not": {
-                            "$ref": "#/definitions/logic"
+                            "$ref": "#/definitions/logic",
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#logic-statements\n\nLogical not: true when statement is false"
                         },
                         "equal": {
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/logic"
                             },
-                            "minItems": 1
+                            "minItems": 1,
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#logic-statements\n\nTrue when all elements in the list are equal"
                         },
                         "matches": {
                             "type": "object",
                             "additionalProperties": false,
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#logic-statements\n\nTrue when value matches the pattern",
                             "properties": {
                                 "pattern": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "markdownDescription": "Regular expression pattern to match against"
                                 },
                                 "value": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "markdownDescription": "Value to test against the pattern"
                                 }
                             },
                             "required": [
@@ -1116,7 +1128,7 @@
                 },
                 {
                     "type": "object",
-                    "description": "This is the object operand",
+                    "markdownDescription": "A custom logic object with user-defined properties for conditional evaluation.",
                     "propertyNames": {
                         "not": {
                             "pattern": "^(and|or|not|equal|matches)$"
@@ -1129,11 +1141,11 @@
             "oneOf": [
                 {
                     "type": "string",
-                    "description": "Shorthand commands, like `checkout`"
+                    "markdownDescription": "A reference to a command or built-in step (e.g., `checkout`, `my-command`, or `orb-name/command-name`)."
                 },
                 {
                     "type": "object",
-                    "description": "long form commands like `run:`",
+                    "markdownDescription": "long form commands like `run:` or `checkout:",
                     "propertyNames": {
                         "pattern": "^[a-z][a-z\\d\/_-]*$",
                         "not": {
@@ -1144,6 +1156,7 @@
                     "maxProperties": 1,
                     "properties": {
                         "run": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#run\n\nUsed for invoking all command-line programs, taking either a map of configuration values, or, when called in its short-form, a string that will be used as both the `command` and `name`. Run commands are executed using non-login shells by default, so you must explicitly source any dotfiles as part of the command.",
                             "oneOf": [
                                 {
                                     "type": "string"
@@ -1152,12 +1165,297 @@
                                     "type": "object",
                                     "properties": {
                                         "command": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "markdownDescription": "Command to run via the shell"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: full `command`)"
+                                        },
+                                        "shell": {
+                                            "type": "string",
+                                            "markdownDescription": "Shell to use for execution command"
+                                        },
+                                        "environment": {
+                                            "$ref": "#/definitions/environment",
+                                            "markdownDescription": "Additional environmental variables, locally scoped to command"
+                                        },
+                                        "background": {
+                                            "type": "boolean",
+                                            "default": false,
+                                            "markdownDescription": "Whether or not this step should run in the background (default: false)"
+                                        },
+                                        "working_directory": {
+                                            "type": "string",
+                                            "markdownDescription": "In which directory to run this step (default: `working_directory` of the job)"
+                                        },
+                                        "no_output_timeout": {
+                                            "type": "string",
+                                            "pattern": "\\d+(\\.\\d+)?[mhs]",
+                                            "default": "10m",
+                                            "markdownDescription": "Elapsed time the command can run without output. The string is a decimal with unit suffix, such as \"20m\", \"1.25h\", \"5s\" (default: 10 minutes)"
+                                        },
+                                        "when": {
+                                            "enum": ["always", "on_success", "on_fail"],
+                                            "markdownDescription": "Specify when to enable or disable the step. Takes the following values: `always`, `on_success`, `on_fail` (default: `on_success`)"
+                                        },
+                                        "max_auto_reruns": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 5,
+                                            "markdownDescription": "Maximum number of automatic reruns for this step"
+                                        },
+                                        "auto_rerun_delay": {
+                                            "type": "string",
+                                            "pattern": "^(10|[1-9])m|([1-9][0-9]*)s$",
+                                            "markdownDescription": "Delay before automatic rerun of this step"
                                         }
                                     },
                                     "required": [
                                         "command"
-                                    ]
+                                    ],
+                                    "if": {
+                                        "properties": {
+                                            "auto_rerun_delay": true
+                                        },
+                                        "required": [
+                                            "auto_rerun_delay"
+                                        ]
+                                    },
+                                    "then": {
+                                        "required": [
+                                            "max_auto_reruns"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        "checkout": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#checkout\n\nSpecial step used to check out source code to the configured `path` (defaults to the `working_directory`). The reason this is a special step is because it is more of a helper function designed to make checking out code easy for you. If you require doing git over HTTPS you should not use this step as it configures git to checkout over ssh.",
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "enum": ["checkout"]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "path": {
+                                            "type": "string",
+                                            "markdownDescription": "Checkout directory (default: job's `working_directory`)"
+                                        },
+                                        "method": {
+                                            "type": "string",
+                                            "markdownDescription": "The checkout method to be used ('blobless' or 'full', default 'full')"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            ]
+                        },
+                        "setup_remote_docker": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#setup_remote_docker\n\nCreates a remote Docker environment configured to execute Docker commands.",
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "enum": ["setup_remote_docker"]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "docker_layer_caching": {
+                                            "type": "boolean",
+                                            "default": false,
+                                            "markdownDescription": "When `docker_layer_caching` is set to `true`, CircleCI will try to reuse Docker Images (layers) built during a previous job or workflow (Paid feature)"
+                                        },
+                                        "version": {
+                                            "markdownDescription": "If your build requires a specific docker image, you can set it as an image attribute",
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "20.10.24",
+                                                        "20.10.23",
+                                                        "20.10.18",
+                                                        "20.10.17",
+                                                        "20.10.14",
+                                                        "20.10.12",
+                                                        "20.10.11",
+                                                        "20.10.7",
+                                                        "20.10.6",
+                                                        "20.10.2",
+                                                        "19.03.13"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            ]
+                        },
+                        "save_cache": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#save_cache\n\nGenerates and stores a cache of a file or directory of files such as dependencies or source code in our object storage. Later jobs can restore this cache using the `restore_cache` step.",
+                            "type": "object",
+                            "required": ["paths", "key"],
+                            "properties": {
+                                "paths": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "markdownDescription": "List of directories which should be added to the cache"
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "markdownDescription": "Unique identifier for this cache"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: 'Saving Cache')"
+                                },
+                                "when": {
+                                    "enum": ["always", "on_success", "on_fail"],
+                                    "markdownDescription": "Specify when to enable or disable the step. Takes the following values: `always`, `on_success`, `on_fail` (default: `on_success`)"
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "restore_cache": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#restore_cache\n\nRestores a previously saved cache based on a `key`. Cache needs to have been saved first for this key using the `save_cache` step.",
+                            "oneOf": [
+                                {
+                                    "type": "object",
+                                    "required": ["key"],
+                                    "properties": {
+                                        "key": {
+                                            "type": "string",
+                                            "markdownDescription": "Single cache key to restore"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: 'Restoring Cache')"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "required": ["keys"],
+                                    "properties": {
+                                        "keys": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "markdownDescription": "List of cache keys to lookup for a cache to restore. Only first existing key will be restored."
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: 'Restoring Cache')"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            ]
+                        },
+                        "store_artifacts": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#store_artifacts\n\nStep to store artifacts (for example logs, binaries, etc) to be available in the web app or through the API.",
+                            "type": "object",
+                            "required": ["path"],
+                            "properties": {
+                                "path": {
+                                    "type": "string",
+                                    "markdownDescription": "Directory in the primary container to save as job artifacts"
+                                },
+                                "destination": {
+                                    "type": "string",
+                                    "markdownDescription": "Prefix added to the artifact paths in the artifacts API (default: the directory of the file specified in `path`)"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "store_test_results": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#storetestresults\n\nSpecial step used to upload test results so they display in builds' Test Summary section and can be used for timing analysis. To also see test result as build artifacts, please use the `store_artifacts` step.",
+                            "type": "object",
+                            "required": ["path"],
+                            "properties": {
+                                "path": {
+                                    "type": "string",
+                                    "markdownDescription": "Path (absolute, or relative to your `working_directory`) to directory containing subdirectories of JUnit XML or Cucumber JSON test metadata files"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "persist_to_workspace": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#persist_to_workspace\n\nSpecial step used to persist a temporary file to be used by another job in the workflow",
+                            "type": "object",
+                            "required": ["root", "paths"],
+                            "properties": {
+                                "root": {
+                                    "type": "string",
+                                    "markdownDescription": "Either an absolute path or a path relative to `working_directory`"
+                                },
+                                "paths": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "markdownDescription": "Glob identifying file(s), or a non-glob path to a directory to add to the shared workspace. Interpreted as relative to the workspace root. Must not be the workspace root itself."
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "attach_workspace": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#attach_workspace\n\nSpecial step used to attach the workflow's workspace to the current container. The full contents of the workspace are downloaded and copied into the directory the workspace is being attached at.",
+                            "type": "object",
+                            "required": ["at"],
+                            "properties": {
+                                "at": {
+                                    "type": "string",
+                                    "markdownDescription": "Directory to attach the workspace to"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "add_ssh_keys": {
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#add_ssh_keys\n\nSpecial step that adds SSH keys from a project's settings to a container. Also configures SSH to use these keys.",
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "enum": ["add_ssh_keys"]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "fingerprints": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "markdownDescription": "List of fingerprints corresponding to the keys to be added"
+                                        }
+                                    },
+                                    "additionalProperties": false
                                 }
                             ]
                         }
@@ -1171,20 +1469,22 @@
                 },
                 {
                     "type": "object",
-                    "description": "`when`/`unless` step",
+                    "markdownDescription": "https://circleci.com/docs/configuration-reference#the-when-step-requires-version-21\n\nA conditional step (`when` or `unless`) that runs based on a logical condition.",
                     "additionalProperties": false,
                     "minProperties": 1,
                     "maxProperties": 1,
                     "properties": {
                         "when": {
                             "type": "object",
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#the-when-step-requires-version-21\n\nConditional step to run on custom conditions (determined at config-compile time) that are checked before a workflow runs",
                             "required": [
                                 "condition",
                                 "steps"
                             ],
                             "properties": {
                                 "condition": {
-                                    "$ref": "#/definitions/logic"
+                                    "$ref": "#/definitions/logic",
+                                    "markdownDescription": "A logical condition that must evaluate to true for the steps to run"
                                 },
                                 "steps": {
                                     "oneOf": [
@@ -1197,19 +1497,22 @@
                                         {
                                             "$ref": "#/definitions/step"
                                         }
-                                    ]
+                                    ],
+                                    "markdownDescription": "A list of steps to be performed when the condition is true"
                                 }
                             }
                         },
                         "unless": {
                             "type": "object",
+                            "markdownDescription": "https://circleci.com/docs/configuration-reference#the-when-step-requires-version-21\n\nConditional step to run when custom conditions aren't met (determined at config-compile time) that are checked before a workflow runs",
                             "required": [
                                 "condition",
                                 "steps"
                             ],
                             "properties": {
                                 "condition": {
-                                    "$ref": "#/definitions/logic"
+                                    "$ref": "#/definitions/logic",
+                                    "markdownDescription": "A logical condition that must evaluate to false for the steps to run"
                                 },
                                 "steps": {
                                     "oneOf": [
@@ -1222,7 +1525,8 @@
                                         {
                                             "$ref": "#/definitions/step"
                                         }
-                                    ]
+                                    ],
+                                    "markdownDescription": "A list of steps to be performed when the condition is false"
                                 }
                             }
                         }
@@ -1238,6 +1542,7 @@
                 "object",
                 "null"
             ],
+            "markdownDescription": "Executors define the environment in which the steps of a job will be run, allowing you to reuse a single executor definition across multiple jobs.",
             "propertyNames": {
                 "pattern": "^[a-z][a-z\\d_-]*$"
             },
@@ -1251,12 +1556,14 @@
                             },
                             "macos": {
                                 "type": "object",
+                                "markdownDescription": "Options for the [macOS executor](https://circleci.com/docs/configuration-reference#macos)",
                                 "properties": {
                                     "xcode": {
                                         "type": [
                                             "string",
                                             "number"
-                                        ]
+                                        ],
+                                        "markdownDescription": "The version of Xcode that is installed on the virtual machine, see the [Supported Xcode Versions section of the Testing iOS](https://circleci.com/docs/testing-ios#supported-xcode-versions) document for the complete list."
                                     },
                                     "resource_class": {
                                         "type": "string"
@@ -1271,19 +1578,55 @@
                                 "additionalProperties": false
                             },
                             "resource_class": {
-                                "type": "string"
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "default": "medium",
+                                        "enum": [
+                                            "small",
+                                            "medium",
+                                            "medium+",
+                                            "large",
+                                            "xlarge",
+                                            "2xlarge",
+                                            "2xlarge+",
+                                            "arm.medium",
+                                            "arm.large",
+                                            "arm.xlarge",
+                                            "arm.2xlarge",
+                                            "gpu.nvidia.small",
+                                            "gpu.nvidia.medium",
+                                            "windows.gpu.nvidia.medium",
+                                            "macos.m1.medium.gen1",
+                                            "macos.m1.large.gen1",
+                                            "m2pro.medium",
+                                            "m2pro.large",
+                                            "m4pro.medium",
+                                            "m4pro.large"
+                                        ]
+                                    },
+                                    {
+                                        "title": "Self-hosted runner",
+                                        "type": "string",
+                                        "pattern": "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$"
+                                    }
+                                ],
+                                "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#resourceclass\n\nResource class for the job. Can be either a predefined resource class (e.g., `medium`, `large`) or a self-hosted runner in the format `<namespace>/<runner-name>`."
                             },
                             "docker": {
                                 "type": "array",
                                 "minItems": 1,
+                                "markdownDescription": "Options for the [docker executor](https://circleci.com/docs/configuration-reference#docker)",
                                 "items": {
                                     "type": "object",
                                     "properties": {
                                         "image": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "markdownDescription": "The name of a custom docker image to use"
                                         },
                                         "name": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "markdownDescription": "The name the container is reachable by. By default, container services are accessible through `localhost`"
                                         },
                                         "entrypoint": {
                                             "oneOf": [
@@ -1296,7 +1639,8 @@
                                                         "type": "string"
                                                     }
                                                 }
-                                            ]
+                                            ],
+                                            "markdownDescription": "The command used as executable when launching the container"
                                         },
                                         "command": {
                                             "oneOf": [
@@ -1309,22 +1653,24 @@
                                                         "type": "string"
                                                     }
                                                 }
-                                            ]
+                                            ],
+                                            "markdownDescription": "The command used as pid 1 (or args for entrypoint) when launching the container"
                                         },
                                         "user": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "markdownDescription": "Which user to run the command as"
                                         },
                                         "environment": {
                                             "oneOf": [
                                                 {
-                                                    "description": "Allow null to account for empty `environment:` declarations.",
+                                                    "markdownDescription": "A map of environment variable names and values.",
                                                     "type": [
                                                         "string",
                                                         "null"
                                                     ]
                                                 },
                                                 {
-                                                    "description": "An array of strings in the form KEY=VALUE",
+                                                    "markdownDescription": "An array of strings in the form KEY=VALUE",
                                                     "type": "array",
                                                     "items": {
                                                         "$ref": "#/definitions/environment"
@@ -1332,7 +1678,7 @@
                                                 },
                                                 {
                                                     "type": "object",
-                                                    "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
+                                                    "markdownDescription": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
                                                     "additionalProperties": {
                                                         "type": [
                                                             "string",
@@ -1374,7 +1720,8 @@
                                                     ],
                                                     "additionalProperties": false
                                                 }
-                                            ]
+                                            ],
+                                            "markdownDescription": "Authentication for AWS EC2 Container Registry (ECR). You can use the access/secret keys or OIDC."
                                         },
                                         "auth": {
                                             "type": "object",
@@ -1390,7 +1737,8 @@
                                                 "username",
                                                 "password"
                                             ],
-                                            "additionalProperties": false
+                                            "additionalProperties": false,
+                                            "markdownDescription": "Authentication for registries using standard `docker login` credentials"
                                         }
                                     },
                                     "required": [
@@ -1400,13 +1748,14 @@
                                 }
                             },
                             "working_directory": {
-                                "type": "string"
+                                "type": "string",
+                                "markdownDescription": "In which directory to run the steps."
                             },
                             "machine": {
-                                "description": "Machine must be a boolean or a map",
+                                "markdownDescription": "Use the default machine executor image",
                                 "oneOf": [
                                     {
-                                        "description": "A boolean or a template parameter evaluating to a boolean",
+                                        "markdownDescription": "Specify an image tag.\n\nUsing CircleCI Cloud? Use of `machine: true` is deprecated. You must specify an image to use.",
                                         "anyOf": [
                                             {
                                                 "type": "string",
@@ -1427,7 +1776,7 @@
                                         "type": "object",
                                         "properties": {
                                             "enabled": {
-                                                "description": "A boolean or a template parameter evaluating to a boolean",
+                                                "markdownDescription": "A boolean or a template parameter evaluating to a boolean",
                                                 "anyOf": [
                                                     {
                                                         "type": "string",
@@ -1445,10 +1794,11 @@
                                                 ]
                                             },
                                             "image": {
-                                                "type": "string"
+                                                "type": "string",
+                                                "markdownDescription": "The VM image to use. View [available images](https://circleci.com/docs/configuration-reference#available-machine-images). **Note:** This key is **not** supported on the installable CircleCI. For information about customizing machine executor images on CircleCI installed on your servers, see our [VM provisioner documentation](https://circleci.com/docs/server-admin/latest/operator/manage-virtual-machines-with-machine-provisioner/)."
                                             },
                                             "docker_layer_caching": {
-                                                "description": "A boolean or a template parameter evaluating to a boolean",
+                                                "markdownDescription": "Set to `true` to enable [Docker Layer Caching](https://circleci.com/docs/docker-layer-caching). Note: If you haven't already, you must open a support ticket to have a CircleCI Sales representative contact you about enabling this feature on your account for an additional fee.",
                                                 "anyOf": [
                                                     {
                                                         "type": "string",
@@ -1479,14 +1829,14 @@
                             "environment": {
                                 "oneOf": [
                                     {
-                                        "description": "Allow null to account for empty `environment:` declarations.",
+                                        "markdownDescription": "A map of environment variable names and values.",
                                         "type": [
                                             "string",
                                             "null"
                                         ]
                                     },
                                     {
-                                        "description": "An array of strings in the form KEY=VALUE",
+                                        "markdownDescription": "An array of strings in the form KEY=VALUE",
                                         "type": "array",
                                         "items": {
                                             "$ref": "#/definitions/environment"
@@ -1494,7 +1844,7 @@
                                     },
                                     {
                                         "type": "object",
-                                        "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
+                                        "markdownDescription": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
                                         "additionalProperties": {
                                             "type": [
                                                 "string",
@@ -1517,10 +1867,11 @@
                                             "type": "string"
                                         }
                                     }
-                                ]
+                                ],
+                                "markdownDescription": "Shell to use for execution command in all steps. Can be overridden by shell in each step (default: See [Default Shell Options](https://circleci.com/docs/configuration-reference#default-shell-options)"
                             },
                             "parameters": {
-                                "description": "Parameters given to a job.",
+                                "markdownDescription": "https://circleci.com/docs/reusing-config#using-the-parameters-declaration\n\nA map of parameter keys.",
                                 "type": "object",
                                 "additionalProperties": {
                                     "type": "object",
@@ -1578,7 +1929,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "Executor may be a string reference to another executor"
+                        "markdownDescription": "Executor may be a string reference to another executor"
                     }
                 ]
             }
@@ -1591,6 +1942,7 @@
                     "properties": {
                         "branches": {
                             "type": "object",
+                            "markdownDescription": "A map defining rules for execution on specific branches",
                             "properties": {
                                 "only": {
                                     "oneOf": [
@@ -1603,7 +1955,8 @@
                                                 "type": "string"
                                             }
                                         }
-                                    ]
+                                    ],
+                                    "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
                                 },
                                 "ignore": {
                                     "oneOf": [
@@ -1616,7 +1969,8 @@
                                                 "type": "string"
                                             }
                                         }
-                                    ]
+                                    ],
+                                    "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
                                 }
                             },
                             "additionalProperties": false
@@ -1640,7 +1994,8 @@
                     "type": [
                         "number",
                         "string"
-                    ]
+                    ],
+                    "markdownDescription": "The Workflows `version` field is used to issue warnings for deprecation or breaking changes during v2 Beta. It is deprecated as of CircleCI v2.1"
                 }
             },
             "propertyNames": {
@@ -1656,15 +2011,19 @@
                             "properties": {
                                 "schedule": {
                                     "type": "object",
+                                    "markdownDescription": "A workflow may have a schedule indicating it runs at a certain time, for example a nightly build that runs every day at 12am UTC:",
                                     "properties": {
                                         "cron": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "markdownDescription": "See the [crontab man page](http://pubs.opengroup.org/onlinepubs/7908799/xcu/crontab.html)"
                                         },
                                         "filters": {
                                             "type": "object",
+                                            "markdownDescription": "A map defining rules for execution on specific branches",
                                             "properties": {
                                                 "branches": {
                                                     "type": "object",
+                                                    "markdownDescription": "A map defining rules for execution on specific branches",
                                                     "properties": {
                                                         "only": {
                                                             "oneOf": [
@@ -1677,7 +2036,8 @@
                                                                         "type": "string"
                                                                     }
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
                                                         },
                                                         "ignore": {
                                                             "oneOf": [
@@ -1690,7 +2050,8 @@
                                                                         "type": "string"
                                                                     }
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
                                                         }
                                                     },
                                                     "additionalProperties": false
@@ -1702,18 +2063,22 @@
                                 }
                             },
                             "additionalProperties": false
-                        }
+                        },
+                        "markdownDescription": "Specifies which triggers will cause this workflow to be executed. Default behavior is to trigger the workflow when pushing to a branch."
                     },
                     "max_auto_reruns": {
                         "type": "integer",
                         "minimum": 1,
-                        "maximum": 5
+                        "maximum": 5,
+                        "markdownDescription": "The maximum number of times a workflow will be automatically rerun if it fails"
                     },
                     "when": {
-                        "$ref": "#/definitions/logic"
+                        "$ref": "#/definitions/logic",
+                        "markdownDescription": "https://circleci.com/docs/configuration-reference#the-when-step-requires-version-21\n\nConditional step to run on custom conditions (determined at config-compile time) that are checked before a workflow runs"
                     },
                     "unless": {
-                        "$ref": "#/definitions/logic"
+                        "$ref": "#/definitions/logic",
+                        "markdownDescription": "https://circleci.com/docs/configuration-reference#the-when-step-requires-version-21\n\nConditional step to run when custom conditions aren't met (determined at config-compile time) that are checked before a workflow runs"
                     },
                     "jobs": {
                         "type": "array",
@@ -1732,6 +2097,7 @@
                                         "properties": {
                                             "requires": {
                                                 "type": "array",
+                                                "markdownDescription": "Jobs are run in parallel by default, so you must explicitly require any dependencies by their job name.",
                                                 "items": {
                                                     "oneOf": [
                                                         {
@@ -1772,75 +2138,87 @@
                                                 }
                                             },
                                             "filters": {
-                                                "type": "object",
-                                                "description": "This is similar to to other `filters` in config, but has an additional key, `tags`",
-                                                "properties": {
-                                                    "branches": {
+                                                "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#jobfilters \n\n A map or string to define filtering rules for job execution. Branch and tag filters require a map. Expression-based filters require a string.",
+                                                "oneOf": [
+                                                    {
                                                         "type": "object",
                                                         "properties": {
-                                                            "only": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "type": "string"
+                                                            "branches": {
+                                                                "type": "object",
+                                                                "markdownDescription": "A map defining rules for execution on specific branches",
+                                                                "properties": {
+                                                                    "only": {
+                                                                        "oneOf": [
+                                                                            {
+                                                                                "type": "string"
+                                                                            },
+                                                                            {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            }
+                                                                        ],
+                                                                        "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
                                                                     },
-                                                                    {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "type": "string"
-                                                                        }
+                                                                    "ignore": {
+                                                                        "oneOf": [
+                                                                            {
+                                                                                "type": "string"
+                                                                            },
+                                                                            {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            }
+                                                                        ],
+                                                                        "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
                                                                     }
-                                                                ]
+                                                                },
+                                                                "additionalProperties": false
                                                             },
-                                                            "ignore": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "type": "string"
+                                                            "tags": {
+                                                                "type": "object",
+                                                                "markdownDescription": "A map defining rules for execution on specific tags",
+                                                                "properties": {
+                                                                    "only": {
+                                                                        "oneOf": [
+                                                                            {
+                                                                                "type": "string"
+                                                                            },
+                                                                            {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            }
+                                                                        ],
+                                                                        "markdownDescription": "Either a single tag specifier, or a list of tag specifiers"
                                                                     },
-                                                                    {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "type": "string"
-                                                                        }
+                                                                    "ignore": {
+                                                                        "oneOf": [
+                                                                            {
+                                                                                "type": "string"
+                                                                            },
+                                                                            {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            }
+                                                                        ],
+                                                                        "markdownDescription": "Either a single tag specifier, or a list of tag specifiers"
                                                                     }
-                                                                ]
+                                                                },
+                                                                "additionalProperties": false
                                                             }
-                                                        },
-                                                        "additionalProperties": false
+                                                        }
                                                     },
-                                                    "tags": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "only": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "type": "string"
-                                                                    },
-                                                                    {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "type": "string"
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "ignore": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "type": "string"
-                                                                    },
-                                                                    {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "type": "string"
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
+                                                    {
+                                                        "type": "string"
                                                     }
-                                                },
-                                                "additionalProperties": false
+                                                ]
                                             },
                                             "context": {
                                                 "oneOf": [
@@ -1853,7 +2231,8 @@
                                                             "type": "string"
                                                         }
                                                     }
-                                                ]
+                                                ],
+                                                "markdownDescription": "Either a single context name, or a list of contexts. The default name is `org-global`"
                                             },
                                             "type": {
                                                 "type": "string"
@@ -1883,18 +2262,22 @@
                                                 ],
                                                 "properties": {
                                                     "parameters": {
-                                                        "type": "object"
+                                                        "type": "object",
+                                                        "markdownDescription": "A map of parameter names to every value the job should be called with"
                                                     },
                                                     "exclude": {
                                                         "type": "array",
                                                         "items": {
                                                             "type": "object"
-                                                        }
+                                                        },
+                                                        "markdownDescription": "A list of argument maps that should be excluded from the matrix"
                                                     },
                                                     "alias": {
-                                                        "type": "string"
+                                                        "type": "string",
+                                                        "markdownDescription": "An alias for the matrix, usable from another job's requires stanza. Defaults to the name of the job being executed"
                                                     }
-                                                }
+                                                },
+                                                "markdownDescription": "https://circleci.com/docs/configuration-reference#matrix-requires-version-21\n\nThe matrix stanza allows you to run a parameterized job multiple times with different arguments."
                                             },
                                             "serial-group": {
                                                 "type": "string",
@@ -1914,7 +2297,7 @@
                     "jobs"
                 ],
                 "not": {
-                    "description": "cannot use both 'when' and 'unless'",
+                    "markdownDescription": "https://circleci.com/docs/configuration-reference#logic-statements \n\nLogical not: true when statement is false",
                     "allOf": [
                         {
                             "required": [
@@ -1928,10 +2311,11 @@
                         }
                     ]
                 }
-            }
+            },
+            "markdownDescription": "Used for orchestrating all jobs. Each workflow consists of the workflow name as a key and a map as a value"
         },
         "jobs": {
-            "description": "Any string key is allowed as job name.",
+            "markdownDescription": "Jobs are collections of steps. All of the steps in the job are executed in a single unit, either within a fresh container or VM.",
             "type": "object",
             "propertyNames": {
                 "type": "string",
@@ -1946,452 +2330,35 @@
                 "object",
                 "null"
             ],
+            "markdownDescription": "https://circleci.com/docs/configuration-reference#orbs-requires-version-21\n\nOrbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.",
             "additionalProperties": {
+                "markdownDescription": "An orb reference can be specified in multiple ways:\n\n**String with semantic version:**\n- `namespace/orb-name@1.2.3` - specific version\n- `namespace/orb-name@1.2` - latest patch version of 1.2.x\n- `namespace/orb-name@1` - latest minor and patch of 1.x.x\n- `namespace/orb-name@volatile` - most recent release\n- `namespace/orb-name@dev:branch-name` - development version\n\n**String with parameter substitution:**\n- `namespace/orb-name@<<parameters.version>>`\n- `namespace/orb-name@<<pipeline.parameters.version>>`\n\n**Inline orb object:** Define jobs, commands, and executors directly in this configuration.\n\nSee [Orb Concepts](https://circleci.com/docs/orbs/author/orb-concepts/#semantic-versioning) and [Creating Inline Orbs](https://circleci.com/docs/reference/reusing-config/#writing-inline-orbs) for more details.",
                 "oneOf": [
                     {
-                        "type": "string"
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_-]+/[a-z][a-z0-9_-]+@(dev:[\\.a-z0-9_-]+|\\d+|\\d+\\.\\d+|\\d+\\.\\d+\\.\\d+|volatile)$"
+                    },
+                    {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_-]+/[a-z][a-z0-9_-]+@ *<<.+>> *$"
                     },
                     {
                         "type": "object",
                         "properties": {
                             "jobs": {
-                                "description": "Any string key is allowed as job name.",
+                                "markdownDescription": "Jobs are collections of steps. All of the steps in the job are executed in a single unit, either within a fresh container or VM.",
                                 "type": "object",
                                 "propertyNames": {
                                     "type": "string",
                                     "pattern": "^[A-Za-z][A-Za-z\\s\\d_-]*$"
                                 },
                                 "additionalProperties": {
-                                    "oneOf": [
-                                        {
-                                            "title": "CircleCI Orb: Jobs",
-                                            "type": "object",
-                                            "properties": {
-                                                "description": {
-                                                    "type": "string"
-                                                },
-                                                "parallelism": {
-                                                    "description": "A integer or a parameter evaluating to a integer",
-                                                    "anyOf": [
-                                                        {
-                                                            "oneOf": [
-                                                                {
-                                                                    "type": "string",
-                                                                    "pattern": " *<< *parameters.([^ ]+) *>> *"
-                                                                },
-                                                                {
-                                                                    "type": "string",
-                                                                    "pattern": " *<< *pipeline.parameters.([^ ]+) *>> *"
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            "type": "integer"
-                                                        }
-                                                    ]
-                                                },
-                                                "macos": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "xcode": {
-                                                            "type": [
-                                                                "string",
-                                                                "number"
-                                                            ]
-                                                        },
-                                                        "resource_class": {
-                                                            "type": "string"
-                                                        },
-                                                        "shell": {
-                                                            "type": "string"
-                                                        }
-                                                    },
-                                                    "required": [
-                                                        "xcode"
-                                                    ],
-                                                    "additionalProperties": false
-                                                },
-                                                "resource_class": {
-                                                    "type": "string"
-                                                },
-                                                "docker": {
-                                                    "type": "array",
-                                                    "minItems": 1,
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "image": {
-                                                                "type": "string"
-                                                            },
-                                                            "name": {
-                                                                "type": "string"
-                                                            },
-                                                            "entrypoint": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "type": "string"
-                                                                    },
-                                                                    {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "type": "string"
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "command": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "type": "string"
-                                                                    },
-                                                                    {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "type": "string"
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "user": {
-                                                                "type": "string"
-                                                            },
-                                                            "environment": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "description": "Allow null to account for empty `environment:` declarations.",
-                                                                        "type": [
-                                                                            "string",
-                                                                            "null"
-                                                                        ]
-                                                                    },
-                                                                    {
-                                                                        "description": "An array of strings in the form KEY=VALUE",
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "$ref": "#/definitions/environment"
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        "type": "object",
-                                                                        "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
-                                                                        "additionalProperties": {
-                                                                            "type": [
-                                                                                "string",
-                                                                                "boolean",
-                                                                                "number",
-                                                                                "null"
-                                                                            ]
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "aws_auth": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "type": "object",
-                                                                        "properties": {
-                                                                            "aws_access_key_id": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "aws_secret_access_key": {
-                                                                                "type": "string"
-                                                                            }
-                                                                        },
-                                                                        "required": [
-                                                                            "aws_access_key_id",
-                                                                            "aws_secret_access_key"
-                                                                        ],
-                                                                        "additionalProperties": false
-                                                                    },
-                                                                    {
-                                                                        "type": "object",
-                                                                        "properties": {
-                                                                            "oidc_role_arn": {
-                                                                                "type": "string"
-                                                                            }
-                                                                        },
-                                                                        "required": [
-                                                                            "oidc_role_arn"
-                                                                        ],
-                                                                        "additionalProperties": false
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "auth": {
-                                                                "type": "object",
-                                                                "properties": {
-                                                                    "username": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "password": {
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "username",
-                                                                    "password"
-                                                                ],
-                                                                "additionalProperties": false
-                                                            }
-                                                        },
-                                                        "required": [
-                                                            "image"
-                                                        ],
-                                                        "additionalProperties": false
-                                                    }
-                                                },
-                                                "steps": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/definitions/step"
-                                                    },
-                                                    "minItems": 1
-                                                },
-                                                "working_directory": {
-                                                    "type": "string"
-                                                },
-                                                "circleci_ip_ranges": {
-                                                    "type": "boolean"
-                                                },
-                                                "machine": {
-                                                    "description": "Machine must be a boolean or a map",
-                                                    "oneOf": [
-                                                        {
-                                                            "description": "A boolean or a template parameter evaluating to a boolean",
-                                                            "anyOf": [
-                                                                {
-                                                                    "type": "string",
-                                                                    "pattern": " *<< *parameters.([^ ]+) *>> *"
-                                                                },
-                                                                {
-                                                                    "type": "boolean"
-                                                                },
-                                                                {
-                                                                    "type": "number"
-                                                                },
-                                                                {
-                                                                    "type": "string"
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "enabled": {
-                                                                    "description": "A boolean or a template parameter evaluating to a boolean",
-                                                                    "anyOf": [
-                                                                        {
-                                                                            "type": "string",
-                                                                            "pattern": " *<< *parameters.([^ ]+) *>> *"
-                                                                        },
-                                                                        {
-                                                                            "type": "boolean"
-                                                                        },
-                                                                        {
-                                                                            "type": "number"
-                                                                        },
-                                                                        {
-                                                                            "type": "string"
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                "image": {
-                                                                    "type": "string"
-                                                                },
-                                                                "docker_layer_caching": {
-                                                                    "description": "A boolean or a template parameter evaluating to a boolean",
-                                                                    "anyOf": [
-                                                                        {
-                                                                            "type": "string",
-                                                                            "pattern": " *<< *parameters.([^ ]+) *>> *"
-                                                                        },
-                                                                        {
-                                                                            "type": "boolean"
-                                                                        },
-                                                                        {
-                                                                            "type": "number"
-                                                                        },
-                                                                        {
-                                                                            "type": "string"
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                "resource_class": {
-                                                                    "type": "string"
-                                                                },
-                                                                "shell": {
-                                                                    "type": "string"
-                                                                }
-                                                            },
-                                                            "additionalProperties": false
-                                                        }
-                                                    ]
-                                                },
-                                                "environment": {
-                                                    "oneOf": [
-                                                        {
-                                                            "description": "Allow null to account for empty `environment:` declarations.",
-                                                            "type": [
-                                                                "string",
-                                                                "null"
-                                                            ]
-                                                        },
-                                                        {
-                                                            "description": "An array of strings in the form KEY=VALUE",
-                                                            "type": "array",
-                                                            "items": {
-                                                                "$ref": "#/definitions/environment"
-                                                            }
-                                                        },
-                                                        {
-                                                            "type": "object",
-                                                            "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
-                                                            "additionalProperties": {
-                                                                "type": [
-                                                                    "string",
-                                                                    "boolean",
-                                                                    "number",
-                                                                    "null"
-                                                                ]
-                                                            }
-                                                        }
-                                                    ]
-                                                },
-                                                "executor": {
-                                                    "oneOf": [
-                                                        {
-                                                            "type": "string",
-                                                            "description": "short executor invocation, name of executor"
-                                                        },
-                                                        {
-                                                            "type": "object",
-                                                            "description": "executor invocation with arguments, i.e. parameters",
-                                                            "minProperties": 1,
-                                                            "additionalProperties": true,
-                                                            "properties": {
-                                                                "name": {
-                                                                    "type": "string"
-                                                                }
-                                                            },
-                                                            "required": [
-                                                                "name"
-                                                            ]
-                                                        }
-                                                    ]
-                                                },
-                                                "shell": {
-                                                    "oneOf": [
-                                                        {
-                                                            "type": "string"
-                                                        },
-                                                        {
-                                                            "type": "array",
-                                                            "items": {
-                                                                "type": "string"
-                                                            }
-                                                        }
-                                                    ]
-                                                },
-                                                "parameters": {
-                                                    "description": "Parameters given to a job.",
-                                                    "type": "object",
-                                                    "additionalProperties": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "type": {
-                                                                "type": "string",
-                                                                "enum": [
-                                                                    "boolean",
-                                                                    "string",
-                                                                    "steps",
-                                                                    "enum",
-                                                                    "executor",
-                                                                    "integer",
-                                                                    "env_var_name"
-                                                                ]
-                                                            },
-                                                            "default": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "type": "string"
-                                                                    },
-                                                                    {
-                                                                        "type": "boolean"
-                                                                    },
-                                                                    {
-                                                                        "type": "integer"
-                                                                    },
-                                                                    {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "$ref": "#/definitions/step"
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "description": {
-                                                                "type": "string"
-                                                            },
-                                                            "enum": {
-                                                                "type": "array",
-                                                                "items": {
-                                                                    "type": "string"
-                                                                }
-                                                            }
-                                                        },
-                                                        "additionalProperties": false,
-                                                        "required": [
-                                                            "type"
-                                                        ]
-                                                    },
-                                                    "minProperties": 1
-                                                }
-                                            },
-                                            "required": [
-                                                "steps"
-                                            ],
-                                            "additionalProperties": false,
-                                            "anyOf": [
-                                                {
-                                                    "description": "A job must have one of `docker`, `machine`, `macos` or `executor` (which can provide docker/machine/macos information).",
-                                                    "type": "object",
-                                                    "required": [
-                                                        "executor"
-                                                    ]
-                                                },
-                                                {
-                                                    "oneOf": [
-                                                        {
-                                                            "type": "object",
-                                                            "required": [
-                                                                "machine"
-                                                            ]
-                                                        },
-                                                        {
-                                                            "type": "object",
-                                                            "required": [
-                                                                "docker"
-                                                            ]
-                                                        },
-                                                        {
-                                                            "type": "object",
-                                                            "required": [
-                                                                "macos"
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "type": "string",
-                                            "description": "Job may be a string reference to another job"
-                                        }
-                                    ]
+                                    "$ref": "#/definitions/jobDefinition"
                                 }
                             },
                             "commands": {
                                 "type": "object",
+                                "markdownDescription": "https://circleci.com/docs/configuration-reference#commands-requires-version-21\n\nA command definition defines a sequence of steps as a map to be executed in a job, enabling you to reuse a single command definition across multiple jobs.",
                                 "propertyNames": {
                                     "pattern": "^[a-z][a-z\\d_-]*$"
                                 },
@@ -2401,10 +2368,11 @@
                                             "type": "object",
                                             "properties": {
                                                 "description": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "markdownDescription": "A string that describes the purpose of the command."
                                                 },
                                                 "parameters": {
-                                                    "description": "Parameters given to a step.",
+                                                    "markdownDescription": "https://circleci.com/docs/reusing-config#using-the-parameters-declaration\n\nA map of parameter keys.",
                                                     "type": "object",
                                                     "additionalProperties": {
                                                         "type": "object",
@@ -2462,7 +2430,8 @@
                                                     "items": {
                                                         "$ref": "#/definitions/step"
                                                     },
-                                                    "minItems": 1
+                                                    "minItems": 1,
+                                                    "markdownDescription": "A sequence of steps run inside the calling job of the command."
                                                 }
                                             },
                                             "required": [
@@ -2472,13 +2441,14 @@
                                         },
                                         {
                                             "type": "string",
-                                            "description": "Command may be a string reference to another command"
+                                            "markdownDescription": "Command may be a string reference to another command"
                                         }
                                     ]
                                 }
                             },
                             "executors": {
                                 "type": "object",
+                                "markdownDescription": "Executors define the environment in which the steps of a job will be run, allowing you to reuse a single executor definition across multiple jobs.",
                                 "propertyNames": {
                                     "pattern": "^[a-z][a-z\\d_-]*$"
                                 },
@@ -2558,14 +2528,14 @@
                                                             "environment": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "description": "Allow null to account for empty `environment:` declarations.",
+                                                                        "markdownDescription": "A map of environment variable names and values.",
                                                                         "type": [
                                                                             "string",
                                                                             "null"
                                                                         ]
                                                                     },
                                                                     {
-                                                                        "description": "An array of strings in the form KEY=VALUE",
+                                                                        "markdownDescription": "An array of strings in the form KEY=VALUE",
                                                                         "type": "array",
                                                                         "items": {
                                                                             "$ref": "#/definitions/environment"
@@ -2573,7 +2543,7 @@
                                                                     },
                                                                     {
                                                                         "type": "object",
-                                                                        "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
+                                                                        "markdownDescription": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
                                                                         "additionalProperties": {
                                                                             "type": [
                                                                                 "string",
@@ -2644,10 +2614,10 @@
                                                     "type": "string"
                                                 },
                                                 "machine": {
-                                                    "description": "Machine must be a boolean or a map",
+                                                    "markdownDescription": "Use the default machine executor image",
                                                     "oneOf": [
                                                         {
-                                                            "description": "A boolean or a template parameter evaluating to a boolean",
+                                                            "markdownDescription": "Specify an image tag.\n\nUsing CircleCI Cloud? Use of `machine: true` is deprecated. You must specify an image to use.",
                                                             "anyOf": [
                                                                 {
                                                                     "type": "string",
@@ -2668,7 +2638,7 @@
                                                             "type": "object",
                                                             "properties": {
                                                                 "enabled": {
-                                                                    "description": "A boolean or a template parameter evaluating to a boolean",
+                                                                    "markdownDescription": "A boolean or a template parameter evaluating to a boolean",
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "string",
@@ -2689,7 +2659,7 @@
                                                                     "type": "string"
                                                                 },
                                                                 "docker_layer_caching": {
-                                                                    "description": "A boolean or a template parameter evaluating to a boolean",
+                                                                    "markdownDescription": "Set to `true` to enable [Docker Layer Caching](https://circleci.com/docs/docker-layer-caching). Note: If you haven't already, you must open a support ticket to have a CircleCI Sales representative contact you about enabling this feature on your account for an additional fee.",
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "string",
@@ -2720,14 +2690,14 @@
                                                 "environment": {
                                                     "oneOf": [
                                                         {
-                                                            "description": "Allow null to account for empty `environment:` declarations.",
+                                                            "markdownDescription": "A map of environment variable names and values.",
                                                             "type": [
                                                                 "string",
                                                                 "null"
                                                             ]
                                                         },
                                                         {
-                                                            "description": "An array of strings in the form KEY=VALUE",
+                                                            "markdownDescription": "An array of strings in the form KEY=VALUE",
                                                             "type": "array",
                                                             "items": {
                                                                 "$ref": "#/definitions/environment"
@@ -2735,7 +2705,7 @@
                                                         },
                                                         {
                                                             "type": "object",
-                                                            "description": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
+                                                            "markdownDescription": "The value should be a string, but we allow null, boolean and numbers too. Examples: `FOO: true` and `BAR: 2` `BAZ:`",
                                                             "additionalProperties": {
                                                                 "type": [
                                                                     "string",
@@ -2761,7 +2731,7 @@
                                                     ]
                                                 },
                                                 "parameters": {
-                                                    "description": "Parameters given to a job.",
+                                                    "markdownDescription": "https://circleci.com/docs/reusing-config#using-the-parameters-declaration\n\nA map of parameter keys.",
                                                     "type": "object",
                                                     "additionalProperties": {
                                                         "type": "object",
@@ -2819,7 +2789,7 @@
                                         },
                                         {
                                             "type": "string",
-                                            "description": "Executor may be a string reference to another executor"
+                                            "markdownDescription": "Executor may be a string reference to another executor"
                                         }
                                     ]
                                 }
@@ -2837,6 +2807,7 @@
                 "object",
                 "null"
             ],
+            "markdownDescription": "https://circleci.com/docs/configuration-reference#commands-requires-version-21\n\nA command definition defines a sequence of steps as a map to be executed in a job, enabling you to reuse a single command definition across multiple jobs.",
             "propertyNames": {
                 "pattern": "^[a-z][a-z\\d_-]*$"
             },
@@ -2849,7 +2820,7 @@
                                 "type": "string"
                             },
                             "parameters": {
-                                "description": "Parameters given to a step.",
+                                "markdownDescription": "https://circleci.com/docs/reusing-config#using-the-parameters-declaration\n\nA map of parameter keys.",
                                 "type": "object",
                                 "additionalProperties": {
                                     "type": "object",
@@ -2907,7 +2878,8 @@
                                 "items": {
                                     "$ref": "#/definitions/step"
                                 },
-                                "minItems": 1
+                                "minItems": 1,
+                                "markdownDescription": "A sequence of steps run inside the calling job of the command."
                             }
                         },
                         "required": [
@@ -2917,7 +2889,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "Command may be a string reference to another command"
+                        "markdownDescription": "https://circleci.com/docs/creating-orbs#creating-inline-orbs\n\nInline orbs can be handy during development of an orb or as a convenience for name-spacing jobs and commands in lengthy configurations, particularly if you later intend to share the orb with others."
                     }
                 ]
             }
@@ -2961,7 +2933,8 @@
             "enum": [
                 "2.1",
                 2.1
-            ]
+            ],
+            "markdownDescription": "The version field is intended to be used in order to issue warnings for deprecation or breaking changes."
         },
         "parameters": {
             "type": [
