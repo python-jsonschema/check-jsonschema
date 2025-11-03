@@ -873,6 +873,7 @@
       "type": "object"
     },
     "DisabledDict": {
+      "additionalProperties": false,
       "properties": {
         "reason": {
           "title": "Reason",
@@ -993,6 +994,28 @@
         }
       },
       "title": "EditActionModel",
+      "type": "object"
+    },
+    "FileFilters": {
+      "properties": {
+        "include": {
+          "description": "Glob patterns of files to include for this scope. Empty means 'include everything' before exclusions. Examples: ('src/**/*.py', 'Makefile')",
+          "items": {
+            "type": "string"
+          },
+          "title": "Include",
+          "type": "array"
+        },
+        "exclude": {
+          "description": "Glob patterns of files to exclude from this scope. Evaluated after `include` and takes precedence. Examples: ('**/tests/**', '*.md')",
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude",
+          "type": "array"
+        }
+      },
+      "title": "FileFilters",
       "type": "object"
     },
     "GhaActionModel": {
@@ -1284,7 +1307,7 @@
       "title": "MergeProtectionRulesModel",
       "type": "array"
     },
-    "MergeProtectionsModel": {
+    "MergeProtections": {
       "additionalProperties": false,
       "properties": {
         "reporting_method": {
@@ -1304,10 +1327,10 @@
           "type": "boolean"
         }
       },
-      "title": "MergeProtectionsModel",
+      "title": "MergeProtections",
       "type": "object"
     },
-    "MergeQueueModel": {
+    "MergeQueue": {
       "additionalProperties": false,
       "properties": {
         "max_parallel_checks": {
@@ -1340,9 +1363,32 @@
           "default": "queued",
           "description": "The label to add on pull requests when they are added to the merge queue.",
           "title": "Queued Label"
+        },
+        "dequeued_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "dequeued",
+          "description": "The label to add on pull requests when they are removed from the merge queue.",
+          "title": "Dequeued Label"
+        },
+        "mode": {
+          "default": "serial",
+          "description": "Defines how the merge queue schedules pull requests.\n- `serial`: PRs are tested cumulatively.\n- `parallel`: PRs whose scopes don't overlap are tested in parallel.\n",
+          "enum": [
+            "serial",
+            "parallel"
+          ],
+          "title": "Mode",
+          "type": "string"
         }
       },
-      "title": "MergeQueueModel",
+      "title": "MergeQueue",
       "type": "object"
     },
     "NegationCondition": {
@@ -2347,7 +2393,7 @@
         },
         "merge_conditions": {
           "$ref": "#/$defs/QueueRuleMergeConditionsModel",
-          "description": "The list of conditions to match to get the queued pull request merged. This automatically includes the `queue_conditions`. In case of speculative merge pull request, the merge conditions starting by check- are evaluated against the temporary pull request instead of the original one."
+          "description": "The list of conditions to match to get the queued pull request merged. In case of draft pull request, the merge conditions for checks are evaluated against the temporary pull request instead of the original one."
         },
         "branch_protection_injection_mode": {
           "default": "queue",
@@ -2465,7 +2511,7 @@
             }
           ],
           "default": null,
-          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration. `fast-forward` is not supported on queues with `max_parallel_checks > 1`, `batch_size > 1`, or with `allow_inplace_checks` set to `false`.",
+          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration. `fast-forward` is not supported on draft PR (`max_parallel_checks > 1`, or `batch_size > 1`, or two-step CI).",
           "title": "Merge Method"
         },
         "autosquash": {
@@ -2565,7 +2611,7 @@
         },
         "merge_conditions": {
           "$ref": "#/$defs/QueueRuleMergeConditionsModel",
-          "description": "The list of conditions to match to get the queued pull request merged. This automatically includes the `queue_conditions`. In case of speculative merge pull request, the merge conditions starting by check- are evaluated against the temporary pull request instead of the original one."
+          "description": "The list of conditions to match to get the queued pull request merged. In case of draft pull request, the merge conditions for checks are evaluated against the temporary pull request instead of the original one."
         },
         "branch_protection_injection_mode": {
           "default": "queue",
@@ -2683,7 +2729,7 @@
             }
           ],
           "default": null,
-          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration. `fast-forward` is not supported on queues with `max_parallel_checks > 1`, `batch_size > 1`, or with `allow_inplace_checks` set to `false`.",
+          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration. `fast-forward` is not supported on draft PR (`max_parallel_checks > 1`, or `batch_size > 1`, or two-step CI).",
           "title": "Merge Method"
         },
         "autosquash": {
@@ -2849,7 +2895,6 @@
             },
             {
               "additionalProperties": {
-                "default": 1,
                 "maximum": 65535,
                 "minimum": 1,
                 "type": "integer"
@@ -2871,7 +2916,6 @@
             },
             {
               "additionalProperties": {
-                "default": 1,
                 "maximum": 65535,
                 "minimum": 1,
                 "type": "integer"
@@ -2893,7 +2937,6 @@
             },
             {
               "additionalProperties": {
-                "default": 1,
                 "maximum": 65535,
                 "minimum": 1,
                 "type": "integer"
@@ -2962,6 +3005,78 @@
       "description": "Model defining a single rule condition 'leaf of a condition tree'",
       "title": "RuleConditionModel",
       "type": "string"
+    },
+    "Scopes": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceFiles"
+            },
+            {
+              "$ref": "#/$defs/SourceManual"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Where scopes come from. `files` uses file-pattern rules (`gha-mergify-ci-scopes` must have been setup on your pull request); `manual` uses scopes sent via API or `mergify scopes-send`; `None` disables scoping.",
+          "title": "Source"
+        },
+        "merge_queue_scope": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "merge-queue",
+          "description": "Optional scope name automatically applied to merge queue PRs. Set to `None` to disable.",
+          "title": "Merge Queue Scope"
+        }
+      },
+      "title": "Scopes",
+      "type": "object"
+    },
+    "SourceFiles": {
+      "properties": {
+        "files": {
+          "description": "Mapping of scope name to its file filters. A file belongs to a scope if it matches the scope's `include` patterns and not its `exclude` patterns.",
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+$": {
+              "$ref": "#/$defs/FileFilters"
+            }
+          },
+          "propertyNames": {
+            "minLength": 1
+          },
+          "title": "Files",
+          "type": "object"
+        }
+      },
+      "required": [
+        "files"
+      ],
+      "title": "SourceFiles",
+      "type": "object"
+    },
+    "SourceManual": {
+      "properties": {
+        "manual": {
+          "description": "Scopes are manually sent via API or `mergify scopes-send`",
+          "title": "Manual",
+          "type": "null"
+        }
+      },
+      "required": [
+        "manual"
+      ],
+      "title": "SourceManual",
+      "type": "object"
     },
     "SquashActionModel": {
       "additionalProperties": false,
@@ -3053,6 +3168,9 @@
     "defaults": {
       "$ref": "#/$defs/DefaultsRulesModel"
     },
+    "scopes": {
+      "$ref": "#/$defs/Scopes"
+    },
     "commands_restrictions": {
       "$ref": "#/$defs/CommandsRestrictionsRulesModel"
     },
@@ -3072,10 +3190,10 @@
       "$ref": "#/$defs/PriorityRulesModel"
     },
     "merge_queue": {
-      "$ref": "#/$defs/MergeQueueModel"
+      "$ref": "#/$defs/MergeQueue"
     },
     "merge_protections_settings": {
-      "$ref": "#/$defs/MergeProtectionsModel"
+      "$ref": "#/$defs/MergeProtections"
     }
   },
   "$schema": "https://json-schema.org/draft/2020-12/schema",

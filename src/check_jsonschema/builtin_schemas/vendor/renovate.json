@@ -1,6 +1,8 @@
 {
-  "title": "JSON schema for Renovate config files (https://renovatebot.com/)",
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "JSON schema for Renovate 0.0.0-semantic-release config files (https://renovatebot.com/)",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "x-renovate-version": "0.0.0-semantic-release",
+  "allowComments": true,
   "type": "object",
   "properties": {
     "abandonmentThreshold": {
@@ -31,22 +33,22 @@
       }
     },
     "allowCustomCrateRegistries": {
-      "description": "Set this to `true` to allow custom crate registries.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet this to `true` to allow custom crate registries.",
       "type": "boolean",
       "default": false
     },
     "allowPlugins": {
-      "description": "Set this to `true` if repositories are allowed to run install plugins.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet this to `true` if repositories are allowed to run install plugins.",
       "type": "boolean",
       "default": false
     },
     "allowScripts": {
-      "description": "Set this to `true` if repositories are allowed to run install scripts.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet this to `true` if repositories are allowed to run install scripts.",
       "type": "boolean",
       "default": false
     },
     "allowedCommands": {
-      "description": "A list of regular expressions that decide which commands are allowed in post-upgrade tasks.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nA list of regular expressions that decide which commands are allowed in post-upgrade tasks.",
       "type": "array",
       "items": {
         "type": "string"
@@ -54,7 +56,7 @@
       "default": []
     },
     "allowedEnv": {
-      "description": "List of allowed patterns for environment variable names in repository env config.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nList of allowed patterns for environment variable names in repository env config.",
       "type": "array",
       "items": {
         "type": "string"
@@ -62,7 +64,7 @@
       "default": []
     },
     "allowedHeaders": {
-      "description": "List of allowed patterns for header names in repository hostRules config.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nList of allowed patterns for header names in repository hostRules config.",
       "type": "array",
       "items": {
         "type": "string"
@@ -317,12 +319,12 @@
       "default": true
     },
     "autodiscover": {
-      "description": "Autodiscover all repositories.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nAutodiscover all repositories.",
       "type": "boolean",
       "default": false
     },
     "autodiscoverFilter": {
-      "description": "Filter the list of autodiscovered repositories.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nFilter the list of autodiscovered repositories.",
       "oneOf": [
         {
           "type": "array",
@@ -341,7 +343,7 @@
       ]
     },
     "autodiscoverNamespaces": {
-      "description": "Filter the list of autodiscovered repositories by namespaces.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nFilter the list of autodiscovered repositories by namespaces.",
       "type": [
         "array",
         "null"
@@ -352,7 +354,7 @@
       "default": null
     },
     "autodiscoverProjects": {
-      "description": "Filter the list of autodiscovered repositories by project names.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nFilter the list of autodiscovered repositories by project names.",
       "type": [
         "array",
         "null"
@@ -363,7 +365,7 @@
       "default": null
     },
     "autodiscoverRepoOrder": {
-      "description": "The order method for autodiscover server side repository search.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nThe order method for autodiscover server side repository search.",
       "type": [
         "string",
         "null"
@@ -375,7 +377,7 @@
       "default": null
     },
     "autodiscoverRepoSort": {
-      "description": "The sort method for autodiscover server side repository search.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nThe sort method for autodiscover server side repository search.",
       "type": [
         "string",
         "null"
@@ -390,7 +392,7 @@
       "default": null
     },
     "autodiscoverTopics": {
-      "description": "Filter the list of autodiscovered repositories by topics.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nFilter the list of autodiscovered repositories by topics.",
       "type": [
         "array",
         "null"
@@ -518,7 +520,7 @@
       }
     },
     "baseDir": {
-      "description": "The base directory for Renovate to store local files, including repository files and cache. If left empty, Renovate will create its own temporary directory to use.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nThe base directory for Renovate to store local files, including repository files and cache. If left empty, Renovate will create its own temporary directory to use.",
       "type": "string"
     },
     "batect": {
@@ -802,7 +804,7 @@
       "default": true
     },
     "bbUseDevelopmentBranch": {
-      "description": "Use the repository's [development branch](https://support.atlassian.com/bitbucket-cloud/docs/branch-a-repository/#The-branching-model) as the repository's default branch.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nUse the repository's [development branch](https://support.atlassian.com/bitbucket-cloud/docs/branch-a-repository/#The-branching-model) as the repository's default branch.",
       "type": "boolean",
       "default": false
     },
@@ -860,7 +862,7 @@
       }
     },
     "binarySource": {
-      "description": "Controls how third-party tools like npm or Gradle are called: directly, via Docker sidecar containers, or via dynamic install.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nControls how third-party tools like npm or Gradle are called: directly, via Docker sidecar containers, or via dynamic install.",
       "type": "string",
       "enum": [
         "global",
@@ -1352,21 +1354,21 @@
       }
     },
     "cacheDir": {
-      "description": "The directory where Renovate stores its cache. If left empty, Renovate creates a subdirectory within the `baseDir`.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nThe directory where Renovate stores its cache. If left empty, Renovate creates a subdirectory within the `baseDir`.",
       "type": "string"
     },
     "cacheHardTtlMinutes": {
-      "description": "Maximum duration in minutes to keep datasource cache entries.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nMaximum duration in minutes to keep datasource cache entries.",
       "type": "integer",
       "default": 10080
     },
     "cachePrivatePackages": {
-      "description": "Cache private packages in the datasource cache. This is useful for self-hosted setups",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nCache private packages in the datasource cache. This is useful for self-hosted setups",
       "type": "boolean",
       "default": false
     },
     "cacheTtlOverride": {
-      "description": "An object that contains cache namespace TTL override values.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nAn object that contains cache namespace TTL override values.",
       "type": "object",
       "default": {},
       "$ref": "#"
@@ -1531,7 +1533,7 @@
       }
     },
     "checkedBranches": {
-      "description": "A list of branch names to mark for creation or rebasing as if it was selected in the Dependency Dashboard issue.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nA list of branch names to mark for creation or rebasing as if it was selected in the Dependency Dashboard issue.",
       "type": "array",
       "items": {
         "type": "string"
@@ -1881,6 +1883,17 @@
       "type": "boolean",
       "default": false
     },
+    "configFileNames": {
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nList of filenames where repository config will be stored.",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "default": null
+    },
     "configMigration": {
       "description": "Enable this to get config migration PRs when needed.",
       "type": "boolean",
@@ -1909,7 +1922,7 @@
       "default": "none"
     },
     "containerbaseDir": {
-      "description": "The directory where Renovate stores its containerbase cache. If left empty, Renovate creates a subdirectory within the `cacheDir`.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nThe directory where Renovate stores its containerbase cache. If left empty, Renovate creates a subdirectory within the `cacheDir`.",
       "type": "string"
     },
     "copier": {
@@ -2176,7 +2189,7 @@
       }
     },
     "customEnvVariables": {
-      "description": "Custom environment variables for child processes and sidecar Docker containers.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nCustom environment variables for child processes and sidecar Docker containers.",
       "type": "object",
       "default": {},
       "$ref": "#"
@@ -2331,12 +2344,12 @@
       "default": null
     },
     "deleteAdditionalConfigFile": {
-      "description": "If set to `true`, Renovate tries to delete the additional self-hosted config file after reading it.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set to `true`, Renovate tries to delete the additional self-hosted config file after reading it.",
       "type": "boolean",
       "default": false
     },
     "deleteConfigFile": {
-      "description": "If set to `true`, Renovate tries to delete the self-hosted config file after reading it.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set to `true`, Renovate tries to delete the self-hosted config file after reading it.",
       "type": "boolean",
       "default": false
     },
@@ -2472,12 +2485,12 @@
       ]
     },
     "detectGlobalManagerConfig": {
-      "description": "If `true`, Renovate tries to detect global manager configuration from the file system.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf `true`, Renovate tries to detect global manager configuration from the file system.",
       "type": "boolean",
       "default": false
     },
     "detectHostRulesFromEnv": {
-      "description": "If `true`, Renovate tries to detect host rules from environment variables.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf `true`, Renovate tries to detect host rules from environment variables.",
       "type": "boolean",
       "default": false
     },
@@ -2681,26 +2694,26 @@
       }
     },
     "dockerChildPrefix": {
-      "description": "Change this value to add a prefix to the Renovate Docker sidecar container names and labels.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to add a prefix to the Renovate Docker sidecar container names and labels.",
       "type": "string",
       "default": "renovate_"
     },
     "dockerCliOptions": {
-      "description": "Pass CLI flags to `docker run` command when `binarySource=docker`.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nPass CLI flags to `docker run` command when `binarySource=docker`.",
       "type": "string"
     },
     "dockerMaxPages": {
-      "description": "By default, Renovate fetches up to 20 pages of Docker tags from registries. But you can set your own limit with this config option.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nBy default, Renovate fetches up to 20 pages of Docker tags from registries. But you can set your own limit with this config option.",
       "type": "integer",
       "default": 20
     },
     "dockerSidecarImage": {
-      "description": "Change this value to override the default Renovate sidecar image.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.20.2"
+      "default": "ghcr.io/containerbase/sidecar:13.23.15"
     },
     "dockerUser": {
-      "description": "Set the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
       "type": "string"
     },
     "dockerfile": {
@@ -2816,7 +2829,7 @@
       }
     },
     "dryRun": {
-      "description": "If enabled, perform a dry run by logging messages instead of creating/updating/deleting branches and PRs.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf enabled, perform a dry run by logging messages instead of creating/updating/deleting branches and PRs.",
       "type": [
         "string",
         "null"
@@ -2850,11 +2863,11 @@
       "$ref": "#"
     },
     "encryptedWarning": {
-      "description": "Warning text to use if encrypted config is found.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nWarning text to use if encrypted config is found.",
       "type": "string"
     },
     "endpoint": {
-      "description": "Custom endpoint to use.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nCustom endpoint to use.",
       "type": [
         "string",
         "null"
@@ -2876,7 +2889,7 @@
       "default": []
     },
     "executionTimeout": {
-      "description": "Default execution timeout in minutes for child processes Renovate creates.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nDefault execution timeout in minutes for child processes Renovate creates.",
       "type": "integer",
       "default": 15
     },
@@ -2886,7 +2899,7 @@
       "default": false
     },
     "exposeAllEnv": {
-      "description": "Set this to `true` to allow passing of all environment variables to package managers.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet this to `true` to allow passing of all environment variables to package managers.",
       "type": "boolean",
       "default": false
     },
@@ -3035,17 +3048,17 @@
       "type": "string"
     },
     "force": {
-      "description": "Any configuration set in this object will force override existing settings.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nAny configuration set in this object will force override existing settings.",
       "type": "object",
       "$ref": "#"
     },
     "forceCli": {
-      "description": "Decides if CLI configuration options are moved to the `force` config section.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nDecides if CLI configuration options are moved to the `force` config section.",
       "type": "boolean",
       "default": true
     },
     "forkCreation": {
-      "description": "Whether to create forks as needed at runtime when running in \"fork mode\".",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nWhether to create forks as needed at runtime when running in \"fork mode\".",
       "type": "boolean",
       "default": true
     },
@@ -3055,7 +3068,7 @@
       "default": false
     },
     "forkOrg": {
-      "description": "The preferred organization to create or find forked repositories, when in fork mode.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nThe preferred organization to create or find forked repositories, when in fork mode.",
       "type": "string"
     },
     "forkProcessing": {
@@ -3069,7 +3082,7 @@
       "default": "auto"
     },
     "forkToken": {
-      "description": "Set a personal access token here to enable \"fork mode\".",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet a personal access token here to enable \"fork mode\".",
       "type": "string"
     },
     "fvm": {
@@ -3199,7 +3212,7 @@
       "default": false
     },
     "gitNoVerify": {
-      "description": "Which Git commands will be run with the `--no-verify` option.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nWhich Git commands will be run with the `--no-verify` option.",
       "oneOf": [
         {
           "type": "array",
@@ -3225,20 +3238,20 @@
       ]
     },
     "gitPrivateKey": {
-      "description": "PGP key to use for signing Git commits.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nPGP key to use for signing Git commits.",
       "type": "string"
     },
     "gitPrivateKeyPassphrase": {
-      "description": "Passphrase for the `gitPrivateKey`",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nPassphrase for the `gitPrivateKey`",
       "type": "string"
     },
     "gitTimeout": {
-      "description": "Configure the timeout with a number of milliseconds to wait for a Git task.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nConfigure the timeout with a number of milliseconds to wait for a Git task.",
       "type": "integer",
       "default": 0
     },
     "gitUrl": {
-      "description": "Overrides the default resolution for Git remote, e.g. to switch GitLab from HTTPS to SSH-based.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nOverrides the default resolution for Git remote, e.g. to switch GitLab from HTTPS to SSH-based.",
       "type": "string",
       "enum": [
         "default",
@@ -3302,7 +3315,7 @@
       }
     },
     "githubTokenWarn": {
-      "description": "Display warnings about GitHub token not being set.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nDisplay warnings about GitHub token not being set.",
       "type": "boolean",
       "default": true
     },
@@ -3518,7 +3531,7 @@
       }
     },
     "globalExtends": {
-      "description": "Configuration presets to use or extend for a self-hosted config.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nConfiguration presets to use or extend for a self-hosted config.",
       "type": "array",
       "items": {
         "type": "string"
@@ -4385,7 +4398,7 @@
       }
     },
     "httpCacheTtlDays": {
-      "description": "Maximum duration in days to keep HTTP cache entries.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nMaximum duration in days to keep HTTP cache entries.",
       "type": "integer",
       "default": 90
     },
@@ -4418,7 +4431,7 @@
       "default": false
     },
     "ignorePrAuthor": {
-      "description": "Set to `true` to fetch the entire list of PRs instead of only those authored by the Renovate user.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet to `true` to fetch the entire list of PRs instead of only those authored by the Renovate user.",
       "type": "boolean",
       "default": false
     },
@@ -4459,7 +4472,7 @@
       "default": true
     },
     "includeMirrors": {
-      "description": "Whether to process repositories that are mirrors. By default, repositories that are mirrors are skipped.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nWhether to process repositories that are mirrors. By default, repositories that are mirrors are skipped.",
       "type": "boolean",
       "default": false
     },
@@ -4472,22 +4485,22 @@
       "default": []
     },
     "inheritConfig": {
-      "description": "If `true`, Renovate will inherit configuration from the `inheritConfigFileName` file in `inheritConfigRepoName`.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf `true`, Renovate will inherit configuration from the `inheritConfigFileName` file in `inheritConfigRepoName`.",
       "type": "boolean",
       "default": false
     },
     "inheritConfigFileName": {
-      "description": "Renovate will look for this config file name in the `inheritConfigRepoName`.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nRenovate will look for this config file name in the `inheritConfigRepoName`.",
       "type": "string",
       "default": "org-inherited-config.json"
     },
     "inheritConfigRepoName": {
-      "description": "Renovate will look in this repo for the `inheritConfigFileName`.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nRenovate will look in this repo for the `inheritConfigFileName`.",
       "type": "string",
       "default": "{{parentOrg}}/renovate-config"
     },
     "inheritConfigStrict": {
-      "description": "If `true`, any `inheritedConfig` fetch error will result in an aborted run.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf `true`, any `inheritedConfig` fetch error will result in an aborted run.",
       "type": "boolean",
       "default": false
     },
@@ -4895,7 +4908,7 @@
       }
     },
     "logContext": {
-      "description": "Add a global or per-repo log context to each log entry.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nAdd a global or per-repo log context to each log entry.",
       "type": [
         "string",
         "null"
@@ -5092,7 +5105,7 @@
       }
     },
     "mergeConfidenceDatasources": {
-      "description": "If set, Renovate will query the merge-confidence JSON API only for datasources that are part of this list.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set, Renovate will query the merge-confidence JSON API only for datasources that are part of this list.",
       "type": "array",
       "items": {
         "type": "string",
@@ -5117,7 +5130,7 @@
       ]
     },
     "mergeConfidenceEndpoint": {
-      "description": "If set, Renovate will query this API for Merge Confidence data.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set, Renovate will query this API for Merge Confidence data.",
       "type": "string",
       "default": "https://developer.mend.io/"
     },
@@ -5175,7 +5188,7 @@
       }
     },
     "migratePresets": {
-      "description": "Define presets here which have been removed or renamed and should be migrated automatically.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nDefine presets here which have been removed or renamed and should be migrated automatically.",
       "type": "object",
       "default": {},
       "additionalProperties": {
@@ -5203,6 +5216,15 @@
         "null"
       ],
       "default": null
+    },
+    "minimumReleaseAgeBehaviour": {
+      "description": "When set in conjunction with `minimumReleaseAge`, controls whether the `releaseTimestamp` for a dependency update is required.",
+      "type": "string",
+      "enum": [
+        "timestamp-required",
+        "timestamp-optional"
+      ],
+      "default": "timestamp-optional"
     },
     "minor": {
       "description": "Configuration to apply when an update type is `minor`.",
@@ -5757,16 +5779,16 @@
       }
     },
     "onboarding": {
-      "description": "Require a Configuration PR first.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nRequire a Configuration PR first.",
       "type": "boolean"
     },
     "onboardingBranch": {
-      "description": "Change this value to override the default onboarding branch name.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default onboarding branch name.",
       "type": "string",
       "default": "renovate/configure"
     },
     "onboardingCommitMessage": {
-      "description": "Change this value to override the default onboarding commit message.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default onboarding commit message.",
       "type": [
         "string",
         "null"
@@ -5774,7 +5796,7 @@
       "default": null
     },
     "onboardingConfig": {
-      "description": "Configuration to use for onboarding PRs.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nConfiguration to use for onboarding PRs.",
       "type": "object",
       "default": {
         "$schema": "https://docs.renovatebot.com/renovate-schema.json"
@@ -5782,12 +5804,12 @@
       "$ref": "#"
     },
     "onboardingConfigFileName": {
-      "description": "Change this value to override the default onboarding config file name.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default onboarding config file name.",
       "type": "string",
       "default": "renovate.json"
     },
     "onboardingNoDeps": {
-      "description": "Onboard the repository even if no dependencies are found.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nOnboard the repository even if no dependencies are found.",
       "type": "string",
       "enum": [
         "auto",
@@ -5797,17 +5819,17 @@
       "default": "auto"
     },
     "onboardingPrTitle": {
-      "description": "Change this value to override the default onboarding PR title.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default onboarding PR title.",
       "type": "string",
       "default": "Configure Renovate"
     },
     "onboardingRebaseCheckbox": {
-      "description": "Set to enable rebase/retry markdown checkbox for onboarding PRs.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet to enable rebase/retry markdown checkbox for onboarding PRs.",
       "type": "boolean",
       "default": false
     },
     "optimizeForDisabled": {
-      "description": "Set to `true` to perform a check for disabled config prior to cloning.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet to `true` to perform a check for disabled config prior to cloning.",
       "type": "boolean",
       "default": false
     },
@@ -6173,7 +6195,7 @@
       }
     },
     "password": {
-      "description": "Password for authentication.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nPassword for authentication.",
       "type": "string"
     },
     "patch": {
@@ -6316,7 +6338,7 @@
       }
     },
     "persistRepoData": {
-      "description": "If set to `true`: keep repository data between runs instead of deleting the data.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set to `true`: keep repository data between runs instead of deleting the data.",
       "type": "boolean",
       "default": false
     },
@@ -6682,7 +6704,7 @@
       }
     },
     "platform": {
-      "description": "Platform type of repository.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nPlatform type of repository.",
       "type": "string",
       "enum": [
         "azure",
@@ -6916,7 +6938,7 @@
       "default": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}{{{configDescription}}}{{{controls}}}{{{footer}}}"
     },
     "prCommitsPerRunLimit": {
-      "description": "Set the maximum number of commits per Renovate run. By default there is no limit.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet the maximum number of commits per Renovate run. By default there is no limit.",
       "type": "integer",
       "default": 0
     },
@@ -7027,7 +7049,7 @@
       }
     },
     "presetCachePersistence": {
-      "description": "Cache resolved presets in package cache.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nCache resolved presets in package cache.",
       "type": "boolean",
       "default": false
     },
@@ -7037,23 +7059,23 @@
       "default": false
     },
     "privateKey": {
-      "description": "Server-side private key.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nServer-side private key.",
       "type": "string"
     },
     "privateKeyOld": {
-      "description": "Secondary or old private key to try.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSecondary or old private key to try.",
       "type": "string"
     },
     "privateKeyPath": {
-      "description": "Path to the Server-side private key.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nPath to the Server-side private key.",
       "type": "string"
     },
     "privateKeyPathOld": {
-      "description": "Path to the Server-side old private key.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nPath to the Server-side old private key.",
       "type": "string"
     },
     "processEnv": {
-      "description": "Environment variables to be used in global config only.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nEnvironment variables to be used in global config only.",
       "type": "object",
       "default": {},
       "additionalProperties": {
@@ -7062,7 +7084,7 @@
       "$ref": "#"
     },
     "productLinks": {
-      "description": "Links which are used in PRs, issues and comments.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nLinks which are used in PRs, issues and comments.",
       "type": "object",
       "default": {
         "documentation": "https://docs.renovatebot.com/",
@@ -7091,8 +7113,7 @@
       "default": {
         "managerFilePatterns": [
           "/(^|/)pubspec\\.ya?ml$/"
-        ],
-        "versioning": "npm"
+        ]
       },
       "$ref": "#",
       "items": {
@@ -7344,11 +7365,11 @@
       "default": "auto"
     },
     "redisPrefix": {
-      "description": "Key prefix for redis cache entries.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nKey prefix for redis cache entries.",
       "type": "string"
     },
     "redisUrl": {
-      "description": "If set, this Redis URL will be used for caching instead of the file system.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set, this Redis URL will be used for caching instead of the file system.",
       "type": "string"
     },
     "regex": {
@@ -7492,7 +7513,7 @@
       "default": "replace"
     },
     "reportPath": {
-      "description": "Path to where the file should be written. In case of `s3` this has to be a full S3 URI.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nPath to where the file should be written. In case of `s3` this has to be a full S3 URI.",
       "type": [
         "string",
         "null"
@@ -7500,7 +7521,7 @@
       "default": null
     },
     "reportType": {
-      "description": "Set how, or if, reports should be generated.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet how, or if, reports should be generated.",
       "type": [
         "string",
         "null"
@@ -7513,14 +7534,14 @@
       "default": null
     },
     "repositories": {
-      "description": "List of Repositories.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nList of Repositories.",
       "type": "array",
       "items": {
         "type": "string"
       }
     },
     "repositoryCache": {
-      "description": "This option decides if Renovate uses a JSON cache to speed up extractions.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nThis option decides if Renovate uses a JSON cache to speed up extractions.",
       "type": "string",
       "enum": [
         "disabled",
@@ -7530,12 +7551,12 @@
       "default": "disabled"
     },
     "repositoryCacheType": {
-      "description": "Set the type of renovate repository cache if `repositoryCache` is enabled.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet the type of renovate repository cache if `repositoryCache` is enabled.",
       "type": "string",
       "default": "local"
     },
     "requireConfig": {
-      "description": "Controls Renovate's behavior regarding repository config files such as `renovate.json`.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nControls Renovate's behavior regarding repository config files such as `renovate.json`.",
       "type": "string",
       "enum": [
         "required",
@@ -7722,11 +7743,11 @@
       }
     },
     "s3Endpoint": {
-      "description": "If set, Renovate will use this string as the `endpoint` when creating the AWS S3 client instance.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set, Renovate will use this string as the `endpoint` when creating the AWS S3 client instance.",
       "type": "string"
     },
     "s3PathStyle": {
-      "description": "If set, Renovate will enable `forcePathStyle` when creating the AWS S3 client instance.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set, Renovate will enable `forcePathStyle` when creating the AWS S3 client instance.",
       "type": "boolean",
       "default": false
     },
@@ -7858,7 +7879,7 @@
       ]
     },
     "secrets": {
-      "description": "Object which holds secret name/value pairs.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nObject which holds secret name/value pairs.",
       "type": "object",
       "default": {},
       "additionalProperties": {
@@ -8445,7 +8466,7 @@
       "type": "string"
     },
     "token": {
-      "description": "Repository Auth Token.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nRepository Auth Token.",
       "type": "string"
     },
     "travis": {
@@ -8559,7 +8580,7 @@
       }
     },
     "unicodeEmoji": {
-      "description": "Enable or disable Unicode emoji.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nEnable or disable Unicode emoji.",
       "type": "boolean",
       "default": true
     },
@@ -8632,7 +8653,7 @@
       "default": true
     },
     "useBaseBranchConfig": {
-      "description": "Whether to read configuration from `baseBranches` instead of only the default branch.",
+      "description": "Whether to read configuration from base branches instead of only the default branch.",
       "type": "string",
       "enum": [
         "merge",
@@ -8641,12 +8662,12 @@
       "default": "none"
     },
     "useCloudMetadataServices": {
-      "description": "If `false`, Renovate does not try to access cloud metadata services.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf `false`, Renovate does not try to access cloud metadata services.",
       "type": "boolean",
       "default": true
     },
     "userAgent": {
-      "description": "If set to any string, Renovate will use this as the `user-agent` it sends with HTTP requests.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set to any string, Renovate will use this as the `user-agent` it sends with HTTP requests.",
       "type": [
         "string",
         "null"
@@ -8665,11 +8686,11 @@
       }
     },
     "username": {
-      "description": "Username for authentication.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nUsername for authentication.",
       "type": "string"
     },
     "variables": {
-      "description": "Object which holds variable name/value pairs.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nObject which holds variable name/value pairs.",
       "type": "object",
       "default": {},
       "additionalProperties": {
@@ -8837,6 +8858,7 @@
             "same-major",
             "semver",
             "semver-coerced",
+            "semver-partial",
             "swift",
             "ubuntu",
             "unity3d",
@@ -8957,7 +8979,7 @@
       }
     },
     "writeDiscoveredRepos": {
-      "description": "Writes discovered repositories to a JSON file and then exit.",
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nWrites discovered repositories to a JSON file and then exit.",
       "type": "string"
     }
   }
