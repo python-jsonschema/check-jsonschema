@@ -88,6 +88,19 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "type": "yaml",
         },
     },
+    "citation-file-format": {
+        "url": _githubusercontent_url(
+            "citation-file-format",
+            "citation-file-format",
+            "main",
+            "schema.json",
+        ),
+        "hook_config": {
+            "name": "Validate Citation File Format",
+            "description": "Validate Citation File Format",
+            "files": r"^CITATION.cff$",
+        },
+    },
     "cloudbuild": {
         "url": "https://json.schemastore.org/cloudbuild.json",
         "hook_config": {

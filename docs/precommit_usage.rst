@@ -113,6 +113,20 @@ Validate CircleCI config against the schema provided by SchemaStore
         - id: check-circle-ci
 
 
+``check-citation-file-format``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate Citation File Format
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.34.1
+      hooks:
+        - id: check-citation-file-format
+
+
 ``check-cloudbuild``
 ~~~~~~~~~~~~~~~~~~~~
 
