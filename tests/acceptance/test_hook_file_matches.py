@@ -81,12 +81,8 @@ _HOOKID_PATH_MAP = {
         ),
     },
     "check-citation-file-format": {
-        "good": (
-            "CITATION.cff",
-        ),
-        "bad": (
-            "CITATION.yml",
-        ),
+        "good": ("CITATION.cff",),
+        "bad": ("CITATION.yml",),
     },
     "check-codecov": {
         "good": (
