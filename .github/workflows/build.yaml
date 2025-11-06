@@ -62,7 +62,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, windows, macos]
-        py: ['3.9', '3.10', '3.11', '3.12', '3.13']
+        py: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']
     name: "Test on ${{ matrix.os }}, py${{ matrix.py }}"
     runs-on: "${{ matrix.os }}-latest"
     steps:

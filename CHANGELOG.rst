@@ -8,6 +8,8 @@ CHANGELOG
 Unreleased
 ----------
 
+- Add official support for Python 3.14
+
 .. vendor-insert-here
 
 - Update vendored schemas: circle-ci, compose-spec, dependabot, meltano, mergify,

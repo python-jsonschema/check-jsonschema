@@ -345,6 +345,10 @@ def test_cachedownloader_validation_is_not_invoked_on_hit(
     assert validator_ran is False
 
 
+@pytest.mark.skipif(
+    platform.system() == "Windows",
+    reason="time.tzset() is not available on Windows",
+)
 def test_lastmod_from_header_uses_gmtime(request, monkeypatch, default_response):
     """
     Regression test for https://github.com/python-jsonschema/check-jsonschema/pull/565
