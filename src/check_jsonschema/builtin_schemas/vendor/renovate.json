@@ -1899,6 +1899,11 @@
       "type": "boolean",
       "default": false
     },
+    "configValidationError": {
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf enabled, config validation errors will be reported as errors instead of warnings, and Renovate will exit with a non-zero exit code.",
+      "type": "boolean",
+      "default": false
+    },
     "configWarningReuseIssue": {
       "description": "Set this to `true` to make Renovate reuse/reopen an existing closed Config Warning issue, instead of opening a new one each time.",
       "type": "boolean",
@@ -2710,7 +2715,7 @@
     "dockerSidecarImage": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.23.15"
+      "default": "ghcr.io/containerbase/sidecar:13.24.1"
     },
     "dockerUser": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -5224,7 +5229,7 @@
         "timestamp-required",
         "timestamp-optional"
       ],
-      "default": "timestamp-optional"
+      "default": "timestamp-required"
     },
     "minor": {
       "description": "Configuration to apply when an update type is `minor`.",

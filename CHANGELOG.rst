@@ -13,8 +13,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: circle-ci, compose-spec, dependabot, meltano, mergify,
-  renovate, snapcraft (2025-11-02)
+- Update vendored schemas: bitbucket-pipelines, buildkite, circle-ci, compose-spec,
+  dependabot, gitlab-ci, meltano, mergify, renovate, snapcraft (2025-11-11)
 
 0.34.1
 ------
