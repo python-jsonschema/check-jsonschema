@@ -7,6 +7,7 @@ from __future__ import annotations
 import pathlib
 
 _EXTENSION_MAP = {
+    "cff": "yaml",
     "json": "json",
     "jsonld": "json",
     "geojson": "json",

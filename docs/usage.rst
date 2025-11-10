@@ -91,6 +91,7 @@ SchemaStore and other sources:
 - ``vendor.bitbucket-pipelines``
 - ``vendor.buildkite``
 - ``vendor.circle-ci``
+- ``vendor.citation-file-format``
 - ``vendor.cloudbuild``
 - ``vendor.codecov``
 - ``vendor.compose-spec``
