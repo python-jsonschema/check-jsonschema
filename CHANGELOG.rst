@@ -8,6 +8,8 @@ CHANGELOG
 Unreleased
 ----------
 
+- Add Citation File Format schema and pre-commit hook. Thanks :user:`edgarrmondragon`! (:issue:`502`)
+
 .. vendor-insert-here
 
 - Update vendored schemas: circle-ci, compose-spec, dependabot, meltano, mergify,

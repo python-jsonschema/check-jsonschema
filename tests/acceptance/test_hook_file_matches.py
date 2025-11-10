@@ -80,6 +80,10 @@ _HOOKID_PATH_MAP = {
             "bamboo-specs/README.md",
         ),
     },
+    "check-citation-file-format": {
+        "good": ("CITATION.cff",),
+        "bad": ("CITATION.yml",),
+    },
     "check-codecov": {
         "good": (
             "codecov.yml",
