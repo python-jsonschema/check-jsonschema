@@ -1,16 +1,12 @@
 from __future__ import annotations
 
-import linecache
 import os
 import pathlib
 import re
-import textwrap
-import traceback
 import typing as t
 import urllib.parse
 import urllib.request
 
-import click
 import jsonschema
 
 WINDOWS = os.name == "nt"
@@ -93,44 +89,6 @@ def filename2path(filename: str) -> pathlib.Path:
     if PROC_FD_PATH_PATTERN.fullmatch(filename):
         return p
     return p.resolve()
-
-
-def format_shortened_error(err: Exception, *, indent: int = 0) -> str:
-    lines = []
-    lines.append(textwrap.indent(f"{type(err).__name__}: {err}", indent * " "))
-    if err.__traceback__ is not None:
-        lineno = err.__traceback__.tb_lineno
-        tb_frame = err.__traceback__.tb_frame
-        filename = tb_frame.f_code.co_filename
-        line = linecache.getline(filename, lineno)
-        lines.append((indent + 2) * " " + f'in "{filename}", line {lineno}')
-        lines.append((indent + 2) * " " + ">>> " + line.strip())
-    return "\n".join(lines)
-
-
-def format_shortened_trace(caught_err: Exception) -> str:
-    err_stack: list[Exception] = [caught_err]
-    while err_stack[-1].__context__ is not None:
-        err_stack.append(err_stack[-1].__context__)  # type: ignore[arg-type]
-
-    parts = [format_shortened_error(caught_err)]
-    indent = 0
-    for err in err_stack[1:]:
-        indent += 2
-        parts.append("\n" + indent * " " + "caused by\n")
-        parts.append(format_shortened_error(err, indent=indent))
-    return "\n".join(parts)
-
-
-def format_error(err: Exception, mode: str = "short") -> str:
-    if mode == "short":
-        return format_shortened_trace(err)
-    else:
-        return "".join(traceback.format_exception(type(err), err, err.__traceback__))
-
-
-def print_error(err: Exception, mode: str = "short") -> None:
-    click.echo(format_error(err, mode=mode), err=True)
 
 
 def iter_validation_error(

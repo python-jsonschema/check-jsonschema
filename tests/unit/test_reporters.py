@@ -4,6 +4,7 @@ import textwrap
 import pytest
 from jsonschema import Draft7Validator
 
+from check_jsonschema.parsers import ParseError
 from check_jsonschema.reporter import JsonReporter, TextReporter
 from check_jsonschema.result import CheckResult
 
@@ -240,3 +241,30 @@ def test_json_format_validation_error_nested(capsys, pretty_json, verbosity):
     assert "{'baz': 'buzz'} is not of type 'string'" in [
         item["message"] for item in bar_errors
     ]
+
+
+def test_text_print_parse_error_with_cause(capsys):
+    cause = json.JSONDecodeError("a bad thing happened", "{,}", 1)
+    error = ParseError("whoopsie during parsing")
+    error.__cause__ = cause
+
+    result = CheckResult()
+    result.record_parse_error("foo.json", error)
+
+    text_reporter = TextReporter(verbosity=1)
+    text_reporter.report_result(result)
+    captured = capsys.readouterr()
+
+    # nothing to stderr
+    assert captured.err == ""
+    # stdout contains a nicely formatted error
+    assert (
+        textwrap.dedent(
+            """\
+            Several files failed to parse.
+              whoopsie during parsing
+                JSONDecodeError: a bad thing happened: line 1 column 2 (char 1)
+            """
+        )
+        in captured.out
+    )

@@ -8,13 +8,13 @@ CHANGELOG
 Unreleased
 ----------
 
-- Add official support for Python 3.14
-- Add Citation File Format schema and pre-commit hook. Thanks :user:`edgarrmondragon`! (:issue:`502`)
-
 .. vendor-insert-here
 
 - Update vendored schemas: bitbucket-pipelines, buildkite, circle-ci, compose-spec,
   dependabot, gitlab-ci, meltano, mergify, renovate, snapcraft (2025-11-11)
+- Add official support for Python 3.14
+- Add Citation File Format schema and pre-commit hook. Thanks :user:`edgarrmondragon`! (:issue:`502`)
+- Improved default text output when parsing errors are encountered. (:issue:`581`)
 
 0.34.1
 ------

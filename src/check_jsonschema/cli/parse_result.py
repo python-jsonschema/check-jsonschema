@@ -41,7 +41,7 @@ class ParseResult:
         self.regex_variant: RegexVariantName = RegexVariantName.default
         # error and output controls
         self.verbosity: int = 1
-        self.traceback_mode: str = "short"
+        self.traceback_mode: t.Literal["short", "full"] = "short"
         self.output_format: str = "text"
 
     def set_regex_variant(

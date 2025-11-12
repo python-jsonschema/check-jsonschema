@@ -7,7 +7,7 @@ import click
 import jsonschema
 import referencing.exceptions
 
-from . import utils
+from . import format_errors
 from .formats import FormatOptions
 from .instance_loader import InstanceLoader
 from .parsers import ParseError
@@ -31,7 +31,7 @@ class SchemaChecker:
         *,
         format_opts: FormatOptions,
         regex_impl: RegexImplementation,
-        traceback_mode: str = "short",
+        traceback_mode: t.Literal["minimal", "short", "full"] = "short",
         fill_defaults: bool = False,
     ) -> None:
         self._schema_loader = schema_loader
@@ -46,7 +46,7 @@ class SchemaChecker:
     def _fail(self, msg: str, err: Exception | None = None) -> t.NoReturn:
         click.echo(msg, err=True)
         if err is not None:
-            utils.print_error(err, mode=self._traceback_mode)
+            format_errors.print_error(err, mode=self._traceback_mode)
         raise _Exit(1)
 
     def get_validator(

@@ -13,9 +13,10 @@ import typing as t
 import click
 import jsonschema
 
+from . import format_errors
 from .parsers import ParseError
 from .result import CheckResult
-from .utils import format_error, iter_validation_error
+from .utils import iter_validation_error
 
 
 class Reporter(abc.ABC):
@@ -111,11 +112,12 @@ class TextReporter(Reporter):
 
     def _show_parse_error(self, filename: str, err: ParseError) -> None:
         if self.verbosity < 2:
-            self._echo(click.style(str(err), fg="yellow"), indent=2)
+            mode: t.Literal["minimal", "short", "full"] = "minimal"
         elif self.verbosity < 3:
-            self._echo(textwrap.indent(format_error(err, mode="short"), "  "))
+            mode = "short"
         else:
-            self._echo(textwrap.indent(format_error(err, mode="full"), "  "))
+            mode = "full"
+        self._echo(textwrap.indent(format_errors.format_error(err, mode=mode), "  "))
 
     def report_errors(self, result: CheckResult) -> None:
         if self.verbosity < 1:
