@@ -17,7 +17,7 @@ You must specify a schema using pre-commit ``args`` configuration.
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-jsonschema
           files: ^data/.*\.json$
@@ -34,7 +34,7 @@ Validate JSON Schema files against their matching metaschema, as specified in th
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-metaschema
           files: ^schemas/.*\.json$
@@ -52,7 +52,7 @@ Validate Azure Pipelines config against the schema provided by Microsoft
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-azure-pipelines
 
@@ -66,7 +66,7 @@ Validate Bamboo Specs against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-bamboo-spec
 
@@ -80,7 +80,7 @@ Validate Bitbucket Pipelines against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-bitbucket-pipelines
 
@@ -94,7 +94,7 @@ Validate Buildkite Pipelines against the schema provided by Buildkite
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-buildkite
 
@@ -108,7 +108,7 @@ Validate CircleCI config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-circle-ci
 
@@ -122,7 +122,7 @@ Validate Citation File Format
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-citation-file-format
 
@@ -136,7 +136,7 @@ Validate Google Cloud Build config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-cloudbuild
 
@@ -150,7 +150,7 @@ Validate Codecov config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-codecov
 
@@ -164,7 +164,7 @@ Validate Docker Compose files against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-compose-spec
 
@@ -178,7 +178,7 @@ Validate Dependabot Config (v2) against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-dependabot
 
@@ -192,7 +192,7 @@ Validate Drone-CI Config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-drone-ci
 
@@ -206,7 +206,7 @@ Validate GitHub Actions against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-github-actions
 
@@ -220,7 +220,7 @@ Validate GitHub issue config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-github-issue-config
 
@@ -234,7 +234,7 @@ Validate GitHub issue forms against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-github-issue-forms
 
@@ -248,7 +248,7 @@ Validate GitHub Workflows against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-github-workflows
 
@@ -262,7 +262,7 @@ Validate GitLab CI config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-gitlab-ci
 
@@ -276,7 +276,7 @@ Validate Meltano config against the schema provided by Meltano
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-meltano
 
@@ -290,7 +290,7 @@ Validate Mergify config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-mergify
 
@@ -304,7 +304,7 @@ Validate ReadTheDocs config against the schema provided by ReadTheDocs
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-readthedocs
 
@@ -318,7 +318,7 @@ Validate Renovate config against the schema provided by Renovate (does not suppo
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-renovate
 
@@ -332,7 +332,7 @@ Validate snapcraft files against the schema provided by Canonical
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-snapcraft
 
@@ -346,7 +346,7 @@ Validate Taskfile config against the schema provided by Task
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-taskfile
 
@@ -360,7 +360,7 @@ Validate Travis Config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-travis
 
@@ -374,7 +374,7 @@ Validate Woodpecker Config against the schema provided by SchemaStore
     :caption: example config
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-woodpecker-ci
 
@@ -400,7 +400,7 @@ manually, you could do this:
 .. code-block:: yaml
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-jsonschema
           name: "Check GitHub Workflows"
@@ -419,7 +419,7 @@ To check with the builtin schema that a GitHub workflow sets
 .. code-block:: yaml
 
     - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.34.1
+      rev: 0.35.0
       hooks:
         - id: check-jsonschema
           name: "Check GitHub Workflows set timeout-minutes"

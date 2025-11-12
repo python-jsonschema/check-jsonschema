@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.35.0
+------
+
 - Update vendored schemas: bitbucket-pipelines, buildkite, circle-ci, compose-spec,
   dependabot, gitlab-ci, meltano, mergify, renovate, snapcraft (2025-11-11)
 - Add official support for Python 3.14
