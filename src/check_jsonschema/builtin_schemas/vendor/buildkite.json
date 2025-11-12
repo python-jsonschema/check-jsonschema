@@ -520,6 +520,33 @@
       "description": "Whether this step should be skipped. Passing a string provides a reason for skipping this command",
       "examples": [true, false, "My reason"]
     },
+    "secrets": {
+      "description": "A list of secret names or a mapping of environment variable names to secret names to be made available to the build or step",
+      "anyOf": [
+        {
+          "type": "array",
+          "description": "A list of secret names to be made available as environment variables",
+          "items": {
+            "type": "string"
+          },
+          "examples": [["API_ACCESS_TOKEN"], ["API_KEY", "DATABASE_PASSWORD"]]
+        },
+        {
+          "type": "object",
+          "description": "A mapping of custom environment variable names to Buildkite secret names",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "examples": [
+            { "MY_APP_ACCESS_TOKEN": "API_ACCESS_TOKEN" },
+            {
+              "CUSTOM_API_KEY": "API_KEY",
+              "CUSTOM_DB_PASSWORD": "DATABASE_PASSWORD"
+            }
+          ]
+        }
+      ]
+    },
     "softFailObject": {
       "type": "object",
       "properties": {
@@ -1068,6 +1095,9 @@
           "type": "integer",
           "description": "Priority of the job, higher priorities are assigned to agents",
           "examples": [-1, 1]
+        },
+        "secrets": {
+          "$ref": "#/definitions/secrets"
         }
       },
       "additionalProperties": false
@@ -1351,6 +1381,9 @@
     },
     "image": {
       "$ref": "#/definitions/image"
+    },
+    "secrets": {
+      "$ref": "#/definitions/secrets"
     },
     "steps": {
       "$ref": "#/definitions/pipelineSteps"
