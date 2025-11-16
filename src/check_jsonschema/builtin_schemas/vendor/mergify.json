@@ -1386,6 +1386,12 @@
           ],
           "title": "Mode",
           "type": "string"
+        },
+        "skip_intermediate_results": {
+          "default": false,
+          "description": "Allow PRs to merge even if their own speculative check fails, as long as a later downstream check including them passes and schedule conditions are valid.",
+          "title": "Skip Intermediate Results",
+          "type": "boolean"
         }
       },
       "title": "MergeQueue",
@@ -1753,7 +1759,10 @@
               "type": "string"
             },
             {
-              "const": "PR_MERGED",
+              "enum": [
+                "PR_MERGED",
+                "PR_MERGED_INTERMEDIATE_RESULTS_SKIPPED"
+              ],
               "type": "string"
             },
             {

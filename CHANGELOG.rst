@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: gitlab-ci, mergify, renovate (2025-11-16)
+
 0.35.0
 ------
 
