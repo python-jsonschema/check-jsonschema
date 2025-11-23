@@ -1958,7 +1958,7 @@
           "type": "array"
         },
         "review-threads-resolved": {
-          "description": "The list of bodies associated to review threads that are marked as resolved by GitHub.",
+          "description": "The list of ids associated to review threads that are marked as resolved by GitHub.",
           "items": {
             "type": "string"
           },
@@ -1966,7 +1966,7 @@
           "type": "array"
         },
         "review-threads-unresolved": {
-          "description": "The list of bodies associated to review threads that are NOT marked as resolved by GitHub.",
+          "description": "The list of ids associated to review threads that are NOT marked as resolved by GitHub.",
           "items": {
             "type": "string"
           },

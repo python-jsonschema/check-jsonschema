@@ -10,7 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: gitlab-ci, mergify, renovate (2025-11-16)
+- Update vendored schemas: buildkite, gitlab-ci, mergify, renovate, snapcraft
+  (2025-11-23)
 
 0.35.0
 ------
