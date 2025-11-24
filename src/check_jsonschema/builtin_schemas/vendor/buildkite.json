@@ -492,10 +492,59 @@
         ]
       }
     },
-    "if_changed": {
-      "type": "string",
-      "description": "Agent-applied attribute: A glob pattern that omits the step from a build if it does not match any files changed in the build.",
-      "examples": ["**.go", "go.mod", "go.sum", "fixtures/**"]
+    "ifChanged": {
+      "description": "Agent-applied attribute: A glob pattern that omits the step from a build if it does not match any files changed in the build. Can be a single pattern, list of patterns, or an object with include/exclude attributes.",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "A single glob pattern",
+          "examples": ["**.go", "go.{mod,sum}", "{app/**,spec/**}"]
+        },
+        {
+          "type": "array",
+          "description": "A list of glob patterns",
+          "items": {
+            "type": "string"
+          },
+          "examples": [["**.go", "go.{mod,sum}"], ["app/**", "spec/**"]]
+        },
+        {
+          "type": "object",
+          "description": "An object with include and optional exclude patterns",
+          "properties": {
+            "include": {
+              "description": "Pattern or list of patterns to include",
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "exclude": {
+              "description": "Pattern or list of patterns to exclude",
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          },
+          "required": ["include"],
+          "additionalProperties": false
+        }
+      ]
     },
     "matrixElement": {
       "oneOf": [
@@ -1002,7 +1051,7 @@
           "$ref": "#/definitions/if"
         },
         "if_changed": {
-          "$ref": "#/definitions/if_changed"
+          "$ref": "#/definitions/ifChanged"
         },
         "key": {
           "$ref": "#/definitions/key"
@@ -1230,7 +1279,7 @@
           "$ref": "#/definitions/if"
         },
         "if_changed": {
-          "$ref": "#/definitions/if_changed"
+          "$ref": "#/definitions/ifChanged"
         },
         "key": {
           "$ref": "#/definitions/key"
@@ -1312,7 +1361,7 @@
           "$ref": "#/definitions/if"
         },
         "if_changed": {
-          "$ref": "#/definitions/if_changed"
+          "$ref": "#/definitions/ifChanged"
         },
         "key": {
           "$ref": "#/definitions/key"
