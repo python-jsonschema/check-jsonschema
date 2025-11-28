@@ -1,0 +1,7 @@
+title: "Office Hours"
+labels:
+  - "office-hours"
+body:
+  - type: markdown
+    attributes:
+      value: "The agenda for this week's office hours is as follows: ..."

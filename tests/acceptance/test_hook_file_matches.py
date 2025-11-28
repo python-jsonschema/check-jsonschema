@@ -144,6 +144,16 @@ _HOOKID_PATH_MAP = {
         ),
         "bad": (".github/actions/foo/other.yaml",),
     },
+    "check-github-discussion": {
+        "good": (
+            ".github/DISCUSSION_TEMPLATE/announcements.yaml",
+            ".github/DISCUSSION_TEMPLATE/office-hours.yml",
+        ),
+        "bad": (
+            ".github/discussion.yml",
+            ".github/DISCUSSION_TEMPLATE/not-a-discussion.txt",
+        ),
+    },
     "check-github-issue-config": {
         "good": (".github/ISSUE_TEMPLATE/config.yml",),
         "bad": (

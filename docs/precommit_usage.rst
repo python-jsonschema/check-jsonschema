@@ -211,6 +211,20 @@ Validate GitHub Actions against the schema provided by SchemaStore
         - id: check-github-actions
 
 
+``check-github-discussion``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate GitHub discussion against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.35.0
+      hooks:
+        - id: check-github-discussion
+
+
 ``check-github-issue-config``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

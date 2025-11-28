@@ -166,6 +166,16 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "github-discussion": {
+        "url": "https://www.schemastore.org/github-discussion.json",
+        "hook_config": {
+            "name": "Validate GitHub discussion",
+            "files": [
+                r"^\.github/DISCUSSION_TEMPLATE/.+\.ya?ml$",
+            ],
+            "types": "yaml",
+        },
+    },
     "github-issue-config": {
         "url": "https://www.schemastore.org/github-issue-config.json",
         "hook_config": {

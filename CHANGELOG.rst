@@ -12,6 +12,7 @@ Unreleased
 
 - Update vendored schemas: buildkite, gitlab-ci, mergify, renovate, snapcraft
   (2025-11-23)
+- Add GitHub Discussion category forms schema and pre-commit hook. Thanks :user:`edgarrmondragon`! (:pr:`626`)
 
 0.35.0
 ------
