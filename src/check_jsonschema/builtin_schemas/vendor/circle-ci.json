@@ -2115,7 +2115,8 @@
                                                                             "enum": [
                                                                                 "success",
                                                                                 "failed",
-                                                                                "canceled"
+                                                                                "canceled",
+                                                                                "not_run"
                                                                             ]
                                                                         },
                                                                         {
@@ -2126,7 +2127,8 @@
                                                                                 "enum": [
                                                                                     "success",
                                                                                     "failed",
-                                                                                    "canceled"
+                                                                                    "canceled",
+                                                                                    "not_run"
                                                                                 ]
                                                                             }
                                                                         }
