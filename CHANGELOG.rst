@@ -10,8 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: buildkite, gitlab-ci, mergify, renovate, snapcraft
-  (2025-11-23)
+- Update vendored schemas: bitbucket-pipelines, buildkite, circle-ci, dependabot,
+  gitlab-ci, mergify, readthedocs, renovate, snapcraft (2025-12-14)
 - Add GitHub Discussion category forms schema and pre-commit hook. Thanks :user:`edgarrmondragon`! (:pr:`626`)
 
 0.35.0
