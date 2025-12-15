@@ -997,6 +997,7 @@
       "type": "object"
     },
     "FileFilters": {
+      "additionalProperties": false,
       "properties": {
         "include": {
           "description": "Glob patterns of files to include for this scope. Empty means 'include everything' before exclusions. Examples: ('src/**/*.py', 'Makefile')",
@@ -2423,7 +2424,7 @@
         },
         "batch_max_wait_time": {
           "default": "30 seconds",
-          "description": "The maximum amount of time to wait before creating a batch when the batch is not full.",
+          "description": "The maximum amount of time to wait for additional pull requests before processing a batch that hasn't reached `batch_size`. The timer starts when the first pull request enters the batch. If `batch_size` is reached before this time expires, the batch processes immediately. This does not enforce a minimum delay between batches.",
           "format": "duration",
           "title": "Batch Max Wait Time",
           "type": "string"
@@ -2641,7 +2642,7 @@
         },
         "batch_max_wait_time": {
           "default": "30 seconds",
-          "description": "The maximum amount of time to wait before creating a batch when the batch is not full.",
+          "description": "The maximum amount of time to wait for additional pull requests before processing a batch that hasn't reached `batch_size`. The timer starts when the first pull request enters the batch. If `batch_size` is reached before this time expires, the batch processes immediately. This does not enforce a minimum delay between batches.",
           "format": "duration",
           "title": "Batch Max Wait Time",
           "type": "string"
@@ -3050,6 +3051,7 @@
       "type": "object"
     },
     "SourceFiles": {
+      "additionalProperties": false,
       "properties": {
         "files": {
           "description": "Mapping of scope name to its file filters. A file belongs to a scope if it matches the scope's `include` patterns and not its `exclude` patterns.",
@@ -3072,6 +3074,7 @@
       "type": "object"
     },
     "SourceManual": {
+      "additionalProperties": false,
       "properties": {
         "manual": {
           "description": "Scopes are manually sent via API or `mergify scopes-send`",

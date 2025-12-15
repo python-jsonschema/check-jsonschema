@@ -1,7 +1,7 @@
 {
-  "title": "JSON schema for Renovate 0.0.0-semantic-release config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 42.52.3 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "0.0.0-semantic-release",
+  "x-renovate-version": "42.52.3",
   "allowComments": true,
   "type": "object",
   "properties": {
@@ -72,6 +72,17 @@
       "default": [
         "X-*"
       ]
+    },
+    "allowedUnsafeExecutions": {
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nList of possibly unsafe executions which are permitted to run. This enables global control over any implicit commands\n        which are run as part of a renovate run. This is similar to `allowedCommands` but is specifically used to control executions\n        which run automatically, and are not explicitly added in `postUpgradeTasks`",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "goGenerate"
+        ]
+      },
+      "default": []
     },
     "ansible": {
       "description": "Configuration object for the ansible manager",
@@ -385,7 +396,9 @@
       "enum": [
         "alpha",
         "created",
+        "created_at",
         "updated",
+        "updated_at",
         "size",
         "id"
       ],
@@ -2715,7 +2728,7 @@
     "dockerSidecarImage": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.25.2"
+      "default": "ghcr.io/containerbase/sidecar:13.25.14"
     },
     "dockerUser": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -5109,6 +5122,11 @@
         ]
       }
     },
+    "maxMajorIncrement": {
+      "description": "Limit the maximum major version increment allowed. Set to 0 to disable.",
+      "type": "integer",
+      "default": 500
+    },
     "mergeConfidenceDatasources": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nIf set, Renovate will query the merge-confidence JSON API only for datasources that are part of this list.",
       "type": "array",
@@ -6801,6 +6819,7 @@
         "enum": [
           "bundlerConservative",
           "composerWithAll",
+          "composerNoMinimalChanges",
           "dotnetWorkloadRestore",
           "gomodMassage",
           "gomodTidy",
@@ -6916,10 +6935,20 @@
         "Pending": "{{{displayPending}}}",
         "References": "{{{references}}}",
         "Package file": "{{{packageFile}}}",
-        "Age": "{{#if newVersion}}[![age](https://developer.mend.io/api/mc/badges/age/{{datasource}}/{{replace '/' '%2f' packageName}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/){{/if}}",
-        "Adoption": "{{#if newVersion}}[![adoption](https://developer.mend.io/api/mc/badges/adoption/{{datasource}}/{{replace '/' '%2f' packageName}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/){{/if}}",
-        "Passing": "{{#if newVersion}}[![passing](https://developer.mend.io/api/mc/badges/compatibility/{{datasource}}/{{replace '/' '%2f' packageName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/){{/if}}",
-        "Confidence": "{{#if newVersion}}[![confidence](https://developer.mend.io/api/mc/badges/confidence/{{datasource}}/{{replace '/' '%2f' packageName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true)](https://docs.renovatebot.com/merge-confidence/){{/if}}"
+        "Age": "{{#if newVersion}}![age](https://developer.mend.io/api/mc/badges/age/{{datasource}}/{{replace '/' '%2f' packageName}}/{{{newVersion}}}?slim=true){{/if}}",
+        "Adoption": "{{#if newVersion}}![adoption](https://developer.mend.io/api/mc/badges/adoption/{{datasource}}/{{replace '/' '%2f' packageName}}/{{{newVersion}}}?slim=true){{/if}}",
+        "Passing": "{{#if newVersion}}![passing](https://developer.mend.io/api/mc/badges/compatibility/{{datasource}}/{{replace '/' '%2f' packageName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true){{/if}}",
+        "Confidence": "{{#if newVersion}}![confidence](https://developer.mend.io/api/mc/badges/confidence/{{datasource}}/{{replace '/' '%2f' packageName}}/{{{currentVersion}}}/{{{newVersion}}}?slim=true){{/if}}"
+      }
+    },
+    "prBodyHeadingDefinitions": {
+      "description": "Table header definitions to use in PR tables.",
+      "type": "object",
+      "default": {
+        "Age": "[Age](https://docs.renovatebot.com/merge-confidence/)",
+        "Adoption": "[Adoption](https://docs.renovatebot.com/merge-confidence/)",
+        "Passing": "[Passing](https://docs.renovatebot.com/merge-confidence/)",
+        "Confidence": "[Confidence](https://docs.renovatebot.com/merge-confidence/)"
       }
     },
     "prBodyNotes": {
