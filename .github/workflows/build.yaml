@@ -100,7 +100,7 @@ jobs:
           python -m tox run -m ci -- --junitxml pytest.{envname}.xml
           python -m tox run -e cov_combine,cov_report
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: pytest-report-py${{ matrix.py }}-${{ matrix.os }}
           path: pytest.*.xml
