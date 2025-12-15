@@ -115,7 +115,7 @@ jobs:
         with:
           python-version: "3.x"
       # download everything
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           path: artifacts/
       # collate and report
