@@ -1196,7 +1196,11 @@
                                             "markdownDescription": "Elapsed time the command can run without output. The string is a decimal with unit suffix, such as \"20m\", \"1.25h\", \"5s\" (default: 10 minutes)"
                                         },
                                         "when": {
-                                            "enum": ["always", "on_success", "on_fail"],
+                                            "enum": [
+                                                "always",
+                                                "on_success",
+                                                "on_fail"
+                                            ],
                                             "markdownDescription": "Specify when to enable or disable the step. Takes the following values: `always`, `on_success`, `on_fail` (default: `on_success`)"
                                         },
                                         "max_auto_reruns": {
@@ -1235,7 +1239,9 @@
                             "oneOf": [
                                 {
                                     "type": "string",
-                                    "enum": ["checkout"]
+                                    "enum": [
+                                        "checkout"
+                                    ]
                                 },
                                 {
                                     "type": "object",
@@ -1246,7 +1252,17 @@
                                         },
                                         "method": {
                                             "type": "string",
-                                            "markdownDescription": "The checkout method to be used ('blobless' or 'full', default 'full')"
+                                            "enum": [
+                                                "blobless",
+                                                "full",
+                                                "shallow"
+                                            ],
+                                            "markdownDescription": "The checkout method to be used ('blobless', 'full', or 'shallow', default 'full'). When using 'shallow', a positive `depth` value is required."
+                                        },
+                                        "depth": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "markdownDescription": "The depth of the shallow clone. Only valid when `method` is set to 'shallow'. Must be a positive integer."
                                         }
                                     },
                                     "additionalProperties": false
@@ -1258,7 +1274,9 @@
                             "oneOf": [
                                 {
                                     "type": "string",
-                                    "enum": ["setup_remote_docker"]
+                                    "enum": [
+                                        "setup_remote_docker"
+                                    ]
                                 },
                                 {
                                     "type": "object",
@@ -1300,7 +1318,10 @@
                         "save_cache": {
                             "markdownDescription": "https://circleci.com/docs/configuration-reference#save_cache\n\nGenerates and stores a cache of a file or directory of files such as dependencies or source code in our object storage. Later jobs can restore this cache using the `restore_cache` step.",
                             "type": "object",
-                            "required": ["paths", "key"],
+                            "required": [
+                                "paths",
+                                "key"
+                            ],
                             "properties": {
                                 "paths": {
                                     "type": "array",
@@ -1318,7 +1339,11 @@
                                     "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: 'Saving Cache')"
                                 },
                                 "when": {
-                                    "enum": ["always", "on_success", "on_fail"],
+                                    "enum": [
+                                        "always",
+                                        "on_success",
+                                        "on_fail"
+                                    ],
                                     "markdownDescription": "Specify when to enable or disable the step. Takes the following values: `always`, `on_success`, `on_fail` (default: `on_success`)"
                                 }
                             },
@@ -1329,7 +1354,9 @@
                             "oneOf": [
                                 {
                                     "type": "object",
-                                    "required": ["key"],
+                                    "required": [
+                                        "key"
+                                    ],
                                     "properties": {
                                         "key": {
                                             "type": "string",
@@ -1344,7 +1371,9 @@
                                 },
                                 {
                                     "type": "object",
-                                    "required": ["keys"],
+                                    "required": [
+                                        "keys"
+                                    ],
                                     "properties": {
                                         "keys": {
                                             "type": "array",
@@ -1365,7 +1394,9 @@
                         "store_artifacts": {
                             "markdownDescription": "https://circleci.com/docs/configuration-reference#store_artifacts\n\nStep to store artifacts (for example logs, binaries, etc) to be available in the web app or through the API.",
                             "type": "object",
-                            "required": ["path"],
+                            "required": [
+                                "path"
+                            ],
                             "properties": {
                                 "path": {
                                     "type": "string",
@@ -1385,7 +1416,9 @@
                         "store_test_results": {
                             "markdownDescription": "https://circleci.com/docs/configuration-reference#storetestresults\n\nSpecial step used to upload test results so they display in builds' Test Summary section and can be used for timing analysis. To also see test result as build artifacts, please use the `store_artifacts` step.",
                             "type": "object",
-                            "required": ["path"],
+                            "required": [
+                                "path"
+                            ],
                             "properties": {
                                 "path": {
                                     "type": "string",
@@ -1401,7 +1434,10 @@
                         "persist_to_workspace": {
                             "markdownDescription": "https://circleci.com/docs/configuration-reference#persist_to_workspace\n\nSpecial step used to persist a temporary file to be used by another job in the workflow",
                             "type": "object",
-                            "required": ["root", "paths"],
+                            "required": [
+                                "root",
+                                "paths"
+                            ],
                             "properties": {
                                 "root": {
                                     "type": "string",
@@ -1424,7 +1460,9 @@
                         "attach_workspace": {
                             "markdownDescription": "https://circleci.com/docs/configuration-reference#attach_workspace\n\nSpecial step used to attach the workflow's workspace to the current container. The full contents of the workspace are downloaded and copied into the directory the workspace is being attached at.",
                             "type": "object",
-                            "required": ["at"],
+                            "required": [
+                                "at"
+                            ],
                             "properties": {
                                 "at": {
                                     "type": "string",
@@ -1442,7 +1480,9 @@
                             "oneOf": [
                                 {
                                     "type": "string",
-                                    "enum": ["add_ssh_keys"]
+                                    "enum": [
+                                        "add_ssh_keys"
+                                    ]
                                 },
                                 {
                                     "type": "object",
