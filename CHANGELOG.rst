@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: circle-ci, dependabot, mergify, renovate, snapcraft, taskfile
+  (2025-12-21)
+
 0.36.0
 ------
 
