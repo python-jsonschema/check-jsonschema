@@ -1393,6 +1393,16 @@
           "description": "Allow PRs to merge even if their own speculative check fails, as long as a later downstream check including them passes and schedule conditions are valid.",
           "title": "Skip Intermediate Results",
           "type": "boolean"
+        },
+        "status_comments": {
+          "default": "all",
+          "description": "Controls the level of status comments posted on pull requests in the queue.\n- `all`: Post comments for all queue events (entering queue, CI progress, outcomes).\n- `outcomes`: Only post comments for final outcomes (merged or dequeued with failure reason).\n",
+          "enum": [
+            "all",
+            "outcomes"
+          ],
+          "title": "Status Comments",
+          "type": "string"
         }
       },
       "title": "MergeQueue",
@@ -1791,7 +1801,8 @@
                 "INCOMPATIBILITY_WITH_BRANCH_PROTECTIONS",
                 "PR_MANUALLY_MERGED",
                 "DRAFT_PULL_REQUEST_CREATION_FAILED",
-                "CONFIGURATION_CHANGED"
+                "CONFIGURATION_CHANGED",
+                "UNPROCESSABLE_PULL_REQUEST"
               ],
               "type": "string"
             },
