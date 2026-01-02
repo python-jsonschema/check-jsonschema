@@ -1,7 +1,7 @@
 {
-  "title": "JSON schema for Renovate 42.52.3 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 42.66.9 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "42.52.3",
+  "x-renovate-version": "42.66.9",
   "allowComments": true,
   "type": "object",
   "properties": {
@@ -79,10 +79,13 @@
       "items": {
         "type": "string",
         "enum": [
-          "goGenerate"
+          "goGenerate",
+          "gradleWrapper"
         ]
       },
-      "default": []
+      "default": [
+        "gradleWrapper"
+      ]
     },
     "ansible": {
       "description": "Configuration object for the ansible manager",
@@ -1206,11 +1209,11 @@
         ],
         "digest": {
           "prBodyDefinitions": {
-            "Change": "{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}"
+            "Change": "{{#if displayFrom}}`{{{displayFrom}}}` → {{else}}{{#if currentValue}}`{{{currentValue}}}` → {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}"
           }
         },
         "prBodyDefinitions": {
-          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
+          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` → {{else}}{{#if currentValue}}`{{{currentValue}}}` → {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
         }
       },
       "$ref": "#",
@@ -2728,7 +2731,7 @@
     "dockerSidecarImage": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.25.14"
+      "default": "ghcr.io/containerbase/sidecar:13.25.18"
     },
     "dockerUser": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -5574,11 +5577,11 @@
         ],
         "digest": {
           "prBodyDefinitions": {
-            "Change": "{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}"
+            "Change": "{{#if displayFrom}}`{{{displayFrom}}}` → {{else}}{{#if currentValue}}`{{{currentValue}}}` → {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}"
           }
         },
         "prBodyDefinitions": {
-          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
+          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` → {{else}}{{#if currentValue}}`{{{currentValue}}}` → {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
         }
       },
       "$ref": "#",
@@ -5804,6 +5807,14 @@
     "onboarding": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nRequire a Configuration PR first.",
       "type": "boolean"
+    },
+    "onboardingAutoCloseAge": {
+      "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nMaximum number of days after which Renovate will stop trying to onboard the repository, and will close any existing onboarding PRs",
+      "type": [
+        "integer",
+        "null"
+      ],
+      "default": null
     },
     "onboardingBranch": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default onboarding branch name.",
@@ -6931,7 +6942,7 @@
         "Update": "{{{updateType}}}",
         "Current value": "{{{currentValue}}}",
         "New value": "{{{newValue}}}",
-        "Change": "`{{{displayFrom}}}` -> `{{{displayTo}}}`",
+        "Change": "`{{{displayFrom}}}` → `{{{displayTo}}}`",
         "Pending": "{{{displayPending}}}",
         "References": "{{{references}}}",
         "Package file": "{{{packageFile}}}",
