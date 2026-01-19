@@ -9,6 +9,7 @@ e.g.
 
     ./scripts/changelog2md.py --target 3.20.0
 """
+
 from __future__ import annotations
 
 import argparse

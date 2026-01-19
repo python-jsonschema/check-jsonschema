@@ -33,8 +33,7 @@ def update_changelog(new_version):
         r"""
 Unreleased
 ----------
-(\s*\n)+"""
-        + re.escape(vendor_marker),
+(\s*\n)+""" + re.escape(vendor_marker),
         f"""
 Unreleased
 ----------

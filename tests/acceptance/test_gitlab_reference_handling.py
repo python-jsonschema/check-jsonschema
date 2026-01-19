@@ -1,7 +1,6 @@
 def test_gitlab_reference_handling_on_bad_data(run_line, tmp_path):
     doc = tmp_path / "data.yml"
-    doc.write_text(
-        """\
+    doc.write_text("""\
 include:
   - local: setup.yml
 
@@ -10,8 +9,7 @@ test:
     # !reference not a list, error
     - !reference .setup
     - echo running my own command
-"""
-    )
+""")
 
     res = run_line(
         [

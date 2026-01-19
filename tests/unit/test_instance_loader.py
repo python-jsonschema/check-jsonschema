@@ -55,15 +55,13 @@ def test_instanceloader_json_data(tmp_path, filename, default_filetype, open_wid
 )
 def test_instanceloader_yaml_data(tmp_path, filename, default_filetype, open_wide):
     f = tmp_path / filename
-    f.write_text(
-        """\
+    f.write_text("""\
 a:
   b:
    - 1
    - 2
   c: d
-"""
-    )
+""")
     loader = InstanceLoader(open_wide(f), default_filetype=default_filetype)
     data = list(loader.iter_files())
     assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
@@ -178,15 +176,13 @@ def test_instanceloader_optional_format_handling(
 
 def test_instanceloader_yaml_dup_anchor(tmp_path, open_wide):
     f = tmp_path / "foo.yaml"
-    f.write_text(
-        """\
+    f.write_text("""\
 a:
   b: &anchor
    - 1
    - 2
   c: &anchor d
-"""
-    )
+""")
     loader = InstanceLoader(open_wide(f))
     data = list(loader.iter_files())
     assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]

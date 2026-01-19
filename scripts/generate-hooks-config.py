@@ -60,14 +60,10 @@ def generate_hook_lines(config) -> t.Iterator[str]:
     yield "  language: python"
 
     if isinstance(config["files"], list):
-        config["files"] = (
-            r""">
+        config["files"] = r""">
     (?x)^(
       {}
-    )$""".format(
-                "|\n      ".join(config["files"])
-            )
-        )
+    )$""".format("|\n      ".join(config["files"]))
 
     yield f"  files: {config['files']}"
 
@@ -121,10 +117,7 @@ def update_precommit_usage_supported_hooks() -> None:
     content_head = content.split(generated_list_start)[0]
     content_tail = content.split(generated_list_end)[-1]
 
-    generated_list = "\n\n".join(
-        [generated_list_start]
-        + [
-            f"""\
+    generated_list = "\n\n".join([generated_list_start] + [f"""\
 ``{config["id"]}``
 {"~" * (len(config["id"]) + 4)}
 
@@ -137,11 +130,7 @@ def update_precommit_usage_supported_hooks() -> None:
       rev: {version}
       hooks:
         - id: {config["id"]}
-"""
-            for config in iter_catalog_hooks()
-        ]
-        + [generated_list_end]
-    )
+""" for config in iter_catalog_hooks()] + [generated_list_end])
 
     content = content_head + generated_list + content_tail
     with open("docs/precommit_usage.rst", "w") as fp:
