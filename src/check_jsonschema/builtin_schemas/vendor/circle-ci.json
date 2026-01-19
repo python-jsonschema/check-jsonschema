@@ -2151,12 +2151,23 @@
                                                                 "^[A-Za-z][A-Za-z\\s\\d_-]*$": {
                                                                     "oneOf": [
                                                                         {
-                                                                            "type": "string",
-                                                                            "enum": [
-                                                                                "success",
-                                                                                "failed",
-                                                                                "canceled",
-                                                                                "not_run"
+                                                                            "oneOf": [
+                                                                                {
+                                                                                    "const": "success"
+                                                                                },
+                                                                                {
+                                                                                    "const": "failed"
+                                                                                },
+                                                                                {
+                                                                                    "const": "canceled"
+                                                                                },
+                                                                                {
+                                                                                    "const": "not_run"
+                                                                                },
+                                                                                {
+                                                                                    "const": "terminal",
+                                                                                    "markdownDescription": "Shorthand for `[success, failed, canceled, not_run]` - matches when the upstream job has reached any terminal state."
+                                                                                }
                                                                             ]
                                                                         },
                                                                         {
