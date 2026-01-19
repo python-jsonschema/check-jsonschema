@@ -30,13 +30,11 @@ def test_text_format_success(capsys, verbosity, use_report_result_path):
     elif verbosity == 1:
         assert captured.out == "ok -- validation done\n"
     else:
-        assert captured.out == textwrap.dedent(
-            """\
+        assert captured.out == textwrap.dedent("""\
             ok -- validation done
             The following files were checked:
               foo.json
-            """
-        )
+            """)
 
 
 @pytest.mark.parametrize("verbosity", (0, 1, 2))
@@ -258,13 +256,8 @@ def test_text_print_parse_error_with_cause(capsys):
     # nothing to stderr
     assert captured.err == ""
     # stdout contains a nicely formatted error
-    assert (
-        textwrap.dedent(
-            """\
+    assert textwrap.dedent("""\
             Several files failed to parse.
               whoopsie during parsing
                 JSONDecodeError: a bad thing happened: line 1 column 2 (char 1)
-            """
-        )
-        in captured.out
-    )
+            """) in captured.out
