@@ -12,7 +12,7 @@ Unreleased
 
 - Update vendored schemas: buildkite, circle-ci, dependabot, github-issue-forms,
   github-workflows, gitlab-ci, mergify, readthedocs, renovate, snapcraft, taskfile
-  (2026-01-18)
+  (2026-01-25)
 
 0.36.0
 ------
