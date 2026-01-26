@@ -19,7 +19,7 @@ docs = [
 
 [project]
 name = "check-jsonschema"
-version = "0.36.0"
+version = "0.36.1"
 description = "A jsonschema CLI and pre-commit hook"
 authors = [
     { name = "Stephen Rosen", email = "sirosen0@gmail.com" },

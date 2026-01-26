@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.36.1
+------
+
 - Update vendored schemas: buildkite, circle-ci, dependabot, github-issue-forms,
   github-workflows, gitlab-ci, mergify, readthedocs, renovate, snapcraft, taskfile
   (2026-01-25)
