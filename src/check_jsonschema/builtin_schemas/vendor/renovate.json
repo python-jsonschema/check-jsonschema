@@ -1,7 +1,7 @@
 {
-  "title": "JSON schema for Renovate 42.84.2 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 42.92.4 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "42.84.2",
+  "x-renovate-version": "42.92.4",
   "allowComments": true,
   "type": "object",
   "properties": {
@@ -2736,7 +2736,7 @@
     "dockerSidecarImage": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nChange this value to override the default Renovate sidecar image.",
       "type": "string",
-      "default": "ghcr.io/containerbase/sidecar:13.26.4"
+      "default": "ghcr.io/containerbase/sidecar:13.26.6"
     },
     "dockerUser": {
       "description": "Deprecated: This configuration option is only intended to be used with 'global' configuration when self-hosting, not used in a repository configuration file. Renovate likely won't use the configuration, and these fields will be removed from the repository configuration documentation in Renovate v43 (https://github.com/renovatebot/renovate/issues/38728)\n\nSet the `UID` and `GID` for Docker-based binaries if you use `binarySource=docker`.",
@@ -5350,8 +5350,12 @@
       "type": "object",
       "default": {
         "managerFilePatterns": [
-          "/(^|/)\\.?mise\\.toml$/",
-          "/(^|/)\\.?mise/config\\.toml$/"
+          "**/{,.}mise{,.*}.toml",
+          "**/{,.}mise/config{,.*}.toml",
+          "**/.config/mise{,.*}.toml",
+          "**/.config/mise/{mise,config}{,.*}.toml",
+          "**/.config/mise/conf.d/*.toml",
+          "**/.rtx{,.*}.toml"
         ]
       },
       "$ref": "#",
@@ -6844,6 +6848,7 @@
           "gomodUpdateImportPaths",
           "gomodSkipVendor",
           "gomodVendor",
+          "goGenerate",
           "helmUpdateSubChartArchives",
           "kustomizeInflateHelmCharts",
           "npmDedupe",
@@ -8906,6 +8911,7 @@
             "rez",
             "rpm",
             "ruby",
+            "rust-release-channel",
             "same-major",
             "semver",
             "semver-coerced",
