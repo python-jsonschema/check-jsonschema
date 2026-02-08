@@ -1642,7 +1642,12 @@
                                             "m2pro.medium",
                                             "m2pro.large",
                                             "m4pro.medium",
-                                            "m4pro.large"
+                                            "m4pro.large",
+                                            "medium-gen2",
+                                            "large-gen2",
+                                            "xlarge-gen2",
+                                            "2xlarge-gen2",
+                                            "2xlarge+-gen2"
                                         ]
                                     },
                                     {
