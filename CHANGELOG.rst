@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: circle-ci, gitlab-ci, mergify, renovate, snapcraft,
+  woodpecker-ci (2026-02-15)
+
 0.36.1
 ------
 
