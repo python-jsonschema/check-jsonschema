@@ -1,7 +1,7 @@
 {
-  "title": "JSON schema for Renovate 43.15.1 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 43.31.0 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "43.15.1",
+  "x-renovate-version": "43.31.0",
   "allowComments": true,
   "type": "object",
   "properties": {
@@ -1550,6 +1550,11 @@
       "description": "If enabled, append a table in the commit message body describing all updates in the commit.",
       "type": "boolean",
       "default": false
+    },
+    "commitHourlyLimit": {
+      "description": "Rate limit commits to maximum x per hour. 0 means no limit.",
+      "type": "integer",
+      "default": 0
     },
     "commitMessage": {
       "description": "Message to use for commit messages and pull request titles.",
@@ -8208,6 +8213,7 @@
             "debian",
             "devbox",
             "docker",
+            "elm",
             "exact",
             "git",
             "glasskube",
@@ -8491,6 +8497,11 @@
       {
         "required": [
           "repositoryCacheType"
+        ]
+      },
+      {
+        "required": [
+          "repositoryCacheForceLocal"
         ]
       },
       {
