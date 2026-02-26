@@ -19,6 +19,7 @@ from .schema_loader import SchemaLoaderBase, SchemaParseError, UnsupportedUrlSch
 
 class _Exit(Exception):
     def __init__(self, code: int) -> None:
+        super().__init__(code)
         self.code = code
 
 
