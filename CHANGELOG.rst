@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.37.0
+------
+
 - Update vendored schemas: bamboo-spec, bitbucket-pipelines, circle-ci, gitlab-ci,
   mergify, renovate, woodpecker-ci (2026-02-26)
 - Removed support for Python 3.9
