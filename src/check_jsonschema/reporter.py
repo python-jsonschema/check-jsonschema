@@ -57,7 +57,7 @@ class TextReporter(Reporter):
             return
         ok = click.style("ok", fg="green")
         self._echo(f"{ok} -- validation done")
-        if self.verbosity > 1:
+        if self.verbosity > 2:
             self._echo("The following files were checked:")
             for filename in result.successes:
                 self._echo(f"  {filename}")
