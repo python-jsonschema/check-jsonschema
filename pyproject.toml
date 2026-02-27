@@ -16,6 +16,11 @@ docs = [
     "sphinx-issues<6",
     "furo==2025.12.19",
 ]
+check-package-metadata = [
+    "build",
+    "twine",
+    "check-sdist",
+]
 
 [project]
 name = "check-jsonschema"
@@ -56,6 +61,9 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
+
+[tool.check-sdist]
+git-only = ["RELEASING.md", ".gitignore", "docs/*"]
 
 [tool.isort]
 profile = "black"

@@ -17,6 +17,8 @@ Unreleased
   all errors are reported but the checked filenames are no longer displayed. The
   list of filenames checked is now emitted at the second verbosity level (`-vv`)
   and above. (:issue:`648`)
+- `check-jsonschema`'s sdist contents are now validated with `check-sdist`, and missing
+  files have been added.
 
 0.36.2
 ------
