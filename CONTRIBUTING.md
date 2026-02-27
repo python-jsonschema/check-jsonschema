@@ -44,12 +44,12 @@ These files are automatically picked up by the testsuite and checked.
 Hooks are defined in `src/check_jsonschema/catalog.py`, and rendered to
 `.pre-commit-hooks.yaml` with the generator script. It can be run with
 
-    make generate-hooks
+    just generate-hooks
 
 Schemas are pulled down based on this same config. If you want to update the
 vendored schema copies, run
 
-    make vendor-schemas
+    just vendor-schemas
 
 ## Documentation
 

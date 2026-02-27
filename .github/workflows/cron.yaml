@@ -16,10 +16,10 @@ jobs:
         python-version: '3.x'
 
     - name: install tox
-      run: python -m pip install 'tox'
+      run: python -m pip install 'tox' 'rust-just'
 
     - name: vendor-schemas
-      run: make vendor-schemas
+      run: just vendor-schemas
 
     # this action seems to have significant usage, so it should be stable
     # can always re-implement with `git status --porcelain`, etc. if necessary
