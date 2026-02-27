@@ -10,8 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: bitbucket-pipelines, circle-ci, gitlab-ci, mergify, renovate
-  (2026-02-22)
+- Update vendored schemas: bamboo-spec, bitbucket-pipelines, circle-ci, gitlab-ci,
+  mergify, renovate, woodpecker-ci (2026-02-26)
 - Removed support for Python 3.9
 - Verbose text output has been adjusted. At the first verbosity level (`-v`),
   all errors are reported but the checked filenames are no longer displayed. The

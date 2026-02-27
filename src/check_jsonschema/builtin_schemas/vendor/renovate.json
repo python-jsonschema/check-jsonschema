@@ -1,7 +1,7 @@
 {
-  "title": "JSON schema for Renovate 43.31.0 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 43.43.2 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "43.31.0",
+  "x-renovate-version": "43.43.2",
   "allowComments": true,
   "type": "object",
   "properties": {
@@ -8211,6 +8211,7 @@
             "conda",
             "deb",
             "debian",
+            "deno",
             "devbox",
             "docker",
             "elm",
@@ -8852,6 +8853,11 @@
       {
         "required": [
           "httpCacheTtlDays"
+        ]
+      },
+      {
+        "required": [
+          "prCacheSyncMaxPages"
         ]
       },
       {
