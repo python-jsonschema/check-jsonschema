@@ -12,6 +12,7 @@ Unreleased
 
 - Update vendored schemas: bitbucket-pipelines, circle-ci, gitlab-ci, mergify, renovate
   (2026-02-22)
+- Removed support for Python 3.9
 
 0.36.2
 ------
