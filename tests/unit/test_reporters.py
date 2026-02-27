@@ -15,7 +15,7 @@ def _make_success_result():
     return res
 
 
-@pytest.mark.parametrize("verbosity", (0, 1, 2))
+@pytest.mark.parametrize("verbosity", (0, 1, 2, 3))
 @pytest.mark.parametrize("use_report_result_path", (False, True))
 def test_text_format_success(capsys, verbosity, use_report_result_path):
     reporter = TextReporter(verbosity=verbosity)
@@ -27,7 +27,7 @@ def test_text_format_success(capsys, verbosity, use_report_result_path):
     assert captured.err == ""
     if verbosity == 0:
         assert captured.out == ""
-    elif verbosity == 1:
+    elif verbosity < 3:
         assert captured.out == "ok -- validation done\n"
     else:
         assert captured.out == textwrap.dedent("""\

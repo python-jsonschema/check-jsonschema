@@ -13,6 +13,10 @@ Unreleased
 - Update vendored schemas: bitbucket-pipelines, circle-ci, gitlab-ci, mergify, renovate
   (2026-02-22)
 - Removed support for Python 3.9
+- Verbose text output has been adjusted. At the first verbosity level (`-v`),
+  all errors are reported but the checked filenames are no longer displayed. The
+  list of filenames checked is now emitted at the second verbosity level (`-vv`)
+  and above. (:issue:`648`)
 
 0.36.2
 ------
