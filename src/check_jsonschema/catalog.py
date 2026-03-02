@@ -81,7 +81,7 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "name": "Validate Changie config",
             "description": "Validate Changie configuration",
             "files": r"^\.changie\.(yml|yaml)$",
-            "types": "yaml"
+            "types": "yaml",
         },
     },
     "circle-ci": {
