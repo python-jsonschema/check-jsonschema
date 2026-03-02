@@ -99,6 +99,20 @@ Validate Buildkite Pipelines against the schema provided by Buildkite
         - id: check-buildkite
 
 
+``check-changie``
+~~~~~~~~~~~~~~~~~
+
+Validate Changie configuration
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.37.0
+      hooks:
+        - id: check-changie
+
+
 ``check-circle-ci``
 ~~~~~~~~~~~~~~~~~~~
 

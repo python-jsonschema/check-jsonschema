@@ -8,6 +8,8 @@ CHANGELOG
 Unreleased
 ----------
 
+- Add Changie.dev schema and pre-commit hook. Thanks :user:`edgarrmondragon`! (:pr:`662`)
+
 .. vendor-insert-here
 
 0.37.0

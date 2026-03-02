@@ -90,6 +90,7 @@ SchemaStore and other sources:
 - ``vendor.bamboo-spec``
 - ``vendor.bitbucket-pipelines``
 - ``vendor.buildkite``
+- ``vendor.changie``
 - ``vendor.circle-ci``
 - ``vendor.citation-file-format``
 - ``vendor.cloudbuild``
