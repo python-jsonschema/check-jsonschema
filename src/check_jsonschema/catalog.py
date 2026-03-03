@@ -75,6 +75,15 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types_or": ["json", "yaml"],
         },
     },
+    "changie": {
+        "url": "https://changie.dev/schema.json",
+        "hook_config": {
+            "name": "Validate Changie config",
+            "description": "Validate Changie configuration",
+            "files": r"^\.changie\.(yml|yaml)$",
+            "types": "yaml",
+        },
+    },
     "circle-ci": {
         "url": _githubusercontent_url(
             "CircleCI-Public", "circleci-yaml-language-server", "main", "schema.json"
