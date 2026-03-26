@@ -8,12 +8,14 @@ CHANGELOG
 Unreleased
 ----------
 
-- Add Changie.dev schema and pre-commit hook. Thanks :user:`edgarrmondragon`! (:pr:`662`)
-
 .. vendor-insert-here
+
+0.37.1
+------
 
 - Update vendored schemas: buildkite, circle-ci, dependabot, github-workflows,
   gitlab-ci, mergify, readthedocs, renovate, woodpecker-ci (2026-03-25)
+- Add Changie.dev schema and pre-commit hook. Thanks :user:`edgarrmondragon`! (:pr:`662`)
 
 0.37.0
 ------
