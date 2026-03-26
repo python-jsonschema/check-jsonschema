@@ -2166,8 +2166,11 @@
                                                                                     "const": "not_run"
                                                                                 },
                                                                                 {
+                                                                                    "const": "unauthorized"
+                                                                                },
+                                                                                {
                                                                                     "const": "terminal",
-                                                                                    "markdownDescription": "Shorthand for `[success, failed, canceled, not_run]` - matches when the upstream job has reached any terminal state."
+                                                                                    "markdownDescription": "Shorthand for `[success, failed, canceled, unauthorized, not_run]` - matches when the upstream job has reached any terminal state."
                                                                                 }
                                                                             ]
                                                                         },
@@ -2180,7 +2183,8 @@
                                                                                     "success",
                                                                                     "failed",
                                                                                     "canceled",
-                                                                                    "not_run"
+                                                                                    "not_run",
+                                                                                    "unauthorized"
                                                                                 ]
                                                                             }
                                                                         }

@@ -211,6 +211,8 @@
       "type": "string",
       "description": "A unique identifier for a step, must not resemble a UUID",
       "examples": ["deploy-staging", "test-integration"],
+      "maxLength": 100,
+      "pattern": "^[a-zA-Z0-9_\\-:]+$",
       "not": {
         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
       }

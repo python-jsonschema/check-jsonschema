@@ -133,7 +133,8 @@
               "type": "null"
             }
           ],
-          "default": null
+          "default": null,
+          "deprecated": true
         },
         "queue": {
           "anyOf": [
@@ -1674,6 +1675,7 @@
         },
         "number": {
           "description": "The pull request number.",
+          "maximum": 9223372036854775807,
           "minimum": 0,
           "title": "Number",
           "type": "integer"
@@ -1784,6 +1786,7 @@
                 "PR_AHEAD_DEQUEUED",
                 "BATCH_AHEAD_FAILED",
                 "PR_WITH_HIGHER_PRIORITY_QUEUED",
+                "SCHEDULED_FREEZE_STATUS_CHANGED",
                 "SPECULATIVE_CHECK_NUMBER_REDUCED",
                 "CHECKS_TIMEOUT",
                 "CHECKS_FAILED",
@@ -1806,7 +1809,8 @@
                 "CONFIGURATION_CHANGED",
                 "UNPROCESSABLE_PULL_REQUEST",
                 "PR_MANUALLY_DEQUEUED",
-                "INTERMEDIATE_RESULTS_SKIPPED"
+                "INTERMEDIATE_RESULTS_SKIPPED",
+                "CHECKS_RETRIED"
               ],
               "type": "string"
             },
@@ -2379,7 +2383,7 @@
             }
           ],
           "default": null,
-          "description": "The name of the queue where the pull request should be added. If no name is set, queue_conditions will be applied instead.",
+          "description": "The name of the queue rule where the pull request should be added. If no name is set, queue_conditions will be applied instead.",
           "title": "Name"
         }
       },
@@ -2464,6 +2468,13 @@
           "default": null,
           "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds.",
           "title": "Checks Timeout"
+        },
+        "max_checks_retries": {
+          "default": 0,
+          "description": "Number of times Mergify will retry failed CI checks before removing the pull request from the queue. On each retry, the draft pull request is recreated to trigger a fresh CI run. This is useful for handling flaky CI. When set to a value greater than 0, in-place checks are disabled and a draft pull request is always created. Set to 0 (default) to disable retries.",
+          "minimum": 0,
+          "title": "Max Checks Retries",
+          "type": "integer"
         },
         "draft_bot_account": {
           "anyOf": [
@@ -2567,7 +2578,7 @@
             }
           ],
           "default": null,
-          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase.",
+          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase`.",
           "title": "Update Method"
         },
         "commit_message_template": {
@@ -2687,6 +2698,13 @@
           "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds.",
           "title": "Checks Timeout"
         },
+        "max_checks_retries": {
+          "default": 0,
+          "description": "Number of times Mergify will retry failed CI checks before removing the pull request from the queue. On each retry, the draft pull request is recreated to trigger a fresh CI run. This is useful for handling flaky CI. When set to a value greater than 0, in-place checks are disabled and a draft pull request is always created. Set to 0 (default) to disable retries.",
+          "minimum": 0,
+          "title": "Max Checks Retries",
+          "type": "integer"
+        },
         "draft_bot_account": {
           "anyOf": [
             {
@@ -2789,7 +2807,7 @@
             }
           ],
           "default": null,
-          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase.",
+          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase`.",
           "title": "Update Method"
         },
         "commit_message_template": {
