@@ -15,8 +15,8 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: install tox
-      run: python -m pip install 'tox' 'rust-just'
+    - name: install tox, uv, and just
+      run: python -m pip install 'tox' 'tox-uv' 'uv' 'rust-just'
 
     - name: vendor-schemas
       run: just vendor-schemas
