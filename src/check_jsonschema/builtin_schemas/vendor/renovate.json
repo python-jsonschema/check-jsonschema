@@ -1,12 +1,14 @@
 {
-  "title": "JSON schema for Renovate 43.43.2 config files (https://renovatebot.com/)",
+  "$id": "https://docs.renovatebot.com/renovate-schema.json",
+  "title": "JSON schema for Renovate 43.91.4 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "43.43.2",
+  "x-renovate-version": "43.91.4",
   "allowComments": true,
   "type": "object",
   "properties": {
     "abandonmentThreshold": {
       "description": "Flags packages that have not been updated within this period as abandoned.",
+      "markdownDescription": "Flags packages that have not been updated within this period as abandoned.",
       "type": [
         "string",
         "null"
@@ -15,6 +17,7 @@
     },
     "addLabels": {
       "description": "Labels to add to Pull Request.",
+      "markdownDescription": "Labels to add to Pull Request.",
       "type": "array",
       "items": {
         "type": "string"
@@ -22,11 +25,13 @@
     },
     "additionalBranchPrefix": {
       "description": "Additional string value to be appended to `branchPrefix`.",
+      "markdownDescription": "Additional string value to be appended to `branchPrefix`.",
       "type": "string",
       "default": ""
     },
     "additionalReviewers": {
       "description": "Additional reviewers for Pull Requests (in contrast to `reviewers`, this option adds to the existing reviewer list, rather than replacing it).",
+      "markdownDescription": "Additional reviewers for Pull Requests (in contrast to `reviewers`, this option adds to the existing reviewer list, rather than replacing it).",
       "type": "array",
       "items": {
         "type": "string"
@@ -34,6 +39,7 @@
     },
     "ansible": {
       "description": "Configuration object for the ansible manager",
+      "markdownDescription": "Configuration object for the ansible manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -63,11 +69,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -87,6 +95,7 @@
     },
     "ansible-galaxy": {
       "description": "Configuration object for the ansible-galaxy manager",
+      "markdownDescription": "Configuration object for the ansible-galaxy manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -116,11 +125,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -140,6 +151,7 @@
     },
     "argocd": {
       "description": "Configuration object for the argocd manager",
+      "markdownDescription": "Configuration object for the argocd manager",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -167,11 +179,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -191,6 +205,7 @@
     },
     "asdf": {
       "description": "Configuration object for the asdf manager",
+      "markdownDescription": "Configuration object for the asdf manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -220,11 +235,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -244,11 +261,13 @@
     },
     "assignAutomerge": {
       "description": "Assign reviewers and assignees even if the PR is to be automerged.",
+      "markdownDescription": "Assign reviewers and assignees even if the PR is to be automerged.",
       "type": "boolean",
       "default": false
     },
     "assignees": {
       "description": "Assignees for Pull Request (either username or email address depending on the platform).",
+      "markdownDescription": "Assignees for Pull Request (either username or email address depending on the platform).",
       "type": "array",
       "items": {
         "type": "string"
@@ -256,11 +275,13 @@
     },
     "assigneesFromCodeOwners": {
       "description": "Determine assignees based on configured code owners and changes in PR.",
+      "markdownDescription": "Determine assignees based on configured code owners and changes in PR.",
       "type": "boolean",
       "default": false
     },
     "assigneesSampleSize": {
       "description": "Take a random sample of given size from `assignees`.",
+      "markdownDescription": "Take a random sample of given size from `assignees`.",
       "type": [
         "integer",
         "null"
@@ -269,26 +290,31 @@
     },
     "autoApprove": {
       "description": "Set to `true` to automatically approve PRs.",
+      "markdownDescription": "Set to `true` to automatically approve PRs.",
       "type": "boolean",
       "default": false
     },
     "autoReplaceGlobalMatch": {
       "description": "Control whether replacement regular expressions are global matches or only the first match.",
+      "markdownDescription": "Control whether replacement regular expressions are global matches or only the first match.",
       "type": "boolean",
       "default": true
     },
     "automerge": {
       "description": "Whether to automerge branches/PRs automatically, without human intervention.",
+      "markdownDescription": "Whether to automerge branches/PRs automatically, without human intervention.",
       "type": "boolean",
       "default": false
     },
     "automergeComment": {
       "description": "PR comment to add to trigger automerge. Only used if `automergeType=pr-comment`.",
+      "markdownDescription": "PR comment to add to trigger automerge. Only used if `automergeType=pr-comment`.",
       "type": "string",
       "default": "automergeComment"
     },
     "automergeSchedule": {
       "description": "Limit automerge to these times of day or week.",
+      "markdownDescription": "Limit automerge to these times of day or week.",
       "oneOf": [
         {
           "type": "array",
@@ -306,6 +332,7 @@
     },
     "automergeStrategy": {
       "description": "The merge strategy to use when automerging PRs. Used only if `automergeType=pr`.",
+      "markdownDescription": "The merge strategy to use when automerging PRs. Used only if `automergeType=pr`.",
       "type": "string",
       "enum": [
         "auto",
@@ -319,6 +346,7 @@
     },
     "automergeType": {
       "description": "How to automerge, if enabled.",
+      "markdownDescription": "How to automerge, if enabled.",
       "type": "string",
       "enum": [
         "branch",
@@ -329,6 +357,7 @@
     },
     "azure-pipelines": {
       "description": "Configuration object for the azure-pipelines manager",
+      "markdownDescription": "Configuration object for the azure-pipelines manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -360,11 +389,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -384,11 +415,13 @@
     },
     "azureWorkItemId": {
       "description": "The id of an existing work item on Azure Boards to link to each PR.",
+      "markdownDescription": "The id of an existing work item on Azure Boards to link to each PR.",
       "type": "integer",
       "default": 0
     },
     "baseBranchPatterns": {
       "description": "List of one or more custom base branches defined as exact strings and/or via regex expressions.",
+      "markdownDescription": "List of one or more custom base branches defined as exact strings and/or via regex expressions.",
       "type": "array",
       "items": {
         "type": "string"
@@ -396,6 +429,7 @@
     },
     "batect": {
       "description": "Configuration object for the batect manager",
+      "markdownDescription": "Configuration object for the batect manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -425,11 +459,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -449,6 +485,7 @@
     },
     "batect-wrapper": {
       "description": "Configuration object for the batect-wrapper manager",
+      "markdownDescription": "Configuration object for the batect-wrapper manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -479,11 +516,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -503,6 +542,7 @@
     },
     "bazel": {
       "description": "Configuration object for the bazel manager",
+      "markdownDescription": "Configuration object for the bazel manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -534,11 +574,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -558,6 +600,7 @@
     },
     "bazel-module": {
       "description": "Configuration object for the bazel-module manager",
+      "markdownDescription": "Configuration object for the bazel-module manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -587,11 +630,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -611,6 +656,7 @@
     },
     "bazelisk": {
       "description": "Configuration object for the bazelisk manager",
+      "markdownDescription": "Configuration object for the bazelisk manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -642,11 +688,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -666,16 +714,19 @@
     },
     "bbAutoResolvePrTasks": {
       "description": "The PR tasks will be automatically completed after the PR is raised.",
+      "markdownDescription": "The PR tasks will be automatically completed after the PR is raised.",
       "type": "boolean",
       "default": false
     },
     "bbUseDefaultReviewers": {
       "description": "Use the default reviewers (Bitbucket only).",
+      "markdownDescription": "Use the default reviewers (Bitbucket only).",
       "type": "boolean",
       "default": true
     },
     "bicep": {
       "description": "Configuration object for the bicep manager",
+      "markdownDescription": "Configuration object for the bicep manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -705,11 +756,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -729,6 +782,7 @@
     },
     "bitbucket-pipelines": {
       "description": "Configuration object for the bitbucket-pipelines manager",
+      "markdownDescription": "Configuration object for the bitbucket-pipelines manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -758,11 +812,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -782,6 +838,7 @@
     },
     "bitrise": {
       "description": "Configuration object for the bitrise manager",
+      "markdownDescription": "Configuration object for the bitrise manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -811,11 +868,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -835,6 +894,7 @@
     },
     "branchConcurrentLimit": {
       "description": "Limit to a maximum of x concurrent branches. 0 means no limit, `null` (default) inherits value from `prConcurrentLimit`.",
+      "markdownDescription": "Limit to a maximum of x concurrent branches. 0 means no limit, `null` (default) inherits value from `prConcurrentLimit`.",
       "type": [
         "integer",
         "null"
@@ -843,31 +903,37 @@
     },
     "branchName": {
       "description": "Branch name template.",
+      "markdownDescription": "Branch name template.",
       "type": "string",
       "default": "{{{branchPrefix}}}{{{additionalBranchPrefix}}}{{{branchTopic}}}"
     },
     "branchNameStrict": {
       "description": "Whether to be strict about the use of special characters within the branch name.",
+      "markdownDescription": "Whether to be strict about the use of special characters within the branch name.",
       "type": "boolean",
       "default": false
     },
     "branchPrefix": {
       "description": "Prefix to use for all branch names.",
+      "markdownDescription": "Prefix to use for all branch names.",
       "type": "string",
       "default": "renovate/"
     },
     "branchPrefixOld": {
       "description": "Old branchPrefix value to check for existing PRs.",
+      "markdownDescription": "Old branchPrefix value to check for existing PRs.",
       "type": "string",
       "default": "renovate/"
     },
     "branchTopic": {
       "description": "Branch topic.",
+      "markdownDescription": "Branch topic.",
       "type": "string",
       "default": "{{{depNameSanitized}}}-{{{newMajor}}}{{#if separateMinorPatch}}{{#if isPatch}}.{{{newMinor}}}{{/if}}{{/if}}{{#if separateMultipleMinor}}{{#if isMinor}}.{{{newMinor}}}{{/if}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}"
     },
     "buildkite": {
       "description": "Configuration object for the buildkite manager",
+      "markdownDescription": "Configuration object for the buildkite manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -900,11 +966,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -924,6 +992,7 @@
     },
     "buildpacks": {
       "description": "Configuration object for the buildpacks manager",
+      "markdownDescription": "Configuration object for the buildpacks manager",
       "type": "object",
       "default": {
         "commitMessageTopic": "buildpack {{depName}}",
@@ -955,11 +1024,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -979,6 +1050,7 @@
     },
     "bumpVersion": {
       "description": "Bump the version in the package file being updated.",
+      "markdownDescription": "Bump the version in the package file being updated.",
       "type": "string",
       "enum": [
         "major",
@@ -989,6 +1061,7 @@
     },
     "bumpVersions": {
       "description": "A list of bumpVersion config options to bump generic version numbers.",
+      "markdownDescription": "A list of bumpVersion config options to bump generic version numbers.",
       "type": "array",
       "items": {
         "allOf": [
@@ -1012,10 +1085,12 @@
               },
               "bumpType": {
                 "description": "The semver level to use when bumping versions. This is used by the `bumpVersions` feature.",
+                "markdownDescription": "The semver level to use when bumping versions. This is used by the `bumpVersions` feature.",
                 "type": "string"
               },
               "filePatterns": {
                 "description": "A list of patterns to match files that contain the version string.",
+                "markdownDescription": "A list of patterns to match files that contain the version string.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -1023,6 +1098,7 @@
               },
               "matchStrings": {
                 "description": "Queries to use. Valid only within `bumpVersions` or `customManagers` object.",
+                "markdownDescription": "Queries to use. Valid only within `bumpVersions` or `customManagers` object.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -1030,6 +1106,7 @@
               },
               "name": {
                 "description": "A name for the bumpVersion config. This is used for logging and debugging.",
+                "markdownDescription": "A name for the bumpVersion config. This is used for logging and debugging.",
                 "type": "string"
               }
             }
@@ -1040,6 +1117,7 @@
     },
     "bun": {
       "description": "Configuration object for the bun manager",
+      "markdownDescription": "Configuration object for the bun manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1078,11 +1156,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1102,6 +1182,7 @@
     },
     "bun-version": {
       "description": "Configuration object for the bun-version manager",
+      "markdownDescription": "Configuration object for the bun-version manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1132,11 +1213,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1156,6 +1239,7 @@
     },
     "bundler": {
       "description": "Configuration object for the bundler manager",
+      "markdownDescription": "Configuration object for the bundler manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1186,11 +1270,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1210,6 +1296,7 @@
     },
     "cake": {
       "description": "Configuration object for the cake manager",
+      "markdownDescription": "Configuration object for the cake manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1239,11 +1326,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1263,6 +1352,7 @@
     },
     "cargo": {
       "description": "Configuration object for the cargo manager",
+      "markdownDescription": "Configuration object for the cargo manager",
       "type": "object",
       "default": {
         "commitMessageTopic": "Rust crate {{depName}}",
@@ -1293,11 +1383,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1317,6 +1409,7 @@
     },
     "cdnurl": {
       "description": "Configuration object for the cdnurl manager",
+      "markdownDescription": "Configuration object for the cdnurl manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [],
@@ -1345,11 +1438,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1369,6 +1464,7 @@
     },
     "circleci": {
       "description": "Configuration object for the circleci manager",
+      "markdownDescription": "Configuration object for the circleci manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1398,11 +1494,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1422,11 +1520,13 @@
     },
     "cloneSubmodules": {
       "description": "Set to `true` to initialize submodules during repository clone.",
+      "markdownDescription": "Set to `true` to initialize submodules during repository clone.",
       "type": "boolean",
       "default": false
     },
     "cloneSubmodulesFilter": {
       "description": "List of submodules names or patterns to clone when cloneSubmodules=true.",
+      "markdownDescription": "List of submodules names or patterns to clone when cloneSubmodules=true.",
       "type": "array",
       "items": {
         "type": "string"
@@ -1437,6 +1537,7 @@
     },
     "cloudbuild": {
       "description": "Configuration object for the cloudbuild manager",
+      "markdownDescription": "Configuration object for the cloudbuild manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1466,11 +1567,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1490,6 +1593,7 @@
     },
     "cocoapods": {
       "description": "Configuration object for the cocoapods manager",
+      "markdownDescription": "Configuration object for the cocoapods manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1520,11 +1624,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1544,35 +1650,42 @@
     },
     "commitBody": {
       "description": "Commit message body template. Will be appended to commit message, separated by two line returns.",
+      "markdownDescription": "Commit message body template. Will be appended to commit message, separated by two line returns.",
       "type": "string"
     },
     "commitBodyTable": {
       "description": "If enabled, append a table in the commit message body describing all updates in the commit.",
+      "markdownDescription": "If enabled, append a table in the commit message body describing all updates in the commit.",
       "type": "boolean",
       "default": false
     },
     "commitHourlyLimit": {
       "description": "Rate limit commits to maximum x per hour. 0 means no limit.",
+      "markdownDescription": "Rate limit commits to maximum x per hour. 0 means no limit.",
       "type": "integer",
       "default": 0
     },
     "commitMessage": {
       "description": "Message to use for commit messages and pull request titles.",
+      "markdownDescription": "Message to use for commit messages and pull request titles.",
       "type": "string",
       "default": "{{{commitMessagePrefix}}} {{{commitMessageAction}}} {{{commitMessageTopic}}} {{{commitMessageExtra}}} {{{commitMessageSuffix}}}"
     },
     "commitMessageAction": {
       "description": "Action verb to use in commit messages and PR titles.",
+      "markdownDescription": "Action verb to use in commit messages and PR titles.",
       "type": "string",
       "default": "Update"
     },
     "commitMessageExtra": {
       "description": "Extra description used after the commit message topic - typically the version.",
+      "markdownDescription": "Extra description used after the commit message topic - typically the version.",
       "type": "string",
       "default": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}"
     },
     "commitMessageLowerCase": {
       "description": "Lowercase PR- and commit titles.",
+      "markdownDescription": "Lowercase PR- and commit titles.",
       "type": "string",
       "enum": [
         "auto",
@@ -1582,19 +1695,23 @@
     },
     "commitMessagePrefix": {
       "description": "Prefix to add to start of commit messages and PR titles. Uses a semantic prefix if `semanticCommits` is enabled.",
+      "markdownDescription": "Prefix to add to start of commit messages and PR titles. Uses a semantic prefix if `semanticCommits` is enabled.",
       "type": "string"
     },
     "commitMessageSuffix": {
       "description": "Suffix to add to end of commit messages and PR titles.",
+      "markdownDescription": "Suffix to add to end of commit messages and PR titles.",
       "type": "string"
     },
     "commitMessageTopic": {
       "description": "The upgrade topic/noun used in commit messages and PR titles.",
+      "markdownDescription": "The upgrade topic/noun used in commit messages and PR titles.",
       "type": "string",
       "default": "dependency {{depName}}"
     },
     "composer": {
       "description": "Configuration object for the composer manager",
+      "markdownDescription": "Configuration object for the composer manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1625,11 +1742,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1649,6 +1768,7 @@
     },
     "composerIgnorePlatformReqs": {
       "description": "Configure use of `--ignore-platform-reqs` or `--ignore-platform-req` for the Composer package manager.",
+      "markdownDescription": "Configure use of `--ignore-platform-reqs` or `--ignore-platform-req` for the Composer package manager.",
       "type": "array",
       "items": {
         "type": "string"
@@ -1657,6 +1777,7 @@
     },
     "conan": {
       "description": "Configuration object for the conan manager",
+      "markdownDescription": "Configuration object for the conan manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1688,11 +1809,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1712,21 +1835,25 @@
     },
     "confidential": {
       "description": "If enabled, issues created by Renovate are set as confidential.",
+      "markdownDescription": "If enabled, issues created by Renovate are set as confidential.",
       "type": "boolean",
       "default": false
     },
     "configMigration": {
       "description": "Enable this to get config migration PRs when needed.",
+      "markdownDescription": "Enable this to get config migration PRs when needed.",
       "type": "boolean",
       "default": false
     },
     "configWarningReuseIssue": {
       "description": "Set this to `true` to make Renovate reuse/reopen an existing closed Config Warning issue, instead of opening a new one each time.",
+      "markdownDescription": "Set this to `true` to make Renovate reuse/reopen an existing closed Config Warning issue, instead of opening a new one each time.",
       "type": "boolean",
       "default": false
     },
     "constraints": {
       "description": "Configuration object to define language or manager version constraints.",
+      "markdownDescription": "Configuration object to define language or manager version constraints.",
       "type": "object",
       "default": {},
       "additionalProperties": {
@@ -1735,6 +1862,7 @@
     },
     "constraintsFiltering": {
       "description": "Perform release filtering based on language constraints.",
+      "markdownDescription": "Perform release filtering based on language constraints.",
       "type": "string",
       "enum": [
         "none",
@@ -1744,6 +1872,7 @@
     },
     "copier": {
       "description": "Configuration object for the copier manager",
+      "markdownDescription": "Configuration object for the copier manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1774,11 +1903,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1798,6 +1929,7 @@
     },
     "cpanfile": {
       "description": "Configuration object for the cpanfile manager",
+      "markdownDescription": "Configuration object for the cpanfile manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1827,11 +1959,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1851,6 +1985,7 @@
     },
     "crossplane": {
       "description": "Configuration object for the crossplane manager",
+      "markdownDescription": "Configuration object for the crossplane manager",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -1878,11 +2013,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1902,6 +2039,7 @@
     },
     "crow": {
       "description": "Configuration object for the crow manager",
+      "markdownDescription": "Configuration object for the crow manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1931,11 +2069,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -1955,6 +2095,7 @@
     },
     "customDatasources": {
       "description": "Defines custom datasources for usage by managers.",
+      "markdownDescription": "Defines custom datasources for usage by managers.",
       "type": "object",
       "default": {},
       "$ref": "#",
@@ -1980,11 +2121,13 @@
               },
               "defaultRegistryUrlTemplate": {
                 "description": "Template for generating a `defaultRegistryUrl` for custom datasource.",
+                "markdownDescription": "Template for generating a `defaultRegistryUrl` for custom datasource.",
                 "type": "string",
                 "default": ""
               },
               "format": {
                 "description": "Format of the custom datasource.",
+                "markdownDescription": "Format of the custom datasource.",
                 "type": "string",
                 "enum": [
                   "json",
@@ -1994,6 +2137,7 @@
               },
               "transformTemplates": {
                 "description": "List of jsonata transformation rules.",
+                "markdownDescription": "List of jsonata transformation rules.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -2007,6 +2151,7 @@
     },
     "customManagers": {
       "description": "Custom managers using regex matching.",
+      "markdownDescription": "Custom managers using regex matching.",
       "type": "array",
       "items": {
         "allOf": [
@@ -2030,14 +2175,17 @@
               },
               "autoReplaceStringTemplate": {
                 "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `customManagers` object.",
+                "markdownDescription": "Optional `extractVersion` for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               },
               "currentValueTemplate": {
                 "description": "Optional `currentValue` for extracted dependencies. Valid only within a `customManagers` object.",
+                "markdownDescription": "Optional `currentValue` for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               },
               "customType": {
                 "description": "Custom manager to use. Valid only within a `customManagers` object.",
+                "markdownDescription": "Custom manager to use. Valid only within a `customManagers` object.",
                 "type": "string",
                 "enum": [
                   "jsonata",
@@ -2046,22 +2194,27 @@
               },
               "datasourceTemplate": {
                 "description": "Optional datasource for extracted dependencies. Valid only within a `customManagers` object.",
+                "markdownDescription": "Optional datasource for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               },
               "depNameTemplate": {
                 "description": "Optional depName for extracted dependencies. Valid only within a `customManagers` object.",
+                "markdownDescription": "Optional depName for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               },
               "depTypeTemplate": {
                 "description": "Optional `depType` for extracted dependencies. Valid only within a `customManagers` object.",
+                "markdownDescription": "Optional `depType` for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               },
               "extractVersionTemplate": {
                 "description": "Optional `extractVersion` for extracted dependencies. Valid only within a `customManagers` object.",
+                "markdownDescription": "Optional `extractVersion` for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               },
               "fileFormat": {
                 "description": "It specifies the syntax of the package file being managed by the custom JSONata manager.",
+                "markdownDescription": "It specifies the syntax of the package file being managed by the custom JSONata manager.",
                 "type": "string",
                 "enum": [
                   "json",
@@ -2071,6 +2224,7 @@
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2085,6 +2239,7 @@
               },
               "matchStrings": {
                 "description": "Queries to use. Valid only within `bumpVersions` or `customManagers` object.",
+                "markdownDescription": "Queries to use. Valid only within `bumpVersions` or `customManagers` object.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -2092,6 +2247,7 @@
               },
               "matchStringsStrategy": {
                 "description": "Strategy how to interpret matchStrings.",
+                "markdownDescription": "Strategy how to interpret matchStrings.",
                 "type": "string",
                 "enum": [
                   "any",
@@ -2102,14 +2258,17 @@
               },
               "packageNameTemplate": {
                 "description": "Optional packageName for extracted dependencies, else defaults to `depName` value. Valid only within a `customManagers` object.",
+                "markdownDescription": "Optional packageName for extracted dependencies, else defaults to `depName` value. Valid only within a `customManagers` object.",
                 "type": "string"
               },
               "registryUrlTemplate": {
                 "description": "Optional registry URL for extracted dependencies. Valid only within a `customManagers` object.",
+                "markdownDescription": "Optional registry URL for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               },
               "versioningTemplate": {
                 "description": "Optional versioning for extracted dependencies. Valid only within a `customManagers` object.",
+                "markdownDescription": "Optional versioning for extracted dependencies. Valid only within a `customManagers` object.",
                 "type": "string"
               }
             }
@@ -2137,6 +2296,7 @@
     },
     "customizeDashboard": {
       "description": "Customize sections in the Dependency Dashboard issue.",
+      "markdownDescription": "Customize sections in the Dependency Dashboard issue.",
       "type": "object",
       "default": {},
       "additionalProperties": {
@@ -2145,6 +2305,7 @@
     },
     "defaultRegistryUrls": {
       "description": "List of registry URLs to use as the default for a datasource.",
+      "markdownDescription": "List of registry URLs to use as the default for a datasource.",
       "type": [
         "array",
         "null"
@@ -2156,21 +2317,25 @@
     },
     "dependencyDashboard": {
       "description": "Whether to create a \"Dependency Dashboard\" issue in the repository.",
+      "markdownDescription": "Whether to create a \"Dependency Dashboard\" issue in the repository.",
       "type": "boolean",
       "default": false
     },
     "dependencyDashboardApproval": {
       "description": "Controls if updates need manual approval from the Dependency Dashboard issue before PRs are created.",
+      "markdownDescription": "Controls if updates need manual approval from the Dependency Dashboard issue before PRs are created.",
       "type": "boolean",
       "default": false
     },
     "dependencyDashboardAutoclose": {
       "description": "Set to `true` to let Renovate close the Dependency Dashboard issue if there are no more updates.",
+      "markdownDescription": "Set to `true` to let Renovate close the Dependency Dashboard issue if there are no more updates.",
       "type": "boolean",
       "default": false
     },
     "dependencyDashboardCategory": {
       "description": "The category to group branches on the Dependency Dashboard issue.",
+      "markdownDescription": "The category to group branches on the Dependency Dashboard issue.",
       "type": [
         "string",
         "null"
@@ -2179,15 +2344,18 @@
     },
     "dependencyDashboardFooter": {
       "description": "Any text added here will be placed last in the Dependency Dashboard issue body, with a divider separator before it.",
+      "markdownDescription": "Any text added here will be placed last in the Dependency Dashboard issue body, with a divider separator before it.",
       "type": "string"
     },
     "dependencyDashboardHeader": {
       "description": "Any text added here will be placed first in the Dependency Dashboard issue body.",
+      "markdownDescription": "Any text added here will be placed first in the Dependency Dashboard issue body.",
       "type": "string",
       "default": "This issue lists Renovate updates and detected dependencies. Read the [Dependency Dashboard](https://docs.renovatebot.com/key-concepts/dashboard/) docs to learn more."
     },
     "dependencyDashboardLabels": {
       "description": "These labels will always be applied on the Dependency Dashboard issue, even when they have been removed manually.",
+      "markdownDescription": "These labels will always be applied on the Dependency Dashboard issue, even when they have been removed manually.",
       "type": [
         "array",
         "null"
@@ -2199,6 +2367,7 @@
     },
     "dependencyDashboardOSVVulnerabilitySummary": {
       "description": "Control if the Dependency Dashboard issue lists CVEs supplied by [osv.dev](https://osv.dev).",
+      "markdownDescription": "Control if the Dependency Dashboard issue lists CVEs supplied by [osv.dev](https://osv.dev).",
       "type": "string",
       "enum": [
         "none",
@@ -2209,16 +2378,19 @@
     },
     "dependencyDashboardReportAbandonment": {
       "description": "Controls whether abandoned packages are reported in the dependency dashboard.",
+      "markdownDescription": "Controls whether abandoned packages are reported in the dependency dashboard.",
       "type": "boolean",
       "default": true
     },
     "dependencyDashboardTitle": {
       "description": "Title for the Dependency Dashboard issue.",
+      "markdownDescription": "Title for the Dependency Dashboard issue.",
       "type": "string",
       "default": "Dependency Dashboard"
     },
     "deps-edn": {
       "description": "Configuration object for the deps-edn manager",
+      "markdownDescription": "Configuration object for the deps-edn manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2249,11 +2421,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2273,6 +2447,7 @@
     },
     "description": {
       "description": "Plain text description for a config or preset.",
+      "markdownDescription": "Plain text description for a config or preset.",
       "oneOf": [
         {
           "type": "array",
@@ -2287,6 +2462,7 @@
     },
     "devbox": {
       "description": "Configuration object for the devbox manager",
+      "markdownDescription": "Configuration object for the devbox manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2316,11 +2492,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2340,6 +2518,7 @@
     },
     "devcontainer": {
       "description": "Configuration object for the devcontainer manager",
+      "markdownDescription": "Configuration object for the devcontainer manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2370,11 +2549,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2394,6 +2575,7 @@
     },
     "digest": {
       "description": "Configuration to apply when updating a digest (no change in tag/version).",
+      "markdownDescription": "Configuration to apply when updating a digest (no change in tag/version).",
       "type": "object",
       "default": {
         "branchTopic": "{{{depNameSanitized}}}-digest",
@@ -2423,6 +2605,7 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               }
@@ -2433,6 +2616,7 @@
     },
     "docker-compose": {
       "description": "Configuration object for the docker-compose manager",
+      "markdownDescription": "Configuration object for the docker-compose manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2462,11 +2646,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2486,6 +2672,7 @@
     },
     "dockerfile": {
       "description": "Configuration object for the dockerfile manager",
+      "markdownDescription": "Configuration object for the dockerfile manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2516,11 +2703,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2540,11 +2729,13 @@
     },
     "draftPR": {
       "description": "If set to `true` then Renovate creates draft PRs, instead of normal status PRs.",
+      "markdownDescription": "If set to `true` then Renovate creates draft PRs, instead of normal status PRs.",
       "type": "boolean",
       "default": false
     },
     "droneci": {
       "description": "Configuration object for the droneci manager",
+      "markdownDescription": "Configuration object for the droneci manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2574,11 +2765,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2598,11 +2791,13 @@
     },
     "enabled": {
       "description": "Enable or disable corresponding functionality.",
+      "markdownDescription": "Enable or disable corresponding functionality.",
       "type": "boolean",
       "default": true
     },
     "enabledManagers": {
       "description": "A list of package managers to enable. Only managers on the list are enabled.",
+      "markdownDescription": "A list of package managers to enable. Only managers on the list are enabled.",
       "type": "array",
       "items": {
         "type": "string"
@@ -2610,6 +2805,7 @@
     },
     "encrypted": {
       "description": "An object containing configuration encrypted with project key.",
+      "markdownDescription": "An object containing configuration encrypted with project key.",
       "type": [
         "object",
         "null"
@@ -2619,12 +2815,14 @@
     },
     "env": {
       "description": "Environment variables that Renovate uses when executing package manager commands.",
+      "markdownDescription": "Environment variables that Renovate uses when executing package manager commands.",
       "type": "object",
       "default": {},
       "$ref": "#"
     },
     "excludeCommitPaths": {
       "description": "A file matching any of these glob patterns will not be committed, even if the file has been updated.",
+      "markdownDescription": "A file matching any of these glob patterns will not be committed, even if the file has been updated.",
       "type": "array",
       "items": {
         "type": "string"
@@ -2633,16 +2831,34 @@
     },
     "expandCodeOwnersGroups": {
       "description": "Expand the configured code owner groups into a full list of group members.",
+      "markdownDescription": "Expand the configured code owner groups into a full list of group members.",
       "type": "boolean",
       "default": false
     },
     "extends": {
       "description": "Configuration presets to use or extend.",
+      "markdownDescription": "Configuration presets to use or extend.",
       "oneOf": [
         {
           "type": "array",
           "items": {
-            "type": "string"
+            "anyOf": [
+              {
+                "enum": [
+                  "config:best-practices",
+                  "config:recommended",
+                  "mergeConfidence:all-badges",
+                  "abandonments:recommended",
+                  "group:all",
+                  "replacements:all",
+                  "security:minimumReleaseAgeNpm",
+                  "security:only-security-updates"
+                ]
+              },
+              {
+                "type": "string"
+              }
+            ]
           }
         },
         {
@@ -2652,11 +2868,13 @@
     },
     "extractVersion": {
       "description": "A regex (`re2`) to extract a version from a datasource's raw version string.",
+      "markdownDescription": "A regex (`re2`) to extract a version from a datasource's raw version string.",
       "type": "string",
       "format": "regex"
     },
     "fetchChangeLogs": {
       "description": "Controls if and when changelogs/release notes are fetched.",
+      "markdownDescription": "Controls if and when changelogs/release notes are fetched.",
       "type": "string",
       "enum": [
         "off",
@@ -2667,11 +2885,13 @@
     },
     "filterUnavailableUsers": {
       "description": "Filter reviewers and assignees based on their availability.",
+      "markdownDescription": "Filter reviewers and assignees based on their availability.",
       "type": "boolean",
       "default": false
     },
     "fleet": {
       "description": "Configuration object for the fleet manager",
+      "markdownDescription": "Configuration object for the fleet manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2701,11 +2921,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2725,6 +2947,7 @@
     },
     "flux": {
       "description": "Configuration object for the flux manager",
+      "markdownDescription": "Configuration object for the flux manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2754,11 +2977,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2778,15 +3003,18 @@
     },
     "followTag": {
       "description": "If defined, packages will follow this release tag exactly.",
+      "markdownDescription": "If defined, packages will follow this release tag exactly.",
       "type": "string"
     },
     "forkModeDisallowMaintainerEdits": {
       "description": "Disallow maintainers to push to Renovate pull requests when running in fork mode.",
+      "markdownDescription": "Disallow maintainers to push to Renovate pull requests when running in fork mode.",
       "type": "boolean",
       "default": false
     },
     "forkProcessing": {
       "description": "Whether to process forked repositories. By default, all forked repositories are skipped when in `autodiscover` mode.",
+      "markdownDescription": "Whether to process forked repositories. By default, all forked repositories are skipped when in `autodiscover` mode.",
       "type": "string",
       "enum": [
         "auto",
@@ -2797,6 +3025,7 @@
     },
     "fvm": {
       "description": "Configuration object for the fvm manager",
+      "markdownDescription": "Configuration object for the fvm manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2828,11 +3057,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2852,6 +3083,7 @@
     },
     "git-submodules": {
       "description": "Configuration object for the git-submodules manager",
+      "markdownDescription": "Configuration object for the git-submodules manager",
       "type": "object",
       "default": {
         "enabled": false,
@@ -2883,11 +3115,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2907,10 +3141,12 @@
     },
     "gitAuthor": {
       "description": "Author to use for Git commits. Must conform to [RFC5322](https://datatracker.ietf.org/doc/html/rfc5322).",
+      "markdownDescription": "Author to use for Git commits. Must conform to [RFC5322](https://datatracker.ietf.org/doc/html/rfc5322).",
       "type": "string"
     },
     "gitIgnoredAuthors": {
       "description": "Git authors which are ignored by Renovate. Must conform to [RFC5322](https://datatracker.ietf.org/doc/html/rfc5322).",
+      "markdownDescription": "Git authors which are ignored by Renovate. Must conform to [RFC5322](https://datatracker.ietf.org/doc/html/rfc5322).",
       "type": "array",
       "items": {
         "type": "string"
@@ -2918,11 +3154,13 @@
     },
     "gitLabIgnoreApprovals": {
       "description": "Ignore approval rules for MRs created by Renovate, which is useful for automerge.",
+      "markdownDescription": "Ignore approval rules for MRs created by Renovate, which is useful for automerge.",
       "type": "boolean",
       "default": false
     },
     "github-actions": {
       "description": "Configuration object for the github-actions manager",
+      "markdownDescription": "Configuration object for the github-actions manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -2953,11 +3191,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -2977,6 +3217,7 @@
     },
     "gitlabci": {
       "description": "Configuration object for the gitlabci manager",
+      "markdownDescription": "Configuration object for the gitlabci manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3006,11 +3247,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3030,6 +3273,7 @@
     },
     "gitlabci-include": {
       "description": "Configuration object for the gitlabci-include manager",
+      "markdownDescription": "Configuration object for the gitlabci-include manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3059,11 +3303,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3083,6 +3329,7 @@
     },
     "glasskube": {
       "description": "Configuration object for the glasskube manager",
+      "markdownDescription": "Configuration object for the glasskube manager",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -3110,11 +3357,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3134,6 +3383,7 @@
     },
     "gleam": {
       "description": "Configuration object for the gleam manager",
+      "markdownDescription": "Configuration object for the gleam manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3164,11 +3414,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3188,6 +3440,7 @@
     },
     "goGetDirs": {
       "description": "Directory pattern to run `go get` on.",
+      "markdownDescription": "Directory pattern to run `go get` on.",
       "type": "array",
       "items": {
         "type": "string"
@@ -3198,6 +3451,7 @@
     },
     "gomod": {
       "description": "Configuration object for the gomod manager",
+      "markdownDescription": "Configuration object for the gomod manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3228,11 +3482,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3252,6 +3508,7 @@
     },
     "gradle": {
       "description": "Configuration object for the gradle manager",
+      "markdownDescription": "Configuration object for the gradle manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3289,11 +3546,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3313,6 +3572,7 @@
     },
     "gradle-wrapper": {
       "description": "Configuration object for the gradle-wrapper manager",
+      "markdownDescription": "Configuration object for the gradle-wrapper manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3343,11 +3603,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3367,6 +3629,7 @@
     },
     "group": {
       "description": "Config if `groupName` is enabled.",
+      "markdownDescription": "Config if `groupName` is enabled.",
       "type": "object",
       "default": {
         "branchTopic": "{{{groupSlug}}}",
@@ -3376,6 +3639,7 @@
     },
     "groupName": {
       "description": "Human understandable name for the dependency group.",
+      "markdownDescription": "Human understandable name for the dependency group.",
       "type": [
         "string",
         "null"
@@ -3384,6 +3648,7 @@
     },
     "groupSlug": {
       "description": "Slug to use for group (e.g. in branch name). Slug is calculated from `groupName` if `null`.",
+      "markdownDescription": "Slug to use for group (e.g. in branch name). Slug is calculated from `groupName` if `null`.",
       "type": [
         "string",
         "null"
@@ -3392,6 +3657,7 @@
     },
     "hashedBranchLength": {
       "description": "If enabled, branch names will use a hashing function to ensure each branch has that length.",
+      "markdownDescription": "If enabled, branch names will use a hashing function to ensure each branch has that length.",
       "type": [
         "integer",
         "null"
@@ -3400,6 +3666,7 @@
     },
     "haskell-cabal": {
       "description": "Configuration object for the haskell-cabal manager",
+      "markdownDescription": "Configuration object for the haskell-cabal manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3430,11 +3697,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3454,6 +3723,7 @@
     },
     "helm-requirements": {
       "description": "Configuration object for the helm-requirements manager",
+      "markdownDescription": "Configuration object for the helm-requirements manager",
       "type": "object",
       "default": {
         "registryAliases": {
@@ -3487,11 +3757,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3511,6 +3783,7 @@
     },
     "helm-values": {
       "description": "Configuration object for the helm-values manager",
+      "markdownDescription": "Configuration object for the helm-values manager",
       "type": "object",
       "default": {
         "commitMessageTopic": "helm values {{depName}}",
@@ -3542,11 +3815,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3566,6 +3841,7 @@
     },
     "helmfile": {
       "description": "Configuration object for the helmfile manager",
+      "markdownDescription": "Configuration object for the helmfile manager",
       "type": "object",
       "default": {
         "registryAliases": {
@@ -3600,11 +3876,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3624,6 +3902,7 @@
     },
     "helmsman": {
       "description": "Configuration object for the helmsman manager",
+      "markdownDescription": "Configuration object for the helmsman manager",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -3651,11 +3930,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3675,6 +3956,7 @@
     },
     "helmv3": {
       "description": "Configuration object for the helmv3 manager",
+      "markdownDescription": "Configuration object for the helmv3 manager",
       "type": "object",
       "default": {
         "registryAliases": {
@@ -3708,11 +3990,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3732,6 +4016,7 @@
     },
     "hermit": {
       "description": "Configuration object for the hermit manager",
+      "markdownDescription": "Configuration object for the hermit manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3765,11 +4050,69 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "homeassistant-manifest": {
+      "description": "Configuration object for the homeassistant-manifest manager",
+      "markdownDescription": "Configuration object for the homeassistant-manifest manager",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "/(^|/)manifest\\.json$/"
+        ]
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3789,6 +4132,7 @@
     },
     "homebrew": {
       "description": "Configuration object for the homebrew manager",
+      "markdownDescription": "Configuration object for the homebrew manager",
       "type": "object",
       "default": {
         "commitMessageTopic": "Homebrew Formula {{depName}}",
@@ -3819,11 +4163,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -3843,6 +4189,7 @@
     },
     "hostRules": {
       "description": "Host rules/configuration including credentials.",
+      "markdownDescription": "Host rules/configuration including credentials.",
       "type": "array",
       "items": {
         "allOf": [
@@ -3866,6 +4213,7 @@
               },
               "abortIgnoreStatusCodes": {
                 "description": "A list of HTTP status codes safe to ignore even when `abortOnError=true`.",
+                "markdownDescription": "A list of HTTP status codes safe to ignore even when `abortOnError=true`.",
                 "type": "array",
                 "items": {
                   "type": "number"
@@ -3873,11 +4221,13 @@
               },
               "abortOnError": {
                 "description": "If enabled, Renovate aborts its run when HTTP request errors occur.",
+                "markdownDescription": "If enabled, Renovate aborts its run when HTTP request errors occur.",
                 "type": "boolean",
                 "default": false
               },
               "artifactAuth": {
                 "description": "A list of package managers to enable artifact auth. Only managers on the list are enabled. All are enabled if `null`.",
+                "markdownDescription": "A list of package managers to enable artifact auth. Only managers on the list are enabled. All are enabled if `null`.",
                 "type": [
                   "array",
                   "null"
@@ -3892,11 +4242,13 @@
               },
               "authType": {
                 "description": "Authentication type for HTTP header. e.g. `\"Bearer\"` or `\"Basic\"`. Use `\"Token-Only\"` to use only the token without an authorization type.",
+                "markdownDescription": "Authentication type for HTTP header. e.g. `\"Bearer\"` or `\"Basic\"`. Use `\"Token-Only\"` to use only the token without an authorization type.",
                 "type": "string",
                 "default": "Bearer"
               },
               "concurrentRequestLimit": {
                 "description": "Limit concurrent requests per host.",
+                "markdownDescription": "Limit concurrent requests per host.",
                 "type": [
                   "integer",
                   "null"
@@ -3905,30 +4257,36 @@
               },
               "dnsCache": {
                 "description": "Enable got DNS cache.",
+                "markdownDescription": "Enable got DNS cache.",
                 "type": "boolean",
                 "default": false
               },
               "enableHttp2": {
                 "description": "Enable got HTTP/2 support.",
+                "markdownDescription": "Enable got HTTP/2 support.",
                 "type": "boolean",
                 "default": false
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "headers": {
                 "description": "Put fields to be forwarded to the HTTP request headers in the headers config option.",
+                "markdownDescription": "Put fields to be forwarded to the HTTP request headers in the headers config option.",
                 "type": "object",
                 "$ref": "#"
               },
               "hostType": {
                 "description": "hostType for a package rule. Can be a platform name or a datasource name.",
+                "markdownDescription": "hostType for a package rule. Can be a platform name or a datasource name.",
                 "type": "string"
               },
               "httpsCertificate": {
                 "description": "The certificate chains in PEM format.",
+                "markdownDescription": "The certificate chains in PEM format.",
                 "type": [
                   "string",
                   "null"
@@ -3937,6 +4295,7 @@
               },
               "httpsCertificateAuthority": {
                 "description": "The overriding trusted CA certificate.",
+                "markdownDescription": "The overriding trusted CA certificate.",
                 "type": [
                   "string",
                   "null"
@@ -3945,6 +4304,7 @@
               },
               "httpsPrivateKey": {
                 "description": "The private key in PEM format.",
+                "markdownDescription": "The private key in PEM format.",
                 "type": [
                   "string",
                   "null"
@@ -3953,34 +4313,41 @@
               },
               "insecureRegistry": {
                 "description": "Explicitly turn on insecure Docker registry access (HTTP).",
+                "markdownDescription": "Explicitly turn on insecure Docker registry access (HTTP).",
                 "type": "boolean",
                 "default": false
               },
               "keepAlive": {
                 "description": "Enable HTTP keep-alive for hosts.",
+                "markdownDescription": "Enable HTTP keep-alive for hosts.",
                 "type": "boolean",
                 "default": false
               },
               "matchHost": {
                 "description": "A domain name, host name or base URL to match against.",
+                "markdownDescription": "A domain name, host name or base URL to match against.",
                 "type": "string"
               },
               "maxRequestsPerSecond": {
                 "description": "Limit requests rate per host.",
+                "markdownDescription": "Limit requests rate per host.",
                 "type": "integer",
                 "default": 0
               },
               "maxRetryAfter": {
                 "description": "Maximum retry-after header value to wait for before retrying a failed request.",
+                "markdownDescription": "Maximum retry-after header value to wait for before retrying a failed request.",
                 "type": "integer",
                 "default": 60
               },
               "readOnly": {
                 "description": "Match against requests that only read data and do not mutate anything.",
+                "markdownDescription": "Match against requests that only read data and do not mutate anything.",
                 "type": "boolean"
               },
               "timeout": {
                 "description": "Timeout (in milliseconds) for queries to external endpoints.",
+                "markdownDescription": "Timeout (in milliseconds) for queries to external endpoints.",
                 "type": "integer"
               }
             }
@@ -3990,6 +4357,7 @@
     },
     "html": {
       "description": "Configuration object for the html manager",
+      "markdownDescription": "Configuration object for the html manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4024,11 +4392,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4048,11 +4418,13 @@
     },
     "ignoreDeprecated": {
       "description": "Avoid upgrading from a non-deprecated version to a deprecated one.",
+      "markdownDescription": "Avoid upgrading from a non-deprecated version to a deprecated one.",
       "type": "boolean",
       "default": true
     },
     "ignoreDeps": {
       "description": "Dependencies to ignore.",
+      "markdownDescription": "Dependencies to ignore.",
       "type": "array",
       "items": {
         "type": "string"
@@ -4060,6 +4432,7 @@
     },
     "ignorePaths": {
       "description": "Skip any package file whose path matches one of these. Can be a string or glob pattern.",
+      "markdownDescription": "Skip any package file whose path matches one of these. Can be a string or glob pattern.",
       "type": "array",
       "items": {
         "type": "string"
@@ -4071,11 +4444,13 @@
     },
     "ignorePlugins": {
       "description": "Set this to `true` if `allowPlugins=true` but you wish to skip running plugins when updating lock files.",
+      "markdownDescription": "Set this to `true` if `allowPlugins=true` but you wish to skip running plugins when updating lock files.",
       "type": "boolean",
       "default": false
     },
     "ignorePresets": {
       "description": "A list of presets to ignore, including any that are nested inside an `extends` array.",
+      "markdownDescription": "A list of presets to ignore, including any that are nested inside an `extends` array.",
       "oneOf": [
         {
           "type": "array",
@@ -4090,6 +4465,7 @@
     },
     "ignoreReviewers": {
       "description": "Reviewers to be ignored in PR reviewers presence (either username or email address depending on the platform).",
+      "markdownDescription": "Reviewers to be ignored in PR reviewers presence (either username or email address depending on the platform).",
       "type": "array",
       "items": {
         "type": "string"
@@ -4097,21 +4473,25 @@
     },
     "ignoreScripts": {
       "description": "Set this to `false` if `allowScripts=true` and you wish to run scripts when updating lock files.",
+      "markdownDescription": "Set this to `false` if `allowScripts=true` and you wish to run scripts when updating lock files.",
       "type": "boolean",
       "default": true
     },
     "ignoreTests": {
       "description": "Set to `true` to enable automerging without tests.",
+      "markdownDescription": "Set to `true` to enable automerging without tests.",
       "type": "boolean",
       "default": false
     },
     "ignoreUnstable": {
       "description": "Ignore versions with unstable SemVer.",
+      "markdownDescription": "Ignore versions with unstable SemVer.",
       "type": "boolean",
       "default": true
     },
     "includePaths": {
       "description": "Include package files only within these defined paths.",
+      "markdownDescription": "Include package files only within these defined paths.",
       "type": "array",
       "items": {
         "type": "string"
@@ -4120,11 +4500,13 @@
     },
     "internalChecksAsSuccess": {
       "description": "Whether to consider passing internal checks such as `minimumReleaseAge` when determining branch status.",
+      "markdownDescription": "Whether to consider passing internal checks such as `minimumReleaseAge` when determining branch status.",
       "type": "boolean",
       "default": false
     },
     "internalChecksFilter": {
       "description": "When and how to filter based on internal checks.",
+      "markdownDescription": "When and how to filter based on internal checks.",
       "type": "string",
       "enum": [
         "strict",
@@ -4135,6 +4517,7 @@
     },
     "jenkins": {
       "description": "Configuration object for the jenkins manager",
+      "markdownDescription": "Configuration object for the jenkins manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4164,11 +4547,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4188,6 +4573,7 @@
     },
     "jsonata": {
       "description": "Configuration object for the jsonata manager",
+      "markdownDescription": "Configuration object for the jsonata manager",
       "type": "object",
       "default": {
         "pinDigests": false
@@ -4196,6 +4582,7 @@
     },
     "jsonnet-bundler": {
       "description": "Configuration object for the jsonnet-bundler manager",
+      "markdownDescription": "Configuration object for the jsonnet-bundler manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4226,11 +4613,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4250,10 +4639,12 @@
     },
     "keepUpdatedLabel": {
       "description": "If set, users can add this label to PRs to request they be kept updated with the base branch.",
+      "markdownDescription": "If set, users can add this label to PRs to request they be kept updated with the base branch.",
       "type": "string"
     },
     "kotlin-script": {
       "description": "Configuration object for the kotlin-script manager",
+      "markdownDescription": "Configuration object for the kotlin-script manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4283,11 +4674,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4307,6 +4700,7 @@
     },
     "kubernetes": {
       "description": "Configuration object for the kubernetes manager",
+      "markdownDescription": "Configuration object for the kubernetes manager",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -4334,11 +4728,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4358,6 +4754,7 @@
     },
     "kustomize": {
       "description": "Configuration object for the kustomize manager",
+      "markdownDescription": "Configuration object for the kustomize manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4388,11 +4785,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4412,6 +4811,7 @@
     },
     "labels": {
       "description": "Labels to set in Pull Request.",
+      "markdownDescription": "Labels to set in Pull Request.",
       "type": "array",
       "items": {
         "type": "string"
@@ -4419,6 +4819,7 @@
     },
     "leiningen": {
       "description": "Configuration object for the leiningen manager",
+      "markdownDescription": "Configuration object for the leiningen manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4449,11 +4850,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4473,6 +4876,7 @@
     },
     "lockFileMaintenance": {
       "description": "Configuration for lock file maintenance.",
+      "markdownDescription": "Configuration for lock file maintenance.",
       "type": "object",
       "default": {
         "enabled": false,
@@ -4513,6 +4917,7 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               }
@@ -4523,6 +4928,7 @@
     },
     "logLevelRemap": {
       "description": "Remap log levels to different levels.",
+      "markdownDescription": "Remap log levels to different levels.",
       "type": "array",
       "items": {
         "allOf": [
@@ -4546,10 +4952,12 @@
               },
               "matchMessage": {
                 "description": "Regex/minimatch expression to match against log message.",
+                "markdownDescription": "Regex/minimatch expression to match against log message.",
                 "type": "string"
               },
               "newLogLevel": {
                 "description": "New log level to use if matchMessage matches.",
+                "markdownDescription": "New log level to use if matchMessage matches.",
                 "type": "string",
                 "enum": [
                   "trace",
@@ -4567,6 +4975,7 @@
     },
     "major": {
       "description": "Configuration to apply when an update type is `major`.",
+      "markdownDescription": "Configuration to apply when an update type is `major`.",
       "type": "object",
       "default": {},
       "$ref": "#",
@@ -4592,6 +5001,7 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               }
@@ -4602,6 +5012,7 @@
     },
     "maven": {
       "description": "Configuration object for the maven manager",
+      "markdownDescription": "Configuration object for the maven manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4633,11 +5044,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4657,13 +5070,13 @@
     },
     "maven-wrapper": {
       "description": "Configuration object for the maven-wrapper manager",
+      "markdownDescription": "Configuration object for the maven-wrapper manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
           "/(^|\\/).mvn/wrapper/maven-wrapper.properties$/",
           "/(^|\\/)mvnw(.cmd)?$/"
-        ],
-        "versioning": "maven"
+        ]
       },
       "$ref": "#",
       "items": {
@@ -4688,11 +5101,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4712,11 +5127,13 @@
     },
     "maxMajorIncrement": {
       "description": "Limit the maximum major version increment allowed. Set to 0 to disable.",
+      "markdownDescription": "Limit the maximum major version increment allowed. Set to 0 to disable.",
       "type": "integer",
       "default": 500
     },
     "meteor": {
       "description": "Configuration object for the meteor manager",
+      "markdownDescription": "Configuration object for the meteor manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4746,11 +5163,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4770,6 +5189,7 @@
     },
     "milestone": {
       "description": "The number of a milestone. If set, the milestone will be set when Renovate creates the PR.",
+      "markdownDescription": "The number of a milestone. If set, the milestone will be set when Renovate creates the PR.",
       "type": [
         "integer",
         "null"
@@ -4778,11 +5198,13 @@
     },
     "minimumGroupSize": {
       "description": "The minimum number of updates which must be in a group for branches to be created.",
+      "markdownDescription": "The minimum number of updates which must be in a group for branches to be created.",
       "type": "integer",
       "default": 1
     },
     "minimumReleaseAge": {
       "description": "Time required before a new release is considered stable.",
+      "markdownDescription": "Time required before a new release is considered stable.",
       "type": [
         "string",
         "null"
@@ -4791,6 +5213,7 @@
     },
     "minimumReleaseAgeBehaviour": {
       "description": "When set in conjunction with `minimumReleaseAge`, controls whether the `releaseTimestamp` for a dependency update is required.",
+      "markdownDescription": "When set in conjunction with `minimumReleaseAge`, controls whether the `releaseTimestamp` for a dependency update is required.",
       "type": "string",
       "enum": [
         "timestamp-required",
@@ -4800,6 +5223,7 @@
     },
     "minor": {
       "description": "Configuration to apply when an update type is `minor`.",
+      "markdownDescription": "Configuration to apply when an update type is `minor`.",
       "type": "object",
       "default": {},
       "$ref": "#",
@@ -4825,6 +5249,7 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               }
@@ -4835,6 +5260,7 @@
     },
     "mint": {
       "description": "Configuration object for the mint manager",
+      "markdownDescription": "Configuration object for the mint manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4864,11 +5290,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4888,6 +5316,7 @@
     },
     "mise": {
       "description": "Configuration object for the mise manager",
+      "markdownDescription": "Configuration object for the mise manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4922,11 +5351,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4946,6 +5377,7 @@
     },
     "mix": {
       "description": "Configuration object for the mix manager",
+      "markdownDescription": "Configuration object for the mix manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4975,11 +5407,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -4999,6 +5433,7 @@
     },
     "mode": {
       "description": "Mode of operation.",
+      "markdownDescription": "Mode of operation.",
       "type": "string",
       "enum": [
         "full",
@@ -5008,6 +5443,7 @@
     },
     "nix": {
       "description": "Configuration object for the nix manager",
+      "markdownDescription": "Configuration object for the nix manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -5040,11 +5476,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5064,6 +5502,7 @@
     },
     "nodenv": {
       "description": "Configuration object for the nodenv manager",
+      "markdownDescription": "Configuration object for the nodenv manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -5094,11 +5533,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5118,6 +5559,7 @@
     },
     "npm": {
       "description": "Configuration object for the npm manager",
+      "markdownDescription": "Configuration object for the npm manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -5157,11 +5599,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5181,19 +5625,23 @@
     },
     "npmToken": {
       "description": "npm token used to authenticate with the default registry.",
+      "markdownDescription": "npm token used to authenticate with the default registry.",
       "type": "string"
     },
     "npmrc": {
       "description": "String copy of `.npmrc` file. Use `\\n` instead of line breaks.",
+      "markdownDescription": "String copy of `.npmrc` file. Use `\\n` instead of line breaks.",
       "type": "string"
     },
     "npmrcMerge": {
       "description": "Whether to merge `config.npmrc` with repo `.npmrc` content if both are found.",
+      "markdownDescription": "Whether to merge `config.npmrc` with repo `.npmrc` content if both are found.",
       "type": "boolean",
       "default": false
     },
     "nuget": {
       "description": "Configuration object for the nuget manager",
+      "markdownDescription": "Configuration object for the nuget manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -5226,11 +5674,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5250,6 +5700,7 @@
     },
     "nvm": {
       "description": "Configuration object for the nvm manager",
+      "markdownDescription": "Configuration object for the nvm manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -5281,11 +5732,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5305,6 +5758,7 @@
     },
     "ocb": {
       "description": "Configuration object for the ocb manager",
+      "markdownDescription": "Configuration object for the ocb manager",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -5332,11 +5786,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5356,6 +5812,7 @@
     },
     "osgi": {
       "description": "Configuration object for the osgi manager",
+      "markdownDescription": "Configuration object for the osgi manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -5385,11 +5842,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5409,11 +5868,13 @@
     },
     "osvVulnerabilityAlerts": {
       "description": "Use vulnerability alerts from `osv.dev`.",
+      "markdownDescription": "Use vulnerability alerts from `osv.dev`.",
       "type": "boolean",
       "default": false
     },
     "packageRules": {
       "description": "Rules for matching packages.",
+      "markdownDescription": "Rules for matching packages.",
       "type": "array",
       "items": {
         "allOf": [
@@ -5437,19 +5898,23 @@
               },
               "allowedVersions": {
                 "description": "A version range or regex pattern capturing allowed versions for dependencies.",
+                "markdownDescription": "A version range or regex pattern capturing allowed versions for dependencies.",
                 "type": "string"
               },
               "changelogUrl": {
                 "description": "Set a custom URL for the changelog. Renovate will put this URL in the PR body text.",
+                "markdownDescription": "Set a custom URL for the changelog. Renovate will put this URL in the PR body text.",
                 "type": "string"
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "matchBaseBranches": {
                 "description": "List of strings containing exact matches (e.g. `[\"main\"]`) and/or regex expressions (e.g. `[\"/^release/.*/\"]`). Valid only within a `packageRules` object.",
+                "markdownDescription": "List of strings containing exact matches (e.g. `[\"main\"]`) and/or regex expressions (e.g. `[\"/^release/.*/\"]`). Valid only within a `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5464,6 +5929,7 @@
               },
               "matchCategories": {
                 "description": "List of categories to match (for example: `[\"python\"]`). Valid only within a `packageRules` object.",
+                "markdownDescription": "List of categories to match (for example: `[\"python\"]`). Valid only within a `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5478,44 +5944,63 @@
               },
               "matchConfidence": {
                 "description": "Merge confidence levels to match against (`low`, `neutral`, `high`, `very high`). Valid only within `packageRules` object.",
+                "markdownDescription": "Merge confidence levels to match against (`low`, `neutral`, `high`, `very high`). Valid only within `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "enum": [
-                        "low",
-                        "neutral",
-                        "high",
-                        "very high"
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "low",
+                            "neutral",
+                            "high",
+                            "very high"
+                          ]
+                        },
+                        {
+                          "type": "string"
+                        }
                       ]
                     }
                   },
                   {
                     "type": "string",
-                    "enum": [
-                      "low",
-                      "neutral",
-                      "high",
-                      "very high"
+                    "anyOf": [
+                      {
+                        "enum": [
+                          "low",
+                          "neutral",
+                          "high",
+                          "very high"
+                        ]
+                      },
+                      {
+                        "type": "string"
+                      }
                     ]
                   }
                 ]
               },
               "matchCurrentAge": {
                 "description": "Matches the current age of the package derived from its release timestamp. Valid only within a `packageRules` object.",
+                "markdownDescription": "Matches the current age of the package derived from its release timestamp. Valid only within a `packageRules` object.",
                 "type": "string"
               },
               "matchCurrentValue": {
                 "description": "A regex or glob pattern to match against the raw `currentValue` string of a dependency. Valid only within a `packageRules` object.",
+                "markdownDescription": "A regex or glob pattern to match against the raw `currentValue` string of a dependency. Valid only within a `packageRules` object.",
                 "type": "string"
               },
               "matchCurrentVersion": {
                 "description": "A version, or range of versions, to match against the current version of a package. Valid only within a `packageRules` object.",
+                "markdownDescription": "A version, or range of versions, to match against the current version of a package. Valid only within a `packageRules` object.",
                 "type": "string"
               },
               "matchDatasources": {
                 "description": "List of datasources to match (e.g. `[\"orb\"]`). Valid only within a `packageRules` object.",
+                "markdownDescription": "List of datasources to match (e.g. `[\"orb\"]`). Valid only within a `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5530,6 +6015,7 @@
               },
               "matchDepNames": {
                 "description": "Dep names to match. Valid only within a `packageRules` object.",
+                "markdownDescription": "Dep names to match. Valid only within a `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5544,6 +6030,7 @@
               },
               "matchDepTypes": {
                 "description": "List of depTypes to match (e.g. [`peerDependencies`]). Valid only within `packageRules` object.",
+                "markdownDescription": "List of depTypes to match (e.g. [`peerDependencies`]). Valid only within `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5558,6 +6045,7 @@
               },
               "matchFileNames": {
                 "description": "List of strings to do an exact match against package and lock files with full path. Only works inside a `packageRules` object.",
+                "markdownDescription": "List of strings to do an exact match against package and lock files with full path. Only works inside a `packageRules` object.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -5565,6 +6053,7 @@
               },
               "matchJsonata": {
                 "description": "A JSONata expression to match against the full config object. Valid only within a `packageRules` object.",
+                "markdownDescription": "A JSONata expression to match against the full config object. Valid only within a `packageRules` object.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -5572,6 +6061,7 @@
               },
               "matchManagers": {
                 "description": "List of package managers to match (e.g. `[\"pipenv\"]`). Valid only within a `packageRules` object.",
+                "markdownDescription": "List of package managers to match (e.g. `[\"pipenv\"]`). Valid only within a `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5586,10 +6076,27 @@
               },
               "matchNewValue": {
                 "description": "A regex or glob pattern to match against the raw `newValue` string of a dependency. Valid only within a `packageRules` object.",
+                "markdownDescription": "A regex or glob pattern to match against the raw `newValue` string of a dependency. Valid only within a `packageRules` object.",
                 "type": "string"
               },
               "matchPackageNames": {
                 "description": "Package names to match. Valid only within a `packageRules` object.",
+                "markdownDescription": "Package names to match. Valid only within a `packageRules` object.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "matchRegistryUrls": {
+                "description": "A list of URLs (or URL patterns) to match against registryUrls.",
+                "markdownDescription": "A list of URLs (or URL patterns) to match against registryUrls.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5604,6 +6111,7 @@
               },
               "matchRepositories": {
                 "description": "List of repositories to match (e.g. `[\"**/*-archived\"]`). Valid only within a `packageRules` object.",
+                "markdownDescription": "List of repositories to match (e.g. `[\"**/*-archived\"]`). Valid only within a `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5618,6 +6126,7 @@
               },
               "matchSourceUrls": {
                 "description": "A list of exact match URLs (or URL patterns) to match sourceUrl against.",
+                "markdownDescription": "A list of exact match URLs (or URL patterns) to match sourceUrl against.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5632,82 +6141,107 @@
               },
               "matchUpdateTypes": {
                 "description": "Update types to match against (`major`, `minor`, `pin`, `pinDigest`, etc). Valid only within `packageRules` object.",
+                "markdownDescription": "Update types to match against (`major`, `minor`, `pin`, `pinDigest`, etc). Valid only within `packageRules` object.",
                 "oneOf": [
                   {
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "enum": [
-                        "major",
-                        "minor",
-                        "patch",
-                        "pin",
-                        "pinDigest",
-                        "digest",
-                        "lockFileMaintenance",
-                        "rollback",
-                        "bump",
-                        "replacement"
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "major",
+                            "minor",
+                            "patch",
+                            "pin",
+                            "pinDigest",
+                            "digest",
+                            "lockFileMaintenance",
+                            "rollback",
+                            "bump",
+                            "replacement"
+                          ]
+                        },
+                        {
+                          "type": "string"
+                        }
                       ]
                     }
                   },
                   {
                     "type": "string",
-                    "enum": [
-                      "major",
-                      "minor",
-                      "patch",
-                      "pin",
-                      "pinDigest",
-                      "digest",
-                      "lockFileMaintenance",
-                      "rollback",
-                      "bump",
-                      "replacement"
+                    "anyOf": [
+                      {
+                        "enum": [
+                          "major",
+                          "minor",
+                          "patch",
+                          "pin",
+                          "pinDigest",
+                          "digest",
+                          "lockFileMaintenance",
+                          "rollback",
+                          "bump",
+                          "replacement"
+                        ]
+                      },
+                      {
+                        "type": "string"
+                      }
                     ]
                   }
                 ]
               },
               "overrideDatasource": {
                 "description": "Override the datasource value.",
+                "markdownDescription": "Override the datasource value.",
                 "type": "string"
               },
               "overrideDepName": {
                 "description": "Override the depName value.",
+                "markdownDescription": "Override the depName value.",
                 "type": "string"
               },
               "overridePackageName": {
                 "description": "Override the packageName value.",
+                "markdownDescription": "Override the packageName value.",
                 "type": "string"
               },
               "prPriority": {
                 "description": "Set sorting priority for PR creation. PRs with higher priority are created first, negative priority last.",
+                "markdownDescription": "Set sorting priority for PR creation. PRs with higher priority are created first, negative priority last.",
                 "type": "integer",
                 "default": 0
               },
               "replacementName": {
                 "description": "The name of the new dependency that replaces the old deprecated dependency.",
+                "markdownDescription": "The name of the new dependency that replaces the old deprecated dependency.",
                 "type": "string"
               },
               "replacementNameTemplate": {
                 "description": "Controls what the replacement package name.",
+                "markdownDescription": "Controls what the replacement package name.",
                 "type": "string",
                 "default": "{{{packageName}}}"
               },
               "replacementVersion": {
                 "description": "The version of the new dependency that replaces the old deprecated dependency.",
+                "markdownDescription": "The version of the new dependency that replaces the old deprecated dependency.",
                 "type": "string"
               },
               "replacementVersionTemplate": {
                 "description": "Template field for the version of the new dependency that replaces the old deprecated dependency.",
+                "markdownDescription": "Template field for the version of the new dependency that replaces the old deprecated dependency.",
                 "type": "string"
               },
               "sourceDirectory": {
                 "description": "The source directory in which the package is present at its source.",
+                "markdownDescription": "The source directory in which the package is present at its source.",
                 "type": "string"
               },
               "sourceUrl": {
                 "description": "The source URL of the package.",
+                "markdownDescription": "The source URL of the package.",
                 "type": "string"
               }
             }
@@ -5717,6 +6251,7 @@
     },
     "patch": {
       "description": "Configuration to apply when an update type is `patch`.",
+      "markdownDescription": "Configuration to apply when an update type is `patch`.",
       "type": "object",
       "default": {},
       "$ref": "#",
@@ -5742,6 +6277,7 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               }
@@ -5752,6 +6288,7 @@
     },
     "pep621": {
       "description": "Configuration object for the pep621 manager",
+      "markdownDescription": "Configuration object for the pep621 manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -5781,11 +6318,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5805,6 +6344,7 @@
     },
     "pep723": {
       "description": "Configuration object for the pep723 manager",
+      "markdownDescription": "Configuration object for the pep723 manager",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -5832,11 +6372,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -5856,6 +6398,7 @@
     },
     "pin": {
       "description": "Configuration to apply when an update type is `pin`.",
+      "markdownDescription": "Configuration to apply when an update type is `pin`.",
       "type": "object",
       "default": {
         "rebaseWhen": "behind-base-branch",
@@ -5890,6 +6433,7 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               }
@@ -5900,6 +6444,7 @@
     },
     "pinDigest": {
       "description": "Configuration to apply when pinning a digest (no change in tag/version).",
+      "markdownDescription": "Configuration to apply when pinning a digest (no change in tag/version).",
       "type": "object",
       "default": {
         "groupName": "Pin Dependencies",
@@ -5933,6 +6478,7 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               }
@@ -5943,11 +6489,13 @@
     },
     "pinDigests": {
       "description": "Whether to add digests to Dockerfile source images.",
+      "markdownDescription": "Whether to add digests to Dockerfile source images.",
       "type": "boolean",
       "default": false
     },
     "pip-compile": {
       "description": "Configuration object for the pip-compile manager",
+      "markdownDescription": "Configuration object for the pip-compile manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [],
@@ -5980,11 +6528,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6004,10 +6554,11 @@
     },
     "pip_requirements": {
       "description": "Configuration object for the pip_requirements manager",
+      "markdownDescription": "Configuration object for the pip_requirements manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
-          "/(^|/)[\\w-]*requirements([-.]\\w+)?\\.(txt|pip)$/"
+          "/(^|/)[\\w-]*requirements([-._]\\w+)?\\.(txt|pip)$/"
         ]
       },
       "$ref": "#",
@@ -6033,11 +6584,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6057,6 +6610,7 @@
     },
     "pip_setup": {
       "description": "Configuration object for the pip_setup manager",
+      "markdownDescription": "Configuration object for the pip_setup manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6086,11 +6640,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6110,6 +6666,7 @@
     },
     "pipenv": {
       "description": "Configuration object for the pipenv manager",
+      "markdownDescription": "Configuration object for the pipenv manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6139,11 +6696,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6163,6 +6722,7 @@
     },
     "pixi": {
       "description": "Configuration object for the pixi manager",
+      "markdownDescription": "Configuration object for the pixi manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6193,11 +6753,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6217,11 +6779,13 @@
     },
     "platformAutomerge": {
       "description": "Controls if platform-native auto-merge is used.",
+      "markdownDescription": "Controls if platform-native auto-merge is used.",
       "type": "boolean",
       "default": true
     },
     "platformCommit": {
       "description": "Use platform API to perform commits instead of using Git directly.",
+      "markdownDescription": "Use platform API to perform commits instead of using Git directly.",
       "type": "string",
       "enum": [
         "auto",
@@ -6232,6 +6796,7 @@
     },
     "poetry": {
       "description": "Configuration object for the poetry manager",
+      "markdownDescription": "Configuration object for the poetry manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6261,11 +6826,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6285,6 +6852,7 @@
     },
     "postUpdateOptions": {
       "description": "Enable post-update options to be run after package/artifact updating.",
+      "markdownDescription": "Enable post-update options to be run after package/artifact updating.",
       "type": "array",
       "items": {
         "type": "string",
@@ -6314,11 +6882,13 @@
     },
     "postUpgradeTasks": {
       "description": "Post-upgrade tasks that are executed before a commit is made by Renovate.",
+      "markdownDescription": "Post-upgrade tasks that are executed before a commit is made by Renovate.",
       "type": "object",
       "default": {
         "commands": [],
         "fileFilters": [],
-        "executionMode": "update"
+        "executionMode": "update",
+        "installTools": {}
       },
       "$ref": "#",
       "items": {
@@ -6343,6 +6913,7 @@
               },
               "commands": {
                 "description": "A list of post-upgrade commands that are executed before a commit is made by Renovate.",
+                "markdownDescription": "A list of post-upgrade commands that are executed before a commit is made by Renovate.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -6351,10 +6922,12 @@
               },
               "dataFileTemplate": {
                 "description": "A template to create post-upgrade command data file from.",
+                "markdownDescription": "A template to create post-upgrade command data file from.",
                 "type": "string"
               },
               "executionMode": {
                 "description": "Controls when the post upgrade tasks run: on every update, or once per upgrade branch.",
+                "markdownDescription": "Controls when the post upgrade tasks run: on every update, or once per upgrade branch.",
                 "type": "string",
                 "enum": [
                   "update",
@@ -6364,6 +6937,7 @@
               },
               "fileFilters": {
                 "description": "Files that match the glob pattern will be committed after running a post-upgrade task.",
+                "markdownDescription": "Files that match the glob pattern will be committed after running a post-upgrade task.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -6372,8 +6946,20 @@
                   "**/*"
                 ]
               },
+              "installTools": {
+                "description": "Install tools before executing commands",
+                "markdownDescription": "Install tools before executing commands",
+                "type": "object",
+                "default": {},
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
               "workingDirTemplate": {
                 "description": "A template describing the working directory in which post-upgrade tasks should be executed.",
+                "markdownDescription": "A template describing the working directory in which post-upgrade tasks should be executed.",
                 "type": "string"
               }
             }
@@ -6383,6 +6969,7 @@
     },
     "prBodyColumns": {
       "description": "List of columns to use in PR bodies.",
+      "markdownDescription": "List of columns to use in PR bodies.",
       "type": "array",
       "items": {
         "type": "string"
@@ -6397,6 +6984,7 @@
     },
     "prBodyDefinitions": {
       "description": "Table column definitions to use in PR tables.",
+      "markdownDescription": "Table column definitions to use in PR tables.",
       "type": "object",
       "default": {
         "Package": "{{{depNameLinked}}}{{#if newName}}{{#unless (equals depName newName)}} → {{{newNameLinked}}}{{/unless}}{{/if}}",
@@ -6416,6 +7004,7 @@
     },
     "prBodyHeadingDefinitions": {
       "description": "Table header definitions to use in PR tables.",
+      "markdownDescription": "Table header definitions to use in PR tables.",
       "type": "object",
       "default": {
         "Age": "[Age](https://docs.renovatebot.com/merge-confidence/)",
@@ -6426,6 +7015,7 @@
     },
     "prBodyNotes": {
       "description": "List of extra notes or templates to include in the Pull Request body.",
+      "markdownDescription": "List of extra notes or templates to include in the Pull Request body.",
       "oneOf": [
         {
           "type": "array",
@@ -6441,16 +7031,19 @@
     },
     "prBodyTemplate": {
       "description": "Pull Request body template. Controls which sections are rendered in the body of the pull request.",
+      "markdownDescription": "Pull Request body template. Controls which sections are rendered in the body of the pull request.",
       "type": "string",
       "default": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}{{{configDescription}}}{{{controls}}}{{{footer}}}"
     },
     "prConcurrentLimit": {
       "description": "Limit to a maximum of x concurrent branches/PRs. 0 means no limit.",
+      "markdownDescription": "Limit to a maximum of x concurrent branches/PRs. 0 means no limit.",
       "type": "integer",
       "default": 10
     },
     "prCreation": {
       "description": "When to create the PR for a branch.",
+      "markdownDescription": "When to create the PR for a branch.",
       "type": "string",
       "enum": [
         "immediate",
@@ -6462,25 +7055,30 @@
     },
     "prFooter": {
       "description": "Text added here will be placed last in the PR body, with a divider separator before it.",
+      "markdownDescription": "Text added here will be placed last in the PR body, with a divider separator before it.",
       "type": "string",
       "default": "This PR has been generated by [Renovate Bot](https://github.com/renovatebot/renovate)."
     },
     "prHeader": {
       "description": "Text added here will be placed first in the PR body.",
+      "markdownDescription": "Text added here will be placed first in the PR body.",
       "type": "string"
     },
     "prHourlyLimit": {
       "description": "Rate limit PRs to maximum x created per hour. 0 means no limit.",
+      "markdownDescription": "Rate limit PRs to maximum x created per hour. 0 means no limit.",
       "type": "integer",
       "default": 2
     },
     "prNotPendingHours": {
       "description": "Timeout in hours for when `prCreation=not-pending`.",
+      "markdownDescription": "Timeout in hours for when `prCreation=not-pending`.",
       "type": "integer",
       "default": 25
     },
     "prTitle": {
       "description": "Pull Request title template. Inherits from `commitMessage` if null.",
+      "markdownDescription": "Pull Request title template. Inherits from `commitMessage` if null.",
       "type": [
         "string",
         "null"
@@ -6489,11 +7087,13 @@
     },
     "prTitleStrict": {
       "description": "Whether to bypass appending extra context to the Pull Request title.",
+      "markdownDescription": "Whether to bypass appending extra context to the Pull Request title.",
       "type": "boolean",
       "default": false
     },
     "pre-commit": {
       "description": "Configuration object for the pre-commit manager",
+      "markdownDescription": "Configuration object for the pre-commit manager",
       "type": "object",
       "default": {
         "commitMessageTopic": "pre-commit hook {{depName}}",
@@ -6528,11 +7128,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6552,21 +7154,25 @@
     },
     "printConfig": {
       "description": "If enabled, Renovate logs the fully resolved config for each repository, plus the fully resolved presets.",
+      "markdownDescription": "If enabled, Renovate logs the fully resolved config for each repository, plus the fully resolved presets.",
       "type": "boolean",
       "default": false
     },
     "pruneBranchAfterAutomerge": {
       "description": "Set to `true` to enable branch pruning after automerging.",
+      "markdownDescription": "Set to `true` to enable branch pruning after automerging.",
       "type": "boolean",
       "default": true
     },
     "pruneStaleBranches": {
       "description": "Set to `false` to disable pruning stale branches.",
+      "markdownDescription": "Set to `false` to disable pruning stale branches.",
       "type": "boolean",
       "default": true
     },
     "pub": {
       "description": "Configuration object for the pub manager",
+      "markdownDescription": "Configuration object for the pub manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6596,11 +7202,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6620,6 +7228,7 @@
     },
     "puppet": {
       "description": "Configuration object for the puppet manager",
+      "markdownDescription": "Configuration object for the puppet manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6649,11 +7258,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6673,6 +7284,7 @@
     },
     "pyenv": {
       "description": "Configuration object for the pyenv manager",
+      "markdownDescription": "Configuration object for the pyenv manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6704,11 +7316,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6728,6 +7342,7 @@
     },
     "quadlet": {
       "description": "Configuration object for the quadlet manager",
+      "markdownDescription": "Configuration object for the quadlet manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6759,11 +7374,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6783,6 +7400,7 @@
     },
     "rangeStrategy": {
       "description": "Determines how to modify or update existing ranges.",
+      "markdownDescription": "Determines how to modify or update existing ranges.",
       "type": "string",
       "enum": [
         "auto",
@@ -6797,11 +7415,13 @@
     },
     "rebaseLabel": {
       "description": "Label to request a rebase from Renovate bot.",
+      "markdownDescription": "Label to request a rebase from Renovate bot.",
       "type": "string",
       "default": "rebase"
     },
     "rebaseWhen": {
       "description": "Controls when Renovate rebases an existing branch.",
+      "markdownDescription": "Controls when Renovate rebases an existing branch.",
       "type": "string",
       "enum": [
         "auto",
@@ -6814,6 +7434,7 @@
     },
     "recreateWhen": {
       "description": "Recreate PRs even if same ones were closed previously.",
+      "markdownDescription": "Recreate PRs even if same ones were closed previously.",
       "type": "string",
       "enum": [
         "auto",
@@ -6824,6 +7445,7 @@
     },
     "regex": {
       "description": "Configuration object for the regex manager",
+      "markdownDescription": "Configuration object for the regex manager",
       "type": "object",
       "default": {
         "pinDigests": false
@@ -6832,6 +7454,7 @@
     },
     "registryAliases": {
       "description": "Aliases for registries.",
+      "markdownDescription": "Aliases for registries.",
       "type": "object",
       "default": {},
       "additionalProperties": {
@@ -6841,6 +7464,7 @@
     },
     "registryUrls": {
       "description": "List of URLs to try for dependency lookup. Package manager specific.",
+      "markdownDescription": "List of URLs to try for dependency lookup. Package manager specific.",
       "type": [
         "array",
         "null"
@@ -6852,6 +7476,7 @@
     },
     "renovate-config-presets": {
       "description": "Configuration object for the renovate-config-presets manager",
+      "markdownDescription": "Configuration object for the renovate-config-presets manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6889,11 +7514,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -6913,6 +7540,7 @@
     },
     "replacement": {
       "description": "Configuration to apply when replacing a dependency.",
+      "markdownDescription": "Configuration to apply when replacing a dependency.",
       "type": "object",
       "default": {
         "branchTopic": "{{{depNameSanitized}}}-replacement",
@@ -6945,6 +7573,7 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               }
@@ -6955,6 +7584,7 @@
     },
     "replacementApproach": {
       "description": "Select whether to perform a direct replacement or alias replacement.",
+      "markdownDescription": "Select whether to perform a direct replacement or alias replacement.",
       "type": "string",
       "enum": [
         "replace",
@@ -6964,11 +7594,13 @@
     },
     "respectLatest": {
       "description": "Ignore versions newer than npm \"latest\" version.",
+      "markdownDescription": "Ignore versions newer than npm \"latest\" version.",
       "type": "boolean",
       "default": true
     },
     "reviewers": {
       "description": "Requested reviewers for Pull Requests (either username or email address depending on the platform).",
+      "markdownDescription": "Requested reviewers for Pull Requests (either username or email address depending on the platform).",
       "type": "array",
       "items": {
         "type": "string"
@@ -6976,11 +7608,13 @@
     },
     "reviewersFromCodeOwners": {
       "description": "Determine reviewers based on configured code owners and changes in PR.",
+      "markdownDescription": "Determine reviewers based on configured code owners and changes in PR.",
       "type": "boolean",
       "default": false
     },
     "reviewersSampleSize": {
       "description": "Take a random sample of given size from `reviewers`.",
+      "markdownDescription": "Take a random sample of given size from `reviewers`.",
       "type": [
         "integer",
         "null"
@@ -6989,6 +7623,7 @@
     },
     "rollback": {
       "description": "Configuration to apply when rolling back a version.",
+      "markdownDescription": "Configuration to apply when rolling back a version.",
       "type": "object",
       "default": {
         "branchTopic": "{{{depNameSanitized}}}-rollback",
@@ -7018,6 +7653,7 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               }
@@ -7028,11 +7664,13 @@
     },
     "rollbackPrs": {
       "description": "Create PRs to roll back versions if the current version is not found in the registry.",
+      "markdownDescription": "Create PRs to roll back versions if the current version is not found in the registry.",
       "type": "boolean",
       "default": false
     },
     "ruby-version": {
       "description": "Configuration object for the ruby-version manager",
+      "markdownDescription": "Configuration object for the ruby-version manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7063,11 +7701,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7087,6 +7727,7 @@
     },
     "runtime-version": {
       "description": "Configuration object for the runtime-version manager",
+      "markdownDescription": "Configuration object for the runtime-version manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7117,11 +7758,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7141,6 +7784,7 @@
     },
     "sbt": {
       "description": "Configuration object for the sbt manager",
+      "markdownDescription": "Configuration object for the sbt manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7174,11 +7818,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7198,6 +7844,7 @@
     },
     "scalafmt": {
       "description": "Configuration object for the scalafmt manager",
+      "markdownDescription": "Configuration object for the scalafmt manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7227,11 +7874,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7251,6 +7900,7 @@
     },
     "schedule": {
       "description": "Limit branch creation to these times of day or week.",
+      "markdownDescription": "Limit branch creation to these times of day or week.",
       "oneOf": [
         {
           "type": "array",
@@ -7268,16 +7918,19 @@
     },
     "semanticCommitScope": {
       "description": "Commit scope to use if Semantic Commits are enabled.",
+      "markdownDescription": "Commit scope to use if Semantic Commits are enabled.",
       "type": "string",
       "default": "deps"
     },
     "semanticCommitType": {
       "description": "Commit type to use if Semantic Commits is enabled.",
+      "markdownDescription": "Commit type to use if Semantic Commits is enabled.",
       "type": "string",
       "default": "chore"
     },
     "semanticCommits": {
       "description": "Enable Semantic Commit prefixes for commits and PR titles.",
+      "markdownDescription": "Enable Semantic Commit prefixes for commits and PR titles.",
       "type": "string",
       "enum": [
         "auto",
@@ -7288,26 +7941,31 @@
     },
     "separateMajorMinor": {
       "description": "If set to `false`, Renovate will upgrade dependencies to their latest release only. Renovate will not separate major or minor branches.",
+      "markdownDescription": "If set to `false`, Renovate will upgrade dependencies to their latest release only. Renovate will not separate major or minor branches.",
       "type": "boolean",
       "default": true
     },
     "separateMinorPatch": {
       "description": "If set to `true`, Renovate will separate `minor` and `patch` updates into separate branches.",
+      "markdownDescription": "If set to `true`, Renovate will separate `minor` and `patch` updates into separate branches.",
       "type": "boolean",
       "default": false
     },
     "separateMultipleMajor": {
       "description": "If set to `true`, PRs will be raised separately for each available `major` upgrade version.",
+      "markdownDescription": "If set to `true`, PRs will be raised separately for each available `major` upgrade version.",
       "type": "boolean",
       "default": false
     },
     "separateMultipleMinor": {
       "description": "If set to `true`, Renovate creates separate PRs for each `minor` stream.",
+      "markdownDescription": "If set to `true`, Renovate creates separate PRs for each `minor` stream.",
       "type": "boolean",
       "default": false
     },
     "setup-cfg": {
       "description": "Configuration object for the setup-cfg manager",
+      "markdownDescription": "Configuration object for the setup-cfg manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7338,11 +7996,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7362,11 +8022,13 @@
     },
     "skipArtifactsUpdate": {
       "description": "Skip Renovate's automatic artifact updating.",
+      "markdownDescription": "Skip Renovate's automatic artifact updating.",
       "type": "boolean",
       "default": false
     },
     "skipInstalls": {
       "description": "Skip installing modules/dependencies if lock file updating is possible without a full install.",
+      "markdownDescription": "Skip installing modules/dependencies if lock file updating is possible without a full install.",
       "type": [
         "boolean",
         "null"
@@ -7375,6 +8037,7 @@
     },
     "statusCheckNames": {
       "description": "Custom strings to use as status check names.",
+      "markdownDescription": "Custom strings to use as status check names.",
       "type": "object",
       "default": {
         "artifactError": "renovate/artifacts",
@@ -7386,11 +8049,13 @@
     },
     "stopUpdatingLabel": {
       "description": "Label to make Renovate stop updating a PR.",
+      "markdownDescription": "Label to make Renovate stop updating a PR.",
       "type": "string",
       "default": "stop-updating"
     },
     "suppressNotifications": {
       "description": "Options to suppress various types of warnings and other notifications.",
+      "markdownDescription": "Options to suppress various types of warnings and other notifications.",
       "type": "array",
       "items": {
         "type": "string",
@@ -7410,6 +8075,7 @@
     },
     "sveltos": {
       "description": "Configuration object for the sveltos manager",
+      "markdownDescription": "Configuration object for the sveltos manager",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -7437,11 +8103,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7461,6 +8129,7 @@
     },
     "swift": {
       "description": "Configuration object for the swift manager",
+      "markdownDescription": "Configuration object for the swift manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7492,11 +8161,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7516,6 +8187,7 @@
     },
     "tekton": {
       "description": "Configuration object for the tekton manager",
+      "markdownDescription": "Configuration object for the tekton manager",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -7543,11 +8215,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7567,6 +8241,7 @@
     },
     "terraform": {
       "description": "Configuration object for the terraform manager",
+      "markdownDescription": "Configuration object for the terraform manager",
       "type": "object",
       "default": {
         "commitMessageTopic": "Terraform {{depName}}",
@@ -7599,11 +8274,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7623,6 +8300,7 @@
     },
     "terraform-version": {
       "description": "Configuration object for the terraform-version manager",
+      "markdownDescription": "Configuration object for the terraform-version manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7654,11 +8332,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7678,6 +8358,7 @@
     },
     "terragrunt": {
       "description": "Configuration object for the terragrunt manager",
+      "markdownDescription": "Configuration object for the terragrunt manager",
       "type": "object",
       "default": {
         "commitMessageTopic": "Terragrunt dependency {{depName}}",
@@ -7708,11 +8389,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7732,6 +8415,7 @@
     },
     "terragrunt-version": {
       "description": "Configuration object for the terragrunt-version manager",
+      "markdownDescription": "Configuration object for the terragrunt-version manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7763,11 +8447,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7787,6 +8473,7 @@
     },
     "tflint-plugin": {
       "description": "Configuration object for the tflint-plugin manager",
+      "markdownDescription": "Configuration object for the tflint-plugin manager",
       "type": "object",
       "default": {
         "commitMessageTopic": "TFLint plugin {{depName}}",
@@ -7818,11 +8505,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7842,10 +8531,12 @@
     },
     "timezone": {
       "description": "Must conform to [IANA Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) format.",
+      "markdownDescription": "Must conform to [IANA Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) format.",
       "type": "string"
     },
     "toolSettings": {
       "description": "Tool specific configuration. Global self-hosted configuration takes precedence.",
+      "markdownDescription": "Tool specific configuration. Global self-hosted configuration takes precedence.",
       "type": "object",
       "default": {
         "jvmMaxMemory": 512,
@@ -7874,10 +8565,17 @@
               },
               "jvmMaxMemory": {
                 "description": "Maximum JVM memory in MB to use for updates that use a Java VM, like the Gradle Wrapper, defaults to 512. Repo configuration for this value will be ignored if it exceeds the global configuration for `toolSettings.jvmMaxMemory`",
+                "markdownDescription": "Maximum JVM memory in MB to use for updates that use a Java VM, like the Gradle Wrapper, defaults to 512. Repo configuration for this value will be ignored if it exceeds the global configuration for `toolSettings.jvmMaxMemory`",
                 "type": "integer"
               },
               "jvmMemory": {
                 "description": "Initial JVM memory in MB to use for updates that use a Java VM, like the Gradle Wrapper, defaults to `jvmMaxMemory`. Repo configuration for this value will be ignored if it exceeds the global configuration for `toolSettings.jvmMaxMemory`",
+                "markdownDescription": "Initial JVM memory in MB to use for updates that use a Java VM, like the Gradle Wrapper, defaults to `jvmMaxMemory`. Repo configuration for this value will be ignored if it exceeds the global configuration for `toolSettings.jvmMaxMemory`",
+                "type": "integer"
+              },
+              "nodeMaxMemory": {
+                "description": "Maximum memory in MiB for Node child processes invoked by Renovate. If unset, the Node process will automagically determine the memory limit to use. Repo configuration for this value will be ignored if it exceeds the global configuration for `toolSettings.nodeMaxMemory`",
+                "markdownDescription": "Maximum memory in MiB for Node child processes invoked by Renovate. If unset, the Node process will automagically determine the memory limit to use. Repo configuration for this value will be ignored if it exceeds the global configuration for `toolSettings.nodeMaxMemory`",
                 "type": "integer"
               }
             }
@@ -7887,6 +8585,7 @@
     },
     "travis": {
       "description": "Configuration object for the travis manager",
+      "markdownDescription": "Configuration object for the travis manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7920,11 +8619,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7944,6 +8645,7 @@
     },
     "typst": {
       "description": "Configuration object for the typst manager",
+      "markdownDescription": "Configuration object for the typst manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7973,11 +8675,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -7997,6 +8701,7 @@
     },
     "unity3d": {
       "description": "Configuration object for the unity3d manager",
+      "markdownDescription": "Configuration object for the unity3d manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -8026,11 +8731,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -8050,21 +8757,25 @@
     },
     "updateInternalDeps": {
       "description": "Whether to update internal dep versions in a monorepo. Works on Yarn Workspaces.",
+      "markdownDescription": "Whether to update internal dep versions in a monorepo. Works on Yarn Workspaces.",
       "type": "boolean",
       "default": false
     },
     "updateNotScheduled": {
       "description": "Whether to update branches when not scheduled. Renovate will not create branches outside of the schedule.",
+      "markdownDescription": "Whether to update branches when not scheduled. Renovate will not create branches outside of the schedule.",
       "type": "boolean",
       "default": true
     },
     "updatePinnedDependencies": {
       "description": "Whether to update pinned (single version) dependencies or not.",
+      "markdownDescription": "Whether to update pinned (single version) dependencies or not.",
       "type": "boolean",
       "default": true
     },
     "useBaseBranchConfig": {
       "description": "Whether to read configuration from base branches instead of only the default branch.",
+      "markdownDescription": "Whether to read configuration from base branches instead of only the default branch.",
       "type": "string",
       "enum": [
         "merge",
@@ -8074,6 +8785,7 @@
     },
     "userStrings": {
       "description": "User-facing strings for the Renovate comment when a PR is closed.",
+      "markdownDescription": "User-facing strings for the Renovate comment when a PR is closed.",
       "type": "object",
       "default": {
         "ignoreTopic": "Renovate Ignore Notification",
@@ -8085,6 +8797,7 @@
     },
     "velaci": {
       "description": "Configuration object for the velaci manager",
+      "markdownDescription": "Configuration object for the velaci manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -8114,11 +8827,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -8138,6 +8853,7 @@
     },
     "vendir": {
       "description": "Configuration object for the vendir manager",
+      "markdownDescription": "Configuration object for the vendir manager",
       "type": "object",
       "default": {
         "commitMessageTopic": "vendir {{depName}}",
@@ -8168,11 +8884,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
@@ -8192,15 +8910,18 @@
     },
     "versionCompatibility": {
       "description": "A regex (`re2`) with named capture groups to show how version and compatibility are split from a raw version string.",
+      "markdownDescription": "A regex (`re2`) with named capture groups to show how version and compatibility are split from a raw version string.",
       "type": "string",
       "format": "regex"
     },
     "versioning": {
       "description": "Versioning to use for filtering and comparisons.",
+      "markdownDescription": "Versioning to use for filtering and comparisons.",
       "type": "string",
       "oneOf": [
         {
           "enum": [
+            "apk",
             "aws-eks-addon",
             "aws-machine-image",
             "azure-rest-api",
@@ -8262,6 +8983,7 @@
     },
     "vulnerabilityAlerts": {
       "description": "Config to apply when a PR is needed due to a vulnerability in the existing package version.",
+      "markdownDescription": "Config to apply when a PR is needed due to a vulnerability in the existing package version.",
       "type": "object",
       "default": {
         "groupName": null,
@@ -8297,11 +9019,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "vulnerabilityFixStrategy": {
                 "description": "Strategy to use when fixing vulnerabilities. `lowest` will propose the earliest version with a fix, `highest` will always pick the latest version.",
+                "markdownDescription": "Strategy to use when fixing vulnerabilities. `lowest` will propose the earliest version with a fix, `highest` will always pick the latest version.",
                 "type": "string",
                 "enum": [
                   "lowest",
@@ -8316,6 +9040,7 @@
     },
     "woodpecker": {
       "description": "Configuration object for the woodpecker manager",
+      "markdownDescription": "Configuration object for the woodpecker manager",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -8345,11 +9070,13 @@
               },
               "enabled": {
                 "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
                 "type": "boolean",
                 "default": true
               },
               "managerFilePatterns": {
                 "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
                 "oneOf": [
                   {
                     "type": "array",
