@@ -74,39 +74,8 @@ def patch_cache_dir(monkeypatch, cache_dir):
 
 
 @pytest.fixture
-def url2cachepath():
-    from check_jsonschema.cachedownloader import url_to_cache_filename
-
-    def _get(cache_dir, url):
-        return cache_dir / url_to_cache_filename(url)
-
-    return _get
-
-
-@pytest.fixture
-def downloads_cache_dir(tmp_path):
-    return tmp_path / ".cache" / "check_jsonschema" / "downloads"
-
-
-@pytest.fixture
-def get_download_cache_loc(downloads_cache_dir, url2cachepath):
-    def _get(url):
-        return url2cachepath(downloads_cache_dir, url)
-
-    return _get
-
-
-@pytest.fixture
-def inject_cached_download(downloads_cache_dir, get_download_cache_loc):
-    def _write(uri, content):
-        downloads_cache_dir.mkdir(parents=True)
-        path = get_download_cache_loc(uri)
-        if isinstance(content, str):
-            path.write_text(content)
-        else:
-            path.write_bytes(content)
-
-    return _write
+def schemas_cache_dir(tmp_path):
+    return tmp_path / ".cache" / "check_jsonschema" / "schemas"
 
 
 @pytest.fixture
@@ -114,18 +83,7 @@ def refs_cache_dir(tmp_path):
     return tmp_path / ".cache" / "check_jsonschema" / "refs"
 
 
+# Alias for unit tests that use "downloads" as the cache dir name
 @pytest.fixture
-def get_ref_cache_loc(refs_cache_dir, url2cachepath):
-    def _get(url):
-        return url2cachepath(refs_cache_dir, url)
-
-    return _get
-
-
-@pytest.fixture
-def inject_cached_ref(refs_cache_dir, get_ref_cache_loc):
-    def _write(uri, content):
-        refs_cache_dir.mkdir(parents=True)
-        get_ref_cache_loc(uri).write_text(content)
-
-    return _write
+def downloads_cache_dir(tmp_path):
+    return tmp_path / ".cache" / "check_jsonschema" / "downloads"

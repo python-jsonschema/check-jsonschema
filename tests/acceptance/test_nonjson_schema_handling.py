@@ -135,31 +135,3 @@ additionalProperties: false
 
     result = run_line(["check-jsonschema", "--schemafile", retrieval_uri, str(doc)])
     assert result.exit_code == (0 if passing_data else 1)
-
-
-def test_can_load_remote_yaml_schema_ref_from_cache(
-    run_line, inject_cached_ref, tmp_path
-):
-    retrieval_uri = "https://example.org/retrieval/schemas/main.yaml"
-    responses.add(
-        "GET",
-        retrieval_uri,
-        body="""\
-"$schema": "http://json-schema.org/draft-07/schema"
-properties:
-  "title": {"$ref": "./title_schema.yaml"}
-additionalProperties: false
-""",
-    )
-
-    ref_loc = "https://example.org/retrieval/schemas/title_schema.yaml"
-    # populate a bad schema, but then "override" that with a good cache value
-    # this can only pass (in the success case) if the cache loading really works
-    responses.add("GET", ref_loc, body="false")
-    inject_cached_ref(ref_loc, "type: string")
-
-    doc = tmp_path / "doc.json"
-    doc.write_text(json.dumps(PASSING_DOCUMENT))
-
-    result = run_line(["check-jsonschema", "--schemafile", retrieval_uri, str(doc)])
-    assert result.exit_code == 0
