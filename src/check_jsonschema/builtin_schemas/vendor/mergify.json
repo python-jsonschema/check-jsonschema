@@ -1809,6 +1809,7 @@
                 "CONFIGURATION_CHANGED",
                 "UNPROCESSABLE_PULL_REQUEST",
                 "PR_MANUALLY_DEQUEUED",
+                "STACK_PREDECESSOR_DEQUEUED",
                 "INTERMEDIATE_RESULTS_SKIPPED",
                 "CHECKS_RETRIED"
               ],

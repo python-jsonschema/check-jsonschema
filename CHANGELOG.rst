@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: github-issue-forms, mergify, renovate (2026-03-29)
+
 0.37.1
 ------
 
