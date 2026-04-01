@@ -13,7 +13,7 @@ dev = [
 ]
 docs = [
     "sphinx<9",
-    "sphinx-issues<6",
+    "sphinx-issues<7",
     "furo==2025.12.19",
 ]
 check-package-metadata = [
