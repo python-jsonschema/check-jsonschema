@@ -2,11 +2,11 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "CircleCI Config",
     "definitions": {
-        "jobDefinition": {
+        "jobInvocation": {
             "oneOf": [
                 {
                     "type": "string",
-                    "markdownDescription": "A reference to a job defined elsewhere in the configuration, either in the `jobs` section or from an orb (e.g., `my-job` or `orb-name/job-name`)."
+                    "markdownDescription": "An invocation of a job defined elsewhere in the configuration, either in the `jobs` section or from an orb (e.g., `my-job` or `orb-name/job-name`)."
                 },
                 {
                     "type": "object",
@@ -576,7 +576,7 @@
                                 "pattern": "^[A-Za-z][A-Za-z\\s\\d_-]*$"
                             },
                             "additionalProperties": {
-                                "$ref": "#/definitions/jobDefinition"
+                                "$ref": "#/definitions/jobInvocation"
                             }
                         },
                         "commands": {
@@ -2380,7 +2380,7 @@
                 "pattern": "^[A-Za-z][A-Za-z\\s\\d_-]*$"
             },
             "additionalProperties": {
-                "$ref": "#/definitions/jobDefinition"
+                "$ref": "#/definitions/jobInvocation"
             }
         },
         "orbs": {
@@ -2411,7 +2411,7 @@
                                     "pattern": "^[A-Za-z][A-Za-z\\s\\d_-]*$"
                                 },
                                 "additionalProperties": {
-                                    "$ref": "#/definitions/jobDefinition"
+                                    "$ref": "#/definitions/jobInvocation"
                                 }
                             },
                             "commands": {
