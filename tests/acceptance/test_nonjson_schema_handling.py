@@ -135,3 +135,39 @@ additionalProperties: false
 
     result = run_line(["check-jsonschema", "--schemafile", retrieval_uri, str(doc)])
     assert result.exit_code == (0 if passing_data else 1)
+
+
+def test_can_load_remote_yaml_schema_ref_from_cache(
+    run_line, tmp_path, cacheable_headers
+):
+    retrieval_uri = "https://example.org/retrieval/schemas/main.yaml"
+    ref_loc = "https://example.org/retrieval/schemas/title_schema.yaml"
+
+    # First: add good responses with cache headers
+    responses.add(
+        "GET",
+        retrieval_uri,
+        body="""\
+"$schema": "http://json-schema.org/draft-07/schema"
+properties:
+  "title": {"$ref": "./title_schema.yaml"}
+additionalProperties: false
+""",
+        headers=cacheable_headers,
+    )
+    responses.add("GET", ref_loc, body="type: string", headers=cacheable_headers)
+
+    # Then: add bad responses (used if cache doesn't work)
+    responses.add("GET", retrieval_uri, body="error", status=500)
+    responses.add("GET", ref_loc, body="error", status=500)
+
+    doc = tmp_path / "doc.json"
+    doc.write_text(json.dumps(PASSING_DOCUMENT))
+
+    # First run: populates cache
+    result1 = run_line(["check-jsonschema", "--schemafile", retrieval_uri, str(doc)])
+    assert result1.exit_code == 0
+
+    # Second run: should use cached data (not the 500 errors)
+    result2 = run_line(["check-jsonschema", "--schemafile", retrieval_uri, str(doc)])
+    assert result2.exit_code == 0

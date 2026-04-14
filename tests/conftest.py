@@ -1,11 +1,40 @@
 import inspect
+import io
 import os
 import pathlib
 import sys
+from email.utils import formatdate
 
 import pytest
 import responses
 from click.testing import CliRunner
+
+
+class _CacheControlCompatibleBytesIO(io.BytesIO):
+    """A BytesIO that signals closed to cachecontrol after all data is read.
+
+    cachecontrol's CallbackFileWrapper checks `fp.fp is None` to determine
+    if the response has been fully read. Standard BytesIO doesn't have an
+    `fp` attribute, so cachecontrol falls back to checking `fp.closed`,
+    which only returns True after explicit `.close()`. This class adds
+    an `fp` property that returns None after all data has been read,
+    allowing cachecontrol to properly cache responses from the `responses`
+    mock library.
+    """
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self._fully_read = False
+
+    @property
+    def fp(self):
+        return None if self._fully_read else self
+
+    def read(self, size=-1):
+        data = super().read(size)
+        if self.tell() == len(self.getvalue()):
+            self._fully_read = True
+        return data
 
 
 @pytest.fixture
@@ -19,10 +48,22 @@ def cli_runner():
 
 @pytest.fixture(autouse=True)
 def mocked_responses():
+    # Patch responses._handle_body to return a BytesIO subclass that properly
+    # signals "closed" to cachecontrol, enabling HTTP caching in tests.
+    original_handle_body = responses._handle_body
+
+    def _patched_handle_body(body):
+        result = original_handle_body(body)
+        if isinstance(result, io.BytesIO):
+            return _CacheControlCompatibleBytesIO(result.getvalue())
+        return result
+
+    responses._handle_body = _patched_handle_body
     responses.start()
     yield
     responses.stop()
     responses.reset()
+    responses._handle_body = original_handle_body
 
 
 @pytest.fixture
@@ -87,3 +128,12 @@ def refs_cache_dir(tmp_path):
 @pytest.fixture
 def downloads_cache_dir(tmp_path):
     return tmp_path / ".cache" / "check_jsonschema" / "downloads"
+
+
+@pytest.fixture
+def cacheable_headers():
+    """Returns HTTP headers that enable cachecontrol caching."""
+    return {
+        "Cache-Control": "max-age=31536000",
+        "Date": formatdate(usegmt=True),
+    }

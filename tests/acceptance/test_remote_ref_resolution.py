@@ -96,6 +96,59 @@ def test_remote_ref_resolution_cache_control(
             assert loc.exists()
 
 
+@pytest.mark.parametrize("casename", ("case1", "case2"))
+@pytest.mark.parametrize("check_passes", (True, False))
+def test_remote_ref_resolution_loads_from_cache(
+    run_line, tmp_path, casename, check_passes, cacheable_headers
+):
+    main_schema_loc = "https://example.com/main.json"
+
+    # First: add good responses with cache headers
+    responses.add(
+        "GET",
+        main_schema_loc,
+        json=CASES[casename]["main_schema"],
+        headers=cacheable_headers,
+    )
+    for name, subschema in CASES[casename]["other_schemas"].items():
+        responses.add(
+            "GET",
+            f"https://example.com/{name}.json",
+            json=subschema,
+            headers=cacheable_headers,
+        )
+
+    # Then: add bad responses (used if cache doesn't work)
+    responses.add("GET", main_schema_loc, json={}, status=500)
+    for name in CASES[casename]["other_schemas"]:
+        responses.add("GET", f"https://example.com/{name}.json", json={}, status=500)
+
+    instance_path = tmp_path / "instance.json"
+    instance_path.write_text(
+        json.dumps(
+            CASES[casename]["passing_document"]
+            if check_passes
+            else CASES[casename]["failing_document"]
+        )
+    )
+
+    # First run: populates cache with good data
+    result1 = run_line(
+        ["check-jsonschema", "--schemafile", main_schema_loc, str(instance_path)]
+    )
+    assert result1.exit_code == (0 if check_passes else 1)
+
+    # Second run: should use cached data (not the 500 errors)
+    result2 = run_line(
+        ["check-jsonschema", "--schemafile", main_schema_loc, str(instance_path)]
+    )
+    output = f"\nstdout:\n{result2.stdout}\n\nstderr:\n{result2.stderr}"
+    if check_passes:
+        assert result2.exit_code == 0, output
+    else:
+        assert result2.exit_code == 1, output
+
+
 # this test ensures that `$id` is preferred for the base URI over
 # the retrieval URI
 @pytest.mark.parametrize("check_passes", (True, False))
