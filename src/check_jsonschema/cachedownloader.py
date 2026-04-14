@@ -11,6 +11,7 @@ import typing as t
 import cachecontrol
 import requests
 from cachecontrol.caches.file_cache import FileCache
+from cachecontrol.controller import CacheController
 
 log = logging.getLogger(__name__)
 
@@ -46,18 +47,17 @@ def _get_request(
     file_url: str,
     *,
     response_ok: t.Callable[[requests.Response], bool],
+    cache: FileCache | None = None,
 ) -> requests.Response:
     num_retries = 2
     r: requests.Response | None = None
     for _attempt in range(num_retries + 1):
+        # Delete bad cache entry before retry so we fetch fresh data
+        if cache is not None and _attempt > 0:
+            cache_key = CacheController.cache_url(file_url)
+            cache.delete(cache_key)
         try:
-            # On retries, bypass CacheControl's local cache to avoid
-            # re-serving a cached bad response. Ideally we'd delete the
-            # cache entry directly, but CacheControl doesn't expose a public
-            # API for this (see https://github.com/psf/cachecontrol/issues/219).
-            # The no-cache header forces revalidation with the origin server.
-            headers = {"Cache-Control": "no-cache"} if _attempt > 0 else {}
-            r = session.get(file_url, headers=headers)
+            r = session.get(file_url)
         except requests.RequestException as e:
             if _attempt == num_retries:
                 raise FailedDownloadError("encountered error during download") from e
@@ -80,14 +80,18 @@ class CacheDownloader:
         self._disable_cache = disable_cache
 
     @functools.cached_property
+    def _cache(self) -> FileCache | None:
+        if self._cache_dir and not self._disable_cache:
+            os.makedirs(self._cache_dir, exist_ok=True)
+            return FileCache(self._cache_dir)
+        return None
+
+    @functools.cached_property
     def _session(self) -> requests.Session:
         session = requests.Session()
-        if self._cache_dir and not self._disable_cache:
+        if self._cache is not None:
             log.debug("using cache dir: %s", self._cache_dir)
-            os.makedirs(self._cache_dir, exist_ok=True)
-            session = cachecontrol.CacheControl(
-                session, cache=FileCache(self._cache_dir)
-            )
+            session = cachecontrol.CacheControl(session, cache=self._cache)
         else:
             log.debug("caching disabled")
         return session
@@ -98,7 +102,9 @@ class CacheDownloader:
         file_url: str,
         validate_response: t.Callable[[requests.Response], bool],
     ) -> t.Iterator[t.IO[bytes]]:
-        response = _get_request(self._session, file_url, response_ok=validate_response)
+        response = _get_request(
+            self._session, file_url, response_ok=validate_response, cache=self._cache
+        )
         yield io.BytesIO(response.content)
 
     def bind(
