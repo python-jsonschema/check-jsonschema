@@ -103,6 +103,7 @@ The '--disable-formats' flag supports the following formats:
 @click.version_option()
 @click.option(
     "--log-level",
+    hidden=True,
     help="Set the log level for debug output (e.g., DEBUG, INFO, WARNING).",
     type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR"], case_sensitive=False),
     callback=configure_logging,
