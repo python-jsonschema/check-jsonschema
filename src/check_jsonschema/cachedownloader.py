@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import contextlib
+import functools
 import io
 import logging
 import os
@@ -77,15 +78,9 @@ class CacheDownloader:
     def __init__(self, cache_dir: str, *, disable_cache: bool = False) -> None:
         self._cache_dir = _resolve_cache_dir(cache_dir)
         self._disable_cache = disable_cache
-        self._cached_session: requests.Session | None = None
 
-    @property
+    @functools.cached_property
     def _session(self) -> requests.Session:
-        if self._cached_session is None:
-            self._cached_session = self._build_session()
-        return self._cached_session
-
-    def _build_session(self) -> requests.Session:
         session = requests.Session()
         if self._cache_dir and not self._disable_cache:
             log.debug("using cache dir: %s", self._cache_dir)
