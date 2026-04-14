@@ -202,26 +202,26 @@ def test_cachedownloader_retries_on_bad_data(disable_cache, downloads_cache_dir)
 
 
 def test_disable_cache_uses_plain_session():
-    """When disable_cache=True, verify _build_session returns a plain Session."""
+    """When disable_cache=True, verify _session returns a plain Session."""
     cd = CacheDownloader("downloads", disable_cache=True)
-    session = cd._build_session()
+    session = cd._session
     # A plain requests.Session does not have CacheControlAdapter
     assert type(session) is requests.Session
 
 
 def test_enable_cache_uses_cachecontrol_session(tmp_path, patch_cache_dir):
-    """When disable_cache=False, verify _build_session returns a CacheControl session."""
+    """When disable_cache=False, verify _session returns a CacheControl session."""
     from cachecontrol import CacheControlAdapter
 
     cd = CacheDownloader("downloads", disable_cache=False)
-    session = cd._build_session()
+    session = cd._session
     # CacheControl wraps the session and attaches CacheControlAdapter
     assert isinstance(session.get_adapter("https://"), CacheControlAdapter)
     assert isinstance(session.get_adapter("http://"), CacheControlAdapter)
 
 
 def test_cache_dir_none_uses_plain_session(monkeypatch, patch_cache_dir):
-    """When _resolve_cache_dir returns None, _build_session returns plain Session."""
+    """When _resolve_cache_dir returns None, _session returns plain Session."""
     # Undo the patch and simulate Windows with no env vars
     patch_cache_dir.undo()
     monkeypatch.delenv("LOCALAPPDATA", raising=False)
@@ -230,5 +230,5 @@ def test_cache_dir_none_uses_plain_session(monkeypatch, patch_cache_dir):
 
     cd = CacheDownloader("downloads", disable_cache=False)
     assert cd._cache_dir is None
-    session = cd._build_session()
+    session = cd._session
     assert type(session) is requests.Session
