@@ -1328,6 +1328,12 @@
           "description": "Whether to post merge protection status comments on pull requests",
           "title": "Post Comment",
           "type": "boolean"
+        },
+        "auto_merge": {
+          "default": false,
+          "description": "Automatically merge or queue PRs when all merge protection conditions pass",
+          "title": "Auto Merge",
+          "type": "boolean"
         }
       },
       "title": "MergeProtections",
@@ -2099,6 +2105,14 @@
           "title": "Dependabot update type",
           "type": "array"
         },
+        "scope": {
+          "description": "The list of scopes associated with the pull request for merge queue batching.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Scope",
+          "type": "array"
+        },
         "commits": {
           "description": "The list of commits of the pull request. The index 0 is the first commit, while -1 is the last commit.",
           "items": {
@@ -2259,6 +2273,7 @@
         "dependabot-dependency-name",
         "dependabot-dependency-type",
         "dependabot-update-type",
+        "scope",
         "commits",
         "current-datetime",
         "updated-at",
@@ -2387,6 +2402,174 @@
           "default": null,
           "description": "The name of the queue rule where the pull request should be added. If no name is set, queue_conditions will be applied instead.",
           "title": "Name"
+        },
+        "allow_merging_configuration_change": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: this option is no longer effective and can be safely removed from the configuration.",
+          "title": "Allow Merging Configuration Change"
+        },
+        "autosquash": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: autosquash on the queue action is no longer effective.",
+          "title": "Autosquash"
+        },
+        "allow_inplace_checks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: allow_inplace_checks on the queue action has no effect.",
+          "title": "Allow Inplace Checks"
+        },
+        "queue_branch_merge_method": {
+          "anyOf": [
+            {
+              "const": "fast-forward",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: renamed to `merge_method` and moved to queue_rules[name].",
+          "title": "Queue Branch Merge Method"
+        },
+        "merge_method": {
+          "anyOf": [
+            {
+              "enum": [
+                "merge",
+                "rebase",
+                "squash",
+                "fast-forward",
+                "merge-batch"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: moved to queue_rules[name].merge_method.",
+          "title": "Merge Method"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "enum": [
+                "merge",
+                "rebase",
+                "squash",
+                "fast-forward",
+                "merge-batch"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: renamed to merge_method and moved to queue_rules[name].",
+          "title": "Method"
+        },
+        "merge_bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: moved to queue_rules[name].merge_bot_account.",
+          "title": "Merge Bot Account"
+        },
+        "update_method": {
+          "anyOf": [
+            {
+              "enum": [
+                "rebase",
+                "merge"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: moved to queue_rules[name].update_method.",
+          "title": "Update Method"
+        },
+        "update_bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: moved to queue_rules[name].update_bot_account.",
+          "title": "Update Bot Account"
+        },
+        "commit_message_template": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "deprecated": true,
+          "description": "Deprecated: moved to queue_rules[name].commit_message_template.",
+          "title": "Commit Message Template"
         }
       },
       "title": "QueueActionModel",
@@ -2542,7 +2725,8 @@
                 "merge",
                 "rebase",
                 "squash",
-                "fast-forward"
+                "fast-forward",
+                "merge-batch"
               ],
               "type": "string"
             },
@@ -2551,7 +2735,7 @@
             }
           ],
           "default": null,
-          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration.",
+          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration.\n\nAdditionally, `merge-batch` merges the draft pull request prepared by the merge queue using a merge commit. This requires `batch_size > 1`.",
           "title": "Merge Method"
         },
         "autosquash": {
@@ -2562,7 +2746,12 @@
           "type": "boolean"
         },
         "autoqueue": {
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`autoqueue` in `queue_rules` is deprecated. Use `auto_merge` in `merge_protections_settings` instead.",
+            "deprecated_summary_saas_mode": "`autoqueue` in `queue_rules` is deprecated and will be removed on 2026-07-16. Use `auto_merge` in `merge_protections_settings` instead."
+          },
           "default": false,
+          "deprecated": true,
           "description": "When set to true, automatically add a pull request to the queue when it matches the queue conditions. When false, the pull request must be manually queued.",
           "title": "Autoqueue",
           "type": "boolean"
@@ -2772,7 +2961,8 @@
                 "merge",
                 "rebase",
                 "squash",
-                "fast-forward"
+                "fast-forward",
+                "merge-batch"
               ],
               "type": "string"
             },
@@ -2781,7 +2971,7 @@
             }
           ],
           "default": null,
-          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration.",
+          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration.\n\nAdditionally, `merge-batch` merges the draft pull request prepared by the merge queue using a merge commit. This requires `batch_size > 1`.",
           "title": "Merge Method"
         },
         "autosquash": {
@@ -2792,7 +2982,12 @@
           "type": "boolean"
         },
         "autoqueue": {
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`autoqueue` in `queue_rules` is deprecated. Use `auto_merge` in `merge_protections_settings` instead.",
+            "deprecated_summary_saas_mode": "`autoqueue` in `queue_rules` is deprecated and will be removed on 2026-07-16. Use `auto_merge` in `merge_protections_settings` instead."
+          },
           "default": false,
+          "deprecated": true,
           "description": "When set to true, automatically add a pull request to the queue when it matches the queue conditions. When false, the pull request must be manually queued.",
           "title": "Autoqueue",
           "type": "boolean"
