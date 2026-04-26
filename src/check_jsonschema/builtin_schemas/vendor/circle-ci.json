@@ -1573,6 +1573,232 @@
                     }
                 }
             ]
+        },
+        "workflowJobInvocation": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "object",
+                    "maxProperties": 1,
+                    "minProperties": 0,
+                    "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                            "requires": {
+                                "type": "array",
+                                "markdownDescription": "Jobs are run in parallel by default, so you must explicitly require any dependencies by their job name.",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "minProperties": 1,
+                                            "maxProperties": 1,
+                                            "patternProperties": {
+                                                "^[A-Za-z][A-Za-z\\s\\d_-]*$": {
+                                                    "oneOf": [
+                                                        {
+                                                            "oneOf": [
+                                                                {
+                                                                    "const": "success"
+                                                                },
+                                                                {
+                                                                    "const": "failed"
+                                                                },
+                                                                {
+                                                                    "const": "canceled"
+                                                                },
+                                                                {
+                                                                    "const": "not_run"
+                                                                },
+                                                                {
+                                                                    "const": "unauthorized"
+                                                                },
+                                                                {
+                                                                    "const": "terminal",
+                                                                    "markdownDescription": "Shorthand for `[success, failed, canceled, unauthorized, not_run]` - matches when the upstream job has reached any terminal state."
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 1,
+                                                            "items": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "success",
+                                                                    "failed",
+                                                                    "canceled",
+                                                                    "unauthorized",
+                                                                    "not_run"
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "filters": {
+                                "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#jobfilters \n\n A map or string to define filtering rules for job execution. Branch and tag filters require a map. Expression-based filters require a string.",
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "branches": {
+                                                "type": "object",
+                                                "markdownDescription": "A map defining rules for execution on specific branches",
+                                                "properties": {
+                                                    "only": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
+                                                    },
+                                                    "ignore": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
+                                                    }
+                                                },
+                                                "additionalProperties": false
+                                            },
+                                            "tags": {
+                                                "type": "object",
+                                                "markdownDescription": "A map defining rules for execution on specific tags",
+                                                "properties": {
+                                                    "only": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "markdownDescription": "Either a single tag specifier, or a list of tag specifiers"
+                                                    },
+                                                    "ignore": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "markdownDescription": "Either a single tag specifier, or a list of tag specifiers"
+                                                    }
+                                                },
+                                                "additionalProperties": false
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "context": {
+                                "oneOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ],
+                                "markdownDescription": "Either a single context name, or a list of contexts. The default name is `org-global`"
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "pre-steps": {
+                                "steps": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/step"
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "post-steps": {
+                                "steps": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/step"
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "matrix": {
+                                "type": "object",
+                                "required": [
+                                    "parameters"
+                                ],
+                                "properties": {
+                                    "parameters": {
+                                        "type": "object",
+                                        "markdownDescription": "A map of parameter names to every value the job should be called with"
+                                    },
+                                    "exclude": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object"
+                                        },
+                                        "markdownDescription": "A list of argument maps that should be excluded from the matrix"
+                                    },
+                                    "alias": {
+                                        "type": "string",
+                                        "markdownDescription": "An alias for the matrix, usable from another job's requires stanza. Defaults to the name of the job being executed"
+                                    }
+                                },
+                                "markdownDescription": "https://circleci.com/docs/configuration-reference#matrix-requires-version-21\n\nThe matrix stanza allows you to run a parameterized job multiple times with different arguments."
+                            },
+                            "serial-group": {
+                                "markdownDescription": "`serial-group` allows a group of jobs to run in series, rather than concurrently, across an organization. Serial groups control the orchestration of jobs across an organization, not just within projects and pipelines.\nSee <https://circleci.com/docs/reference/configuration-reference/#serial-group> for more details.",
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "override-with": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            ]
         }
     },
     "type": "object",
@@ -2125,229 +2351,7 @@
                         "type": "array",
                         "minItems": 1,
                         "items": {
-                            "oneOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "object",
-                                    "maxProperties": 1,
-                                    "minProperties": 0,
-                                    "additionalProperties": {
-                                        "type": "object",
-                                        "properties": {
-                                            "requires": {
-                                                "type": "array",
-                                                "markdownDescription": "Jobs are run in parallel by default, so you must explicitly require any dependencies by their job name.",
-                                                "items": {
-                                                    "oneOf": [
-                                                        {
-                                                            "type": "string"
-                                                        },
-                                                        {
-                                                            "type": "object",
-                                                            "minProperties": 1,
-                                                            "maxProperties": 1,
-                                                            "patternProperties": {
-                                                                "^[A-Za-z][A-Za-z\\s\\d_-]*$": {
-                                                                    "oneOf": [
-                                                                        {
-                                                                            "oneOf": [
-                                                                                {
-                                                                                    "const": "success"
-                                                                                },
-                                                                                {
-                                                                                    "const": "failed"
-                                                                                },
-                                                                                {
-                                                                                    "const": "canceled"
-                                                                                },
-                                                                                {
-                                                                                    "const": "not_run"
-                                                                                },
-                                                                                {
-                                                                                    "const": "unauthorized"
-                                                                                },
-                                                                                {
-                                                                                    "const": "terminal",
-                                                                                    "markdownDescription": "Shorthand for `[success, failed, canceled, unauthorized, not_run]` - matches when the upstream job has reached any terminal state."
-                                                                                }
-                                                                            ]
-                                                                        },
-                                                                        {
-                                                                            "type": "array",
-                                                                            "minLength": 1,
-                                                                            "items": {
-                                                                                "type": "string",
-                                                                                "enum": [
-                                                                                    "success",
-                                                                                    "failed",
-                                                                                    "canceled",
-                                                                                    "not_run",
-                                                                                    "unauthorized"
-                                                                                ]
-                                                                            }
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                            "filters": {
-                                                "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#jobfilters \n\n A map or string to define filtering rules for job execution. Branch and tag filters require a map. Expression-based filters require a string.",
-                                                "oneOf": [
-                                                    {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "branches": {
-                                                                "type": "object",
-                                                                "markdownDescription": "A map defining rules for execution on specific branches",
-                                                                "properties": {
-                                                                    "only": {
-                                                                        "oneOf": [
-                                                                            {
-                                                                                "type": "string"
-                                                                            },
-                                                                            {
-                                                                                "type": "array",
-                                                                                "items": {
-                                                                                    "type": "string"
-                                                                                }
-                                                                            }
-                                                                        ],
-                                                                        "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
-                                                                    },
-                                                                    "ignore": {
-                                                                        "oneOf": [
-                                                                            {
-                                                                                "type": "string"
-                                                                            },
-                                                                            {
-                                                                                "type": "array",
-                                                                                "items": {
-                                                                                    "type": "string"
-                                                                                }
-                                                                            }
-                                                                        ],
-                                                                        "markdownDescription": "Either a single branch specifier, or a list of branch specifiers"
-                                                                    }
-                                                                },
-                                                                "additionalProperties": false
-                                                            },
-                                                            "tags": {
-                                                                "type": "object",
-                                                                "markdownDescription": "A map defining rules for execution on specific tags",
-                                                                "properties": {
-                                                                    "only": {
-                                                                        "oneOf": [
-                                                                            {
-                                                                                "type": "string"
-                                                                            },
-                                                                            {
-                                                                                "type": "array",
-                                                                                "items": {
-                                                                                    "type": "string"
-                                                                                }
-                                                                            }
-                                                                        ],
-                                                                        "markdownDescription": "Either a single tag specifier, or a list of tag specifiers"
-                                                                    },
-                                                                    "ignore": {
-                                                                        "oneOf": [
-                                                                            {
-                                                                                "type": "string"
-                                                                            },
-                                                                            {
-                                                                                "type": "array",
-                                                                                "items": {
-                                                                                    "type": "string"
-                                                                                }
-                                                                            }
-                                                                        ],
-                                                                        "markdownDescription": "Either a single tag specifier, or a list of tag specifiers"
-                                                                    }
-                                                                },
-                                                                "additionalProperties": false
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        "type": "string"
-                                                    }
-                                                ]
-                                            },
-                                            "context": {
-                                                "oneOf": [
-                                                    {
-                                                        "type": "string"
-                                                    },
-                                                    {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "string"
-                                                        }
-                                                    }
-                                                ],
-                                                "markdownDescription": "Either a single context name, or a list of contexts. The default name is `org-global`"
-                                            },
-                                            "type": {
-                                                "type": "string"
-                                            },
-                                            "pre-steps": {
-                                                "steps": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/definitions/step"
-                                                    },
-                                                    "minItems": 1
-                                                }
-                                            },
-                                            "post-steps": {
-                                                "steps": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/definitions/step"
-                                                    },
-                                                    "minItems": 1
-                                                }
-                                            },
-                                            "matrix": {
-                                                "type": "object",
-                                                "required": [
-                                                    "parameters"
-                                                ],
-                                                "properties": {
-                                                    "parameters": {
-                                                        "type": "object",
-                                                        "markdownDescription": "A map of parameter names to every value the job should be called with"
-                                                    },
-                                                    "exclude": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "object"
-                                                        },
-                                                        "markdownDescription": "A list of argument maps that should be excluded from the matrix"
-                                                    },
-                                                    "alias": {
-                                                        "type": "string",
-                                                        "markdownDescription": "An alias for the matrix, usable from another job's requires stanza. Defaults to the name of the job being executed"
-                                                    }
-                                                },
-                                                "markdownDescription": "https://circleci.com/docs/configuration-reference#matrix-requires-version-21\n\nThe matrix stanza allows you to run a parameterized job multiple times with different arguments."
-                                            },
-                                            "serial-group": {
-                                                "type": "string",
-                                                "minLength": 1
-                                            },
-                                            "override-with": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/workflowJobInvocation"
                         }
                     }
                 },
@@ -2381,6 +2385,31 @@
             },
             "additionalProperties": {
                 "$ref": "#/definitions/jobInvocation"
+            }
+        },
+        "job-groups": {
+            "markdownDescription": "Job groups define named collections of jobs with internal dependency relationships that can be referenced as a single unit in workflows.",
+            "type": "object",
+            "propertyNames": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z\\s\\d_-]*$"
+            },
+            "additionalProperties": {
+                "type": "object",
+                "required": [
+                    "jobs"
+                ],
+                "properties": {
+                    "jobs": {
+                        "type": "array",
+                        "minItems": 1,
+                        "markdownDescription": "A list of jobs within this group. Supports the same syntax as workflow job invocations, including `requires` for internal dependencies.",
+                        "items": {
+                            "$ref": "#/definitions/workflowJobInvocation"
+                        }
+                    }
+                },
+                "additionalProperties": false
             }
         },
         "orbs": {

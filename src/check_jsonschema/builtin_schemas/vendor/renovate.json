@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 43.104.3 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 43.141.5 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "43.104.3",
+  "x-renovate-version": "43.141.5",
   "allowComments": true,
   "type": "object",
   "properties": {
@@ -100,6 +100,62 @@
       "default": {
         "managerFilePatterns": [
           "/(^|/)(galaxy|requirements)(\\.ansible)?\\.ya?ml$/"
+        ]
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "ant": {
+      "description": "Configuration object for the ant manager",
+      "markdownDescription": "Configuration object for the ant manager",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "**/build.xml"
         ]
       },
       "$ref": "#",
@@ -786,7 +842,7 @@
       "type": "object",
       "default": {
         "managerFilePatterns": [
-          "/(^|/)\\.?bitbucket-pipelines\\.ya?ml$/"
+          "**/*-pipelines.yml"
         ]
       },
       "$ref": "#",
@@ -1086,7 +1142,13 @@
               "bumpType": {
                 "description": "The semver level to use when bumping versions. This is used by the `bumpVersions` feature.",
                 "markdownDescription": "The semver level to use when bumping versions. This is used by the `bumpVersions` feature.",
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "major",
+                  "minor",
+                  "patch",
+                  "sync"
+                ]
               },
               "filePatterns": {
                 "description": "A list of patterns to match files that contain the version string.",
@@ -1856,8 +1918,216 @@
       "markdownDescription": "Configuration object to define language or manager version constraints.",
       "type": "object",
       "default": {},
-      "additionalProperties": {
-        "type": "string"
+      "additionalProperties": false,
+      "properties": {
+        "bazelisk": {
+          "type": "string",
+          "description": "A constraint for the `bazelisk` Containerbase tool"
+        },
+        "bun": {
+          "type": "string",
+          "description": "A constraint for the `bun` Containerbase tool"
+        },
+        "bundler": {
+          "type": "string",
+          "description": "A constraint for the `bundler` Containerbase tool"
+        },
+        "cocoapods": {
+          "type": "string",
+          "description": "A constraint for the `cocoapods` Containerbase tool"
+        },
+        "composer": {
+          "type": "string",
+          "description": "A constraint for the `composer` Containerbase tool"
+        },
+        "conan": {
+          "type": "string",
+          "description": "A constraint for the `conan` Containerbase tool"
+        },
+        "copier": {
+          "type": "string",
+          "description": "A constraint for the `copier` Containerbase tool"
+        },
+        "corepack": {
+          "type": "string",
+          "description": "A constraint for the `corepack` Containerbase tool"
+        },
+        "devbox": {
+          "type": "string",
+          "description": "A constraint for the `devbox` Containerbase tool"
+        },
+        "dotnet": {
+          "type": "string",
+          "description": "A constraint for the `dotnet` Containerbase tool"
+        },
+        "erlang": {
+          "type": "string",
+          "description": "A constraint for the `erlang` Containerbase tool"
+        },
+        "elixir": {
+          "type": "string",
+          "description": "A constraint for the `elixir` Containerbase tool"
+        },
+        "flux": {
+          "type": "string",
+          "description": "A constraint for the `flux` Containerbase tool"
+        },
+        "gleam": {
+          "type": "string",
+          "description": "A constraint for the `gleam` Containerbase tool"
+        },
+        "golang": {
+          "type": "string",
+          "description": "A constraint for the `golang` Containerbase tool"
+        },
+        "gradle": {
+          "type": "string",
+          "description": "A constraint for the `gradle` Containerbase tool"
+        },
+        "hashin": {
+          "type": "string",
+          "description": "A constraint for the `hashin` Containerbase tool"
+        },
+        "helm": {
+          "type": "string",
+          "description": "A constraint for the `helm` Containerbase tool"
+        },
+        "helmfile": {
+          "type": "string",
+          "description": "A constraint for the `helmfile` Containerbase tool"
+        },
+        "java": {
+          "type": "string",
+          "description": "A constraint for the `java` Containerbase tool"
+        },
+        "java-maven": {
+          "type": "string",
+          "description": "A constraint for the `java-maven` Containerbase tool"
+        },
+        "jb": {
+          "type": "string",
+          "description": "A constraint for the `jb` Containerbase tool"
+        },
+        "kustomize": {
+          "type": "string",
+          "description": "A constraint for the `kustomize` Containerbase tool"
+        },
+        "maven": {
+          "type": "string",
+          "description": "A constraint for the `maven` Containerbase tool"
+        },
+        "nix": {
+          "type": "string",
+          "description": "A constraint for the `nix` Containerbase tool"
+        },
+        "node": {
+          "type": "string",
+          "description": "A constraint for the `node` Containerbase tool"
+        },
+        "npm": {
+          "type": "string",
+          "description": "A constraint for the `npm` Containerbase tool"
+        },
+        "pdm": {
+          "type": "string",
+          "description": "A constraint for the `pdm` Containerbase tool"
+        },
+        "php": {
+          "type": "string",
+          "description": "A constraint for the `php` Containerbase tool"
+        },
+        "pip-tools": {
+          "type": "string",
+          "description": "A constraint for the `pip-tools` Containerbase tool"
+        },
+        "pipenv": {
+          "type": "string",
+          "description": "A constraint for the `pipenv` Containerbase tool"
+        },
+        "pnpm": {
+          "type": "string",
+          "description": "A constraint for the `pnpm` Containerbase tool"
+        },
+        "pixi": {
+          "type": "string",
+          "description": "A constraint for the `pixi` Containerbase tool"
+        },
+        "poetry": {
+          "type": "string",
+          "description": "A constraint for the `poetry` Containerbase tool"
+        },
+        "python": {
+          "type": "string",
+          "description": "A constraint for the `python` Containerbase tool"
+        },
+        "ruby": {
+          "type": "string",
+          "description": "A constraint for the `ruby` Containerbase tool"
+        },
+        "rust": {
+          "type": "string",
+          "description": "A constraint for the `rust` Containerbase tool"
+        },
+        "uv": {
+          "type": "string",
+          "description": "A constraint for the `uv` Containerbase tool"
+        },
+        "yarn": {
+          "type": "string",
+          "description": "A constraint for the `yarn` Containerbase tool"
+        },
+        "yarn-slim": {
+          "type": "string",
+          "description": "A constraint for the `yarn-slim` Containerbase tool"
+        },
+        "dart": {
+          "type": "string",
+          "description": "A constraint for the `dart` Containerbase tool"
+        },
+        "flutter": {
+          "type": "string",
+          "description": "A constraint for the `flutter` Containerbase tool"
+        },
+        "vendir": {
+          "type": "string",
+          "description": "A constraint for the `vendir` Containerbase tool"
+        },
+        "go": {
+          "type": "string",
+          "description": "A constraint for `go`"
+        },
+        "gomodMod": {
+          "type": "string",
+          "description": "A constraint for `gomodMod`"
+        },
+        "jenkins": {
+          "type": "string",
+          "description": "A constraint for `jenkins`"
+        },
+        "pipTools": {
+          "type": "string",
+          "description": "A constraint for `pipTools`"
+        },
+        "platform": {
+          "type": "string",
+          "description": "A constraint for `platform`"
+        },
+        "rubygems": {
+          "type": "string",
+          "description": "A constraint for `rubygems`"
+        },
+        "vscode": {
+          "type": "string",
+          "description": "A constraint for `vscode`"
+        },
+        "dotnet-sdk": {
+          "type": "string",
+          "description": "A constraint for `dotnet-sdk`"
+        },
+        "perl": {
+          "type": "string",
+          "description": "A constraint for `perl`"
+        }
       }
     },
     "constraintsFiltering": {
@@ -4137,7 +4407,7 @@
       "default": {
         "commitMessageTopic": "Homebrew Formula {{depName}}",
         "managerFilePatterns": [
-          "/^Formula/[^/]+[.]rb$/"
+          "/^Formula/\\w*/?[^/]+[.]rb$/"
         ]
       },
       "$ref": "#",
@@ -6951,10 +7221,223 @@
                 "markdownDescription": "Install tools before executing commands",
                 "type": "object",
                 "default": {},
-                "additionalProperties": {
-                  "type": "object",
-                  "properties": {},
-                  "additionalProperties": false
+                "additionalProperties": false,
+                "properties": {
+                  "bazelisk": {
+                    "type": "object",
+                    "description": "Install the `bazelisk` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "bun": {
+                    "type": "object",
+                    "description": "Install the `bun` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "bundler": {
+                    "type": "object",
+                    "description": "Install the `bundler` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "cocoapods": {
+                    "type": "object",
+                    "description": "Install the `cocoapods` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "composer": {
+                    "type": "object",
+                    "description": "Install the `composer` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "conan": {
+                    "type": "object",
+                    "description": "Install the `conan` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "copier": {
+                    "type": "object",
+                    "description": "Install the `copier` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "corepack": {
+                    "type": "object",
+                    "description": "Install the `corepack` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "devbox": {
+                    "type": "object",
+                    "description": "Install the `devbox` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "dotnet": {
+                    "type": "object",
+                    "description": "Install the `dotnet` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "erlang": {
+                    "type": "object",
+                    "description": "Install the `erlang` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "elixir": {
+                    "type": "object",
+                    "description": "Install the `elixir` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "flux": {
+                    "type": "object",
+                    "description": "Install the `flux` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "gleam": {
+                    "type": "object",
+                    "description": "Install the `gleam` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "golang": {
+                    "type": "object",
+                    "description": "Install the `golang` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "gradle": {
+                    "type": "object",
+                    "description": "Install the `gradle` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "hashin": {
+                    "type": "object",
+                    "description": "Install the `hashin` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "helm": {
+                    "type": "object",
+                    "description": "Install the `helm` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "helmfile": {
+                    "type": "object",
+                    "description": "Install the `helmfile` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "java": {
+                    "type": "object",
+                    "description": "Install the `java` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "java-maven": {
+                    "type": "object",
+                    "description": "Install the `java-maven` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "jb": {
+                    "type": "object",
+                    "description": "Install the `jb` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "kustomize": {
+                    "type": "object",
+                    "description": "Install the `kustomize` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "maven": {
+                    "type": "object",
+                    "description": "Install the `maven` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "nix": {
+                    "type": "object",
+                    "description": "Install the `nix` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "node": {
+                    "type": "object",
+                    "description": "Install the `node` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "npm": {
+                    "type": "object",
+                    "description": "Install the `npm` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "pdm": {
+                    "type": "object",
+                    "description": "Install the `pdm` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "php": {
+                    "type": "object",
+                    "description": "Install the `php` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "pip-tools": {
+                    "type": "object",
+                    "description": "Install the `pip-tools` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "pipenv": {
+                    "type": "object",
+                    "description": "Install the `pipenv` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "pnpm": {
+                    "type": "object",
+                    "description": "Install the `pnpm` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "pixi": {
+                    "type": "object",
+                    "description": "Install the `pixi` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "poetry": {
+                    "type": "object",
+                    "description": "Install the `poetry` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "python": {
+                    "type": "object",
+                    "description": "Install the `python` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "ruby": {
+                    "type": "object",
+                    "description": "Install the `ruby` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "rust": {
+                    "type": "object",
+                    "description": "Install the `rust` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "uv": {
+                    "type": "object",
+                    "description": "Install the `uv` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "yarn": {
+                    "type": "object",
+                    "description": "Install the `yarn` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "yarn-slim": {
+                    "type": "object",
+                    "description": "Install the `yarn-slim` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "dart": {
+                    "type": "object",
+                    "description": "Install the `dart` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "flutter": {
+                    "type": "object",
+                    "description": "Install the `flutter` Containerbase tool",
+                    "additionalProperties": false
+                  },
+                  "vendir": {
+                    "type": "object",
+                    "description": "Install the `vendir` Containerbase tool",
+                    "additionalProperties": false
+                  }
                 }
               },
               "workingDirTemplate": {
@@ -7057,7 +7540,7 @@
       "description": "Text added here will be placed last in the PR body, with a divider separator before it.",
       "markdownDescription": "Text added here will be placed last in the PR body, with a divider separator before it.",
       "type": "string",
-      "default": "This PR has been generated by [Renovate Bot](https://github.com/renovatebot/renovate)."
+      "default": "This PR has been generated by [Mend Renovate](https://github.com/renovatebot/renovate)."
     },
     "prHeader": {
       "description": "Text added here will be placed first in the PR body.",
@@ -8938,6 +9421,7 @@
             "elm",
             "exact",
             "git",
+            "github-actions",
             "glasskube",
             "go-mod-directive",
             "gradle",
@@ -9046,6 +9530,63 @@
         "managerFilePatterns": [
           "/^\\.woodpecker(?:/[^/]+)?\\.ya?ml$/"
         ]
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "description": "Enable or disable corresponding functionality.",
+                "markdownDescription": "Enable or disable corresponding functionality.",
+                "type": "boolean",
+                "default": true
+              },
+              "managerFilePatterns": {
+                "description": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "markdownDescription": "RegEx (`re2`) and glob patterns for matching manager files.",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "xcodegen": {
+      "description": "Configuration object for the xcodegen manager",
+      "markdownDescription": "Configuration object for the xcodegen manager",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "**/project.yml"
+        ],
+        "pinDigests": false
       },
       "$ref": "#",
       "items": {
