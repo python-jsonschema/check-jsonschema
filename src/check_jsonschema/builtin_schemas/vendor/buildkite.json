@@ -104,11 +104,13 @@
           "enum": [
             "*",
             "none",
+            "agent_incompatible",
             "agent_refused",
             "agent_stop",
             "cancel",
             "process_run_error",
-            "signature_rejected"
+            "signature_rejected",
+            "stack_error"
           ]
         }
       },
@@ -508,7 +510,10 @@
           "items": {
             "type": "string"
           },
-          "examples": [["**.go", "go.{mod,sum}"], ["app/**", "spec/**"]]
+          "examples": [
+            ["**.go", "go.{mod,sum}"],
+            ["app/**", "spec/**"]
+          ]
         },
         {
           "type": "object",
