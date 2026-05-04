@@ -1,11 +1,40 @@
 import inspect
+import io
 import os
 import pathlib
 import sys
+from email.utils import formatdate
 
 import pytest
 import responses
 from click.testing import CliRunner
+
+
+class _CacheControlCompatibleBytesIO(io.BytesIO):
+    """A BytesIO that signals closed to cachecontrol after all data is read.
+
+    cachecontrol's CallbackFileWrapper checks `fp.fp is None` to determine
+    if the response has been fully read. Standard BytesIO doesn't have an
+    `fp` attribute, so cachecontrol falls back to checking `fp.closed`,
+    which only returns True after explicit `.close()`. This class adds
+    an `fp` property that returns None after all data has been read,
+    allowing cachecontrol to properly cache responses from the `responses`
+    mock library.
+    """
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self._fully_read = False
+
+    @property
+    def fp(self):
+        return None if self._fully_read else self
+
+    def read(self, size=-1):
+        data = super().read(size)
+        if self.tell() == len(self.getvalue()):
+            self._fully_read = True
+        return data
 
 
 @pytest.fixture
@@ -19,10 +48,22 @@ def cli_runner():
 
 @pytest.fixture(autouse=True)
 def mocked_responses():
+    # Patch responses._handle_body to return a BytesIO subclass that properly
+    # signals "closed" to cachecontrol, enabling HTTP caching in tests.
+    original_handle_body = responses._handle_body
+
+    def _patched_handle_body(body):
+        result = original_handle_body(body)
+        if isinstance(result, io.BytesIO):
+            return _CacheControlCompatibleBytesIO(result.getvalue())
+        return result
+
+    responses._handle_body = _patched_handle_body
     responses.start()
     yield
     responses.stop()
     responses.reset()
+    responses._handle_body = original_handle_body
 
 
 @pytest.fixture
@@ -74,39 +115,8 @@ def patch_cache_dir(monkeypatch, cache_dir):
 
 
 @pytest.fixture
-def url2cachepath():
-    from check_jsonschema.cachedownloader import url_to_cache_filename
-
-    def _get(cache_dir, url):
-        return cache_dir / url_to_cache_filename(url)
-
-    return _get
-
-
-@pytest.fixture
-def downloads_cache_dir(tmp_path):
-    return tmp_path / ".cache" / "check_jsonschema" / "downloads"
-
-
-@pytest.fixture
-def get_download_cache_loc(downloads_cache_dir, url2cachepath):
-    def _get(url):
-        return url2cachepath(downloads_cache_dir, url)
-
-    return _get
-
-
-@pytest.fixture
-def inject_cached_download(downloads_cache_dir, get_download_cache_loc):
-    def _write(uri, content):
-        downloads_cache_dir.mkdir(parents=True)
-        path = get_download_cache_loc(uri)
-        if isinstance(content, str):
-            path.write_text(content)
-        else:
-            path.write_bytes(content)
-
-    return _write
+def schemas_cache_dir(tmp_path):
+    return tmp_path / ".cache" / "check_jsonschema" / "schemas"
 
 
 @pytest.fixture
@@ -114,18 +124,16 @@ def refs_cache_dir(tmp_path):
     return tmp_path / ".cache" / "check_jsonschema" / "refs"
 
 
+# Alias for unit tests that use "downloads" as the cache dir name
 @pytest.fixture
-def get_ref_cache_loc(refs_cache_dir, url2cachepath):
-    def _get(url):
-        return url2cachepath(refs_cache_dir, url)
-
-    return _get
+def downloads_cache_dir(tmp_path):
+    return tmp_path / ".cache" / "check_jsonschema" / "downloads"
 
 
 @pytest.fixture
-def inject_cached_ref(refs_cache_dir, get_ref_cache_loc):
-    def _write(uri, content):
-        refs_cache_dir.mkdir(parents=True)
-        get_ref_cache_loc(uri).write_text(content)
-
-    return _write
+def cacheable_headers():
+    """Returns HTTP headers that enable cachecontrol caching."""
+    return {
+        "Cache-Control": "max-age=31536000",
+        "Date": formatdate(usegmt=True),
+    }
