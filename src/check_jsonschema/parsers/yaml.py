@@ -5,6 +5,8 @@ import warnings
 
 import ruamel.yaml
 
+from .metadata import MultiDocumentData, ParsedDocument
+
 ParseError = ruamel.yaml.YAMLError
 
 
@@ -51,6 +53,38 @@ def _normalize(data: t.Any) -> t.Any:
 _data_sentinel = object()
 
 
+def _is_multidoc_error(err: ruamel.yaml.YAMLError) -> bool:
+    return isinstance(err, ruamel.yaml.composer.ComposerError) and (
+        "expected a single document in the stream" in str(err)
+    )
+
+
+def _document_start_lines(
+    implementation: ruamel.yaml.YAML, stream_bytes: bytes, num_docs: int
+) -> tuple[int | None, ...]:
+    try:
+        nodes = list(implementation.compose_all(stream_bytes))
+    except ruamel.yaml.YAMLError:
+        return (None,) * num_docs
+    return tuple(
+        node.start_mark.line + 1 if node.start_mark is not None else None
+        for node in nodes
+    )
+
+
+def _load_all_documents(
+    implementation: ruamel.yaml.YAML, stream_bytes: bytes
+) -> MultiDocumentData:
+    documents = list(implementation.load_all(stream_bytes))
+    lines = _document_start_lines(implementation, stream_bytes, len(documents))
+    return MultiDocumentData(
+        tuple(
+            ParsedDocument(data=_normalize(doc), line=line)
+            for doc, line in zip(documents, lines)
+        )
+    )
+
+
 def impl2loader(
     primary: ruamel.yaml.YAML, *fallbacks: ruamel.yaml.YAML
 ) -> t.Callable[[t.IO[bytes]], t.Any]:
@@ -63,12 +97,22 @@ def impl2loader(
             for impl in [primary] + list(fallbacks):
                 try:
                     data = impl.load(stream_bytes)
-                except ruamel.yaml.YAMLError as e:
-                    lasterr = e
+                except ruamel.yaml.YAMLError as err:
+                    if _is_multidoc_error(err):
+                        try:
+                            data = _load_all_documents(impl, stream_bytes)
+                        except ruamel.yaml.YAMLError as multidoc_err:
+                            lasterr = multidoc_err
+                            continue
+                        else:
+                            break
+                    lasterr = err
                 else:
                     break
         if data is _data_sentinel and lasterr is not None:
             raise lasterr
+        if isinstance(data, MultiDocumentData):
+            return data
         return _normalize(data)
 
     return load

@@ -43,6 +43,11 @@ Then run, as in
 
     check-jsonschema --schemafile schema.json instance.json
 
+YAML files can also declare their schema with a modeline comment and be checked
+without repeating schema paths in the command:
+
+    check-jsonschema --schema-from-modeline config/*.yaml
+
 ## Documentation
 
 Full documentation can be found at https://check-jsonschema.readthedocs.io/
