@@ -18,9 +18,7 @@ from check_jsonschema.modeline import (
 )
 def test_extract_yaml_modeline_schema_supported_forms(line):
     data = f"---\n{line}\nfoo: bar\n".encode()
-    assert (
-        extract_yaml_modeline_schema(data) == "https://example.com/schema.json"
-    )
+    assert extract_yaml_modeline_schema(data) == "https://example.com/schema.json"
 
 
 def test_extract_yaml_modeline_schema_returns_first_match():

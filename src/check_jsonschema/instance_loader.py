@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import io
-from dataclasses import dataclass
 import typing as t
+from dataclasses import dataclass
 
 from check_jsonschema.cli.param_types import CustomLazyFile
 

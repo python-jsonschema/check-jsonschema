@@ -209,9 +209,7 @@ a: 1
     assert [doc.line for doc in data[0][1].documents] == [2, 4]
 
 
-def test_instanceloader_iter_documents_expands_multi_document_data(
-    tmp_path, open_wide
-):
+def test_instanceloader_iter_documents_expands_multi_document_data(tmp_path, open_wide):
     f = tmp_path / "foo.yaml"
     f.write_text("""\
 first: true

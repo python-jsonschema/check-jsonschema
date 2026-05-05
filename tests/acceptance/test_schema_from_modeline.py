@@ -29,9 +29,7 @@ name: example
 count: 1
 """)
 
-    run_line_simple(
-        ["--schema-from-modeline", str(name_config), str(count_config)]
-    )
+    run_line_simple(["--schema-from-modeline", str(name_config), str(count_config)])
 
 
 def test_schema_from_modeline_reports_validation_errors(run_line, tmp_path):
@@ -104,9 +102,7 @@ count: 1
     assert f"{config}:5::$: 'name' is a required property" in result.stdout
 
 
-def test_schema_from_modeline_preserves_top_level_yaml_lists(
-    run_line_simple, tmp_path
-):
+def test_schema_from_modeline_preserves_top_level_yaml_lists(run_line_simple, tmp_path):
     schema = tmp_path / "schema.json"
     schema.write_text(json.dumps({"type": "array", "items": {"type": "string"}}))
 
