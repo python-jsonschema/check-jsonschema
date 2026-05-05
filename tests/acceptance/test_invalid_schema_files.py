@@ -1,6 +1,21 @@
 import pytest
 
 
+def test_checker_unresolvable_schema_ref_has_concise_error(run_line, tmp_path):
+    foo = tmp_path / "foo.json"
+    bar = tmp_path / "bar.json"
+    foo.write_text('{"properties": {"foo": {"$ref": "#/definitions/missing"}}}')
+    bar.write_text('{"foo": "bar"}')
+
+    res = run_line(["check-jsonschema", "--schemafile", str(foo), str(bar)])
+
+    assert res.exit_code == 1
+    assert "Schema validation errors were encountered." in res.stdout
+    assert f"{bar}::$: A $ref in the schema could not be resolved" in res.stdout
+    assert "PointerToNowhere: '/definitions/missing' does not exist" in res.stdout
+    assert "'properties':" not in res.stdout
+
+
 def test_checker_non_json_schemafile(run_line, tmp_path):
     foo = tmp_path / "foo.json"
     bar = tmp_path / "bar.json"

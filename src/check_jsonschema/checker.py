@@ -9,8 +9,7 @@ import referencing.exceptions
 
 from . import format_errors
 from .formats import FormatOptions
-from .instance_loader import InstanceLoader
-from .parsers import ParseError
+from .instance_loader import InstanceLoader, InstanceParseError
 from .regex_variants import RegexImplementation
 from .reporter import Reporter
 from .result import CheckResult
@@ -50,12 +49,29 @@ class SchemaChecker:
             format_errors.print_error(err, mode=self._traceback_mode)
         raise _Exit(1)
 
+    def _fail_ref_resolution(self, err: Exception) -> t.NoReturn:
+        click.echo("Failure resolving $ref within schema", err=True)
+        if self._traceback_mode == "full":
+            format_errors.print_error(err, mode=self._traceback_mode)
+        else:
+            click.echo(f"  {_format_ref_resolution_error(err)}", err=True)
+        raise _Exit(1)
+
     def get_validator(
-        self, path: pathlib.Path | str, doc: dict[str, t.Any]
+        self,
+        path: pathlib.Path | str,
+        doc: t.Any,
+        *,
+        schemafile: str | None = None,
     ) -> jsonschema.protocols.Validator:
         try:
             return self._schema_loader.get_validator(
-                path, doc, self._format_opts, self._regex_impl, self._fill_defaults
+                path,
+                doc,
+                self._format_opts,
+                self._regex_impl,
+                self._fill_defaults,
+                schemafile=schemafile,
             )
         except SchemaParseError as e:
             self._fail("Error: schemafile could not be parsed as JSON", e)
@@ -68,17 +84,32 @@ class SchemaChecker:
 
     def _build_result(self) -> CheckResult:
         result = CheckResult()
-        for path, data in self._instance_loader.iter_files():
-            if isinstance(data, ParseError):
-                result.record_parse_error(path, data)
+        for instance in self._instance_loader.iter_documents():
+            if isinstance(instance, InstanceParseError):
+                result.record_parse_error(instance.filename, instance.error)
             else:
-                validator = self.get_validator(path, data)
+                validator = self.get_validator(
+                    instance.filename,
+                    instance.data,
+                    schemafile=instance.schemafile,
+                )
                 passing = True
-                for err in validator.iter_errors(data):
-                    result.record_validation_error(path, err)
+                try:
+                    validation_errors = validator.iter_errors(instance.data)
+                    for err in validation_errors:
+                        result.record_validation_error(instance.label, err)
+                        passing = False
+                except (
+                    referencing.exceptions.NoSuchResource,
+                    referencing.exceptions.Unretrievable,
+                    referencing.exceptions.Unresolvable,
+                ) as err:
+                    result.record_validation_error(
+                        instance.label, _make_ref_resolution_error(err)
+                    )
                     passing = False
                 if passing:
-                    result.record_validation_success(path)
+                    result.record_validation_success(instance.label)
         return result
 
     def _run(self) -> None:
@@ -89,7 +120,7 @@ class SchemaChecker:
             referencing.exceptions.Unretrievable,
             referencing.exceptions.Unresolvable,
         ) as e:
-            self._fail("Failure resolving $ref within schema\n", e)
+            self._fail_ref_resolution(e)
 
         self._reporter.report_result(result)
         if not result.success:
@@ -101,3 +132,28 @@ class SchemaChecker:
         except _Exit as e:
             return e.code
         return 0
+
+
+def _make_ref_resolution_error(err: Exception) -> jsonschema.ValidationError:
+    return jsonschema.ValidationError(
+        f"A $ref in the schema could not be resolved: "
+        f"{_format_ref_resolution_error(err)}"
+    )
+
+
+def _format_ref_resolution_error(err: Exception) -> str:
+    cause = err.__cause__ or err.__context__ or err
+    if isinstance(cause, referencing.exceptions.PointerToNowhere):
+        return (
+            f"{type(cause).__name__}: {cause.ref!r} does not exist within "
+            "the loaded schema."
+        )
+    if isinstance(cause, referencing.exceptions.NoSuchResource):
+        return f"{type(cause).__name__}: could not retrieve {cause.ref!r}."
+    if isinstance(cause, referencing.exceptions.Unretrievable):
+        return f"{type(cause).__name__}: could not retrieve {cause.ref!r}."
+    if isinstance(cause, referencing.exceptions.Unresolvable):
+        ref = getattr(cause, "ref", None)
+        if ref is not None:
+            return f"{type(cause).__name__}: could not resolve {ref!r}."
+    return format_errors.format_error_message(cause)

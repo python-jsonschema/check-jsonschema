@@ -3,6 +3,7 @@ import pytest
 from check_jsonschema.instance_loader import InstanceLoader
 from check_jsonschema.parsers import BadFileTypeError, FailedFileLoadError
 from check_jsonschema.parsers.json5 import ENABLED as JSON5_ENABLED
+from check_jsonschema.parsers.metadata import MultiDocumentData
 
 
 # handy helper for opening multiple files for InstanceLoader
@@ -186,6 +187,54 @@ a:
     loader = InstanceLoader(open_wide(f))
     data = list(loader.iter_files())
     assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
+
+
+def test_instanceloader_yaml_multi_document_data(tmp_path, open_wide):
+    f = tmp_path / "foo.yaml"
+    f.write_text("""\
+---
+a: 1
+---
+- b
+- c
+""")
+    loader = InstanceLoader(open_wide(f))
+
+    data = list(loader.iter_files())
+
+    assert len(data) == 1
+    assert data[0][0] == str(f)
+    assert isinstance(data[0][1], MultiDocumentData)
+    assert [doc.data for doc in data[0][1].documents] == [{"a": 1}, ["b", "c"]]
+    assert [doc.line for doc in data[0][1].documents] == [2, 4]
+
+
+def test_instanceloader_iter_documents_expands_multi_document_data(tmp_path, open_wide):
+    f = tmp_path / "foo.yaml"
+    f.write_text("""\
+first: true
+---
+second: true
+""")
+    loader = InstanceLoader(open_wide(f))
+
+    documents = list(loader.iter_documents())
+
+    assert [document.label for document in documents] == [f"{f}:1", f"{f}:3"]
+    assert [document.data for document in documents] == [
+        {"first": True},
+        {"second": True},
+    ]
+
+
+def test_instanceloader_schema_from_modeline_skips_unannotated_files(
+    tmp_path, open_wide
+):
+    f = tmp_path / "foo.yaml"
+    f.write_text("a: b")
+    loader = InstanceLoader(open_wide(f), schema_from_modeline=True)
+
+    assert list(loader.iter_documents()) == []
 
 
 @pytest.mark.parametrize(
