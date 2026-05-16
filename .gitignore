@@ -6,4 +6,5 @@ dist/
 .coverage
 .coverage.*
 .tox
+.idea/
 .vscode
