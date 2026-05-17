@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: bitbucket-pipelines, circle-ci, dependabot, github-workflows,
+  mergify, renovate, snapcraft (2026-05-17)
+
 0.37.2
 ------
 

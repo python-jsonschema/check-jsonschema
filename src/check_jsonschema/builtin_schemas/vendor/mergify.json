@@ -261,25 +261,32 @@
       "type": "object"
     },
     "AutoMergeConditionsModel": {
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/AndCondition"
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AndCondition"
+              },
+              {
+                "$ref": "#/$defs/OrCondition"
+              },
+              {
+                "$ref": "#/$defs/NegationCondition"
+              },
+              {
+                "$ref": "#/$defs/RuleConditionModel"
+              }
+            ]
           },
-          {
-            "$ref": "#/$defs/OrCondition"
-          },
-          {
-            "$ref": "#/$defs/NegationCondition"
-          },
-          {
-            "$ref": "#/$defs/RuleConditionModel"
-          }
-        ]
-      },
-      "maxItems": 500,
-      "title": "List of conditions",
-      "type": "array"
+          "maxItems": 500,
+          "type": "array"
+        },
+        {
+          "const": true
+        }
+      ],
+      "title": "List of conditions"
     },
     "BackportActionModel": {
       "additionalProperties": false,
@@ -417,25 +424,32 @@
       "type": "object"
     },
     "CommandRestrictionsConditionsModel": {
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/AndCondition"
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AndCondition"
+              },
+              {
+                "$ref": "#/$defs/OrCondition"
+              },
+              {
+                "$ref": "#/$defs/NegationCondition"
+              },
+              {
+                "$ref": "#/$defs/RuleConditionModel"
+              }
+            ]
           },
-          {
-            "$ref": "#/$defs/OrCondition"
-          },
-          {
-            "$ref": "#/$defs/NegationCondition"
-          },
-          {
-            "$ref": "#/$defs/RuleConditionModel"
-          }
-        ]
-      },
-      "maxItems": 500,
-      "title": "List of conditions",
-      "type": "array"
+          "maxItems": 500,
+          "type": "array"
+        },
+        {
+          "const": true
+        }
+      ],
+      "title": "List of conditions"
     },
     "CommandRestrictionsModel": {
       "additionalProperties": false,
@@ -526,14 +540,6 @@
                   "sender = {{author}}"
                 ]
               }
-            ]
-          }
-        },
-        "unqueue": {
-          "$ref": "#/$defs/CommandRestrictionsModel",
-          "default": {
-            "conditions": [
-              "sender-permission >= write"
             ]
           }
         },
@@ -1224,25 +1230,32 @@
       "type": "object"
     },
     "ListOfRuleConditions": {
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/AndCondition"
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AndCondition"
+              },
+              {
+                "$ref": "#/$defs/OrCondition"
+              },
+              {
+                "$ref": "#/$defs/NegationCondition"
+              },
+              {
+                "$ref": "#/$defs/RuleConditionModel"
+              }
+            ]
           },
-          {
-            "$ref": "#/$defs/OrCondition"
-          },
-          {
-            "$ref": "#/$defs/NegationCondition"
-          },
-          {
-            "$ref": "#/$defs/RuleConditionModel"
-          }
-        ]
-      },
-      "maxItems": 500,
-      "title": "List of conditions",
-      "type": "array"
+          "maxItems": 500,
+          "type": "array"
+        },
+        {
+          "const": true
+        }
+      ],
+      "title": "List of conditions"
     },
     "MergeActionModel": {
       "additionalProperties": false,
@@ -1315,25 +1328,32 @@
       "type": "object"
     },
     "MergeProtectionRuleConditionsModel": {
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/AndCondition"
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AndCondition"
+              },
+              {
+                "$ref": "#/$defs/OrCondition"
+              },
+              {
+                "$ref": "#/$defs/NegationCondition"
+              },
+              {
+                "$ref": "#/$defs/RuleConditionModel"
+              }
+            ]
           },
-          {
-            "$ref": "#/$defs/OrCondition"
-          },
-          {
-            "$ref": "#/$defs/NegationCondition"
-          },
-          {
-            "$ref": "#/$defs/RuleConditionModel"
-          }
-        ]
-      },
-      "maxItems": 500,
-      "title": "List of conditions",
-      "type": "array"
+          "maxItems": 500,
+          "type": "array"
+        },
+        {
+          "const": true
+        }
+      ],
+      "title": "List of conditions"
     },
     "MergeProtectionRuleModel": {
       "additionalProperties": false,
@@ -1410,11 +1430,10 @@
         "auto_merge_conditions": {
           "anyOf": [
             {
-              "const": true,
-              "type": "boolean"
+              "$ref": "#/$defs/AutoMergeConditionsModel"
             },
             {
-              "$ref": "#/$defs/AutoMergeConditionsModel"
+              "type": "null"
             }
           ],
           "default": null,
@@ -1540,25 +1559,32 @@
       "type": "object"
     },
     "PartitionRuleConditionsModel": {
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/AndCondition"
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AndCondition"
+              },
+              {
+                "$ref": "#/$defs/OrCondition"
+              },
+              {
+                "$ref": "#/$defs/NegationCondition"
+              },
+              {
+                "$ref": "#/$defs/RuleConditionModel"
+              }
+            ]
           },
-          {
-            "$ref": "#/$defs/OrCondition"
-          },
-          {
-            "$ref": "#/$defs/NegationCondition"
-          },
-          {
-            "$ref": "#/$defs/RuleConditionModel"
-          }
-        ]
-      },
-      "maxItems": 500,
-      "title": "List of conditions",
-      "type": "array"
+          "maxItems": 500,
+          "type": "array"
+        },
+        {
+          "const": true
+        }
+      ],
+      "title": "List of conditions"
     },
     "PartitionRuleModel": {
       "additionalProperties": false,
@@ -1639,25 +1665,32 @@
       "type": "object"
     },
     "PriorityRuleConditionsModel": {
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/AndCondition"
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AndCondition"
+              },
+              {
+                "$ref": "#/$defs/OrCondition"
+              },
+              {
+                "$ref": "#/$defs/NegationCondition"
+              },
+              {
+                "$ref": "#/$defs/RuleConditionModel"
+              }
+            ]
           },
-          {
-            "$ref": "#/$defs/OrCondition"
-          },
-          {
-            "$ref": "#/$defs/NegationCondition"
-          },
-          {
-            "$ref": "#/$defs/RuleConditionModel"
-          }
-        ]
-      },
-      "maxItems": 500,
-      "title": "List of conditions",
-      "type": "array"
+          "maxItems": 500,
+          "type": "array"
+        },
+        {
+          "const": true
+        }
+      ],
+      "title": "List of conditions"
     },
     "PriorityRuleModel": {
       "additionalProperties": false,
@@ -1748,7 +1781,7 @@
           "title": "Conflict",
           "type": "boolean"
         },
-        "branch-protection-review-decision": {
+        "github-review-decision": {
           "anyOf": [
             {
               "enum": [
@@ -1762,8 +1795,8 @@
               "type": "null"
             }
           ],
-          "description": "The review decision. This indicates if `CODEOWNERS` have reviewed the pull request when the `Require Review from Code Owners` branch protection rule is enabled.",
-          "title": "Branch protection review decision"
+          "description": "The review decision computed by GitHub from its `pullRequest.reviewDecision` field, driven by either classic branch protection or repository / organization rulesets. Typically reflects whether required approvals and `CODEOWNERS` reviews have been satisfied.",
+          "title": "GitHub review decision"
         },
         "number": {
           "description": "The pull request number.",
@@ -2308,7 +2341,7 @@
         "locked",
         "linear-history",
         "conflict",
-        "branch-protection-review-decision",
+        "github-review-decision",
         "number",
         "queue-position",
         "author",
@@ -2394,25 +2427,32 @@
       "type": "object"
     },
     "PullRequestRuleConditionsModel": {
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/AndCondition"
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AndCondition"
+              },
+              {
+                "$ref": "#/$defs/OrCondition"
+              },
+              {
+                "$ref": "#/$defs/NegationCondition"
+              },
+              {
+                "$ref": "#/$defs/RuleConditionModel"
+              }
+            ]
           },
-          {
-            "$ref": "#/$defs/OrCondition"
-          },
-          {
-            "$ref": "#/$defs/NegationCondition"
-          },
-          {
-            "$ref": "#/$defs/RuleConditionModel"
-          }
-        ]
-      },
-      "maxItems": 500,
-      "title": "List of conditions",
-      "type": "array"
+          "maxItems": 500,
+          "type": "array"
+        },
+        {
+          "const": true
+        }
+      ],
+      "title": "List of conditions"
     },
     "PullRequestRuleModel": {
       "additionalProperties": false,
@@ -2661,25 +2701,32 @@
       "type": "object"
     },
     "QueueRuleMergeConditionsModel": {
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/AndCondition"
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AndCondition"
+              },
+              {
+                "$ref": "#/$defs/OrCondition"
+              },
+              {
+                "$ref": "#/$defs/NegationCondition"
+              },
+              {
+                "$ref": "#/$defs/RuleConditionModel"
+              }
+            ]
           },
-          {
-            "$ref": "#/$defs/OrCondition"
-          },
-          {
-            "$ref": "#/$defs/NegationCondition"
-          },
-          {
-            "$ref": "#/$defs/RuleConditionModel"
-          }
-        ]
-      },
-      "maxItems": 500,
-      "title": "List of conditions",
-      "type": "array"
+          "maxItems": 500,
+          "type": "array"
+        },
+        {
+          "const": true
+        }
+      ],
+      "title": "List of conditions"
     },
     "QueueRuleModel": {
       "additionalProperties": false,
@@ -2694,7 +2741,7 @@
         },
         "branch_protection_injection_mode": {
           "default": "queue",
-          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n- `none` will disable branch protections. This mode is supported only on queues using a `merge_bot_account` with admin rights.",
+          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n\nTo skip injection for a specific ruleset, see [bypass actors and injection](https://docs.mergify.com/merge-queue/github-rulesets/#bypass-actors-and-injection).",
           "enum": [
             "queue",
             "merge",
@@ -2915,6 +2962,7 @@
           "title": "Update Bot Account"
         },
         "name": {
+          "description": "Name of the queue rule.",
           "title": "Name",
           "type": "string"
         }
@@ -2938,7 +2986,7 @@
         },
         "branch_protection_injection_mode": {
           "default": "queue",
-          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n- `none` will disable branch protections. This mode is supported only on queues using a `merge_bot_account` with admin rights.",
+          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n\nTo skip injection for a specific ruleset, see [bypass actors and injection](https://docs.mergify.com/merge-queue/github-rulesets/#bypass-actors-and-injection).",
           "enum": [
             "queue",
             "merge",

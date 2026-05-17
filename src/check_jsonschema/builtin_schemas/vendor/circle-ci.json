@@ -1865,11 +1865,11 @@
                                             "windows.gpu.nvidia.medium",
                                             "m4pro.medium",
                                             "m4pro.large",
-                                            "medium-gen2",
-                                            "large-gen2",
-                                            "xlarge-gen2",
-                                            "2xlarge-gen2",
-                                            "2xlarge+-gen2"
+                                            "medium.gen2",
+                                            "large.gen2",
+                                            "xlarge.gen2",
+                                            "2xlarge.gen2",
+                                            "2xlarge+.gen2"
                                         ]
                                     },
                                     {
