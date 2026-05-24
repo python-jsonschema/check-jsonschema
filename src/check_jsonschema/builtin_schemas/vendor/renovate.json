@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 43.181.2 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 43.195.0 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "43.181.2",
+  "x-renovate-version": "43.195.0",
   "allowComments": true,
   "type": "object",
   "definitions": {
@@ -1673,6 +1673,10 @@
         "maven": {
           "type": "string",
           "description": "A constraint for the `maven` Containerbase tool"
+        },
+        "mise": {
+          "type": "string",
+          "description": "A constraint for the `mise` Containerbase tool"
         },
         "nix": {
           "type": "string",
@@ -4175,6 +4179,11 @@
         "maven": {
           "type": "object",
           "description": "Install the `maven` Containerbase tool",
+          "additionalProperties": false
+        },
+        "mise": {
+          "type": "object",
+          "description": "Install the `mise` Containerbase tool",
           "additionalProperties": false
         },
         "nix": {
@@ -7186,6 +7195,48 @@
         ]
       }
     },
+    "rust-toolchain": {
+      "description": "Configuration object for the rust-toolchain manager",
+      "markdownDescription": "Configuration object for the rust-toolchain manager",
+      "type": "object",
+      "default": {
+        "commitMessageTopic": "Rust",
+        "managerFilePatterns": [
+          "/(^|/)rust-toolchain(\\.toml)?$/"
+        ]
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "managerFilePatterns": {
+                "$ref": "#/definitions/managerFilePatterns"
+              }
+            }
+          }
+        ]
+      }
+    },
     "sbt": {
       "description": "Configuration object for the sbt manager",
       "markdownDescription": "Configuration object for the sbt manager",
@@ -9065,6 +9116,9 @@
     },
     "runtime-version": {
       "$ref": "#/definitions/runtime-version"
+    },
+    "rust-toolchain": {
+      "$ref": "#/definitions/rust-toolchain"
     },
     "sbt": {
       "$ref": "#/definitions/sbt"
