@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 43.195.0 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 43.214.3 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "43.195.0",
+  "x-renovate-version": "43.214.3",
   "allowComments": true,
   "type": "object",
   "definitions": {
@@ -913,11 +913,18 @@
       "description": "The semver level to use when bumping versions. This is used by the `bumpVersions` feature.",
       "markdownDescription": "The semver level to use when bumping versions. This is used by the `bumpVersions` feature.",
       "type": "string",
-      "enum": [
-        "major",
-        "minor",
-        "patch",
-        "sync"
+      "anyOf": [
+        {
+          "enum": [
+            "major",
+            "minor",
+            "patch",
+            "sync"
+          ]
+        },
+        {
+          "type": "string"
+        }
       ]
     },
     "bumpVersion": {
@@ -3382,6 +3389,12 @@
       ],
       "default": null
     },
+    "groupSingleUpdates": {
+      "description": "Apply group settings even when the group contains only one update.",
+      "markdownDescription": "Apply group settings even when the group contains only one update.",
+      "type": "boolean",
+      "default": true
+    },
     "groupSlug": {
       "description": "Slug to use for group (e.g. in branch name). Slug is calculated from `groupName` if `null`.",
       "markdownDescription": "Slug to use for group (e.g. in branch name). Slug is calculated from `groupName` if `null`.",
@@ -4592,7 +4605,6 @@
       "default": {
         "enabled": false,
         "recreateWhen": "always",
-        "rebaseStalePrs": true,
         "branchTopic": "lock-file-maintenance",
         "commitMessageAction": "Lock file maintenance",
         "commitMessageTopic": null,
@@ -4850,8 +4862,8 @@
       ]
     },
     "matchFileNames": {
-      "description": "List of strings to do an exact match against package and lock files with full path. Only works inside a `packageRules` object.",
-      "markdownDescription": "List of strings to do an exact match against package and lock files with full path. Only works inside a `packageRules` object.",
+      "description": "List of patterns to match against package and lock file paths. Valid only within a `packageRules` object.",
+      "markdownDescription": "List of patterns to match against package and lock file paths. Valid only within a `packageRules` object.",
       "type": "array",
       "items": {
         "type": "string"
@@ -5564,7 +5576,8 @@
           "/\\.(?:props|targets)$/",
           "/(^|/)dotnet-tools\\.json$/",
           "/(^|/)global\\.json$/"
-        ]
+        ],
+        "rangeStrategy": "bump"
       },
       "$ref": "#",
       "items": {
@@ -6924,13 +6937,17 @@
       "default": {
         "managerFilePatterns": [
           "renovate.json",
+          "renovate.jsonc",
           "renovate.json5",
           ".github/renovate.json",
+          ".github/renovate.jsonc",
           ".github/renovate.json5",
           ".gitlab/renovate.json",
+          ".gitlab/renovate.jsonc",
           ".gitlab/renovate.json5",
           ".renovaterc",
           ".renovaterc.json",
+          ".renovaterc.jsonc",
           ".renovaterc.json5"
         ]
       },
@@ -8762,6 +8779,9 @@
     },
     "groupName": {
       "$ref": "#/definitions/groupName"
+    },
+    "groupSingleUpdates": {
+      "$ref": "#/definitions/groupSingleUpdates"
     },
     "groupSlug": {
       "$ref": "#/definitions/groupSlug"

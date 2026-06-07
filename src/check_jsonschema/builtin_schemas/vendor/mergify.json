@@ -582,9 +582,6 @@
         "bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -1001,9 +998,6 @@
         "message": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -1034,9 +1028,6 @@
         "bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -1282,9 +1273,6 @@
         "merge_bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -1492,10 +1480,11 @@
         },
         "mode": {
           "default": "serial",
-          "description": "Defines how the merge queue schedules pull requests.\n- `serial`: PRs are tested cumulatively.\n- `parallel`: PRs whose scopes don't overlap are tested in parallel.\n",
+          "description": "Defines how the merge queue schedules pull requests.\n- `serial`: PRs are tested cumulatively.\n- `parallel`: PRs whose scopes don't overlap are tested in parallel.\n- `isolated`: PRs are grouped into batches by changed-files similarity; each batch runs as a fully isolated car, with no dependency on any other batch.\n",
           "enum": [
             "serial",
-            "parallel"
+            "parallel",
+            "isolated"
           ],
           "title": "Mode",
           "type": "string"
@@ -1930,6 +1919,7 @@
                 "CONFLICT_WITH_PULL_AHEAD",
                 "BRANCH_UPDATE_FAILED",
                 "DRAFT_PULL_REQUEST_CHANGED",
+                "BATCH_PULL_REQUEST_CLOSED",
                 "PULL_REQUEST_UPDATED",
                 "MERGE_QUEUE_RESET",
                 "INCOMPATIBILITY_WITH_BRANCH_PROTECTIONS",
@@ -2634,9 +2624,6 @@
         "draft_bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -2665,8 +2652,7 @@
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
           "description": "Prefix for the merge queue branch name",
-          "format": "template",
-          "title": "Template",
+          "title": "Queue Branch Prefix",
           "type": "string"
         },
         "allow_queue_branch_edit": {
@@ -2770,9 +2756,6 @@
         "merge_bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -2879,9 +2862,6 @@
         "draft_bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -2910,8 +2890,7 @@
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
           "description": "Prefix for the merge queue branch name",
-          "format": "template",
-          "title": "Template",
+          "title": "Queue Branch Prefix",
           "type": "string"
         },
         "allow_queue_branch_edit": {
@@ -3015,9 +2994,6 @@
         "merge_bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -3092,9 +3068,6 @@
         "bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -3220,9 +3193,6 @@
         "bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -3268,6 +3238,22 @@
           "pattern": "^[A-Za-z0-9_-]+$",
           "title": "Merge Queue Scope",
           "type": "string"
+        },
+        "capacities": {
+          "description": "How many speculative checks each scope may run at the same time, as a map of scope name to capacity. Works for any `source` (file globs or the manual scopes API just decide membership; capacity is declared here). A scope listed here runs against its own independent budget; a PR in several capped scopes consumes one slot from each. PRs whose scopes are all absent from this map share the repo-wide `merge_queue.max_parallel_checks` pool. Strict branch protection still forces an effective capacity of 1.",
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+$": {
+              "maximum": 128,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "propertyNames": {
+            "minLength": 2,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "title": "Capacities",
+          "type": "object"
         }
       },
       "title": "Scopes",
@@ -3317,9 +3303,6 @@
         "bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
@@ -3351,9 +3334,6 @@
         "bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
               "type": "string"
             },
             {
