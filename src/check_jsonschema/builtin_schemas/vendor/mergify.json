@@ -294,9 +294,10 @@
         "bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -582,6 +583,10 @@
         "bot_account": {
           "anyOf": [
             {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -793,9 +798,10 @@
         "bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -1027,6 +1033,10 @@
       "properties": {
         "bot_account": {
           "anyOf": [
+            {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
             {
               "type": "string"
             },
@@ -1273,6 +1283,10 @@
         "merge_bot_account": {
           "anyOf": [
             {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -1505,6 +1519,12 @@
           ],
           "title": "Status Comments",
           "type": "string"
+        },
+        "queue_controls_comment": {
+          "default": true,
+          "description": "When enabled, Mergify renders task-list checkboxes in the Merge Queue status comment so developers can queue or requeue a pull request by clicking a box instead of typing `@mergifyio queue`. The checkboxes only appear for organizations enabled for the feature.",
+          "title": "Queue Controls Comment",
+          "type": "boolean"
         }
       },
       "title": "MergeQueue",
@@ -1546,67 +1566,6 @@
       ],
       "title": "OrCondition",
       "type": "object"
-    },
-    "PartitionRuleConditionsModel": {
-      "anyOf": [
-        {
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/AndCondition"
-              },
-              {
-                "$ref": "#/$defs/OrCondition"
-              },
-              {
-                "$ref": "#/$defs/NegationCondition"
-              },
-              {
-                "$ref": "#/$defs/RuleConditionModel"
-              }
-            ]
-          },
-          "maxItems": 500,
-          "type": "array"
-        },
-        {
-          "const": true
-        }
-      ],
-      "title": "List of conditions"
-    },
-    "PartitionRuleModel": {
-      "additionalProperties": false,
-      "properties": {
-        "name": {
-          "description": "Name of the partition",
-          "title": "Name",
-          "type": "string"
-        },
-        "conditions": {
-          "$ref": "#/$defs/PartitionRuleConditionsModel",
-          "description": "List of conditions to determine the partition(s) in which the pull request will be queued. If a pull request matches no partition, it is added to the fallback partition if defined. Otherwise it is added to every partition."
-        },
-        "fallback_partition": {
-          "default": false,
-          "description": "Allow the partition to work as the fallback partition. There can be only one fallback partition.",
-          "title": "Fallback Partition",
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "name"
-      ],
-      "title": "PartitionRuleModel",
-      "type": "object"
-    },
-    "PartitionRulesModel": {
-      "items": {
-        "$ref": "#/$defs/PartitionRuleModel"
-      },
-      "maxItems": 50,
-      "title": "PartitionRulesModel",
-      "type": "array"
     },
     "PostCheckActionModel": {
       "additionalProperties": false,
@@ -1792,6 +1751,11 @@
           "title": "GitHub require review from specific teams",
           "type": "boolean"
         },
+        "github-code-owner-review-satisfied": {
+          "description": "Whether every file the pull request touches that is owned in the repository's `CODEOWNERS` file has at least one approval from one of its owners (a user, or any member of an owning team). Mirrors GitHub's 'Require review from Code Owners', covering the case where GitHub blocks the merge on a code-owner review while `pullRequest.reviewDecision` is `null`. Returns `true` when there is no `CODEOWNERS` file or no touched file is owned, and `false` when an owner cannot be resolved to a GitHub login (an email address, or a team in another org).",
+          "title": "GitHub code owner review satisfied",
+          "type": "boolean"
+        },
         "number": {
           "description": "The pull request number.",
           "maximum": 9223372036854775807,
@@ -1931,7 +1895,8 @@
                 "PR_MANUALLY_DEQUEUED",
                 "STACK_PREDECESSOR_DEQUEUED",
                 "INTERMEDIATE_RESULTS_SKIPPED",
-                "CHECKS_RETRIED"
+                "CHECKS_RETRIED",
+                "SCHEDULE_BLOCKED_AHEAD_YIELDED"
               ],
               "type": "string"
             },
@@ -2048,6 +2013,14 @@
             "type": "string"
           },
           "title": "Check skipped",
+          "type": "array"
+        },
+        "check-cancelled": {
+          "description": "The list of checks that were cancelled for the pull request. Cancelled checks are also matched by `check-failure`; use `check-cancelled` to address them independently.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Check cancelled",
           "type": "array"
         },
         "check-pending": {
@@ -2338,6 +2311,7 @@
         "conflict",
         "github-review-decision",
         "github-require-review-from-specific-teams",
+        "github-code-owner-review-satisfied",
         "number",
         "queue-position",
         "author",
@@ -2366,6 +2340,7 @@
         "check-neutral",
         "check-timed-out",
         "check-skipped",
+        "check-cancelled",
         "check-pending",
         "check",
         "check-stale",
@@ -2607,11 +2582,15 @@
               "type": "string"
             },
             {
+              "const": "auto",
+              "type": "string"
+            },
+            {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds.",
+          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Set to `auto` to let Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin); `auto` applies no timeout until enough history has been gathered.",
           "title": "Checks Timeout"
         },
         "max_checks_retries": {
@@ -2623,6 +2602,10 @@
         },
         "draft_bot_account": {
           "anyOf": [
+            {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
             {
               "type": "string"
             },
@@ -2756,6 +2739,10 @@
         "merge_bot_account": {
           "anyOf": [
             {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -2769,9 +2756,10 @@
         "update_bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -2845,11 +2833,15 @@
               "type": "string"
             },
             {
+              "const": "auto",
+              "type": "string"
+            },
+            {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds.",
+          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Set to `auto` to let Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin); `auto` applies no timeout until enough history has been gathered.",
           "title": "Checks Timeout"
         },
         "max_checks_retries": {
@@ -2861,6 +2853,10 @@
         },
         "draft_bot_account": {
           "anyOf": [
+            {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
             {
               "type": "string"
             },
@@ -2994,6 +2990,10 @@
         "merge_bot_account": {
           "anyOf": [
             {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -3007,9 +3007,10 @@
         "update_bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -3038,9 +3039,10 @@
         "bot_account": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -3067,6 +3069,10 @@
       "properties": {
         "bot_account": {
           "anyOf": [
+            {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
             {
               "type": "string"
             },
@@ -3193,6 +3199,10 @@
         "bot_account": {
           "anyOf": [
             {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -3228,7 +3238,7 @@
             }
           ],
           "default": null,
-          "description": "Where scopes come from. `files` uses file-pattern rules (`gha-mergify-ci-scopes` must have been setup on your pull request); `manual` uses scopes sent via API or `mergify scopes-send`; `None` disables scoping.",
+          "description": "Where scopes come from. `files` derives scopes from the pull request's changed files using file-pattern rules; `manual` uses scopes sent via API or `mergify scopes-send`; `None` disables scoping.",
           "title": "Source"
         },
         "merge_queue_scope": {
@@ -3303,6 +3313,10 @@
         "bot_account": {
           "anyOf": [
             {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
+            {
               "type": "string"
             },
             {
@@ -3333,6 +3347,10 @@
       "properties": {
         "bot_account": {
           "anyOf": [
+            {
+              "const": "{{ author }}",
+              "title": "Pull request author"
+            },
             {
               "type": "string"
             },
@@ -3392,9 +3410,6 @@
     },
     "queue_rules": {
       "$ref": "#/$defs/QueueRulesModel"
-    },
-    "partition_rules": {
-      "$ref": "#/$defs/PartitionRulesModel"
     },
     "merge_protections": {
       "$ref": "#/$defs/MergeProtectionRulesModel"
