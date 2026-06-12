@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 import textwrap
 import typing as t
@@ -41,6 +42,18 @@ def set_color_mode(ctx: click.Context, param: str, value: str) -> None:
             "always": True,
             "never": False,
         }[value]
+
+
+def configure_logging(
+    ctx: click.Context, param: click.Parameter, value: str | None
+) -> None:
+    if value is None:
+        return
+    level = getattr(logging, value.upper())
+    logging.basicConfig(
+        level=level,
+        format="%(name)s [%(levelname)s]: %(message)s",
+    )
 
 
 def pretty_helptext_list(values: list[str] | tuple[str, ...]) -> str:
@@ -89,11 +102,20 @@ The '--disable-formats' flag supports the following formats:
 @click.help_option("-h", "--help")
 @click.version_option()
 @click.option(
+    "--log-level",
+    hidden=True,
+    help="Set the log level for debug output (e.g., DEBUG, INFO, WARNING).",
+    type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR"], case_sensitive=False),
+    callback=configure_logging,
+    expose_value=False,
+    is_eager=True,
+)
+@click.option(
     "--schemafile",
     help=(
         "The path to a file containing the JSON Schema to use or an "
         "HTTP(S) URI for the schema. If a remote file is used, "
-        "it will be downloaded and cached locally based on mtime. "
+        "it will be downloaded and cached locally. "
         "Use '-' for stdin."
     ),
     metavar="[PATH|URI]",
