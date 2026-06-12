@@ -43,27 +43,30 @@ def mock_cli_exec(boxed_context):
 
 
 @pytest.mark.parametrize(
-    "schemafile,builtin_schema,check_metaschema,expect_mode",
+    "schemafile,builtin_schema,check_metaschema,schema_from_modeline,expect_mode",
     [
-        ("foo.json", None, False, SchemaLoadingMode.filepath),
-        (None, "foo", False, SchemaLoadingMode.builtin),
-        (None, None, True, SchemaLoadingMode.metaschema),
+        ("foo.json", None, False, False, SchemaLoadingMode.filepath),
+        (None, "foo", False, False, SchemaLoadingMode.builtin),
+        (None, None, True, False, SchemaLoadingMode.metaschema),
+        (None, None, False, True, SchemaLoadingMode.modeline),
     ],
 )
 def test_parse_result_set_schema(
-    schemafile, builtin_schema, check_metaschema, expect_mode
+    schemafile, builtin_schema, check_metaschema, schema_from_modeline, expect_mode
 ):
     args = ParseResult()
     # starts as None (always)
     assert args.schema_path is None
 
-    args.set_schema(schemafile, builtin_schema, check_metaschema)
+    args.set_schema(schemafile, builtin_schema, check_metaschema, schema_from_modeline)
     assert args.schema_mode == expect_mode
     if schemafile:
         assert args.schema_path == schemafile
     if builtin_schema:
         assert args.schema_path == builtin_schema
     if check_metaschema:
+        assert args.schema_path is None
+    if schema_from_modeline:
         assert args.schema_path is None
 
 
@@ -135,6 +138,20 @@ def test_no_cache_flag_is_true(cli_runner, mock_parse_result, in_tmp_dir, tmp_pa
             "vendor.travis",
             "--check-metaschema",
         ],
+        [
+            "--schemafile",
+            "x.json",
+            "--schema-from-modeline",
+        ],
+        [
+            "--builtin-schema",
+            "vendor.travis",
+            "--schema-from-modeline",
+        ],
+        [
+            "--check-metaschema",
+            "--schema-from-modeline",
+        ],
     ],
 )
 def test_mutex_schema_opts(cli_runner, cmd_args, in_tmp_dir, tmp_path):
@@ -142,6 +159,17 @@ def test_mutex_schema_opts(cli_runner, cmd_args, in_tmp_dir, tmp_path):
     result = cli_runner.invoke(cli_main, cmd_args + ["foo.json"])
     assert result.exit_code == 2
     assert "are mutually exclusive" in result.stderr
+
+
+def test_schema_from_modeline_and_instancefile(
+    cli_runner, mock_parse_result, in_tmp_dir, tmp_path
+):
+    touch_files(tmp_path, "foo.yaml")
+    cli_runner.invoke(cli_main, ["--schema-from-modeline", "foo.yaml"])
+    assert mock_parse_result.schema_mode == SchemaLoadingMode.modeline
+    assert mock_parse_result.schema_path is None
+    assert isinstance(mock_parse_result.instancefiles, tuple)
+    assert tuple(f.name for f in mock_parse_result.instancefiles) == ("foo.yaml",)
 
 
 @pytest.mark.parametrize(

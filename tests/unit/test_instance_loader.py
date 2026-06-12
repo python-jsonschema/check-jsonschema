@@ -38,7 +38,7 @@ def test_instanceloader_json_data(tmp_path, filename, default_filetype, open_wid
     f.write_text("{}")
     loader = InstanceLoader(open_wide(f), default_filetype=default_filetype)
     data = list(loader.iter_files())
-    assert data == [(str(f), {})]
+    assert data == [(str(f), {}, None)]
 
 
 @pytest.mark.parametrize(
@@ -64,7 +64,7 @@ a:
 """)
     loader = InstanceLoader(open_wide(f), default_filetype=default_filetype)
     data = list(loader.iter_files())
-    assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
+    assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}}, None)]
 
 
 @pytest.mark.parametrize(
@@ -81,7 +81,7 @@ def test_instanceloader_toml_data(tmp_path, filename, default_filetype, open_wid
     f.write_text('[foo]\nbar = "baz"\n')
     loader = InstanceLoader(open_wide(f), default_filetype=default_filetype)
     data = list(loader.iter_files())
-    assert data == [(str(f), {"foo": {"bar": "baz"}})]
+    assert data == [(str(f), {"foo": {"bar": "baz"}}, None)]
 
 
 @pytest.mark.parametrize(
@@ -98,7 +98,7 @@ def test_instanceloader_force_filetype_toml(
     f.write_text('[foo]\nbar = "baz"\n')
     loader = InstanceLoader(open_wide(f), force_filetype=force_filetype)
     data = list(loader.iter_files())
-    assert data == [(str(f), {"foo": {"bar": "baz"}})]
+    assert data == [(str(f), {"foo": {"bar": "baz"}}, None)]
 
 
 @pytest.mark.skipif(not JSON5_ENABLED, reason="test requires json5")
@@ -117,7 +117,7 @@ def test_instanceloader_force_filetype_json(
     loader = InstanceLoader(open_wide(f), force_filetype=force_filetype)
     data = list(loader.iter_files())
     print(data)
-    assert data == [(str(f), {})]
+    assert data == [(str(f), {}, None)]
 
 
 def test_instanceloader_unknown_type_nonjson_content(tmp_path, open_wide):
@@ -128,9 +128,10 @@ def test_instanceloader_unknown_type_nonjson_content(tmp_path, open_wide):
     data = list(loader.iter_files())
     assert len(data) == 1
     assert isinstance(data[0], tuple)
-    assert len(data[0]) == 2
+    assert len(data[0]) == 3
     assert data[0][0] == str(f)
     assert isinstance(data[0][1], BadFileTypeError)
+    assert data[0][2] is None
 
 
 @pytest.mark.parametrize(
@@ -160,15 +161,16 @@ def test_instanceloader_optional_format_handling(
     if enabled_flag:
         # at iteration time, the file should load fine
         data = list(loader.iter_files())
-        assert data == [(str(f), expect_data)]
+        assert data == [(str(f), expect_data, None)]
     else:
         # at iteration time, an error should be raised
         data = list(loader.iter_files())
         assert len(data) == 1
         assert isinstance(data[0], tuple)
-        assert len(data[0]) == 2
+        assert len(data[0]) == 3
         assert data[0][0] == str(f)
         assert isinstance(data[0][1], BadFileTypeError)
+        assert data[0][2] is None
 
         # error message should be instructive
         assert expect_error_message in str(data[0])
@@ -185,7 +187,17 @@ a:
 """)
     loader = InstanceLoader(open_wide(f))
     data = list(loader.iter_files())
-    assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
+    assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}}, None)]
+
+
+def test_instanceloader_schema_from_modeline_skips_unannotated_files(
+    tmp_path, open_wide
+):
+    f = tmp_path / "foo.yaml"
+    f.write_text("a: b")
+    loader = InstanceLoader(open_wide(f), schema_from_modeline=True)
+
+    assert list(loader.iter_files()) == []
 
 
 @pytest.mark.parametrize(
@@ -210,9 +222,10 @@ def test_instanceloader_invalid_data(
     data = list(loader.iter_files())
     assert len(data) == 1
     assert isinstance(data[0], tuple)
-    assert len(data[0]) == 2
+    assert len(data[0]) == 3
     assert data[0][0] == str(f)
     assert isinstance(data[0][1], FailedFileLoadError)
+    assert data[0][2] is None
 
 
 def test_instanceloader_invalid_data_mixed_with_valid_data(tmp_path, open_wide):
@@ -228,14 +241,15 @@ def test_instanceloader_invalid_data_mixed_with_valid_data(tmp_path, open_wide):
     data = list(loader.iter_files())
     assert len(data) == 3
 
-    assert data[0] == (str(a), {})
+    assert data[0] == (str(a), {}, None)
 
     assert isinstance(data[1], tuple)
-    assert len(data[1]) == 2
+    assert len(data[1]) == 3
     assert data[1][0] == str(b)
     assert isinstance(data[1][1], FailedFileLoadError)
+    assert data[1][2] is None
 
-    assert data[2] == (str(c), {"c": True})
+    assert data[2] == (str(c), {"c": True}, None)
 
 
 @pytest.mark.parametrize(
@@ -276,9 +290,10 @@ def test_instanceloader_mixed_filetypes(tmp_path, filetypes, open_wide):
 
     for i, filetype in enumerate(file_order):
         assert isinstance(data[i], tuple)
-        assert len(data[i]) == 2
-        path, value = data[i]
+        assert len(data[i]) == 3
+        path, value, schemafile = data[i]
         assert path == str(files[filetype])
+        assert schemafile is None
         if filetype == "json":
             assert value == {}
         elif filetype == "yaml":

@@ -17,6 +17,7 @@ from ..reporter import REPORTER_BY_NAME, Reporter
 from ..schema_loader import (
     BuiltinSchemaLoader,
     MetaSchemaLoader,
+    ModelineSchemaLoader,
     SchemaLoader,
     SchemaLoaderBase,
 )
@@ -62,7 +63,8 @@ def pretty_helptext_list(values: list[str] | tuple[str, ...]) -> str:
     help="""\
 Check JSON and YAML files against a JSON Schema.
 
-The schema is specified either with '--schemafile' or with '--builtin-schema'.
+The schema is specified with '--schemafile', '--builtin-schema', or
+'--schema-from-modeline'.
 
 'check-jsonschema' supports format checks with appropriate libraries installed,
 including the following formats by default:
@@ -111,6 +113,14 @@ The '--disable-formats' flag supports the following formats:
     help="The name of an internal schema to use for '--schemafile'",
     type=click.Choice(BUILTIN_SCHEMA_CHOICES, case_sensitive=False),
     metavar="BUILTIN_SCHEMA_NAME",
+)
+@click.option(
+    "--schema-from-modeline",
+    is_flag=True,
+    help=(
+        "Validate YAML files using the schema declared in a YAML modeline "
+        "comment. Files without a schema modeline are skipped."
+    ),
 )
 @click.option(
     "--check-metaschema",
@@ -240,6 +250,7 @@ def main(
     schemafile: str | None,
     builtin_schema: str | None,
     base_uri: str | None,
+    schema_from_modeline: bool,
     check_metaschema: bool,
     no_cache: bool,
     cache_filename: str | None,
@@ -261,7 +272,7 @@ def main(
 
     args.set_regex_variant(regex_variant, legacy_opt=format_regex)
 
-    args.set_schema(schemafile, builtin_schema, check_metaschema)
+    args.set_schema(schemafile, builtin_schema, check_metaschema, schema_from_modeline)
     args.set_validator(validator_class)
 
     args.base_uri = base_uri
@@ -299,6 +310,12 @@ def main(
 def build_schema_loader(args: ParseResult) -> SchemaLoaderBase:
     if args.schema_mode == SchemaLoadingMode.metaschema:
         return MetaSchemaLoader(base_uri=args.base_uri)
+    elif args.schema_mode == SchemaLoadingMode.modeline:
+        if args.base_uri is not None:
+            raise click.UsageError(
+                "--base-uri cannot be used with --schema-from-modeline"
+            )
+        return ModelineSchemaLoader(disable_cache=args.disable_cache)
     elif args.schema_mode == SchemaLoadingMode.builtin:
         assert args.schema_path is not None
         return BuiltinSchemaLoader(args.schema_path, base_uri=args.base_uri)
@@ -320,6 +337,7 @@ def build_instance_loader(args: ParseResult) -> InstanceLoader:
         default_filetype=args.default_filetype,
         force_filetype=args.force_filetype,
         data_transform=args.data_transform,
+        schema_from_modeline=args.schema_mode == SchemaLoadingMode.modeline,
     )
 
 
