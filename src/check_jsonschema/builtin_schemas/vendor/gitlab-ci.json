@@ -2147,6 +2147,22 @@
           "description": "Retry when the job got stuck or timed out."
         },
         {
+          "const": "stuck_pending_with_matching_runners",
+          "description": "Retry when the job is stuck pending with matching runners."
+        },
+        {
+          "const": "stuck_pending_no_matching_runners",
+          "description": "Retry when the job is stuck pending with no matching runners."
+        },
+        {
+          "const": "no_updates_running",
+          "description": "Retry when the running job stopped sending status updates to the server."
+        },
+        {
+          "const": "no_updates_canceling",
+          "description": "Retry when the canceling job stopped sending status updates to the server."
+        },
+        {
           "const": "runner_system_failure",
           "description": "Retry if there is a runner system failure (for example, job setup failed)."
         },
@@ -2173,6 +2189,14 @@
         {
           "const": "job_execution_timeout",
           "description": "Retry if the script exceeded the maximum execution time set for the job."
+        },
+        {
+          "const": "server_timeout_running",
+          "description": "Retry if the running job timed out on the server."
+        },
+        {
+          "const": "server_timeout_canceling",
+          "description": "Retry if the canceling job timed out on the server."
         },
         {
           "const": "archived_failure",
