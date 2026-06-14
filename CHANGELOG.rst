@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: github-workflows, gitlab-ci, travis (2026-06-14)
+
 0.37.3
 ------
 
