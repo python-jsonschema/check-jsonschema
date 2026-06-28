@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 43.220.0 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 43.248.0 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "43.220.0",
+  "x-renovate-version": "43.248.0",
   "allowComments": true,
   "type": "object",
   "definitions": {
@@ -3393,7 +3393,7 @@
       "description": "Apply group settings even when the group contains only one update.\nSee also: https://docs.renovatebot.com/configuration-options/#groupsingleupdates",
       "markdownDescription": "Apply group settings even when the group contains only one update.\n\nSee also: [groupSingleUpdates](https://docs.renovatebot.com/configuration-options/#groupsingleupdates)",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "groupSlug": {
       "description": "Slug to use for group (e.g. in branch name). Slug is calculated from `groupName` if `null`.\nSee also: https://docs.renovatebot.com/configuration-options/#groupslug",
@@ -4968,8 +4968,8 @@
       ]
     },
     "matchStrings": {
-      "description": "Queries to use. Valid only within `bumpVersions` or `customManagers` object.\nSee also: https://docs.renovatebot.com/configuration-options/#bumpversionsmatchstrings",
-      "markdownDescription": "Queries to use. Valid only within `bumpVersions` or `customManagers` object.\n\nSee also: [matchStrings](https://docs.renovatebot.com/configuration-options/#bumpversionsmatchstrings)",
+      "description": "Queries to use. Valid only within `bumpVersions` or `customManagers` object. Templating is supported within `bumpVersions` only.\nSee also: https://docs.renovatebot.com/configuration-options/#bumpversionsmatchstrings",
+      "markdownDescription": "Queries to use. Valid only within `bumpVersions` or `customManagers` object. Templating is supported within `bumpVersions` only.\n\nSee also: [matchStrings](https://docs.renovatebot.com/configuration-options/#bumpversionsmatchstrings)",
       "type": "array",
       "items": {
         "type": "string"
@@ -5305,7 +5305,8 @@
           "**/.config/mise/{mise,config}{,.*}.toml",
           "**/.config/mise/conf.d/*.toml",
           "**/.rtx{,.*}.toml"
-        ]
+        ],
+        "pinDigests": false
       },
       "$ref": "#",
       "items": {

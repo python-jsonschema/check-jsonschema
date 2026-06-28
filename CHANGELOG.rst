@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: bitbucket-pipelines, buildkite, changie, github-workflows,
+  gitlab-ci, mergify, renovate, snapcraft, travis, woodpecker-ci (2026-06-29)
+
 0.37.3
 ------
 
