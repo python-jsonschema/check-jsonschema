@@ -25,3 +25,10 @@ include justfile
 include scripts/*.py
 include .coveragerc
 include .flake8
+
+
+## Final Cleanup
+# remove files which may be accidentally introduced by `*` and recursive patterns
+
+prune **/__pycache__
+global-exclude *.py[cod]
