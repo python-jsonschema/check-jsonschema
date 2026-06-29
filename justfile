@@ -14,6 +14,9 @@ vendor-schemas:
 generate-hooks:
     tox run -e generate-hooks-config
 
+bump-version NEW_VERSION:
+    uv run scripts/bump-version.py "{{NEW_VERSION}}"
+
 tag-release:
     git tag -s "{{version}}" -m "v{{version}}"
     git push {{push_remote}} refs/tags/{{version}}

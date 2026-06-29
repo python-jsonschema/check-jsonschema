@@ -1,14 +1,14 @@
 #!/usr/bin/env python
+# /// script
+# dependencies = ["mddj==0.6.0", "packaging"]
+# ///
 import re
 import sys
 
+import mddj.api
+from packaging.version import Version
 
-def get_old_version():
-    with open("pyproject.toml") as fp:
-        content = fp.read()
-    match = re.search(r'^version = "(\d+\.\d+\.\d+)"$', content, flags=re.MULTILINE)
-    assert match
-    return match.group(1)
+DJ = mddj.api.DJ()
 
 
 def replace_version(filename, formatstr, old_version, new_version):
@@ -48,26 +48,16 @@ Unreleased
         fp.write(content)
 
 
-def parse_version(s):
-    vals = s.split(".")
-    assert len(vals) == 3
-    return tuple(int(x) for x in vals)
-
-
-def comparse_versions(old_version, new_version):
-    assert parse_version(new_version) > parse_version(old_version)
-
-
 def main():
     if len(sys.argv) != 2:
         sys.exit(2)
 
     new_version = sys.argv[1]
-    old_version = get_old_version()
+    old_version = DJ.read.version()
     print(f"old = {old_version}, new = {new_version}")
-    comparse_versions(old_version, new_version)
+    assert Version(new_version) > Version(old_version)
 
-    replace_version("pyproject.toml", 'version = "{}"', old_version, new_version)
+    DJ.write.version(new_version)
     replace_version("README.md", "rev: {}", old_version, new_version)
     replace_version("docs/precommit_usage.rst", "rev: {}", old_version, new_version)
     replace_version("docs/optional_parsers.rst", "rev: {}", old_version, new_version)
