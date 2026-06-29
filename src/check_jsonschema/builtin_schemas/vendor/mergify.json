@@ -225,10 +225,16 @@
       "properties": {
         "users": {
           "items": {
-            "description": "A string template using the Jinja2 syntax.",
-            "format": "template",
-            "title": "Template",
-            "type": "string"
+            "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+            "format": "simple-template",
+            "title": "User",
+            "type": "string",
+            "x-mergify-template-variables": [
+              {
+                "description": "The pull request author's login.",
+                "name": "author"
+              }
+            ]
           },
           "maxItems": 10,
           "title": "Users",
@@ -236,10 +242,16 @@
         },
         "add_users": {
           "items": {
-            "description": "A string template using the Jinja2 syntax.",
-            "format": "template",
-            "title": "Template",
-            "type": "string"
+            "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+            "format": "simple-template",
+            "title": "User",
+            "type": "string",
+            "x-mergify-template-variables": [
+              {
+                "description": "The pull request author's login.",
+                "name": "author"
+              }
+            ]
           },
           "maxItems": 10,
           "title": "Add Users",
@@ -247,10 +259,16 @@
         },
         "remove_users": {
           "items": {
-            "description": "A string template using the Jinja2 syntax.",
-            "format": "template",
-            "title": "Template",
-            "type": "string"
+            "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+            "format": "simple-template",
+            "title": "User",
+            "type": "string",
+            "x-mergify-template-variables": [
+              {
+                "description": "The pull request author's login.",
+                "name": "author"
+              }
+            ]
           },
           "maxItems": 40,
           "title": "Remove Users",
@@ -294,11 +312,16 @@
         "bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -334,12 +357,22 @@
           "type": "boolean"
         },
         "assignees": {
-          "description": "Users to assign the newly created pull request to. As the type is a data type template, you could use, e.g., `{{author}}` to assign the pull request to its original author.",
+          "description": "Users to assign the newly created pull request to. Accepts a GitHub login, or `{{ author }}` (the original pull request author) or `{{ merged_by }}` (the user who merged it).",
           "items": {
-            "description": "A string template using the Jinja2 syntax.",
-            "format": "template",
-            "title": "Template",
-            "type": "string"
+            "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`, `merged_by`.",
+            "format": "simple-template",
+            "title": "Assignee",
+            "type": "string",
+            "x-mergify-template-variables": [
+              {
+                "description": "The pull request author's login.",
+                "name": "author"
+              },
+              {
+                "description": "The login of the user who merged the pull request.",
+                "name": "merged_by"
+              }
+            ]
           },
           "maxItems": 10,
           "title": "Assignees",
@@ -363,16 +396,72 @@
         "title": {
           "default": "{{ title }} (backport #{{ number }})",
           "description": "The pull request's title.",
-          "format": "template",
-          "title": "Template",
-          "type": "string"
+          "format": "simple-template",
+          "title": "Title template",
+          "type": "string",
+          "x-mergify-template-variables": [
+            {
+              "description": "The pull request title.",
+              "name": "title"
+            },
+            {
+              "description": "The pull request number.",
+              "name": "number"
+            },
+            {
+              "description": "The branch the pull request is copied to.",
+              "name": "destination_branch"
+            },
+            {
+              "description": "The base branch name.",
+              "name": "base"
+            },
+            {
+              "description": "The pull request author's login.",
+              "name": "author"
+            }
+          ]
         },
         "body": {
           "default": "{{ body }}<hr>This is an automatic backport of pull request #{{number}} done by [Mergify](https://mergify.com).\n",
           "description": "The pull request's body.",
-          "format": "template",
-          "title": "Template",
-          "type": "string"
+          "format": "simple-template",
+          "title": "Body template",
+          "type": "string",
+          "x-mergify-template-variables": [
+            {
+              "description": "The pull request title.",
+              "name": "title"
+            },
+            {
+              "description": "The pull request number.",
+              "name": "number"
+            },
+            {
+              "description": "The branch the pull request is copied to.",
+              "name": "destination_branch"
+            },
+            {
+              "description": "The base branch name.",
+              "name": "base"
+            },
+            {
+              "description": "The pull request author's login.",
+              "name": "author"
+            },
+            {
+              "description": "The pull request description (body).",
+              "name": "body"
+            },
+            {
+              "description": "The cherry-pick error message, when the copy hit a conflict (body only).",
+              "name": "cherry_pick_error"
+            },
+            {
+              "description": "The cherry-picked commit SHAs, newline-joined.",
+              "name": "cherry_picked_commits"
+            }
+          ]
         },
         "report_mode": {
           "default": [
@@ -404,6 +493,38 @@
       "title": "BackportActionModel",
       "type": "object"
     },
+    "BatchSizeBounds": {
+      "anyOf": [
+        {
+          "maximum": 128,
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "min": {
+              "maximum": 128,
+              "minimum": 1,
+              "title": "Min",
+              "type": "integer"
+            },
+            "max": {
+              "maximum": 128,
+              "minimum": 1,
+              "title": "Max",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "min",
+            "max"
+          ],
+          "title": "BatchSizeBounds",
+          "type": "object"
+        }
+      ]
+    },
     "BranchName": {
       "description": "A Git branch name.",
       "properties": {},
@@ -415,10 +536,52 @@
       "properties": {
         "message": {
           "default": "This pull request has been automatically closed by Mergify.",
-          "description": "A string template using the Jinja2 syntax.",
-          "format": "template",
-          "title": "Template",
-          "type": "string"
+          "description": "A string with `{{ variable }}` placeholders. Allowed variables: `approvers`, `assignees`, `author`, `base`, `body`, `head`, `labels`, `number`, `queue_dequeue_reason`, `title`.",
+          "format": "simple-template",
+          "title": "Message template",
+          "type": "string",
+          "x-mergify-template-variables": [
+            {
+              "description": "The pull request author's login.",
+              "name": "author"
+            },
+            {
+              "description": "The pull request number.",
+              "name": "number"
+            },
+            {
+              "description": "The pull request title.",
+              "name": "title"
+            },
+            {
+              "description": "The pull request description (body).",
+              "name": "body"
+            },
+            {
+              "description": "The base branch name.",
+              "name": "base"
+            },
+            {
+              "description": "The head branch name.",
+              "name": "head"
+            },
+            {
+              "description": "The pull request's labels as a comma-separated list (e.g. `bug, feat`); empty when none.",
+              "name": "labels"
+            },
+            {
+              "description": "Assignees as a ready-to-use @mention list (e.g. `@alice, @bob`); empty when none.",
+              "name": "assignees"
+            },
+            {
+              "description": "Reviewers who approved, as a @mention list (e.g. `@alice, @bob`); empty when none.",
+              "name": "approvers"
+            },
+            {
+              "description": "Why the pull request left the merge queue; empty outside queue contexts.",
+              "name": "queue_dequeue_reason"
+            }
+          ]
         }
       },
       "title": "CloseActionModel",
@@ -567,10 +730,52 @@
         "message": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `approvers`, `assignees`, `author`, `base`, `body`, `head`, `labels`, `number`, `queue_dequeue_reason`, `title`.",
+              "format": "simple-template",
+              "title": "Message template",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                },
+                {
+                  "description": "The pull request number.",
+                  "name": "number"
+                },
+                {
+                  "description": "The pull request title.",
+                  "name": "title"
+                },
+                {
+                  "description": "The pull request description (body).",
+                  "name": "body"
+                },
+                {
+                  "description": "The base branch name.",
+                  "name": "base"
+                },
+                {
+                  "description": "The head branch name.",
+                  "name": "head"
+                },
+                {
+                  "description": "The pull request's labels as a comma-separated list (e.g. `bug, feat`); empty when none.",
+                  "name": "labels"
+                },
+                {
+                  "description": "Assignees as a ready-to-use @mention list (e.g. `@alice, @bob`); empty when none.",
+                  "name": "assignees"
+                },
+                {
+                  "description": "Reviewers who approved, as a @mention list (e.g. `@alice, @bob`); empty when none.",
+                  "name": "approvers"
+                },
+                {
+                  "description": "Why the pull request left the merge queue; empty outside queue contexts.",
+                  "name": "queue_dequeue_reason"
+                }
+              ]
             },
             {
               "type": "null"
@@ -583,11 +788,16 @@
         "bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -798,11 +1008,16 @@
         "bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -838,12 +1053,22 @@
           "type": "boolean"
         },
         "assignees": {
-          "description": "Users to assign the newly created pull request to. As the type is a data type template, you could use, e.g., `{{author}}` to assign the pull request to its original author.",
+          "description": "Users to assign the newly created pull request to. Accepts a GitHub login, or `{{ author }}` (the original pull request author) or `{{ merged_by }}` (the user who merged it).",
           "items": {
-            "description": "A string template using the Jinja2 syntax.",
-            "format": "template",
-            "title": "Template",
-            "type": "string"
+            "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`, `merged_by`.",
+            "format": "simple-template",
+            "title": "Assignee",
+            "type": "string",
+            "x-mergify-template-variables": [
+              {
+                "description": "The pull request author's login.",
+                "name": "author"
+              },
+              {
+                "description": "The login of the user who merged the pull request.",
+                "name": "merged_by"
+              }
+            ]
           },
           "maxItems": 10,
           "title": "Assignees",
@@ -867,16 +1092,72 @@
         "title": {
           "default": "{{ title }} (copy #{{ number }})",
           "description": "The pull request's title.",
-          "format": "template",
-          "title": "Template",
-          "type": "string"
+          "format": "simple-template",
+          "title": "Title template",
+          "type": "string",
+          "x-mergify-template-variables": [
+            {
+              "description": "The pull request title.",
+              "name": "title"
+            },
+            {
+              "description": "The pull request number.",
+              "name": "number"
+            },
+            {
+              "description": "The branch the pull request is copied to.",
+              "name": "destination_branch"
+            },
+            {
+              "description": "The base branch name.",
+              "name": "base"
+            },
+            {
+              "description": "The pull request author's login.",
+              "name": "author"
+            }
+          ]
         },
         "body": {
           "default": "{{ body }}<hr>This is an automatic copy of pull request #{{number}} done by [Mergify](https://mergify.com).\n",
           "description": "The pull request's body.",
-          "format": "template",
-          "title": "Template",
-          "type": "string"
+          "format": "simple-template",
+          "title": "Body template",
+          "type": "string",
+          "x-mergify-template-variables": [
+            {
+              "description": "The pull request title.",
+              "name": "title"
+            },
+            {
+              "description": "The pull request number.",
+              "name": "number"
+            },
+            {
+              "description": "The branch the pull request is copied to.",
+              "name": "destination_branch"
+            },
+            {
+              "description": "The base branch name.",
+              "name": "base"
+            },
+            {
+              "description": "The pull request author's login.",
+              "name": "author"
+            },
+            {
+              "description": "The pull request description (body).",
+              "name": "body"
+            },
+            {
+              "description": "The cherry-pick error message, when the copy hit a conflict (body only).",
+              "name": "cherry_pick_error"
+            },
+            {
+              "description": "The cherry-picked commit SHAs, newline-joined.",
+              "name": "cherry_picked_commits"
+            }
+          ]
         },
         "report_mode": {
           "default": [
@@ -1034,11 +1315,16 @@
         "bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -1132,10 +1418,36 @@
                 "type": "boolean"
               },
               {
-                "description": "A string template using the Jinja2 syntax.",
-                "format": "template",
-                "title": "Template",
-                "type": "string"
+                "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`, `base`, `head`, `number`, `repository_full_name`, `title`.",
+                "format": "simple-template",
+                "title": "Workflow input template",
+                "type": "string",
+                "x-mergify-template-variables": [
+                  {
+                    "description": "The pull request author's login.",
+                    "name": "author"
+                  },
+                  {
+                    "description": "The pull request number.",
+                    "name": "number"
+                  },
+                  {
+                    "description": "The pull request title.",
+                    "name": "title"
+                  },
+                  {
+                    "description": "The base branch name.",
+                    "name": "base"
+                  },
+                  {
+                    "description": "The head branch name.",
+                    "name": "head"
+                  },
+                  {
+                    "description": "The repository's full name (`owner/repo`).",
+                    "name": "repository_full_name"
+                  }
+                ]
               }
             ]
           },
@@ -1187,9 +1499,6 @@
         "add": {
           "description": "The list of labels to add.",
           "items": {
-            "description": "A string template using the Jinja2 syntax.",
-            "format": "template",
-            "title": "Template",
             "type": "string"
           },
           "maxItems": 50,
@@ -1199,9 +1508,6 @@
         "remove": {
           "description": "The list of labels to remove.",
           "items": {
-            "description": "A string template using the Jinja2 syntax.",
-            "format": "template",
-            "title": "Template",
             "type": "string"
           },
           "maxItems": 50,
@@ -1217,9 +1523,6 @@
         "toggle": {
           "description": "Toggle labels in the list based on the conditions. If all the conditions are a success, all the labels in the list will be added, otherwise, they will all be removed.",
           "items": {
-            "description": "A string template using the Jinja2 syntax.",
-            "format": "template",
-            "title": "Template",
             "type": "string"
           },
           "maxItems": 50,
@@ -1283,11 +1586,16 @@
         "merge_bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -1522,7 +1830,7 @@
         },
         "queue_controls_comment": {
           "default": true,
-          "description": "When enabled, Mergify renders task-list checkboxes in the Merge Queue status comment so developers can queue or requeue a pull request by clicking a box instead of typing `@mergifyio queue`. The checkboxes only appear for organizations enabled for the feature.",
+          "description": "When enabled, Mergify renders task-list checkboxes in the Merge Queue status comment so developers can queue or requeue a pull request by clicking a box instead of typing `@mergifyio queue`.",
           "title": "Queue Controls Comment",
           "type": "boolean"
         }
@@ -1756,6 +2064,16 @@
           "title": "GitHub code owner review satisfied",
           "type": "boolean"
         },
+        "github-review-approved": {
+          "description": "Whether GitHub's effective review enforcement is satisfied: the required approvals are in and no eligible reviewer is blocking with an active 'Request changes'. When the rule requires at least one approval, this mirrors GitHub's `pullRequest.reviewDecision` (so a blocking review from a reviewer other than the approver is honored, unlike a bare approval count). When the rule requires a pull request with no approval count, it blocks only on a write+ reviewer's active 'Request changes'. Returns `true` when no rule on the base branch requires a review.",
+          "title": "GitHub review approved",
+          "type": "boolean"
+        },
+        "github-require-last-push-approval": {
+          "description": "Whether GitHub's 'Require approval of the most recent reviewable push' is satisfied: the required number of approvals are in from reviewers other than the user who pushed the most recent commit, and approvals submitted against an earlier head no longer count. Mirrors how GitHub's `pullRequest.reviewDecision` evaluates the `require_last_push_approval` branch protection / ruleset option. Returns `true` when no rule on the base branch requires last-push approval, and (leniently) when Mergify has not recorded the most recent push, such as pull requests opened before push tracking.",
+          "title": "GitHub require last push approval",
+          "type": "boolean"
+        },
         "number": {
           "description": "The pull request number.",
           "maximum": 9223372036854775807,
@@ -1896,7 +2214,8 @@
                 "STACK_PREDECESSOR_DEQUEUED",
                 "INTERMEDIATE_RESULTS_SKIPPED",
                 "CHECKS_RETRIED",
-                "SCHEDULE_BLOCKED_AHEAD_YIELDED"
+                "SCHEDULE_BLOCKED_AHEAD_YIELDED",
+                "BASE_REF_ALIGNMENT_TIMEOUT"
               ],
               "type": "string"
             },
@@ -1904,7 +2223,7 @@
               "type": "null"
             }
           ],
-          "description": "A dequeue code for when a pull request has been disembarked from the merge queue.",
+          "description": "A dequeue code for when a pull request has been dequeued from the merge queue.",
           "title": "Queue dequeue reason"
         },
         "queue-name": {
@@ -2312,6 +2631,8 @@
         "github-review-decision",
         "github-require-review-from-specific-teams",
         "github-code-owner-review-satisfied",
+        "github-review-approved",
+        "github-require-last-push-approval",
         "number",
         "queue-position",
         "author",
@@ -2554,12 +2875,8 @@
           "type": "string"
         },
         "batch_size": {
-          "default": 1,
-          "description": "The maximum number of pull requests per speculative check in the queue. Must be between 1 and 128.",
-          "maximum": 128,
-          "minimum": 1,
-          "title": "Batch Size",
-          "type": "integer"
+          "$ref": "#/$defs/BatchSizeBounds",
+          "description": "The number of pull requests per speculative check in the queue. Either a single integer (fixed size, 1-128) or an object `{min, max}` for dynamic batching: the queue uses `min` when parallel-check slots are plentiful and grows toward `max` to keep the backlog at zero."
         },
         "batch_max_wait_time": {
           "default": "30 seconds",
@@ -2589,8 +2906,8 @@
               "type": "null"
             }
           ],
-          "default": null,
-          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Set to `auto` to let Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin); `auto` applies no timeout until enough history has been gathered.",
+          "default": "auto",
+          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Defaults to `auto`, which lets Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin); `auto` applies no timeout until enough history has been gathered. Set to `null` to disable the checks timeout entirely.",
           "title": "Checks Timeout"
         },
         "max_checks_retries": {
@@ -2603,11 +2920,16 @@
         "draft_bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -2634,7 +2956,7 @@
         },
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
-          "description": "Prefix for the merge queue branch name",
+          "description": "Prefix for the merge queue branch name. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
           "title": "Queue Branch Prefix",
           "type": "string"
         },
@@ -2739,11 +3061,16 @@
         "merge_bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -2756,11 +3083,16 @@
         "update_bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -2805,12 +3137,8 @@
           "type": "string"
         },
         "batch_size": {
-          "default": 1,
-          "description": "The maximum number of pull requests per speculative check in the queue. Must be between 1 and 128.",
-          "maximum": 128,
-          "minimum": 1,
-          "title": "Batch Size",
-          "type": "integer"
+          "$ref": "#/$defs/BatchSizeBounds",
+          "description": "The number of pull requests per speculative check in the queue. Either a single integer (fixed size, 1-128) or an object `{min, max}` for dynamic batching: the queue uses `min` when parallel-check slots are plentiful and grows toward `max` to keep the backlog at zero."
         },
         "batch_max_wait_time": {
           "default": "30 seconds",
@@ -2840,8 +3168,8 @@
               "type": "null"
             }
           ],
-          "default": null,
-          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Set to `auto` to let Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin); `auto` applies no timeout until enough history has been gathered.",
+          "default": "auto",
+          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Defaults to `auto`, which lets Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin); `auto` applies no timeout until enough history has been gathered. Set to `null` to disable the checks timeout entirely.",
           "title": "Checks Timeout"
         },
         "max_checks_retries": {
@@ -2854,11 +3182,16 @@
         "draft_bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -2885,7 +3218,7 @@
         },
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
-          "description": "Prefix for the merge queue branch name",
+          "description": "Prefix for the merge queue branch name. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
           "title": "Queue Branch Prefix",
           "type": "string"
         },
@@ -2990,11 +3323,16 @@
         "merge_bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3007,11 +3345,16 @@
         "update_bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3039,11 +3382,16 @@
         "bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3070,11 +3418,16 @@
         "bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3183,10 +3536,52 @@
         "message": {
           "anyOf": [
             {
-              "description": "A string template using the Jinja2 syntax.",
-              "format": "template",
-              "title": "Template",
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `approvers`, `assignees`, `author`, `base`, `body`, `head`, `labels`, `number`, `queue_dequeue_reason`, `title`.",
+              "format": "simple-template",
+              "title": "Message template",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                },
+                {
+                  "description": "The pull request number.",
+                  "name": "number"
+                },
+                {
+                  "description": "The pull request title.",
+                  "name": "title"
+                },
+                {
+                  "description": "The pull request description (body).",
+                  "name": "body"
+                },
+                {
+                  "description": "The base branch name.",
+                  "name": "base"
+                },
+                {
+                  "description": "The head branch name.",
+                  "name": "head"
+                },
+                {
+                  "description": "The pull request's labels as a comma-separated list (e.g. `bug, feat`); empty when none.",
+                  "name": "labels"
+                },
+                {
+                  "description": "Assignees as a ready-to-use @mention list (e.g. `@alice, @bob`); empty when none.",
+                  "name": "assignees"
+                },
+                {
+                  "description": "Reviewers who approved, as a @mention list (e.g. `@alice, @bob`); empty when none.",
+                  "name": "approvers"
+                },
+                {
+                  "description": "Why the pull request left the merge queue; empty outside queue contexts.",
+                  "name": "queue_dequeue_reason"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3199,11 +3594,16 @@
         "bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3313,11 +3713,16 @@
         "bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"
@@ -3348,11 +3753,16 @@
         "bot_account": {
           "anyOf": [
             {
-              "const": "{{ author }}",
-              "title": "Pull request author"
-            },
-            {
-              "type": "string"
+              "description": "A string with `{{ variable }}` placeholders. Allowed variables: `author`.",
+              "format": "simple-template",
+              "title": "Bot account",
+              "type": "string",
+              "x-mergify-template-variables": [
+                {
+                  "description": "The pull request author's login.",
+                  "name": "author"
+                }
+              ]
             },
             {
               "type": "null"

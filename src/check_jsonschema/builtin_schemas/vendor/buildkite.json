@@ -257,14 +257,18 @@
       "properties": {
         "channels": {
           "type": "array",
+          "minItems": 1,
           "items": {
-            "type": "string"
+            "description": "A Slack channel as `#channel`, `team#channel`, `@user`, `team@user`, or a Slack ID. Must not be empty or contain whitespace.",
+            "type": "string",
+            "pattern": "^\\S+$"
           }
         },
         "message": {
           "type": "string"
         }
-      }
+      },
+      "required": ["channels"]
     },
     "notifySlack": {
       "type": "object",
@@ -272,7 +276,9 @@
         "slack": {
           "oneOf": [
             {
-              "type": "string"
+              "description": "A Slack channel as `#channel`, `team#channel`, `@user`, `team@user`, or a Slack ID. Must not be empty or contain whitespace.",
+              "type": "string",
+              "pattern": "^\\S+$"
             },
             {
               "$ref": "#/definitions/notifySlackObject"
@@ -332,7 +338,88 @@
       "type": "object",
       "properties": {
         "github_check": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "The name of the GitHub check",
+              "type": "string"
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "The title of the GitHub check's output",
+                  "type": "string"
+                },
+                "summary": {
+                  "description": "The summary of the GitHub check's output",
+                  "type": "string"
+                },
+                "text": {
+                  "description": "The details of the GitHub check's output. Supports Markdown",
+                  "type": "string"
+                },
+                "annotations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "description": "The path of the file to add an annotation to, relative to the repository root",
+                        "type": "string"
+                      },
+                      "start_line": {
+                        "description": "The start line of the annotation",
+                        "type": "integer"
+                      },
+                      "end_line": {
+                        "description": "The end line of the annotation",
+                        "type": "integer"
+                      },
+                      "start_column": {
+                        "description": "The start column of the annotation. Only valid when start_line and end_line are equal",
+                        "type": "integer"
+                      },
+                      "end_column": {
+                        "description": "The end column of the annotation. Only valid when start_line and end_line are equal",
+                        "type": "integer"
+                      },
+                      "annotation_level": {
+                        "type": "string",
+                        "description": "The level of the annotation",
+                        "enum": ["notice", "warning", "failure"]
+                      },
+                      "message": {
+                        "description": "The message for the annotation",
+                        "type": "string"
+                      },
+                      "title": {
+                        "description": "The title for the annotation",
+                        "type": "string"
+                      },
+                      "raw_details": {
+                        "description": "Additional details for the annotation, displayed alongside the message",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "start_line",
+                      "end_line",
+                      "annotation_level",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "if": {
+          "$ref": "#/definitions/if"
         }
       },
       "additionalProperties": false
