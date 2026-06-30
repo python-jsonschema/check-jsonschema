@@ -23,6 +23,25 @@ You must specify a schema using pre-commit ``args`` configuration.
           files: ^data/.*\.json$
           args: ["--schemafile", "schemas/foo.json"]
 
+The ``check-jsonschema`` hook can also validate YAML files against schemas
+declared in YAML modeline comments. Files without a modeline are skipped,
+which lets one hook cover YAML files that use different schemas.
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.37.2
+      hooks:
+        - id: check-yaml-schema-modelines
+
+Supported modeline examples:
+
+.. code-block:: yaml
+
+    # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+    # $schema: ../schemas/service.json
+
 
 ``check-metaschema``
 ~~~~~~~~~~~~~~~~~~~~
