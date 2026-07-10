@@ -11,10 +11,20 @@ def _githubusercontent_url(owner: str, repo: str, ref: str, path: str) -> str:
     return f"https://raw.githubusercontent.com/{owner}/{repo}/{ref}/{path}"
 
 
-# this lists custom schemas which are *not* part of the catalog
-CUSTOM_SCHEMA_NAMES = [
-    "github-workflows-require-timeout",
-]
+# this lists custom schemas which are *not* part of the vendored schema catalog
+CUSTOM_SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
+    "github-workflows-require-timeout": {
+        "hook_config": {
+            "name": "Require timeout-minutes in GitHub Workflows",
+            "description": (
+                "Validate that all GitHub Workflow jobs set timeout-minutes"
+            ),
+            "files": r"^\.github/workflows/[^/]+$",
+            "types": "yaml",
+        },
+    },
+}
+CUSTOM_SCHEMA_NAMES = list(CUSTOM_SCHEMA_CATALOG)
 
 # Known configs. The SchemaCatalog lists known schema URLs with their names.
 # kept in alphabetical order by name

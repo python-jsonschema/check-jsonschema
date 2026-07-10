@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Add a dedicated ``check-github-workflows-require-timeout`` pre-commit hook for
+  requiring ``timeout-minutes`` on all GitHub Workflow jobs. (:issue:`639`)
+
 0.37.4
 ------
 

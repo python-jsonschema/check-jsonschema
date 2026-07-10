@@ -4,25 +4,31 @@ from __future__ import annotations
 import importlib.metadata
 import typing as t
 
-from check_jsonschema.catalog import SCHEMA_CATALOG
+from check_jsonschema.catalog import CUSTOM_SCHEMA_CATALOG, SCHEMA_CATALOG
 
 version = importlib.metadata.version("check_jsonschema")
 
 
 def iter_catalog_hooks():
-    for name in SCHEMA_CATALOG:
-        # copy config (new dict)
-        config = dict(SCHEMA_CATALOG[name]["hook_config"])
-        # set computed attributes
-        config["schema_name"] = name
-        config["id"] = f"check-{name}"
-        config["description"] = (
-            config.get("description")
-            or f"{config['name']} against the schema provided by SchemaStore"
-        )
-        if "types" in config and isinstance(config["types"], str):
-            config["types"] = [config["types"]]
-        yield config
+    catalogs = (
+        ("vendor", SCHEMA_CATALOG),
+        ("custom", CUSTOM_SCHEMA_CATALOG),
+    )
+    for schema_namespace, catalog in catalogs:
+        for name in catalog:
+            # copy config (new dict)
+            config = dict(catalog[name]["hook_config"])
+            # set computed attributes
+            config["schema_name"] = name
+            config["schema_namespace"] = schema_namespace
+            config["id"] = f"check-{name}"
+            config["description"] = (
+                config.get("description")
+                or f"{config['name']} against the schema provided by SchemaStore"
+            )
+            if "types" in config and isinstance(config["types"], str):
+                config["types"] = [config["types"]]
+            yield config
 
 
 def update_hook_config(new_config: str) -> None:
@@ -54,7 +60,7 @@ def generate_hook_lines(config) -> t.Iterator[str]:
         add_args = " " + add_args
     yield (
         "  entry: check-jsonschema --builtin-schema "
-        f"vendor.{config['schema_name']}{add_args}"
+        f"{config['schema_namespace']}.{config['schema_name']}{add_args}"
     )
 
     yield "  language: python"

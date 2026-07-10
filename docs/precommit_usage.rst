@@ -407,6 +407,20 @@ Validate Woodpecker Config against the schema provided by SchemaStore
         - id: check-woodpecker-ci
 
 
+``check-github-workflows-require-timeout``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate that all GitHub Workflow jobs set timeout-minutes
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.37.4
+      hooks:
+        - id: check-github-workflows-require-timeout
+
+
 .. generated-hook-list-end
 
 
