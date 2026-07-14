@@ -30,6 +30,39 @@ CASE2_PASSING_DOCUMENT = {"test": "some data"}
 CASE2_FAILING_DOCUMENT = {"test": {"foo": "bar"}}
 
 
+NESTED_REF_MAIN_SCHEMA = {
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "properties": {
+        "pupils": {
+            "type": "array",
+            "items": {"$ref": "../person/person.schema.json"},
+        }
+    },
+}
+NESTED_REF_PERSON_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"},
+        "address": {"$ref": "../address/address.schema.json"},
+    },
+}
+NESTED_REF_ADDRESS_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "street": {"type": "string"},
+    },
+}
+NESTED_REF_PASSING_DOCUMENT = {
+    "pupils": [
+        {
+            "name": "Alice Smith",
+            "address": {"street": "123 Main St"},
+        }
+    ],
+}
+
+
 def _prep_files(tmp_path, main_schema, other_schema_data, instance):
     main_schemafile = tmp_path / "main_schema.json"
     main_schemafile.write_text(json.dumps(main_schema))
@@ -113,3 +146,29 @@ def test_local_ref_schema_failure_case(
     assert res.exit_code == 1
     if expect_err is not None:
         assert expect_err in res.stdout
+
+
+@pytest.mark.parametrize("with_file_scheme", [True, False])
+def test_local_nested_ref_schema(run_line_simple, tmp_path, with_file_scheme):
+    schema_dir = tmp_path / "schema"
+    school_dir = schema_dir / "school"
+    person_dir = schema_dir / "person"
+    address_dir = schema_dir / "address"
+    school_dir.mkdir(parents=True)
+    person_dir.mkdir()
+    address_dir.mkdir()
+
+    main_schemafile = school_dir / "school.schema.json"
+    main_schemafile.write_text(json.dumps(NESTED_REF_MAIN_SCHEMA))
+    (person_dir / "person.schema.json").write_text(json.dumps(NESTED_REF_PERSON_SCHEMA))
+    (address_dir / "address.schema.json").write_text(
+        json.dumps(NESTED_REF_ADDRESS_SCHEMA)
+    )
+    doc = tmp_path / "doc.json"
+    doc.write_text(json.dumps(NESTED_REF_PASSING_DOCUMENT))
+
+    if with_file_scheme:
+        schemafile = main_schemafile.resolve().as_uri()
+    else:
+        schemafile = str(main_schemafile)
+    run_line_simple(["--schemafile", schemafile, str(doc)])
