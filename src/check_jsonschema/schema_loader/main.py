@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import copy
 import functools
 import pathlib
 import typing as t
@@ -133,10 +132,8 @@ class SchemaLoader(SchemaLoaderBase):
     def get_schema(self) -> dict[str, t.Any]:
         data = self.reader.read_schema()
         if self.base_uri is not None:
-            data = copy.copy(data)
             data["$id"] = self.base_uri
         elif "$id" not in data and (retrieval_uri := self.get_schema_retrieval_uri()):
-            data = copy.copy(data)
             data["$id"] = retrieval_uri
         return data
 
