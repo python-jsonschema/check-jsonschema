@@ -36,7 +36,7 @@ NESTED_REF_MAIN_SCHEMA = {
     "properties": {
         "pupils": {
             "type": "array",
-            "items": {"$ref": "../person/person.schema.json"},
+            "items": {"$ref": "../shared/person/person.schema.json"},
         }
     },
 }
@@ -58,6 +58,14 @@ NESTED_REF_PASSING_DOCUMENT = {
         {
             "name": "Alice Smith",
             "address": {"street": "123 Main St"},
+        }
+    ],
+}
+NESTED_REF_FAILING_DOCUMENT = {
+    "pupils": [
+        {
+            "name": "Alice Smith",
+            "address": {"street": 123},
         }
     ],
 }
@@ -152,10 +160,10 @@ def test_local_ref_schema_failure_case(
 def test_local_nested_ref_schema(run_line_simple, tmp_path, with_file_scheme):
     schema_dir = tmp_path / "schema"
     school_dir = schema_dir / "school"
-    person_dir = schema_dir / "person"
-    address_dir = schema_dir / "address"
+    person_dir = schema_dir / "shared" / "person"
+    address_dir = schema_dir / "shared" / "address"
     school_dir.mkdir(parents=True)
-    person_dir.mkdir()
+    person_dir.mkdir(parents=True)
     address_dir.mkdir()
 
     main_schemafile = school_dir / "school.schema.json"
@@ -172,3 +180,32 @@ def test_local_nested_ref_schema(run_line_simple, tmp_path, with_file_scheme):
     else:
         schemafile = str(main_schemafile)
     run_line_simple(["--schemafile", schemafile, str(doc)])
+
+
+@pytest.mark.parametrize("with_file_scheme", [True, False])
+def test_local_nested_ref_schema_failure(run_line, tmp_path, with_file_scheme):
+    schema_dir = tmp_path / "schema"
+    school_dir = schema_dir / "school"
+    person_dir = schema_dir / "shared" / "person"
+    address_dir = schema_dir / "shared" / "address"
+    school_dir.mkdir(parents=True)
+    person_dir.mkdir(parents=True)
+    address_dir.mkdir()
+
+    main_schemafile = school_dir / "school.schema.json"
+    main_schemafile.write_text(json.dumps(NESTED_REF_MAIN_SCHEMA))
+    (person_dir / "person.schema.json").write_text(json.dumps(NESTED_REF_PERSON_SCHEMA))
+    (address_dir / "address.schema.json").write_text(
+        json.dumps(NESTED_REF_ADDRESS_SCHEMA)
+    )
+    doc = tmp_path / "doc.json"
+    doc.write_text(json.dumps(NESTED_REF_FAILING_DOCUMENT))
+
+    if with_file_scheme:
+        schemafile = main_schemafile.resolve().as_uri()
+    else:
+        schemafile = str(main_schemafile)
+
+    res = run_line(["check-jsonschema", "--schemafile", schemafile, str(doc)])
+    assert res.exit_code == 1
+    assert "123 is not of type 'string'" in res.stdout
