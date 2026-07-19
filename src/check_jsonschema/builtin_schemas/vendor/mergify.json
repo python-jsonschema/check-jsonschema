@@ -493,6 +493,33 @@
       "title": "BackportActionModel",
       "type": "object"
     },
+    "BarrierFileFilters": {
+      "additionalProperties": false,
+      "properties": {
+        "include": {
+          "description": "Glob patterns of files that impact every scope. At least one pattern is required. Examples: ('.github/workflows/**', 'Makefile')",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Include",
+          "type": "array"
+        },
+        "exclude": {
+          "description": "Glob patterns of files to exclude from this scope. Evaluated after `include` and takes precedence. Examples: ('**/tests/**', '*.md')",
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude",
+          "type": "array"
+        }
+      },
+      "required": [
+        "include"
+      ],
+      "title": "BarrierFileFilters",
+      "type": "object"
+    },
     "BatchSizeBounds": {
       "anyOf": [
         {
@@ -1617,8 +1644,13 @@
               "type": "null"
             }
           ],
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`commit_message_template` is deprecated and will be removed on 2026-09-30. Use the declarative `commit_message_format` instead: https://docs.mergify.com/workflow/actions/merge#migrating-from-commit_message_template",
+            "deprecated_summary_saas_mode": "`commit_message_template` is deprecated and will be removed on 2026-09-30. Use the declarative `commit_message_format` instead: https://docs.mergify.com/workflow/actions/merge#migrating-from-commit_message_template"
+          },
           "default": null,
-          "description": "Template to use as the commit message when using the merge or squash merge method.",
+          "deprecated": true,
+          "description": "Template to use as the commit message when using the merge or squash merge method. Deprecated: use `commit_message_format` instead.",
           "title": "Commit Message Template"
         },
         "commit_message_format": {
@@ -1802,7 +1834,7 @@
         },
         "mode": {
           "default": "serial",
-          "description": "Defines how the merge queue schedules pull requests.\n- `serial`: PRs are tested cumulatively.\n- `parallel`: PRs whose scopes don't overlap are tested in parallel.\n- `isolated`: PRs are grouped into batches by changed-files similarity; each batch runs as a fully isolated car, with no dependency on any other batch.\n",
+          "description": "Defines how the merge queue schedules pull requests.\n- `serial`: PRs are tested cumulatively.\n- `parallel`: PRs whose scopes don't overlap are tested in parallel.\n- `isolated`: PRs are grouped into batches by changed-files similarity; each batch runs as a fully isolated batch, with no dependency on any other batch.\n",
           "enum": [
             "serial",
             "parallel",
@@ -1979,7 +2011,7 @@
           "title": "Priority"
         },
         "allow_checks_interruption": {
-          "default": true,
+          "default": false,
           "description": "Allow interrupting the ongoing checks when the pull request entering the queue has a higher priority than the queued one(s). If set to false, a pull request with higher priority will be inserted just after the pull requests that have checks running.",
           "title": "Allow Checks Interruption",
           "type": "boolean"
@@ -2005,37 +2037,79 @@
         "draft": {
           "description": "Whether the pull request is in draft state.",
           "title": "Draft",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "merged": {
           "description": "Whether the pull request is merged.",
           "title": "Merged",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "mergify-configuration-changed": {
           "description": "Whether the pull request contains changes in the configuration file.",
           "title": "Mergify configuration changed",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "closed": {
           "description": "Whether the pull request is closed.",
           "title": "Closed",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "locked": {
           "description": "Whether the pull request is locked.",
           "title": "Locked",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "linear-history": {
           "description": "Whether the pull request commits history is linear (no merge commit).",
           "title": "Linear history",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "conflict": {
           "description": "Whether the pull request is conflicting with its base branch.",
           "title": "Conflict",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "github-review-decision": {
           "anyOf": [
@@ -2052,44 +2126,145 @@
             }
           ],
           "description": "The review decision computed by GitHub from its `pullRequest.reviewDecision` field, driven by either classic branch protection or repository / organization rulesets. Typically reflects whether required approvals and `CODEOWNERS` reviews have been satisfied.",
-          "title": "GitHub review decision"
+          "title": "GitHub review decision",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~="
+          ],
+          "x-mergify-attribute-metadata": {
+            "documentation_url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-pull-request-reviews-before-merging",
+            "source": "github"
+          },
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "github-require-review-from-specific-teams": {
           "description": "Whether every `required_reviewers` entry on the branch's active GitHub rulesets is satisfied (each named team has the requested number of approvals, each named user has approved). When the rule scopes the requirement to a subset of files via `file_patterns`, the check only applies to PRs that touch a matching file. Returns `false` if an entry references a team or user id that cannot be resolved.",
           "title": "GitHub require review from specific teams",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-mergify-attribute-metadata": {
+            "documentation_url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#required-reviewers",
+            "source": "github"
+          },
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "github-code-owner-review-satisfied": {
           "description": "Whether every file the pull request touches that is owned in the repository's `CODEOWNERS` file has at least one approval from one of its owners (a user, or any member of an owning team). Mirrors GitHub's 'Require review from Code Owners', covering the case where GitHub blocks the merge on a code-owner review while `pullRequest.reviewDecision` is `null`. Returns `true` when there is no `CODEOWNERS` file or no touched file is owned, and `false` when an owner cannot be resolved to a GitHub login (an email address, or a team in another org).",
           "title": "GitHub code owner review satisfied",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-mergify-attribute-metadata": {
+            "documentation_url": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners",
+            "source": "github"
+          },
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "github-review-approved": {
           "description": "Whether GitHub's effective review enforcement is satisfied: the required approvals are in and no eligible reviewer is blocking with an active 'Request changes'. When the rule requires at least one approval, this mirrors GitHub's `pullRequest.reviewDecision` (so a blocking review from a reviewer other than the approver is honored, unlike a bare approval count). When the rule requires a pull request with no approval count, it blocks only on a write+ reviewer's active 'Request changes'. Returns `true` when no rule on the base branch requires a review.",
           "title": "GitHub review approved",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-mergify-attribute-metadata": {
+            "documentation_url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-pull-request-reviews-before-merging",
+            "source": "github"
+          },
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "github-require-last-push-approval": {
           "description": "Whether GitHub's 'Require approval of the most recent reviewable push' is satisfied: the required number of approvals are in from reviewers other than the user who pushed the most recent commit, and approvals submitted against an earlier head no longer count. Mirrors how GitHub's `pullRequest.reviewDecision` evaluates the `require_last_push_approval` branch protection / ruleset option. Returns `true` when no rule on the base branch requires last-push approval, and (leniently) when Mergify has not recorded the most recent push, such as pull requests opened before push tracking.",
           "title": "GitHub require last push approval",
-          "type": "boolean"
+          "type": "boolean",
+          "x-allowed-operators": [],
+          "x-mergify-attribute-metadata": {
+            "documentation_url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-pull-request-reviews-before-merging",
+            "source": "github"
+          },
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "number": {
           "description": "The pull request number.",
           "maximum": 9223372036854775807,
           "minimum": 0,
           "title": "Number",
-          "type": "integer"
+          "type": "integer",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "queue-position": {
           "description": "The position of the pull request in its queue if queued. The first pull request in the queue has position 0. The value is set to -1 if the pull request is not queued.",
           "title": "Queue position",
-          "type": "integer"
+          "type": "integer",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            }
+          ]
         },
         "author": {
           "description": "The GitHub user or team login of the author of the pull request.",
           "title": "Author",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "merged-by": {
           "anyOf": [
@@ -2101,7 +2276,25 @@
             }
           ],
           "description": "The GitHub user that merged the pull request.",
-          "title": "Merged by"
+          "title": "Merged by",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "merge-commit-sha": {
           "anyOf": [
@@ -2113,7 +2306,25 @@
             }
           ],
           "description": "The merge commit SHA of the pull request returned by GitHub.",
-          "title": "Merge commit sha"
+          "title": "Merge commit sha",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "milestone": {
           "anyOf": [
@@ -2125,47 +2336,208 @@
             }
           ],
           "description": "The milestone title associated to the pull request.",
-          "title": "Milestone"
+          "title": "Milestone",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "base": {
           "description": "The name of the branch the pull request should be pulled into.",
           "title": "Base",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "head": {
           "description": "The name of the branch where the pull request changes are implemented.",
           "title": "Head",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "head-repo-full-name": {
           "description": "The head branch repository full name (complete version with the organization name).",
           "title": "Head repo full name",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "title": {
           "description": "The title of the pull request.",
           "title": "Title",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "body": {
           "description": "The content of the pull request description without Markdown/HTML comments.",
           "title": "Body",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "body-raw": {
           "description": "The content of the pull request description.",
           "title": "Body raw",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "repository-name": {
           "description": "The current repository name (short version without the organization name).",
           "title": "Repository name",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "repository-full-name": {
           "description": "The current repository full name (complete version with the organization name).",
           "title": "Repository full name",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "queue-dequeue-reason": {
           "anyOf": [
@@ -2191,6 +2563,7 @@
                 "SPECULATIVE_CHECK_NUMBER_REDUCED",
                 "CHECKS_TIMEOUT",
                 "CHECKS_FAILED",
+                "DROPPED_BY_BISECTION_ELIMINATION",
                 "QUEUE_RULE_MISSING",
                 "BASE_BRANCH_MISSING",
                 "BASE_BRANCH_CHANGED",
@@ -2215,7 +2588,8 @@
                 "INTERMEDIATE_RESULTS_SKIPPED",
                 "CHECKS_RETRIED",
                 "SCHEDULE_BLOCKED_AHEAD_YIELDED",
-                "BASE_REF_ALIGNMENT_TIMEOUT"
+                "BASE_REF_ALIGNMENT_TIMEOUT",
+                "GITHUB_STACKED_PULL_REQUEST_MERGE_UNSUPPORTED"
               ],
               "type": "string"
             },
@@ -2223,8 +2597,62 @@
               "type": "null"
             }
           ],
-          "description": "A dequeue code for when a pull request has been dequeued from the merge queue.",
-          "title": "Queue dequeue reason"
+          "description": "The code identifying why a pull request's merge queue checks ended \u2014 the pull request may have left the queue, or had its checks interrupted while staying in the queue.",
+          "title": "Queue dequeue reason",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~="
+          ],
+          "x-enum-descriptions": {
+            "BASE_BRANCH_CHANGED": "The pull request's base branch changed.",
+            "BASE_BRANCH_MISSING": "The pull request's base branch no longer exists.",
+            "BASE_REF_ALIGNMENT_TIMEOUT": "The pull request could not be retargeted onto the queue base branch, for example a stacked pull request GitHub never retargeted.",
+            "BATCH_AHEAD_FAILED": "A batch ahead in the queue failed, so this pull request's speculative checks are restarted. It stays in the queue.",
+            "BATCH_MAX_FAILURE_RESOLUTION_ATTEMPTS": "The maximum number of `batch_max_failure_resolution_attempts` was reached while isolating a batch failure.",
+            "BATCH_PULL_REQUEST_CLOSED": "The merge queue batch pull request was closed.",
+            "BRANCH_UPDATE_FAILED": "Updating the pull request's head branch failed.",
+            "CHECKS_FAILED": "The queue conditions cannot be satisfied because required checks failed.",
+            "CHECKS_RETRIED": "The pull request's failed checks are being retried. It stays in the queue.",
+            "CHECKS_TIMEOUT": "The configured `checks_timeout` was reached before the queue conditions were satisfied.",
+            "CONFIGURATION_CHANGED": "The Mergify configuration changed while the pull request was queued.",
+            "CONFLICT_WITH_BASE_BRANCH": "The pull request conflicts with its base branch.",
+            "CONFLICT_WITH_PULL_AHEAD": "The pull request conflicts with a pull request ahead of it in the queue.",
+            "DRAFT_PULL_REQUEST_CHANGED": "The merge queue draft pull request received commits that Mergify did not create.",
+            "DRAFT_PULL_REQUEST_CREATION_BRANCH_NOT_INDEXED": "Mergify could not create the merge queue draft pull request because GitHub had not yet indexed the new branch.",
+            "DRAFT_PULL_REQUEST_CREATION_FAILED": "Mergify could not create the merge queue draft pull request.",
+            "DROPPED_BY_BISECTION_ELIMINATION": "Batch bisection isolated the failure to other pull requests and dropped this one without testing it individually.",
+            "GITHUB_STACKED_PULL_REQUEST_MERGE_UNSUPPORTED": "The pull request is a GitHub stacked pull request, which GitHub does not support merging through its API.",
+            "INCOMPATIBILITY_WITH_BRANCH_PROTECTIONS": "The pull request cannot be checked because of an incompatibility between the queue and the repository's branch protections.",
+            "INTERMEDIATE_RESULTS_SKIPPED": "The pull request's intermediate speculative results were skipped. It stays in the queue.",
+            "MERGE_QUEUE_RESET": "The merge queue was reset.",
+            "NONE": "The pull request is not, and never was, in a merge queue.",
+            "PR_AHEAD_DEQUEUED": "A pull request ahead in the queue was removed, so this pull request's speculative checks are restarted. It stays in the queue.",
+            "PR_CHECKS_STOPPED_BECAUSE_MERGE_QUEUE_PAUSE": "The pull request's checks were interrupted because the merge queue is paused on the repository. It stays in the queue.",
+            "PR_DEQUEUED": "The pull request was removed from the queue, for example because its queue conditions no longer match.",
+            "PR_DEQUEUED_FROM_PARTITION": "The pull request stopped matching a partition's rules and was removed from that partition.",
+            "PR_MANUALLY_DEQUEUED": "The pull request was removed from the queue by a `dequeue` command.",
+            "PR_MANUALLY_MERGED": "The pull request was merged manually, outside of the merge queue.",
+            "PR_MERGED": "The pull request was merged by the merge queue.",
+            "PR_MERGED_INTERMEDIATE_RESULTS_SKIPPED": "The pull request was merged based on the successful result of a later pull request in the same speculative batch, skipping its own intermediate checks.",
+            "PR_UNEXPECTEDLY_FAILED_TO_MERGE": "An unexpected error happened while merging the pull request.",
+            "PR_WITH_HIGHER_PRIORITY_QUEUED": "A higher-priority pull request was queued ahead of this one. It stays in the queue.",
+            "PULL_REQUEST_UPDATED": "The pull request was manually updated.",
+            "QUEUE_RULE_MISSING": "The queue rule referenced by the pull request no longer exists in the configuration.",
+            "SCHEDULED_FREEZE_STATUS_CHANGED": "A scheduled queue freeze changed the freeze status of the batch's pull requests, so the batch was split. It stays in the queue.",
+            "SCHEDULE_BLOCKED_AHEAD_YIELDED": "A pull request ahead that was waiting for its merge schedule yielded its position so ready pull requests behind it can merge first. It stays in the queue.",
+            "SPECULATIVE_CHECK_NUMBER_REDUCED": "The number of speculative checks was reduced. The pull request stays in the queue.",
+            "STACK_PREDECESSOR_DEQUEUED": "A predecessor pull request in the same stack was dequeued, so this one was removed as well.",
+            "UNPROCESSABLE_PULL_REQUEST": "Mergify cannot process the pull request, for example because it has too many check runs, comments, or files."
+          },
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "queue-name": {
           "anyOf": [
@@ -2236,7 +2664,25 @@
             }
           ],
           "description": "The name of the queue containing the pull request.",
-          "title": "Queue name"
+          "title": "Queue name",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "assignee": {
           "description": "The list of GitHub user or team login that are assigned to the pull request. Team logins are prefixed with the `@` character and must belong to the repository organization.",
@@ -2244,7 +2690,25 @@
             "type": "string"
           },
           "title": "Assignee",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "label": {
           "description": "The list of labels of the pull request.",
@@ -2252,7 +2716,25 @@
             "type": "string"
           },
           "title": "Label",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "review-requested": {
           "description": "The list of GitHub user or team login that were requested to review the pull request. Team logins are prefixed with the @ character. This only matches reviewers with `admin`, `write` or `maintain` permission on the repository.",
@@ -2260,7 +2742,25 @@
             "type": "string"
           },
           "title": "Review requested",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "approved-reviews-by": {
           "description": "The list of GitHub user or team login that approved the pull request. Team logins are prefixed with the `@` character and must belong to the repository organization. This only matches reviewers with `admin`, `write` or `maintain` permission on the repository.",
@@ -2268,7 +2768,25 @@
             "type": "string"
           },
           "title": "Approved reviews by",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "dismissed-reviews-by": {
           "description": "The list of GitHub user login that have their review dismissed in the pull request.",
@@ -2276,7 +2794,25 @@
             "type": "string"
           },
           "title": "Dismissed reviews by",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "changes-requested-reviews-by": {
           "description": "The list of GitHub user or team login that have requested changes in a review for the pull request.",
@@ -2284,7 +2820,25 @@
             "type": "string"
           },
           "title": "Changes requested reviews by",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "commented-reviews-by": {
           "description": "The list of GitHub user that have commented in a review for the pull request. This only matches reviewers with `admin`, `write` or `maintain` permission on the repository.",
@@ -2292,7 +2846,25 @@
             "type": "string"
           },
           "title": "Commented reviews by",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "check-success": {
           "description": "The list of checks that successfully passed for the pull request.",
@@ -2300,7 +2872,25 @@
             "type": "string"
           },
           "title": "Check success",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "check-failure": {
           "description": "The list of checks that failed for the pull request. Checks that report being cancelled, timed out, and action required are also considered as failures.",
@@ -2308,7 +2898,25 @@
             "type": "string"
           },
           "title": "Check failure",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "check-neutral": {
           "description": "The list of checks that are neutral for the pull request. ",
@@ -2316,7 +2924,25 @@
             "type": "string"
           },
           "title": "Check neutral",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "check-timed-out": {
           "description": "The list of checks that timed out for the pull request.",
@@ -2324,7 +2950,25 @@
             "type": "string"
           },
           "title": "Check timed out",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "check-skipped": {
           "description": "The list of checks that was skipped for the pull request.",
@@ -2332,7 +2976,25 @@
             "type": "string"
           },
           "title": "Check skipped",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "check-cancelled": {
           "description": "The list of checks that were cancelled for the pull request. Cancelled checks are also matched by `check-failure`; use `check-cancelled` to address them independently.",
@@ -2340,7 +3002,25 @@
             "type": "string"
           },
           "title": "Check cancelled",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "check-pending": {
           "description": "The list of checks that are pending for the pull request.",
@@ -2348,7 +3028,25 @@
             "type": "string"
           },
           "title": "Check pending",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "check": {
           "description": "The list of checks for that pull request.",
@@ -2364,7 +3062,25 @@
             "type": "string"
           },
           "title": "Check stale",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "commits-unverified": {
           "description": "The list of commit messages that are marked as unverified by GitHub.",
@@ -2372,7 +3088,25 @@
             "type": "string"
           },
           "title": "Commits unverified",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "deployment-success": {
           "description": "The list of deployments that successfully passed for the pull request.",
@@ -2380,7 +3114,25 @@
             "type": "string"
           },
           "title": "Deployment success",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "deployment-failure": {
           "description": "The list of deployments that failed for the pull request.",
@@ -2388,7 +3140,25 @@
             "type": "string"
           },
           "title": "Deployment failure",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "review-threads-resolved": {
           "description": "The list of ids associated to review threads that are marked as resolved by GitHub.",
@@ -2396,7 +3166,25 @@
             "type": "string"
           },
           "title": "Review threads resolved",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "review-threads-unresolved": {
           "description": "The list of ids associated to review threads that are NOT marked as resolved by GitHub.",
@@ -2404,7 +3192,25 @@
             "type": "string"
           },
           "title": "Review threads unresolved",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "files": {
           "description": "The files that are modified, deleted or added by the pull request.",
@@ -2412,7 +3218,25 @@
             "type": "string"
           },
           "title": "Files",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "added-files": {
           "description": "The files that are added by the pull request.",
@@ -2420,7 +3244,25 @@
             "type": "string"
           },
           "title": "Added files",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "modified-files": {
           "description": "The files that are modified by the pull request.",
@@ -2428,7 +3270,25 @@
             "type": "string"
           },
           "title": "Modified files",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "removed-files": {
           "description": "The files that are removed by the pull request.",
@@ -2436,7 +3296,25 @@
             "type": "string"
           },
           "title": "Removed files",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "added-lines": {
           "description": "The lines that are added by the pull request. Only usable as `#added-lines` for the number of added lines.",
@@ -2444,7 +3322,25 @@
             "type": "string"
           },
           "title": "Added lines",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "modified-lines": {
           "description": "The lines that are modified by the pull request. Only usable as `#modified-lines` for the number of modified lines.",
@@ -2452,7 +3348,25 @@
             "type": "string"
           },
           "title": "Modified lines",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "deleted-lines": {
           "description": "The lines that are deleted by the pull request. Only usable as `#deleted-lines` for the number of deleted lines.",
@@ -2460,7 +3374,25 @@
             "type": "string"
           },
           "title": "Deleted lines",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "co-authors": {
           "description": "The list of co-authors on the pull request (excluding merge commits and bots).",
@@ -2476,7 +3408,24 @@
             "type": "string"
           },
           "title": "Commits behind",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "required": true,
+              "type": "length"
+            }
+          ]
         },
         "depends-on": {
           "description": "The list of dependencies to other pull request in the format `owner/repo#prnumber`.",
@@ -2484,7 +3433,25 @@
             "type": "string"
           },
           "title": "Depends on",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "dependabot-dependency-name": {
           "description": "The dependency-name value included in the Dependabot commit message.",
@@ -2492,7 +3459,25 @@
             "type": "string"
           },
           "title": "Dependabot dependency name",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "dependabot-dependency-type": {
           "description": "The dependency-type value included in the Dependabot commit message.",
@@ -2500,7 +3485,25 @@
             "type": "string"
           },
           "title": "Dependabot dependency type",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "dependabot-update-type": {
           "description": "The update-type value included in the Dependabot commit message.",
@@ -2508,7 +3511,25 @@
             "type": "string"
           },
           "title": "Dependabot update type",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "scope": {
           "description": "The list of scopes associated with the pull request for merge queue batching.",
@@ -2516,7 +3537,25 @@
             "type": "string"
           },
           "title": "Scope",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "commits": {
           "description": "The list of commits of the pull request. The index 0 is the first commit, while -1 is the last commit.",
@@ -2524,25 +3563,66 @@
             "$ref": "#/$defs/Commit"
           },
           "title": "Commits",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "current-datetime": {
           "description": "The current date and time.",
           "format": "date-time",
           "title": "Current datetime",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": []
         },
         "updated-at": {
           "description": "The time the pull request was updated at.",
           "format": "date-time",
           "title": "Updated at",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": []
         },
         "created-at": {
           "description": "The time the pull request was created at.",
           "format": "date-time",
           "title": "Created at",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": []
         },
         "closed-at": {
           "anyOf": [
@@ -2555,7 +3635,14 @@
             }
           ],
           "description": "The time the pull request was closed at.",
-          "title": "Closed at"
+          "title": "Closed at",
+          "x-allowed-operators": [
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": []
         },
         "merged-at": {
           "anyOf": [
@@ -2568,7 +3655,14 @@
             }
           ],
           "description": "The time the pull request was merged at.",
-          "title": "Merged at"
+          "title": "Merged at",
+          "x-allowed-operators": [
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": []
         },
         "queued-at": {
           "anyOf": [
@@ -2581,7 +3675,14 @@
             }
           ],
           "description": "The time the pull request was queued at for merge.",
-          "title": "Queued at"
+          "title": "Queued at",
+          "x-allowed-operators": [
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": []
         },
         "queue-merge-started-at": {
           "anyOf": [
@@ -2594,22 +3695,68 @@
             }
           ],
           "description": "The time the pull request mergeability checks have started at.",
-          "title": "Queue merge started at"
+          "title": "Queue merge started at",
+          "x-allowed-operators": [
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": []
         },
         "schedule": {
           "description": "The current time will be compared against this schedule to validate this attribute.",
           "title": "Schedule",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!="
+          ],
+          "x-modifiers": []
         },
         "sender-permission": {
           "$ref": "#/$defs/GitHubRepositoryPermission",
           "description": "The permission of the command author.",
-          "title": "Sender permission"
+          "title": "Sender permission",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            ">=",
+            "<=",
+            "<",
+            ">"
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "sender": {
           "description": "The GitHub login of the command author.",
           "title": "Sender",
-          "type": "string"
+          "type": "string",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         },
         "updates": {
           "description": "The list of updates done on an opened pull request.",
@@ -2617,7 +3764,25 @@
             "$ref": "#/$defs/PullRequestHeadShaHistoryDict"
           },
           "title": "Updates",
-          "type": "array"
+          "type": "array",
+          "x-allowed-operators": [
+            "=",
+            "!=",
+            "~=",
+            ">=",
+            "<=",
+            "<",
+            ">",
+            "*="
+          ],
+          "x-modifiers": [
+            {
+              "type": "negate"
+            },
+            {
+              "type": "length"
+            }
+          ]
         }
       },
       "required": [
@@ -3042,8 +4207,13 @@
               "type": "null"
             }
           ],
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`commit_message_template` is deprecated and will be removed on 2026-09-30. Use the declarative `commit_message_format` instead: https://docs.mergify.com/workflow/actions/merge#migrating-from-commit_message_template",
+            "deprecated_summary_saas_mode": "`commit_message_template` is deprecated and will be removed on 2026-09-30. Use the declarative `commit_message_format` instead: https://docs.mergify.com/workflow/actions/merge#migrating-from-commit_message_template"
+          },
           "default": null,
-          "description": "Template to use as the commit message when using the merge or squash merge method.",
+          "deprecated": true,
+          "description": "Template to use as the commit message when using the merge or squash merge method. Deprecated: use `commit_message_format` instead.",
           "title": "Commit Message Template"
         },
         "commit_message_format": {
@@ -3304,8 +4474,13 @@
               "type": "null"
             }
           ],
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`commit_message_template` is deprecated and will be removed on 2026-09-30. Use the declarative `commit_message_format` instead: https://docs.mergify.com/workflow/actions/merge#migrating-from-commit_message_template",
+            "deprecated_summary_saas_mode": "`commit_message_template` is deprecated and will be removed on 2026-09-30. Use the declarative `commit_message_format` instead: https://docs.mergify.com/workflow/actions/merge#migrating-from-commit_message_template"
+          },
           "default": null,
-          "description": "Template to use as the commit message when using the merge or squash merge method.",
+          "deprecated": true,
+          "description": "Template to use as the commit message when using the merge or squash merge method. Deprecated: use `commit_message_format` instead.",
           "title": "Commit Message Template"
         },
         "commit_message_format": {
@@ -3640,6 +4815,18 @@
           "default": null,
           "description": "Where scopes come from. `files` derives scopes from the pull request's changed files using file-pattern rules; `manual` uses scopes sent via API or `mergify scopes-send`; `None` disables scoping.",
           "title": "Source"
+        },
+        "barrier_files": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BarrierFileFilters"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "File filters marking files that impact every scope. Only valid with a `files` source; a `manual` source reports the barrier flag via the API instead. A pull request changing a matching file becomes a merge-queue barrier: it runs alone and serializes the queue at that point. At least one `include` pattern is required. Examples: ('.github/workflows/**', 'Makefile')"
         },
         "merge_queue_scope": {
           "default": "merge-queue",
