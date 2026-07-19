@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: compose-spec, mergify, readthedocs, renovate, taskfile
+  (2026-07-19)
+
 - Add a dedicated ``check-github-workflows-require-timeout`` pre-commit hook for
   requiring ``timeout-minutes`` on all GitHub Workflow jobs. (:issue:`639`)
 

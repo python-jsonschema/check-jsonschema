@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 43.248.0 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 43.270.1 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "43.248.0",
+  "x-renovate-version": "43.270.1",
   "allowComments": true,
   "type": "object",
   "definitions": {
@@ -5573,12 +5573,20 @@
       "type": "object",
       "default": {
         "managerFilePatterns": [
-          "/\\.(?:cs|fs|vb)proj$/",
+          "/\\.(?:cs|fs|vb|sql)proj$/",
           "/\\.(?:props|targets)$/",
           "/(^|/)dotnet-tools\\.json$/",
           "/(^|/)global\\.json$/"
         ],
-        "rangeStrategy": "bump"
+        "rangeStrategy": "bump",
+        "packageRules": [
+          {
+            "matchDepTypes": [
+              "msbuild-sdk"
+            ],
+            "rangeStrategy": "bump"
+          }
+        ]
       },
       "$ref": "#",
       "items": {
@@ -8218,6 +8226,7 @@
             "node",
             "npm",
             "nuget",
+            "paket",
             "pep440",
             "perl",
             "poetry",
@@ -9765,6 +9774,11 @@
       {
         "required": [
           "checkedBranches"
+        ]
+      },
+      {
+        "required": [
+          "rebaseAllOpenBranches"
         ]
       },
       {
