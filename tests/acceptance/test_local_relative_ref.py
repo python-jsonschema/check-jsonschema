@@ -29,6 +29,25 @@ CASE2_VALUES_SCHEMA = {
 CASE2_PASSING_DOCUMENT = {"test": "some data"}
 CASE2_FAILING_DOCUMENT = {"test": {"foo": "bar"}}
 
+CASE3_MAIN_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "pupils": {
+            "type": "array",
+            "items": {"$ref": "../person/person.schema.json"},
+        }
+    },
+}
+CASE3_PERSON_SCHEMA = {
+    "type": "object",
+    "properties": {"address": {"$ref": "../address/address.schema.json"}},
+}
+CASE3_ADDRESS_SCHEMA = {
+    "type": "object",
+    "properties": {"zip_code": {"type": "number"}},
+}
+CASE3_PASSING_DOCUMENT = {"pupils": [{"address": {"zip_code": 12345}}]}
+
 
 def _prep_files(tmp_path, main_schema, other_schema_data, instance):
     main_schemafile = tmp_path / "main_schema.json"
@@ -73,6 +92,24 @@ def test_local_ref_schema(
     else:
         schemafile = str(main_schemafile)
     run_line_simple(["--schemafile", schemafile, str(doc)])
+
+
+def test_nested_local_ref_schema(run_line_simple, tmp_path):
+    school_dir = tmp_path / "school"
+    person_dir = tmp_path / "person"
+    address_dir = tmp_path / "address"
+    school_dir.mkdir()
+    person_dir.mkdir()
+    address_dir.mkdir()
+
+    main_schemafile = school_dir / "school.schema.json"
+    main_schemafile.write_text(json.dumps(CASE3_MAIN_SCHEMA))
+    (person_dir / "person.schema.json").write_text(json.dumps(CASE3_PERSON_SCHEMA))
+    (address_dir / "address.schema.json").write_text(json.dumps(CASE3_ADDRESS_SCHEMA))
+    doc = school_dir / "school.example.json"
+    doc.write_text(json.dumps(CASE3_PASSING_DOCUMENT))
+
+    run_line_simple(["--schemafile", str(main_schemafile), str(doc)])
 
 
 @pytest.mark.parametrize(

@@ -154,6 +154,8 @@ class SchemaLoader(SchemaLoaderBase):
     ) -> jsonschema.protocols.Validator:
         retrieval_uri = self.get_schema_retrieval_uri()
         schema = self.get_schema()
+        if retrieval_uri is not None and "$id" not in schema:
+            schema = {"$id": retrieval_uri, **schema}
         schema_dialect = _dialect_of_schema(schema)
 
         # format checker (which may be None)
