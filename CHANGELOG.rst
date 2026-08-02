@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: buildkite, codecov, compose-spec, dependabot, mergify,
+  readthedocs, renovate, taskfile, woodpecker-ci (2026-08-02)
+
 - Add a dedicated ``check-github-workflows-require-timeout`` pre-commit hook for
   requiring ``timeout-minutes`` on all GitHub Workflow jobs. (:issue:`639`)
 
