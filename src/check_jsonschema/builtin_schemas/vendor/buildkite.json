@@ -172,6 +172,116 @@
       "description": "Whether to cancel the job as soon as the build is marked as failing",
       "default": false
     },
+    "checkout": {
+      "type": "object",
+      "description": "Configure git checkout behavior. Pipeline-level values are inherited by each step unless that step overrides the same key",
+      "properties": {
+        "depth": {
+          "type": ["integer", "string"],
+          "description": "Number of commits to fetch when performing a shallow clone; omit for full history",
+          "minimum": 1,
+          "pattern": "^[1-9][0-9]*$",
+          "examples": [1]
+        },
+        "skip": {
+          "enum": [true, false, "true", "false", null],
+          "description": "Skip the git checkout phase. An explicit null is treated as unset",
+          "default": false
+        },
+        "submodules": {
+          "enum": [true, false, "true", "false", null],
+          "description": "Initialize, sync, update, and clean submodules recursively as part of checkout. An explicit null is treated as unset",
+          "default": true
+        },
+        "commit_verification": {
+          "type": "string",
+          "description": "Verify the checked-out commit is on the expected branch; strict fails the job on a definitive mismatch, warn only logs",
+          "enum": ["strict", "warn"]
+        },
+        "flags": {
+          "type": "object",
+          "description": "Custom flags passed to git commands during checkout. Flag strings are passed to git verbatim and are not sanitized; do not interpolate untrusted input. See the agent documentation for precedence and defaults: https://buildkite.com/docs/agent/v3/configuration",
+          "properties": {
+            "clone": {
+              "type": "string",
+              "description": "Flags for the git clone command",
+              "default": "-v",
+              "examples": ["--depth 1 --single-branch"]
+            },
+            "fetch": {
+              "type": "string",
+              "description": "Flags for the git fetch command",
+              "default": "-v --prune",
+              "examples": ["--prune --tags"]
+            },
+            "checkout": {
+              "type": "string",
+              "description": "Flags for the git checkout command",
+              "default": "-f",
+              "examples": ["-q"]
+            },
+            "clean": {
+              "type": "string",
+              "description": "Flags for the git clean command",
+              "default": "-ffxdq",
+              "examples": ["-fxd"]
+            }
+          },
+          "additionalProperties": false,
+          "examples": [
+            { "clone": "--depth 1 --single-branch" },
+            { "fetch": "--prune --tags" },
+            { "clone": "", "fetch": "" }
+          ]
+        },
+        "ssh_secret": {
+          "type": "string",
+          "description": "Name of an SSH private key secret from Buildkite Secrets to use for git clone/fetch operations. The name must start with a letter, contain only letters, numbers, and underscores, and must not start with `buildkite` or `bk` (case-insensitive).",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+          "not": {
+            "pattern": "^([Bb][Uu][Ii][Ll][Dd][Kk][Ii][Tt][Ee]|[Bb][Kk])"
+          },
+          "examples": ["deploy_key", "github_readonly", "bitbucket_ssh_key"]
+        },
+        "lfs": {
+          "enum": [true, false, "true", "false", null],
+          "description": "Whether to install Git LFS and fetch LFS objects after checkout. An explicit null is treated as unset",
+          "default": false
+        },
+        "sparse": {
+          "type": "object",
+          "description": "Check out only the specified paths in git cone mode; requires git 2.27+ on the agent",
+          "properties": {
+            "paths": {
+              "description": "Repository-relative directory paths within the worktree, as one path or a list of paths; cone mode includes each directory recursively, not file globs",
+              "anyOf": [
+                { "$ref": "#/definitions/checkoutSparsePath" },
+                {
+                  "type": "array",
+                  "items": { "$ref": "#/definitions/checkoutSparsePath" },
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              ],
+              "examples": ["src/", ["src/", "docs/"]]
+            }
+          },
+          "required": ["paths"],
+          "additionalProperties": false,
+          "examples": [{ "paths": ["src/", "docs/"] }]
+        }
+      },
+      "additionalProperties": false
+    },
+    "checkoutSparsePath": {
+      "type": "string",
+      "pattern": "^[^,\\t\\n\\v\\f\\r]+$",
+      "not": {
+        "pattern": "^[-\\t\\n\\v\\f\\r \u0085\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]|[\\t\\n\\v\\f\\r \u0085\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]$"
+      }
+    },
     "dependsOnList": {
       "type": "array",
       "items": {
@@ -261,7 +371,7 @@
           "items": {
             "description": "A Slack channel as `#channel`, `team#channel`, `@user`, `team@user`, or a Slack ID. Must not be empty or contain whitespace.",
             "type": "string",
-            "pattern": "^\\S+$"
+            "pattern": "^[^ \\t\\n\\v\\f\\r]+$"
           }
         },
         "message": {
@@ -278,7 +388,7 @@
             {
               "description": "A Slack channel as `#channel`, `team#channel`, `@user`, `team@user`, or a Slack ID. Must not be empty or contain whitespace.",
               "type": "string",
-              "pattern": "^\\S+$"
+              "pattern": "^[^ \\t\\n\\v\\f\\r]+$"
             },
             {
               "$ref": "#/definitions/notifySlackObject"
@@ -1113,6 +1223,9 @@
         "cancel_on_build_failing": {
           "$ref": "#/definitions/cancelOnBuildFailing"
         },
+        "checkout": {
+          "$ref": "#/definitions/checkout"
+        },
         "command": {
           "$ref": "#/definitions/commandStepCommand"
         },
@@ -1533,6 +1646,13 @@
     },
     "priority": {
       "$ref": "#/definitions/priority"
+    },
+    "checkout": {
+      "description": "Configure git checkout behavior. Pipeline-level values are inherited by each step unless that step overrides the same key. ssh_secret is step-level only and is not valid here",
+      "allOf": [{ "$ref": "#/definitions/checkout" }],
+      "properties": {
+        "ssh_secret": false
+      }
     },
     "steps": {
       "$ref": "#/definitions/pipelineSteps"
