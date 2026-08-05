@@ -8,6 +8,9 @@ CHANGELOG
 Unreleased
 ----------
 
+- Add Datadog schema hooks: ``check-datadog-continuous-testing``,
+  ``check-datadog-service-definition``, and ``check-datadog-software-catalog``
+
 .. vendor-insert-here
 
 - Add a dedicated ``check-github-workflows-require-timeout`` pre-commit hook for
