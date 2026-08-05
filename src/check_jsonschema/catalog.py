@@ -158,6 +158,45 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "datadog-continuous-testing": {
+        "url": _githubusercontent_url(
+            "DataDog",
+            "schema",
+            "main",
+            "datadog-ci/synthetics/test-config.schema.json",
+        ),
+        "hook_config": {
+            "name": "Validate Datadog Continuous Testing config",
+            "files": r"(^|.*/)datadog-ci\.(json|ya?ml)$",
+            "types_or": ["json", "yaml"],
+        },
+    },
+    "datadog-service-definition": {
+        "url": _githubusercontent_url(
+            "DataDog",
+            "schema",
+            "main",
+            "service-catalog/service.schema.json",
+        ),
+        "hook_config": {
+            "name": "Validate Datadog Service Definition",
+            "files": r"(^|.*/)service\.datadog\.(json|ya?ml)$",
+            "types_or": ["json", "yaml"],
+        },
+    },
+    "datadog-software-catalog": {
+        "url": _githubusercontent_url(
+            "DataDog",
+            "schema",
+            "main",
+            "service-catalog/entity.schema.json",
+        ),
+        "hook_config": {
+            "name": "Validate Datadog Software Catalog entity",
+            "files": r"(^|.*/)entity\.datadog\.(json|ya?ml)$",
+            "types_or": ["json", "yaml"],
+        },
+    },
     "dependabot": {
         "url": "https://json.schemastore.org/dependabot-2.0.json",
         "hook_config": {

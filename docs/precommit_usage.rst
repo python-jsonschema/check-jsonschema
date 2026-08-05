@@ -183,6 +183,48 @@ Validate Docker Compose files against the schema provided by SchemaStore
         - id: check-compose-spec
 
 
+``check-datadog-continuous-testing``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate Datadog Continuous Testing config against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.37.4
+      hooks:
+        - id: check-datadog-continuous-testing
+
+
+``check-datadog-service-definition``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate Datadog Service Definition against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.37.4
+      hooks:
+        - id: check-datadog-service-definition
+
+
+``check-datadog-software-catalog``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate Datadog Software Catalog entity against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.37.4
+      hooks:
+        - id: check-datadog-software-catalog
+
+
 ``check-dependabot``
 ~~~~~~~~~~~~~~~~~~~~
 

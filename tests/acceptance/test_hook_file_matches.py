@@ -94,6 +94,50 @@ _HOOKID_PATH_MAP = {
         "good": ("CITATION.cff",),
         "bad": ("CITATION.yml",),
     },
+    "check-datadog-continuous-testing": {
+        "good": (
+            "datadog-ci.json",
+            "datadog-ci.yml",
+            "datadog-ci.yaml",
+            "tests/datadog-ci.json",
+            "ci/datadog-ci.yaml",
+        ),
+        "bad": (
+            "datadog.json",
+            "ci.json",
+            "datadog-ci.txt",
+        ),
+    },
+    "check-datadog-service-definition": {
+        "good": (
+            "service.datadog.yml",
+            "service.datadog.yaml",
+            "service.datadog.json",
+            "services/service.datadog.yml",
+            "docs/service.datadog.yaml",
+        ),
+        "bad": (
+            "datadog.yml",
+            "service.yml",
+            "service-datadog.yaml",
+            "my-service.datadog.yml",
+        ),
+    },
+    "check-datadog-software-catalog": {
+        "good": (
+            "entity.datadog.yml",
+            "entity.datadog.yaml",
+            "entity.datadog.json",
+            "catalog/entity.datadog.yml",
+            "services/entity.datadog.yaml",
+        ),
+        "bad": (
+            "datadog.yml",
+            "entity.yml",
+            "entity-datadog.yaml",
+            "my-entity.datadog.yml",
+        ),
+    },
     "check-codecov": {
         "good": (
             "codecov.yml",
