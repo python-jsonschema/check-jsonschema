@@ -9,7 +9,8 @@ Unreleased
 ----------
 
 - Add Datadog schema hooks: ``check-datadog-continuous-testing``,
-  ``check-datadog-service-definition``, and ``check-datadog-software-catalog``
+  ``check-datadog-service-definition``, and ``check-datadog-software-catalog``.
+  Thanks :user:`lannuttia`! (:pr:`701`)
 
 .. vendor-insert-here
 
