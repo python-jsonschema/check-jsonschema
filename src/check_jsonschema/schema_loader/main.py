@@ -7,6 +7,7 @@ import urllib.error
 import urllib.parse
 
 import jsonschema
+from jsonschema_specifications import REGISTRY as SPECIFICATIONS
 from referencing import Registry
 
 from ..builtin_schemas import get_builtin_schema
@@ -154,8 +155,6 @@ class SchemaLoader(SchemaLoaderBase):
     ) -> jsonschema.protocols.Validator:
         retrieval_uri = self.get_schema_retrieval_uri()
         schema = self.get_schema()
-        if retrieval_uri is not None and "$id" not in schema:
-            schema = {"$id": retrieval_uri, **schema}
         schema_dialect = _dialect_of_schema(schema)
 
         # format checker (which may be None)
@@ -166,6 +165,11 @@ class SchemaLoader(SchemaLoaderBase):
         reference_registry = make_reference_registry(
             self._parsers, retrieval_uri, schema, self.disable_cache
         )
+        reference_resolver = None
+        if retrieval_uri is not None and not isinstance(schema.get("$id"), str):
+            reference_resolver = SPECIFICATIONS.combine(reference_registry).resolver(
+                retrieval_uri
+            )
 
         if self.validator_class is None:
             # get the correct validator class and check the schema under its metaschema
@@ -197,6 +201,7 @@ class SchemaLoader(SchemaLoaderBase):
         validator = validator_cls(  # type: ignore[call-arg]
             schema,
             registry=reference_registry,
+            _resolver=reference_resolver,
             format_checker=format_checker,
         )
         return t.cast(jsonschema.protocols.Validator, validator)

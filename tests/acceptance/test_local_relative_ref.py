@@ -47,6 +47,7 @@ CASE3_ADDRESS_SCHEMA = {
     "properties": {"zip_code": {"type": "number"}},
 }
 CASE3_PASSING_DOCUMENT = {"pupils": [{"address": {"zip_code": 12345}}]}
+CASE3_FAILING_DOCUMENT = {"pupils": [{"address": {"zip_code": "invalid"}}]}
 
 
 def _prep_files(tmp_path, main_schema, other_schema_data, instance):
@@ -94,7 +95,14 @@ def test_local_ref_schema(
     run_line_simple(["--schemafile", schemafile, str(doc)])
 
 
-def test_nested_local_ref_schema(run_line_simple, tmp_path):
+@pytest.mark.parametrize(
+    "instance, expect_err",
+    [
+        (CASE3_PASSING_DOCUMENT, None),
+        (CASE3_FAILING_DOCUMENT, "'invalid' is not of type 'number'"),
+    ],
+)
+def test_nested_local_ref_schema(run_line, tmp_path, instance, expect_err):
     school_dir = tmp_path / "school"
     person_dir = tmp_path / "person"
     address_dir = tmp_path / "address"
@@ -107,9 +115,12 @@ def test_nested_local_ref_schema(run_line_simple, tmp_path):
     (person_dir / "person.schema.json").write_text(json.dumps(CASE3_PERSON_SCHEMA))
     (address_dir / "address.schema.json").write_text(json.dumps(CASE3_ADDRESS_SCHEMA))
     doc = school_dir / "school.example.json"
-    doc.write_text(json.dumps(CASE3_PASSING_DOCUMENT))
+    doc.write_text(json.dumps(instance))
 
-    run_line_simple(["--schemafile", str(main_schemafile), str(doc)])
+    res = run_line(["check-jsonschema", "--schemafile", str(main_schemafile), str(doc)])
+    assert res.exit_code == (1 if expect_err is not None else 0)
+    if expect_err is not None:
+        assert expect_err in res.stdout
 
 
 @pytest.mark.parametrize(
