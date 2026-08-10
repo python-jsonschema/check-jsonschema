@@ -96,6 +96,9 @@ SchemaStore and other sources:
 - ``vendor.cloudbuild``
 - ``vendor.codecov``
 - ``vendor.compose-spec``
+- ``vendor.datadog-continuous-testing``
+- ``vendor.datadog-service-definition``
+- ``vendor.datadog-software-catalog``
 - ``vendor.dependabot``
 - ``vendor.drone-ci``
 - ``vendor.github-actions``

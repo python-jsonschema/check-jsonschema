@@ -1,0 +1,16 @@
+apiVersion: v3
+kind: system
+metadata:
+  name: checkout-system
+  displayName: Checkout System
+  owner: commerce-team
+  contacts:
+    - name: Commerce Team
+      type: email
+      contact: commerce@example.com
+spec:
+  components:
+    - service:cart-service
+    - service:payment-processor
+    - queue:order-events
+    - datastore:orders-db

@@ -1,0 +1,15 @@
+schema-version: v2.1
+dd-service: user-service
+team: identity
+application: user-platform
+lifecycle: production
+tier: tier0
+contacts:
+  - type: slack
+    contact: https://example.slack.com/archives/identity
+links:
+  - name: Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/dashboard/user-metrics
+tags:
+  - domain:identity

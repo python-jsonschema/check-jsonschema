@@ -1,0 +1,5 @@
+# Missing required fields: schema-version and dd-service
+team: example-team
+contacts:
+  - type: email
+    contact: team@example.com

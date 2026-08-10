@@ -1,0 +1,4 @@
+{
+  "invalid": "this is not a valid datadog-ci config",
+  "random": "fields"
+}

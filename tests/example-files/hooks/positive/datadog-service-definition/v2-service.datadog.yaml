@@ -1,0 +1,11 @@
+schema-version: v2
+dd-service: example-service
+team: platform-team
+contacts:
+  - type: email
+    contact: team@example.com
+links:
+  - name: Runbook
+    type: runbook
+    url: https://wiki.example.com/runbook
+tags: []

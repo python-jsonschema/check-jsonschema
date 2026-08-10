@@ -1,0 +1,15 @@
+schema-version: v2.2
+dd-service: notification-service
+team: messaging
+application: messaging-platform
+tier: tier1
+lifecycle: production
+contacts:
+  - type: email
+    contact: messaging@example.com
+links:
+  - name: Source
+    url: https://github.com/example/notifications
+    type: repo
+tags:
+  - service:notifications

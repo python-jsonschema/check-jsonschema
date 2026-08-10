@@ -1,0 +1,20 @@
+apiVersion: v3
+kind: service
+metadata:
+  name: auth-service
+  displayName: Authentication Service
+  owner: security-team
+  links:
+    - name: Runbook
+      type: runbook
+      url: https://wiki.example.com/auth-runbook
+  contacts:
+    - name: Security Team
+      type: email
+      contact: security@example.com
+spec:
+  lifecycle: production
+  tier: critical
+  type: web
+  languages:
+    - go

@@ -1,0 +1,573 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Assertion": {
+      "properties": {
+        "actual": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
+        "errorMessage": {
+          "type": "string"
+        },
+        "operator": {
+          "$ref": "#/definitions/Operator"
+        },
+        "property": {
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "valid": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "actual",
+        "operator",
+        "target",
+        "type",
+        "valid"
+      ],
+      "type": "object"
+    },
+    "BasicAuthCredentials": {
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "password",
+        "username"
+      ],
+      "type": "object"
+    },
+    "CookiesObject": {
+      "properties": {
+        "append": {
+          "description": "Whether to append or replace the original cookies.",
+          "markdownDescription": "Whether to append or replace the original cookies.",
+          "type": "boolean"
+        },
+        "value": {
+          "description": "Cookie header to add or replace (e.g. `name1=value1;name2=value2;`).",
+          "markdownDescription": "Cookie header to add or replace (e.g. `name1=value1;name2=value2;`).",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "type": "object"
+    },
+    "ExecutionRule": {
+      "enum": [
+        "blocking",
+        "non_blocking",
+        "skipped"
+      ],
+      "type": "string"
+    },
+    "LocalTestDefinition": {
+      "properties": {
+        "config": {
+          "properties": {
+            "assertions": {
+              "items": {
+                "$ref": "#/definitions/Assertion"
+              },
+              "type": "array"
+            },
+            "request": {
+              "properties": {
+                "dnsServer": {
+                  "type": "string"
+                },
+                "headers": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "host": {
+                  "type": "string"
+                },
+                "method": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": "number"
+                },
+                "timeout": {
+                  "type": "number"
+                },
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "headers",
+                "method",
+                "timeout",
+                "url"
+              ],
+              "type": "object"
+            },
+            "steps": {
+              "items": {
+                "properties": {
+                  "subtype": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "subtype"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "variables": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "assertions",
+            "variables"
+          ],
+          "type": "object"
+        },
+        "locations": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/OptionsWithUnsupportedFields"
+        },
+        "public_id": {
+          "description": "Can be used to link to an existing remote test.",
+          "markdownDescription": "Can be used to link to an existing remote test.",
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/definitions/TestStepWithUnsupportedFields"
+          },
+          "type": "array"
+        },
+        "subtype": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "api",
+            "browser",
+            "mobile"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "config",
+        "locations",
+        "name",
+        "options",
+        "type"
+      ],
+      "type": "object"
+    },
+    "LocalTriggerConfig": {
+      "properties": {
+        "localTestDefinition": {
+          "$ref": "#/definitions/LocalTestDefinition"
+        },
+        "suite": {
+          "description": "Name of a test suite (for JUnit reports).",
+          "markdownDescription": "Name of a test suite (for JUnit reports).",
+          "type": "string"
+        },
+        "testOverrides": {
+          "$ref": "#/definitions/UserConfigOverride",
+          "description": "Overrides for this Synthetic test only. This takes precedence over all other overrides.",
+          "markdownDescription": "Overrides for this Synthetic test only. This takes precedence over all other overrides."
+        }
+      },
+      "required": [
+        "localTestDefinition"
+      ],
+      "type": "object"
+    },
+    "MobileApplication": {
+      "properties": {
+        "applicationId": {
+          "type": "string"
+        },
+        "referenceId": {
+          "type": "string"
+        },
+        "referenceType": {
+          "enum": [
+            "latest",
+            "version",
+            "temporary"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "applicationId",
+        "referenceId",
+        "referenceType"
+      ],
+      "type": "object"
+    },
+    "MultiLocator": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "Operator": {
+      "enum": [
+        "contains",
+        "doesNotContain",
+        "is",
+        "isNot",
+        "isInLessThan",
+        "isInMoreThan",
+        "lessThan",
+        "lessThanOrEqual",
+        "moreThan",
+        "moreThanOrEqual",
+        "matches",
+        "doesNotMatch",
+        "validatesJSONPath",
+        "validatesXPath"
+      ],
+      "type": "string"
+    },
+    "OptionsWithUnsupportedFields": {
+      "properties": {
+        "bindings": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "items": {},
+              "type": "array"
+            }
+          ]
+        },
+        "ci": {
+          "properties": {
+            "executionRule": {
+              "$ref": "#/definitions/ExecutionRule"
+            }
+          },
+          "required": [
+            "executionRule"
+          ],
+          "type": "object"
+        },
+        "device_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "min_failure_duration": {
+          "type": "number"
+        },
+        "min_location_failed": {},
+        "mobileApplication": {
+          "$ref": "#/definitions/MobileApplication"
+        },
+        "monitor_name": {
+          "type": "string"
+        },
+        "monitor_options": {},
+        "monitor_priority": {
+          "type": "number"
+        },
+        "retry": {
+          "properties": {
+            "count": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "tick_every": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "RemoteTriggerConfig": {
+      "properties": {
+        "id": {
+          "description": "Public ID of a test (e.g. `abc-def-ghi`), or its full URL (e.g. `https://app.datadoghq.com/synthetics/details/abc-def-ghi`).",
+          "markdownDescription": "Public ID of a test (e.g. `abc-def-ghi`), or its full URL (e.g. `https://app.datadoghq.com/synthetics/details/abc-def-ghi`).",
+          "pattern": "^(https://.*)?([a-z2-9]{3}-[a-z2-9]{3}-[a-z2-9]{3})$",
+          "type": "string"
+        },
+        "suite": {
+          "description": "Name of a test suite (for JUnit reports).",
+          "markdownDescription": "Name of a test suite (for JUnit reports).",
+          "type": "string"
+        },
+        "testOverrides": {
+          "$ref": "#/definitions/UserConfigOverride",
+          "description": "Overrides for this Synthetic test only. This takes precedence over all other overrides.",
+          "markdownDescription": "Overrides for this Synthetic test only. This takes precedence over all other overrides."
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "RetryConfig": {
+      "properties": {
+        "count": {
+          "description": "The number of attempts to perform in case of test failure.",
+          "markdownDescription": "The number of attempts to perform in case of test failure.",
+          "type": "number"
+        },
+        "interval": {
+          "description": "The interval between attempts in milliseconds.",
+          "markdownDescription": "The interval between attempts in milliseconds.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "count",
+        "interval"
+      ],
+      "type": "object"
+    },
+    "TestStepWithUnsupportedFields": {
+      "properties": {
+        "params": {
+          "properties": {
+            "element": {
+              "properties": {
+                "multiLocator": {
+                  "$ref": "#/definitions/MultiLocator"
+                },
+                "userLocator": {}
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "public_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "params"
+      ],
+      "type": "object"
+    },
+    "TriggerConfig": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/RemoteTriggerConfig"
+        },
+        {
+          "$ref": "#/definitions/LocalTriggerConfig"
+        }
+      ]
+    },
+    "UserConfigOverride": {
+      "properties": {
+        "allowInsecureCertificates": {
+          "description": "Override the certificate checks in Synthetic API and Browser tests.",
+          "markdownDescription": "Override the certificate checks in Synthetic API and Browser tests.",
+          "type": "boolean"
+        },
+        "basicAuth": {
+          "$ref": "#/definitions/BasicAuthCredentials",
+          "description": "Override the credentials for basic authentication.",
+          "markdownDescription": "Override the credentials for basic authentication."
+        },
+        "body": {
+          "description": "Override the data to send in API tests.",
+          "markdownDescription": "Override the data to send in API tests.",
+          "type": "string"
+        },
+        "bodyType": {
+          "description": "Override the content type for the data to send in API tests.",
+          "markdownDescription": "Override the content type for the data to send in API tests.",
+          "type": "string"
+        },
+        "cookies": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/CookiesObject"
+            }
+          ],
+          "description": "Override the cookies for API and browser tests.\n- If this is a string, it is used to replace the original cookies.\n- If this is an object, the format must be `{append?: boolean, value: string}`, and depending on the value of `append`, it is appended or replaces the original cookies.",
+          "markdownDescription": "Override the cookies for API and browser tests.\n- If this is a string, it is used to replace the original cookies.\n- If this is an object, the format must be `{append?: boolean, value: string}`, and depending on the value of `append`, it is appended or replaces the original cookies."
+        },
+        "defaultStepTimeout": {
+          "description": "Override the maximum duration of steps in seconds for browser tests. This does not override individually set step timeouts.",
+          "markdownDescription": "Override the maximum duration of steps in seconds for browser tests. This does not override individually set step timeouts.",
+          "type": "number"
+        },
+        "deviceIds": {
+          "description": "Override the list of devices on which to run the Synthetic tests.",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Override the list of devices on which to run the Synthetic tests.",
+          "type": "array"
+        },
+        "executionRule": {
+          "$ref": "#/definitions/ExecutionRule",
+          "description": "Override the execution rule for Synthetic tests.\n\nThe execution rule for the test defines the behavior of the CI batch in case of a failing test. It accepts one of the following values:\n\n- `blocking`: A failed test causes the CI batch to fail.\n- `non_blocking`: A failed test does not cause the CI batch to fail.\n- `skipped`: The test is not run at all.",
+          "markdownDescription": "Override the execution rule for Synthetic tests.\n\nThe execution rule for the test defines the behavior of the CI batch in case of a failing test. It accepts one of the following values:\n\n- `blocking`: A failed test causes the CI batch to fail.\n- `non_blocking`: A failed test does not cause the CI batch to fail.\n- `skipped`: The test is not run at all."
+        },
+        "followRedirects": {
+          "description": "Override whether or not to follow HTTP redirections in API tests.",
+          "markdownDescription": "Override whether or not to follow HTTP redirections in API tests.",
+          "type": "boolean"
+        },
+        "headers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Override the headers in the API and browser tests.\n\nThis object specifies the headers to be replaced in the test. It should have keys representing the names of the headers to be replaced, and values indicating the new header values.",
+          "markdownDescription": "Override the headers in the API and browser tests.\n\nThis object specifies the headers to be replaced in the test. It should have keys representing the names of the headers to be replaced, and values indicating the new header values.",
+          "type": "object"
+        },
+        "locations": {
+          "description": "Override the list of locations to run the test from. The possible values are listed [in this API response](https://app.datadoghq.com/api/v1/synthetics/locations?only_public=true).",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Override the list of locations to run the test from. The possible values are listed [in this API response](https://app.datadoghq.com/api/v1/synthetics/locations?only_public=true).",
+          "type": "array"
+        },
+        "mobileApplicationVersion": {
+          "description": "Override the mobile application version for Synthetic mobile application tests. The version must be uploaded and available within Datadog.",
+          "markdownDescription": "Override the mobile application version for Synthetic mobile application tests. The version must be uploaded and available within Datadog.",
+          "type": "string"
+        },
+        "mobileApplicationVersionFilePath": {
+          "description": "Override the application version for Synthetic mobile application tests.",
+          "markdownDescription": "Override the application version for Synthetic mobile application tests.",
+          "type": "string"
+        },
+        "resourceUrlSubstitutionRegexes": {
+          "description": "An array of regex patterns to modify resource URLs in the test. This can be useful for dynamically changing resource URLs during test execution.\n\nEach regex pattern should be in the format:\n\n- **`your_regex|your_substitution`**: The pipe-based syntax, to avoid any conflicts with / characters in URLs.   - For example, `https://example.com(.*)|http://subdomain.example.com$1` to transform `https://example.com/resource` to `http://subdomain.example.com/resource`.\n- **`s/your_regex/your_substitution/modifiers`**: The slash syntax, which supports modifiers.   - For example, `s/(https://www.)(.*)/$1staging-$2/` to transform `https://www.example.com/resource` into `https://www.staging-example.com/resource`.",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "An array of regex patterns to modify resource URLs in the test. This can be useful for dynamically changing resource URLs during test execution.\n\nEach regex pattern should be in the format:\n\n- **`your_regex|your_substitution`**: The pipe-based syntax, to avoid any conflicts with / characters in URLs.\n  - For example, `https://example.com(.*)|http://subdomain.example.com$1` to transform `https://example.com/resource` to `http://subdomain.example.com/resource`.\n- **`s/your_regex/your_substitution/modifiers`**: The slash syntax, which supports modifiers.\n  - For example, `s/(https://www.)(.*)/$1staging-$2/` to transform `https://www.example.com/resource` into `https://www.staging-example.com/resource`.",
+          "type": "array"
+        },
+        "retry": {
+          "$ref": "#/definitions/RetryConfig",
+          "description": "Override the retry policy for the test.",
+          "markdownDescription": "Override the retry policy for the test."
+        },
+        "setCookies": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/CookiesObject"
+            }
+          ],
+          "description": "Override the `Set-Cookie` headers in browser tests only.\n- If this is a string, it is used to replace the original `Set-Cookie` headers.\n- If this is an object, the format must be `{append?: boolean, value: string}`, and depending on the value of `append`, it is appended or replaces the original `Set-Cookie` headers.",
+          "markdownDescription": "Override the `Set-Cookie` headers in browser tests only.\n- If this is a string, it is used to replace the original `Set-Cookie` headers.\n- If this is an object, the format must be `{append?: boolean, value: string}`, and depending on the value of `append`, it is appended or replaces the original `Set-Cookie` headers."
+        },
+        "startUrl": {
+          "description": "Override the start URL for API and browser tests.\n\nLocal and [global variables](https://docs.datadoghq.com/synthetics/platform/settings/?tab=specifyvalue#global-variables) specified in the URL (for example, `{{ URL }}`) are replaced when the test is run.\n\nYou can combine this with the `variables` override to override both the start URL and the variable values. For example:\n\n```bash\n--override startUrl=\"{{ URL }}?static_hash={{ STATIC_HASH }}\" --override variables.STATIC_HASH=abcdef ```",
+          "markdownDescription": "Override the start URL for API and browser tests.\n\nLocal and [global variables](https://docs.datadoghq.com/synthetics/platform/settings/?tab=specifyvalue#global-variables) specified in the URL (for example, `{{ URL }}`) are replaced when the test is run.\n\nYou can combine this with the `variables` override to override both the start URL and the variable values. For example:\n\n```bash\n--override startUrl=\"{{ URL }}?static_hash={{ STATIC_HASH }}\" --override variables.STATIC_HASH=abcdef\n```",
+          "type": "string"
+        },
+        "startUrlSubstitutionRegex": {
+          "description": "A regex to modify the starting URL of browser and HTTP tests, whether it comes from the original test or the `startUrl` override.\n\nIf the URL contains variables, this regex applies after the interpolation of the variables.\n\nThere are two possible formats:\n\n- **`your_regex|your_substitution`**: The pipe-based syntax, to avoid any conflicts with `/` characters in URLs.   - For example, `https://example.com(.*)|http://subdomain.example.com$1` to transform `https://example.com/test` to `http://subdomain.example.com/test`.\n- **`s/your_regex/your_substitution/modifiers`**: The slash syntax, which supports modifiers.   - For example, `s/(https://www.)(.*)/$1extra-$2/` to transform `https://www.example.com` into `https://www.extra-example.com`.",
+          "markdownDescription": "A regex to modify the starting URL of browser and HTTP tests, whether it comes from the original test or the `startUrl` override.\n\nIf the URL contains variables, this regex applies after the interpolation of the variables.\n\nThere are two possible formats:\n\n- **`your_regex|your_substitution`**: The pipe-based syntax, to avoid any conflicts with `/` characters in URLs.\n  - For example, `https://example.com(.*)|http://subdomain.example.com$1` to transform `https://example.com/test` to `http://subdomain.example.com/test`.\n- **`s/your_regex/your_substitution/modifiers`**: The slash syntax, which supports modifiers.\n  - For example, `s/(https://www.)(.*)/$1extra-$2/` to transform `https://www.example.com` into `https://www.extra-example.com`.",
+          "type": "string"
+        },
+        "testTimeout": {
+          "description": "Override the maximum duration in seconds for browser tests.",
+          "markdownDescription": "Override the maximum duration in seconds for browser tests.",
+          "type": "number"
+        },
+        "variables": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Override existing or inject new local and [global variables](https://docs.datadoghq.com/synthetics/platform/settings/?tab=specifyvalue#global-variables) in Synthetic tests.\n\nThis object should include keys corresponding to the names of the variables to be replaced, and values representing the new values for these variables.",
+          "markdownDescription": "Override existing or inject new local and [global variables](https://docs.datadoghq.com/synthetics/platform/settings/?tab=specifyvalue#global-variables) in Synthetic tests.\n\nThis object should include keys corresponding to the names of the variables to be replaced, and values representing the new values for these variables.",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "properties": {
+    "tests": {
+      "items": {
+        "$ref": "#/definitions/TriggerConfig"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "tests"
+  ],
+  "type": "object"
+}

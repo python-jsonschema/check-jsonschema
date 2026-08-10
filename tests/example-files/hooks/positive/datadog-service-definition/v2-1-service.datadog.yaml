@@ -1,0 +1,20 @@
+schema-version: v2.1
+dd-service: payment-service
+team: payments
+application: payment-platform
+tier: tier1
+lifecycle: production
+contacts:
+  - type: slack
+    contact: https://example.slack.com/archives/payments
+links:
+  - name: Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/dashboard/abc-123
+  - name: Source
+    provider: github
+    url: https://github.com/example/payment-service
+    type: repo
+tags:
+  - business-unit:finance
+  - cost-center:engineering

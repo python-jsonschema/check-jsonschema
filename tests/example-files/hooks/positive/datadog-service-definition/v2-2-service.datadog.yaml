@@ -1,0 +1,24 @@
+schema-version: v2.2
+dd-service: api-gateway
+team: platform
+application: core-services
+tier: "1"
+type: web
+languages:
+  - go
+  - python
+contacts:
+  - type: email
+    contact: platform@example.com
+links:
+  - name: Source
+    type: repo
+    provider: github
+    url: https://github.com/example/api-gateway
+integrations:
+  pagerduty:
+    service-url: https://example.pagerduty.com/service-directory/PAPI
+ci-pipeline-fingerprints:
+  - pipeline-fp-1
+tags:
+  - tier:1

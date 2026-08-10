@@ -1,0 +1,11 @@
+{
+  "tests": [
+    {
+      "id": "abc-def-ghi",
+      "testOverrides": {
+        "locations": ["aws:us-east-1"],
+        "executionRule": "blocking"
+      }
+    }
+  ]
+}
