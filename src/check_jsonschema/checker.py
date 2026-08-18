@@ -51,11 +51,20 @@ class SchemaChecker:
         raise _Exit(1)
 
     def get_validator(
-        self, path: pathlib.Path | str, doc: dict[str, t.Any]
+        self,
+        path: pathlib.Path | str,
+        doc: dict[str, t.Any],
+        *,
+        schemafile: str | None = None,
     ) -> jsonschema.protocols.Validator:
         try:
             return self._schema_loader.get_validator(
-                path, doc, self._format_opts, self._regex_impl, self._fill_defaults
+                path,
+                doc,
+                self._format_opts,
+                self._regex_impl,
+                self._fill_defaults,
+                schemafile=schemafile,
             )
         except SchemaParseError as e:
             self._fail("Error: schemafile could not be parsed as JSON", e)
@@ -68,11 +77,11 @@ class SchemaChecker:
 
     def _build_result(self) -> CheckResult:
         result = CheckResult()
-        for path, data in self._instance_loader.iter_files():
+        for path, data, schemafile in self._instance_loader.iter_files():
             if isinstance(data, ParseError):
                 result.record_parse_error(path, data)
             else:
-                validator = self.get_validator(path, data)
+                validator = self.get_validator(path, data, schemafile=schemafile)
                 passing = True
                 for err in validator.iter_errors(data):
                     result.record_validation_error(path, err)

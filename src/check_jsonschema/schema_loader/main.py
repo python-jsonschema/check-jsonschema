@@ -68,6 +68,8 @@ class SchemaLoaderBase:
         format_opts: FormatOptions,
         regex_impl: RegexImplementation,
         fill_defaults: bool,
+        *,
+        schemafile: str | None = None,
     ) -> jsonschema.protocols.Validator:
         raise NotImplementedError
 
@@ -142,6 +144,8 @@ class SchemaLoader(SchemaLoaderBase):
         format_opts: FormatOptions,
         regex_impl: RegexImplementation,
         fill_defaults: bool,
+        *,
+        schemafile: str | None = None,
     ) -> jsonschema.protocols.Validator:
         return self._get_validator(format_opts, regex_impl, fill_defaults)
 
@@ -256,6 +260,39 @@ class BuiltinSchemaLoader(SchemaLoader):
         return data
 
 
+class ModelineSchemaLoader(SchemaLoaderBase):
+    def __init__(self, *, disable_cache: bool = False) -> None:
+        self.disable_cache = disable_cache
+        self._loader_by_schemafile: dict[str, SchemaLoader] = {}
+
+    def _get_loader(self, schemafile: str) -> SchemaLoader:
+        if schemafile not in self._loader_by_schemafile:
+            self._loader_by_schemafile[schemafile] = SchemaLoader(
+                schemafile, disable_cache=self.disable_cache
+            )
+        return self._loader_by_schemafile[schemafile]
+
+    def get_validator(
+        self,
+        path: pathlib.Path | str,
+        instance_doc: dict[str, t.Any],
+        format_opts: FormatOptions,
+        regex_impl: RegexImplementation,
+        fill_defaults: bool,
+        *,
+        schemafile: str | None = None,
+    ) -> jsonschema.protocols.Validator:
+        if schemafile is None:
+            raise RuntimeError(f"No YAML modeline schema was found for {path}")
+        return self._get_loader(schemafile).get_validator(
+            path,
+            instance_doc,
+            format_opts,
+            regex_impl,
+            fill_defaults,
+        )
+
+
 class MetaSchemaLoader(SchemaLoaderBase):
     def __init__(self, *, base_uri: str | None = None) -> None:
         if base_uri is not None:
@@ -271,6 +308,8 @@ class MetaSchemaLoader(SchemaLoaderBase):
         format_opts: FormatOptions,
         regex_impl: RegexImplementation,
         fill_defaults: bool,
+        *,
+        schemafile: str | None = None,
     ) -> jsonschema.protocols.Validator:
         schema_validator = jsonschema.validators.validator_for(instance_doc)
         meta_validator_class = jsonschema.validators.validator_for(

@@ -24,6 +24,9 @@ Detailed helptext is always available interactively via
      - Description
    * - ``--schemafile``
      - The path or URL for a file containing a schema to use.
+   * - ``--schema-from-modeline``
+     - Validate YAML files using schemas declared in YAML modeline comments.
+       Files without a modeline are skipped.
    * - ``-v``, ``--verbose``
      - Request more output.
    * - ``-q``, ``--quiet``
@@ -77,6 +80,10 @@ These options are mutually exclusive, so exactly one must be used.
    * - ``--check-metaschema``
      - Validate each instancefile as a JSON Schema, using the relevant metaschema
        defined in ``"$schema"``.
+   * - ``--schema-from-modeline``
+     - Validate YAML files using the schema declared in a modeline comment such as
+       ``# yaml-language-server: $schema=../schemas/foo.json``. Relative schema
+       paths are resolved relative to the YAML file.
 
 ``--builtin-schema`` Choices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

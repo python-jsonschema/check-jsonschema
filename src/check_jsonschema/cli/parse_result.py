@@ -15,6 +15,7 @@ class SchemaLoadingMode(enum.Enum):
     filepath = "filepath"
     builtin = "builtin"
     metaschema = "metaschema"
+    modeline = "modeline"
 
 
 class ParseResult:
@@ -57,20 +58,30 @@ class ParseResult:
             self.regex_variant = RegexVariantName(variant_name)
 
     def set_schema(
-        self, schemafile: str | None, builtin_schema: str | None, check_metaschema: bool
+        self,
+        schemafile: str | None,
+        builtin_schema: str | None,
+        check_metaschema: bool,
+        schema_from_modeline: bool = False,
     ) -> None:
         mutex_arg_count = sum(
-            1 if x else 0 for x in (schemafile, builtin_schema, check_metaschema)
+            1 if x else 0
+            for x in (
+                schemafile,
+                builtin_schema,
+                check_metaschema,
+                schema_from_modeline,
+            )
         )
         if mutex_arg_count == 0:
             raise click.UsageError(
-                "Either --schemafile, --builtin-schema, or --check-metaschema "
-                "must be provided"
+                "Either --schemafile, --builtin-schema, --check-metaschema, "
+                "or --schema-from-modeline must be provided"
             )
         if mutex_arg_count > 1:
             raise click.UsageError(
-                "--schemafile, --builtin-schema, and --check-metaschema "
-                "are mutually exclusive"
+                "--schemafile, --builtin-schema, --check-metaschema, and "
+                "--schema-from-modeline are mutually exclusive"
             )
 
         if schemafile:
@@ -79,8 +90,10 @@ class ParseResult:
         elif builtin_schema:
             self.schema_mode = SchemaLoadingMode.builtin
             self.schema_path = builtin_schema
-        else:
+        elif check_metaschema:
             self.schema_mode = SchemaLoadingMode.metaschema
+        else:
+            self.schema_mode = SchemaLoadingMode.modeline
 
     def set_validator(
         self, validator_class: type[jsonschema.protocols.Validator] | None

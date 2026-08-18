@@ -36,5 +36,5 @@ def test_open_file_usage_never_exceeds_1000(cli_runner, monkeypatch, tmp_path):
 
     assert checker is not None
     assert len(os.listdir("/proc/self/fd")) < 2000
-    for _fname, _data in checker._instance_loader.iter_files():
+    for _fname, _data, _schemafile in checker._instance_loader.iter_files():
         assert len(os.listdir("/proc/self/fd")), 2000
