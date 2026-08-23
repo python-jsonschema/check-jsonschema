@@ -35,6 +35,12 @@ CUSTOM_SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
 }
 CUSTOM_SCHEMA_NAMES = list(CUSTOM_SCHEMA_CATALOG)
 
+# Internal SchemaStore resources needed to resolve references from vendored schemas.
+# These are updated by the vendoring job, but are not exposed as pre-commit hooks.
+SCHEMASTORE_REFERENCE_CATALOG: dict[str, dict[str, str]] = {
+    "base": {"url": "https://json.schemastore.org/base.json"},
+}
+
 # Known configs. The SchemaCatalog lists known schema URLs with their names.
 # kept in alphabetical order by name
 #

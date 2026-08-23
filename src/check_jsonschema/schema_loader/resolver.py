@@ -6,13 +6,19 @@ import urllib.parse
 import referencing
 from referencing.jsonschema import DRAFT202012, Schema
 
+from ..builtin_schemas import get_builtin_schema
 from ..cachedownloader import CacheDownloader
 from ..parsers import ParserSet
 from ..utils import filename2path
 
 
 def make_reference_registry(
-    parsers: ParserSet, retrieval_uri: str | None, schema: dict, disable_cache: bool
+    parsers: ParserSet,
+    retrieval_uri: str | None,
+    schema: dict,
+    disable_cache: bool,
+    *,
+    is_vendored_schema: bool = False,
 ) -> referencing.Registry:
     id_attribute_: t.Any = schema.get("$id")
     if isinstance(id_attribute_, str):
@@ -30,6 +36,19 @@ def make_reference_registry(
             parsers, retrieval_uri, id_attribute, disable_cache
         )
     )
+
+    if is_vendored_schema:
+        schemastore_base = get_builtin_schema("vendor.base")
+        schemastore_base_resource = referencing.Resource.from_contents(
+            schemastore_base, default_specification=DRAFT202012
+        )
+        for uri in (
+            "https://json.schemastore.org/base.json",
+            "https://www.schemastore.org/base.json",
+        ):
+            registry = registry.with_resource(
+                uri=uri, resource=schemastore_base_resource
+            )
 
     if retrieval_uri is not None:
         registry = registry.with_resource(uri=retrieval_uri, resource=schema_resource)

@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Resolve references to SchemaStore's ``base.json`` from vendored schemas without
+  requiring network access. (:issue:`655`)
 - Update vendored schemas: bitbucket-pipelines, mergify, renovate (2026-08-16)
 
 0.38.0

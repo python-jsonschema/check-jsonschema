@@ -10,7 +10,7 @@ import textwrap
 
 import requests
 
-from check_jsonschema.catalog import SCHEMA_CATALOG
+from check_jsonschema.catalog import SCHEMA_CATALOG, SCHEMASTORE_REFERENCE_CATALOG
 
 TODAY = datetime.datetime.today().strftime("%Y-%m-%d")
 
@@ -28,6 +28,7 @@ EXISTING_CHANGELINE_PATTERN = re.compile(
 OLD_HASHES: dict[str, str] = {}
 UPDATED_SCHEMAS: set[str] = set()
 SCHEMAS_WITH_NEW_HASHES: set[str] = set()
+VENDORED_SCHEMA_CATALOG = SCHEMA_CATALOG | SCHEMASTORE_REFERENCE_CATALOG
 
 
 def schema2filename(name: str) -> str:
@@ -46,7 +47,7 @@ def file2digest(filepath: str) -> str:
 
 
 def load_old_hashes() -> None:
-    for name, _config in SCHEMA_CATALOG.items():
+    for name, _config in VENDORED_SCHEMA_CATALOG.items():
         hashfile = schema2hashfile(name)
         if os.path.exists(hashfile):
             with open(hashfile) as fp:
@@ -62,7 +63,7 @@ def download_schemas() -> None:
     print("downloading schemas to check for updates")
     session = requests.Session()
 
-    for schema_name, config in SCHEMA_CATALOG.items():
+    for schema_name, config in VENDORED_SCHEMA_CATALOG.items():
         schema_url = config["url"]
 
         print(f"  {schema_name} ({schema_url})")

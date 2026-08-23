@@ -10,6 +10,7 @@ import jsonschema
 from referencing import Registry
 
 from ..builtin_schemas import get_builtin_schema
+from ..catalog import CUSTOM_SCHEMA_NAMES, SCHEMA_CATALOG
 from ..formats import FormatOptions, format_checker_for_regex_impl, make_format_checker
 from ..parsers import ParserSet
 from ..regex_variants import RegexImplementation
@@ -75,6 +76,7 @@ class SchemaLoaderBase:
 class SchemaLoader(SchemaLoaderBase):
     validator_class: type[jsonschema.protocols.Validator] | None = None
     disable_cache: bool = True
+    is_vendored_schema: bool = False
 
     def __init__(
         self,
@@ -162,7 +164,11 @@ class SchemaLoader(SchemaLoaderBase):
         # reference resolution
         # with support for YAML, TOML, and other formats from the parsers
         reference_registry = make_reference_registry(
-            self._parsers, retrieval_uri, schema, self.disable_cache
+            self._parsers,
+            retrieval_uri,
+            schema,
+            self.disable_cache,
+            is_vendored_schema=self.is_vendored_schema,
         )
 
         if self.validator_class is None:
@@ -244,6 +250,9 @@ class BuiltinSchemaLoader(SchemaLoader):
     def __init__(self, schema_name: str, *, base_uri: str | None = None) -> None:
         self.schema_name = schema_name
         self.base_uri = base_uri
+        self.is_vendored_schema = schema_name.startswith("vendor.") or (
+            schema_name in SCHEMA_CATALOG and schema_name not in CUSTOM_SCHEMA_NAMES
+        )
         self._parsers = ParserSet()
 
     def get_schema_retrieval_uri(self) -> str | None:
