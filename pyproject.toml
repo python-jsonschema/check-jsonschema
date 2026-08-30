@@ -43,6 +43,7 @@ dependencies = [
     "regress>=2024.11.1",
     "requests<3.0",
     "click>=8,<9",
+    "CacheControl[filecache]>=0.14,<0.15",
 ]
 
 [project.readme]
@@ -80,6 +81,12 @@ filterwarnings = [
     "error",
     # dateutil has a Python 3.12 compatibility issue.
     'ignore:datetime\.datetime\.utcfromtimestamp\(\) is deprecated:DeprecationWarning',
+    # CacheControl's CallbackFileWrapper (filewrapper.py) creates a NamedTemporaryFile
+    # in __init__ that is only closed when the response is fully read. When a
+    # requests.ConnectionError occurs, _close() is never called and the temp file
+    # leaks. This is a CacheControl limitation, not a check-jsonschema bug.
+    # See plan.md section "5. Pytest Warning Filter" for details.
+    'ignore:Exception ignored in.*FileIO.*:pytest.PytestUnraisableExceptionWarning',
 ]
 addopts = [
     "--color=yes",
