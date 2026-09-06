@@ -8,6 +8,10 @@ import ruamel.yaml
 ParseError = ruamel.yaml.YAMLError
 
 
+class YAMLDocuments(list[t.Any]):
+    """Distinct collection returned when all YAML documents are requested."""
+
+
 def construct_yaml_implementation(
     typ: str = "safe", pure: bool = False
 ) -> ruamel.yaml.YAML:
@@ -42,6 +46,8 @@ def _normalize(data: t.Any) -> t.Any:
     """
     if isinstance(data, dict):
         return {str(k): _normalize(v) for k, v in data.items()}
+    elif isinstance(data, YAMLDocuments):
+        return YAMLDocuments(_normalize(x) for x in data)
     elif isinstance(data, list):
         return [_normalize(x) for x in data]
     else:
@@ -52,7 +58,9 @@ _data_sentinel = object()
 
 
 def impl2loader(
-    primary: ruamel.yaml.YAML, *fallbacks: ruamel.yaml.YAML
+    primary: ruamel.yaml.YAML,
+    *fallbacks: ruamel.yaml.YAML,
+    load_multiple_documents: bool = False,
 ) -> t.Callable[[t.IO[bytes]], t.Any]:
     def load(stream: t.IO[bytes]) -> t.Any:
         stream_bytes = stream.read()
@@ -62,7 +70,10 @@ def impl2loader(
             warnings.simplefilter("ignore", ruamel.yaml.error.ReusedAnchorWarning)
             for impl in [primary] + list(fallbacks):
                 try:
-                    data = impl.load(stream_bytes)
+                    if load_multiple_documents:
+                        data = YAMLDocuments(impl.load_all(stream_bytes))
+                    else:
+                        data = impl.load(stream_bytes)
                 except ruamel.yaml.YAMLError as e:
                     lasterr = e
                 else:

@@ -25,7 +25,10 @@ class InstanceLoader:
         )
 
         self._parsers = ParserSet(
-            modify_yaml_implementation=self._data_transform.modify_yaml_implementation
+            modify_yaml_implementation=self._data_transform.modify_yaml_implementation,
+            load_multiple_yaml_documents=(
+                self._data_transform.load_multiple_yaml_documents
+            ),
         )
 
     def iter_files(self) -> t.Iterator[tuple[str, ParseError | t.Any]]:

@@ -3,6 +3,7 @@ import pytest
 from check_jsonschema.instance_loader import InstanceLoader
 from check_jsonschema.parsers import BadFileTypeError, FailedFileLoadError
 from check_jsonschema.parsers.json5 import ENABLED as JSON5_ENABLED
+from check_jsonschema.transforms.gitlab import GITLAB_TRANSFORM
 
 
 # handy helper for opening multiple files for InstanceLoader
@@ -65,6 +66,42 @@ a:
     loader = InstanceLoader(open_wide(f), default_filetype=default_filetype)
     data = list(loader.iter_files())
     assert data == [(str(f), {"a": {"b": [1, 2], "c": "d"}})]
+
+
+def test_instanceloader_gitlab_multidocument_yaml(tmp_path, open_wide):
+    f = tmp_path / ".gitlab-ci.yml"
+    f.write_text("""\
+spec:
+  inputs:
+    job-stage:
+      default: test
+---
+scan-website:
+  stage: $[[ inputs.job-stage ]]
+  script: echo scan
+""")
+
+    regular_loader = InstanceLoader(open_wide(f), default_filetype="yaml")
+    regular_result = list(regular_loader.iter_files())
+    assert len(regular_result) == 1
+    assert isinstance(regular_result[0][1], FailedFileLoadError)
+
+    loader = InstanceLoader(
+        open_wide(f), default_filetype="yaml", data_transform=GITLAB_TRANSFORM
+    )
+
+    assert list(loader.iter_files()) == [
+        (
+            str(f),
+            {
+                "spec": {"inputs": {"job-stage": {"default": "test"}}},
+                "scan-website": {
+                    "stage": "$[[ inputs.job-stage ]]",
+                    "script": "echo scan",
+                },
+            },
+        )
+    ]
 
 
 @pytest.mark.parametrize(

@@ -23,6 +23,12 @@ c: d
     assert data == {"a": "b", "c": "d"}
 
 
+def test_transform_preserves_non_yaml_data():
+    data = {"job": {"script": "echo ok"}}
+
+    assert GITLAB_TRANSFORM(data) is data
+
+
 def test_can_parse_ok_gitlab_yaml_with_transform():
     rawdata = """\
 foo:

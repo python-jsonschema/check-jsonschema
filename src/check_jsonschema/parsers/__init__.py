@@ -46,6 +46,7 @@ class ParserSet:
         self,
         *,
         modify_yaml_implementation: t.Callable[[ruamel.yaml.YAML], None] | None = None,
+        load_multiple_yaml_documents: bool = False,
         supported_formats: t.Sequence[str] | None = None,
     ) -> None:
         yaml_impl = yaml.construct_yaml_implementation()
@@ -54,7 +55,11 @@ class ParserSet:
             modify_yaml_implementation(yaml_impl)
             modify_yaml_implementation(failover_yaml_impl)
         base_by_tag = {
-            "yaml": yaml.impl2loader(yaml_impl, failover_yaml_impl),
+            "yaml": yaml.impl2loader(
+                yaml_impl,
+                failover_yaml_impl,
+                load_multiple_documents=load_multiple_yaml_documents,
+            ),
             **DEFAULT_LOAD_FUNC_BY_TAG,
         }
         if supported_formats is None:

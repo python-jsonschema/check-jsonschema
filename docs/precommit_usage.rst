@@ -286,6 +286,9 @@ Validate GitHub Workflows against the schema provided by SchemaStore
 
 Validate GitLab CI config against the schema provided by SchemaStore
 
+The hook supports multi-document configuration files, including a ``spec:inputs``
+header separated from the pipeline configuration by ``---``.
+
 .. code-block:: yaml
     :caption: example config
 

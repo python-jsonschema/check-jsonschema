@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import typing as t
+
 import ruamel.yaml
 
+from ..parsers.yaml import YAMLDocuments
 from .base import Transform
 
 
@@ -24,11 +27,28 @@ class GitLabReference:
         return [item.value for item in node.value]
 
 
-# this "transform" is actually a no-op on the data, but it registers the GitLab !reference
-# tag with the instance YAML loader
+# Register GitLab's !reference tag and combine multi-document CI configuration.
 class GitLabDataTransform(Transform):
+    load_multiple_yaml_documents = True
+
     def modify_yaml_implementation(self, implementation: ruamel.yaml.YAML) -> None:
         implementation.register_class(GitLabReference)
+
+    def __call__(self, data: t.Any) -> t.Any:
+        if not isinstance(data, YAMLDocuments):
+            return data
+        documents = [document for document in data if document is not None]
+        if not documents:
+            return None
+        if len(documents) == 1:
+            return documents[0]
+        if not all(isinstance(document, dict) for document in documents):
+            return documents
+
+        merged = {}
+        for document in documents:
+            merged.update(document)
+        return merged
 
 
 GITLAB_TRANSFORM = GitLabDataTransform()

@@ -1,0 +1,8 @@
+spec:
+  inputs:
+    job-stage:
+      default: test
+---
+scan-website:
+  stage: $[[ inputs.job-stage ]]
+  script: echo scan

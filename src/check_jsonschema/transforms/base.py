@@ -6,6 +6,8 @@ import ruamel.yaml
 
 
 class Transform:
+    load_multiple_yaml_documents = False
+
     def __init__(
         self,
         *,
@@ -16,7 +18,7 @@ class Transform:
     def modify_yaml_implementation(self, implementation: ruamel.yaml.YAML) -> None:
         pass
 
-    def __call__(self, data: list | dict) -> list | dict:
+    def __call__(self, data: t.Any) -> t.Any:
         if self.on_data is not None:
             return self.on_data(data)
         return data
