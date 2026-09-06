@@ -39,3 +39,8 @@ for their 'pipeline-schema' repo.
 
 The Taskfile schema is provided by Task and licensed under the license
 for their 'task' repo.
+
+### multitool
+
+The multitool lockfile schema is provided by bazel-contrib/rules_multitool and
+licensed under the Apache License 2.0.

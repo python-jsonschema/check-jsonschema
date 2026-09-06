@@ -282,6 +282,20 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "multitool": {
+        "url": _githubusercontent_url(
+            "bazel-contrib", "rules_multitool", "main", "lockfile.schema.json"
+        ),
+        "hook_config": {
+            "name": "Validate multitool lockfiles",
+            "description": (
+                "Validate multitool lockfiles against the schema provided by "
+                "rules_multitool"
+            ),
+            "files": r"(^|.*/)multitool\.lock\.json$",
+            "types": "json",
+        },
+    },
     "readthedocs": {
         "url": _githubusercontent_url(
             "readthedocs",

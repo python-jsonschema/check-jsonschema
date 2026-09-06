@@ -141,6 +141,17 @@ _HOOKID_PATH_MAP = {
             "meltano-manifest.yml",
         ),
     },
+    "check-multitool": {
+        "good": (
+            "multitool.lock.json",
+            "config/multitool.lock.json",
+        ),
+        "bad": (
+            "multitool.json",
+            "multitool.lock.yaml",
+            "config/multitool.lock.json.example",
+        ),
+    },
     "check-dependabot": {
         "good": (".github/dependabot.yml", ".github/dependabot.yaml"),
         "bad": (".dependabot.yaml", ".dependabot.yml"),

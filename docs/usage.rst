@@ -106,6 +106,7 @@ SchemaStore and other sources:
 - ``vendor.gitlab-ci``
 - ``vendor.meltano``
 - ``vendor.mergify``
+- ``vendor.multitool``
 - ``vendor.readthedocs``
 - ``vendor.renovate``
 - ``vendor.snapcraft``

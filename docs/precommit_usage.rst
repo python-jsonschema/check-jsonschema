@@ -323,6 +323,20 @@ Validate Mergify config against the schema provided by SchemaStore
         - id: check-mergify
 
 
+``check-multitool``
+~~~~~~~~~~~~~~~~~~~
+
+Validate multitool lockfiles against the schema provided by rules_multitool
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.38.0
+      hooks:
+        - id: check-multitool
+
+
 ``check-readthedocs``
 ~~~~~~~~~~~~~~~~~~~~~
 

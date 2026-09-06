@@ -1,0 +1,14 @@
+{
+  "$schema": "https://github.com/theoremlp/rules_multitool/lockfile.schema.json",
+  "ruff": {
+    "binaries": [
+      {
+        "kind": "file",
+        "url": "https://example.com/ruff",
+        "sha256": "0123456789abcdef",
+        "os": "linux",
+        "cpu": "x86_64"
+      }
+    ]
+  }
+}

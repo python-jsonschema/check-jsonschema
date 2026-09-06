@@ -1,0 +1,133 @@
+{
+  "$id": "https://github.com/theoremlp/rules_multitool/lockfile.schema.json",
+  "title": "Describes binaries and instructions for fetching them under Bazel",
+  "type": "object",
+  "definitions": {
+    "supported_os": {
+      "enum": ["macos", "linux", "windows"]
+    },
+    "supported_cpu": {
+      "enum": ["x86_64", "arm64"]
+    },
+    "file_type": {
+      "type": "object",
+      "properties": {
+        "kind": { "enum": ["file"] },
+        "url": { "type": "string" },
+        "sha256": { "type": "string" },
+        "os": { "$ref": "#/definitions/supported_os" },
+        "cpu": { "$ref": "#/definitions/supported_cpu" },
+        "headers": {
+          "type": "object",
+          "docs": "headers to pass to the downloader (supported on Bazel >= 7.1.0)",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "auth_patterns": {
+          "type": "object",
+          "docs": "See https://bazel.build/rules/lib/repo/http#http_archive-auth_patterns",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["kind", "url", "os", "cpu"]
+    },
+    "archive_type": {
+      "type": "object",
+      "properties": {
+        "kind": { "enum": ["archive"] },
+        "url": { "type": "string" },
+        "sha256": { "type": "string" },
+        "file": {
+          "type": "string",
+          "docs": "archive root relative path to binary"
+        },
+        "os": { "$ref": "#/definitions/supported_os" },
+        "cpu": { "$ref": "#/definitions/supported_cpu" },
+        "headers": {
+          "type": "object",
+          "docs": "headers to pass to the downloader (supported on Bazel >= 7.1.0)",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "enum": [
+            "zip",
+            "jar",
+            "war",
+            "aar",
+            "tar",
+            "tar.gz",
+            "tgz",
+            "tar.xz",
+            "txz",
+            ".tar.zst",
+            ".tzst",
+            "tar.bz2",
+            ".tbz",
+            ".ar",
+            ".deb"
+          ]
+        },
+        "auth_patterns": {
+          "type": "object",
+          "docs": "See https://bazel.build/rules/lib/repo/http#http_archive-auth_patterns",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["kind", "url", "os", "cpu", "file"]
+    },
+    "pkg_type": {
+      "type": "object",
+      "properties": {
+        "kind": { "enum": ["pkg"] },
+        "url": { "type": "string" },
+        "sha256": { "type": "string" },
+        "file": {
+          "type": "string",
+          "docs": "pkg archive root relative path to binary"
+        },
+        "os": { "$ref": "#/definitions/supported_os" },
+        "cpu": { "$ref": "#/definitions/supported_cpu" },
+        "headers": {
+          "type": "object",
+          "docs": "headers to pass to the downloader (supported on Bazel >= 7.1.0)",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "auth_patterns": {
+          "type": "object",
+          "docs": "See https://bazel.build/rules/lib/repo/http#http_archive-auth_patterns",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["kind", "url", "os", "cpu", "file"]
+    }
+  },
+  "properties": {
+    "$schema": { "type": "string" }
+  },
+  "additionalProperties": {
+    "type": "object",
+    "properties": {
+      "binaries": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            { "$ref": "#/definitions/file_type" },
+            { "$ref": "#/definitions/archive_type" },
+            { "$ref": "#/definitions/pkg_type" }
+          ]
+        }
+      }
+    }
+  }
+}

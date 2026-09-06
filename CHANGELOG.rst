@@ -10,7 +10,7 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: bitbucket-pipelines, mergify, renovate (2026-08-16)
+- Update vendored schemas: bitbucket-pipelines, mergify, multitool, renovate (2026-09-06)
 
 0.38.0
 ------
