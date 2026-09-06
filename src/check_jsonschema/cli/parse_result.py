@@ -27,6 +27,7 @@ class ParseResult:
         # cache controls
         self.disable_cache: bool = False
         self.cache_filename: str | None = None
+        self.url_rewrites: tuple[tuple[str, str], ...] = ()
         # filetype detection (JSON, YAML, TOML, etc)
         self.default_filetype: str = "json"
         self.force_filetype: str | None = None

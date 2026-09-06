@@ -141,6 +141,18 @@ The following options control caching behaviors.
      - Description
    * - ``--no-cache``
      - Disable caching.
+   * - ``--url-rewrite SOURCE_PREFIX TARGET_PREFIX``
+     - Download matching schema URLs from a different HTTP(S) location. May be
+       specified multiple times; the longest matching source prefix wins.
+
+URL rewrites make remote schemas available through a mirror without changing their
+logical retrieval URI. They apply to both the initial ``--schemafile`` URL and remote
+``$ref`` URLs. For example::
+
+    check-jsonschema \
+      --schemafile https://www.schemastore.org/github-workflow.json \
+      --url-rewrite https://www.schemastore.org/ https://schemas.example/mirror/ \
+      .github/workflows/ci.yml
 
 "format" Validation Options
 ---------------------------

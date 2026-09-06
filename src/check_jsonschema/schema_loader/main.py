@@ -75,6 +75,7 @@ class SchemaLoaderBase:
 class SchemaLoader(SchemaLoaderBase):
     validator_class: type[jsonschema.protocols.Validator] | None = None
     disable_cache: bool = True
+    url_rewrites: tuple[tuple[str, str], ...] = ()
 
     def __init__(
         self,
@@ -83,12 +84,14 @@ class SchemaLoader(SchemaLoaderBase):
         base_uri: str | None = None,
         validator_class: type[jsonschema.protocols.Validator] | None = None,
         disable_cache: bool = True,
+        url_rewrites: tuple[tuple[str, str], ...] = (),
     ) -> None:
         # record input parameters (these are not to be modified)
         self.schemafile = schemafile
         self.disable_cache = disable_cache
         self.base_uri = base_uri
         self.validator_class = validator_class
+        self.url_rewrites = url_rewrites
 
         # if the schema location is a URL, which may include a file:// URL, parse it
         self.url_info = None
@@ -119,7 +122,9 @@ class SchemaLoader(SchemaLoaderBase):
             return LocalSchemaReader(self.schemafile)
 
         if self.url_info.scheme in ("http", "https"):
-            return HttpSchemaReader(self.schemafile, self.disable_cache)
+            return HttpSchemaReader(
+                self.schemafile, self.disable_cache, self.url_rewrites
+            )
         else:
             raise UnsupportedUrlScheme(
                 "check-jsonschema only supports http, https, and local files. "
@@ -162,7 +167,11 @@ class SchemaLoader(SchemaLoaderBase):
         # reference resolution
         # with support for YAML, TOML, and other formats from the parsers
         reference_registry = make_reference_registry(
-            self._parsers, retrieval_uri, schema, self.disable_cache
+            self._parsers,
+            retrieval_uri,
+            schema,
+            self.disable_cache,
+            self.url_rewrites,
         )
 
         if self.validator_class is None:
@@ -241,9 +250,16 @@ def _dialect_of_schema(schema: dict[str, t.Any] | bool) -> str | None:
 
 
 class BuiltinSchemaLoader(SchemaLoader):
-    def __init__(self, schema_name: str, *, base_uri: str | None = None) -> None:
+    def __init__(
+        self,
+        schema_name: str,
+        *,
+        base_uri: str | None = None,
+        url_rewrites: tuple[tuple[str, str], ...] = (),
+    ) -> None:
         self.schema_name = schema_name
         self.base_uri = base_uri
+        self.url_rewrites = url_rewrites
         self._parsers = ParserSet()
 
     def get_schema_retrieval_uri(self) -> str | None:

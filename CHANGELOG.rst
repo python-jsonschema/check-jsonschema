@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Add a repeatable ``--url-rewrite SOURCE_PREFIX TARGET_PREFIX`` option for
+  downloading remote schemas and references through mirrors. (:issue:`680`)
 - Update vendored schemas: bitbucket-pipelines, mergify, renovate (2026-08-16)
 
 0.38.0

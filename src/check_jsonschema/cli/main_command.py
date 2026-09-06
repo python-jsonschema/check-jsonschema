@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import textwrap
 import typing as t
+import urllib.parse
 
 import click
 import jsonschema
@@ -55,6 +56,22 @@ def pretty_helptext_list(values: list[str] | tuple[str, ...]) -> str:
         ),
         "    ",
     )
+
+
+def validate_url_rewrites(
+    ctx: click.Context,
+    param: click.Parameter,
+    value: tuple[tuple[str, str], ...],
+) -> tuple[tuple[str, str], ...]:
+    del ctx
+    for source, target in value:
+        for url in (source, target):
+            parsed = urllib.parse.urlsplit(url)
+            if parsed.scheme not in ("http", "https") or not parsed.netloc:
+                raise click.BadParameter(
+                    "both prefixes must be absolute HTTP(S) URLs", param=param
+                )
+    return value
 
 
 @click.command(
@@ -124,6 +141,17 @@ The '--disable-formats' flag supports the following formats:
     "--no-cache",
     is_flag=True,
     help="Disable schema caching. Always download remote schemas.",
+)
+@click.option(
+    "--url-rewrite",
+    type=(str, str),
+    multiple=True,
+    callback=validate_url_rewrites,
+    metavar="SOURCE_PREFIX TARGET_PREFIX",
+    help=(
+        "Rewrite matching HTTP(S) schema URLs before downloading. May be repeated; "
+        "the longest matching source prefix wins."
+    ),
 )
 @click.option(
     "--cache-filename", help="Deprecated. This option no longer has any effect."
@@ -242,6 +270,7 @@ def main(
     base_uri: str | None,
     check_metaschema: bool,
     no_cache: bool,
+    url_rewrite: tuple[tuple[str, str], ...],
     cache_filename: str | None,
     disable_formats: tuple[list[str], ...],
     format_regex: t.Literal["python", "nonunicode", "default"] | None,
@@ -276,6 +305,7 @@ def main(
         args.disable_formats = normalized_disable_formats
 
     args.disable_cache = no_cache
+    args.url_rewrites = url_rewrite
     args.default_filetype = default_filetype
     args.force_filetype = force_filetype
     args.fill_defaults = fill_defaults
@@ -301,7 +331,11 @@ def build_schema_loader(args: ParseResult) -> SchemaLoaderBase:
         return MetaSchemaLoader(base_uri=args.base_uri)
     elif args.schema_mode == SchemaLoadingMode.builtin:
         assert args.schema_path is not None
-        return BuiltinSchemaLoader(args.schema_path, base_uri=args.base_uri)
+        return BuiltinSchemaLoader(
+            args.schema_path,
+            base_uri=args.base_uri,
+            url_rewrites=args.url_rewrites,
+        )
     elif args.schema_mode == SchemaLoadingMode.filepath:
         assert args.schema_path is not None
         return SchemaLoader(
@@ -309,6 +343,7 @@ def build_schema_loader(args: ParseResult) -> SchemaLoaderBase:
             disable_cache=args.disable_cache,
             base_uri=args.base_uri,
             validator_class=args.validator_class,
+            url_rewrites=args.url_rewrites,
         )
     else:
         raise NotImplementedError("no valid schema option provided")

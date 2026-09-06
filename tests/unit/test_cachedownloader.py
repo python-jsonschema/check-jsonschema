@@ -39,6 +39,32 @@ def test_default_filename_from_uri(default_response):
     assert cd._filename == url_to_cache_filename(DEFAULT_RESPONSE_URL)
 
 
+@pytest.mark.parametrize("disable_cache", (True, False))
+def test_url_rewrite_uses_longest_prefix_and_original_cache_key(
+    disable_cache, get_download_cache_loc
+):
+    original_url = "https://schemas.example/special/schema.json"
+    mirror_url = "https://special-mirror.example/schema.json"
+    responses.add("GET", mirror_url, json={})
+
+    cd = CacheDownloader(
+        "downloads",
+        disable_cache=disable_cache,
+        url_rewrites=(
+            ("https://schemas.example/", "https://mirror.example/"),
+            ("https://schemas.example/special/", "https://special-mirror.example/"),
+        ),
+    ).bind(original_url)
+
+    with cd.open() as fp:
+        assert fp.read() == b"{}"
+
+    assert responses.calls[0].request.url == mirror_url
+    assert cd._filename == url_to_cache_filename(original_url)
+    if not disable_cache:
+        assert get_download_cache_loc(original_url).exists()
+
+
 @pytest.mark.parametrize(
     "sysname, fakeenv, expect_value",
     [

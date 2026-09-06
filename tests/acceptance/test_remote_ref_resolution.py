@@ -35,6 +35,41 @@ CASES = {
 }
 
 
+def test_remote_schema_and_refs_can_use_url_rewrites(run_line, tmp_path):
+    original_root = "https://schemas.example/"
+    mirror_root = "https://mirror.example/schemas/"
+    responses.add(
+        "GET",
+        f"{mirror_root}main.json",
+        json={
+            "$schema": "http://json-schema.org/draft-07/schema",
+            "properties": {"title": {"$ref": "./title.json"}},
+        },
+    )
+    responses.add("GET", f"{mirror_root}title.json", json={"type": "string"})
+    instance_path = tmp_path / "instance.json"
+    instance_path.write_text(json.dumps({"title": "rewritten"}))
+
+    result = run_line(
+        [
+            "check-jsonschema",
+            "--schemafile",
+            f"{original_root}main.json",
+            "--url-rewrite",
+            original_root,
+            mirror_root,
+            "--no-cache",
+            str(instance_path),
+        ]
+    )
+
+    assert result.exit_code == 0, result.output
+    assert [call.request.url for call in responses.calls] == [
+        f"{mirror_root}main.json",
+        f"{mirror_root}title.json",
+    ]
+
+
 @pytest.mark.parametrize("check_passes", (True, False))
 @pytest.mark.parametrize("casename", ("case1", "case2"))
 def test_remote_ref_resolution_simple_case(run_line, check_passes, casename, tmp_path):

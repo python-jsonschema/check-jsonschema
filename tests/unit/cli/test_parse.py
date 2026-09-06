@@ -109,6 +109,58 @@ def test_no_cache_flag_is_true(cli_runner, mock_parse_result, in_tmp_dir, tmp_pa
     assert mock_parse_result.disable_cache is True
 
 
+def test_url_rewrite_options_are_collected(
+    cli_runner, mock_parse_result, in_tmp_dir, tmp_path
+):
+    touch_files(tmp_path, "foo.json")
+    cli_runner.invoke(
+        cli_main,
+        [
+            "--schemafile",
+            "schema.json",
+            "--url-rewrite",
+            "https://schemas.example/",
+            "https://mirror.example/schemas/",
+            "--url-rewrite",
+            "https://schemas.example/special/",
+            "https://special.example/",
+            "foo.json",
+        ],
+    )
+
+    assert mock_parse_result.url_rewrites == (
+        ("https://schemas.example/", "https://mirror.example/schemas/"),
+        ("https://schemas.example/special/", "https://special.example/"),
+    )
+
+
+@pytest.mark.parametrize(
+    "source,target",
+    [
+        ("schemas.example/", "https://mirror.example/"),
+        ("https://schemas.example/", "/local/mirror/"),
+    ],
+)
+def test_url_rewrite_requires_absolute_http_urls(
+    cli_runner, source, target, in_tmp_dir, tmp_path
+):
+    touch_files(tmp_path, "foo.json")
+    result = cli_runner.invoke(
+        cli_main,
+        [
+            "--schemafile",
+            "schema.json",
+            "--url-rewrite",
+            source,
+            target,
+            "foo.json",
+        ],
+    )
+
+    assert result.exit_code == 2
+    assert "both prefixes must be absolute HTTP(S) URLs" in result.stderr
+
+
 @pytest.mark.parametrize(
     "cmd_args",
     [

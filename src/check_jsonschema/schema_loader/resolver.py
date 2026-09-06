@@ -12,7 +12,11 @@ from ..utils import filename2path
 
 
 def make_reference_registry(
-    parsers: ParserSet, retrieval_uri: str | None, schema: dict, disable_cache: bool
+    parsers: ParserSet,
+    retrieval_uri: str | None,
+    schema: dict,
+    disable_cache: bool,
+    url_rewrites: tuple[tuple[str, str], ...] = (),
 ) -> referencing.Registry:
     id_attribute_: t.Any = schema.get("$id")
     if isinstance(id_attribute_, str):
@@ -27,7 +31,7 @@ def make_reference_registry(
     # argument to its implicit initializer
     registry: referencing.Registry = referencing.Registry(  # type: ignore[call-arg]
         retrieve=create_retrieve_callable(
-            parsers, retrieval_uri, id_attribute, disable_cache
+            parsers, retrieval_uri, id_attribute, disable_cache, url_rewrites
         )
     )
 
@@ -44,13 +48,16 @@ def create_retrieve_callable(
     retrieval_uri: str | None,
     id_attribute: str | None,
     disable_cache: bool,
+    url_rewrites: tuple[tuple[str, str], ...] = (),
 ) -> t.Callable[[str], referencing.Resource[Schema]]:
     base_uri = id_attribute
     if base_uri is None:
         base_uri = retrieval_uri
 
     cache = ResourceCache()
-    downloader = CacheDownloader("refs", disable_cache=disable_cache)
+    downloader = CacheDownloader(
+        "refs", disable_cache=disable_cache, url_rewrites=url_rewrites
+    )
 
     def get_local_file(uri: str) -> t.Any:
         path = filename2path(uri)

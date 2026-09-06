@@ -121,9 +121,24 @@ class FailedDownloadError(Exception):
 
 
 class CacheDownloader:
-    def __init__(self, cache_dir: str, *, disable_cache: bool = False) -> None:
+    def __init__(
+        self,
+        cache_dir: str,
+        *,
+        disable_cache: bool = False,
+        url_rewrites: tuple[tuple[str, str], ...] = (),
+    ) -> None:
         self._cache_dir = _resolve_cache_dir(cache_dir)
         self._disable_cache = disable_cache
+        self._url_rewrites = url_rewrites
+
+    def _rewrite_url(self, file_url: str) -> str:
+        matches = (rule for rule in self._url_rewrites if file_url.startswith(rule[0]))
+        rule = max(matches, key=lambda item: len(item[0]), default=None)
+        if rule is None:
+            return file_url
+        source, replacement = rule
+        return f"{replacement}{file_url[len(source) :]}"
 
     def _download(
         self,
@@ -144,7 +159,9 @@ class CacheDownloader:
             # we now know it's not a hit, so validate the content (forces download)
             return response_ok(r)
 
-        response = _get_request(file_url, response_ok=check_response_for_download)
+        response = _get_request(
+            self._rewrite_url(file_url), response_ok=check_response_for_download
+        )
         # check to see if we have a file which matches the connection
         # only download if we do not (cache miss, vs hit)
         if not _cache_hit(dest, response):
@@ -161,7 +178,9 @@ class CacheDownloader:
     ) -> t.Iterator[t.IO[bytes]]:
         if (not self._cache_dir) or self._disable_cache:
             yield io.BytesIO(
-                _get_request(file_url, response_ok=validate_response).content
+                _get_request(
+                    self._rewrite_url(file_url), response_ok=validate_response
+                ).content
             )
         else:
             with open(
