@@ -2,6 +2,14 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "CircleCI Config",
     "definitions": {
+        "stepWhen": {
+            "enum": [
+                "always",
+                "on_success",
+                "on_fail"
+            ],
+            "markdownDescription": "Specify when to enable or disable the step. Takes the following values: `always`, `on_success`, `on_fail` (default: `on_success`)"
+        },
         "jobInvocation": {
             "oneOf": [
                 {
@@ -1196,12 +1204,7 @@
                                             "markdownDescription": "Elapsed time the command can run without output. The string is a decimal with unit suffix, such as \"20m\", \"1.25h\", \"5s\" (default: 10 minutes)"
                                         },
                                         "when": {
-                                            "enum": [
-                                                "always",
-                                                "on_success",
-                                                "on_fail"
-                                            ],
-                                            "markdownDescription": "Specify when to enable or disable the step. Takes the following values: `always`, `on_success`, `on_fail` (default: `on_success`)"
+                                            "$ref": "#/definitions/stepWhen"
                                         },
                                         "max_auto_reruns": {
                                             "type": "integer",
@@ -1263,6 +1266,9 @@
                                             "type": "integer",
                                             "minimum": 1,
                                             "markdownDescription": "The depth of the shallow clone. Only valid when `method` is set to 'shallow'. Must be a positive integer."
+                                        },
+                                        "when": {
+                                            "$ref": "#/definitions/stepWhen"
                                         }
                                     },
                                     "additionalProperties": false
@@ -1309,6 +1315,9 @@
                                                     "type": "string"
                                                 }
                                             ]
+                                        },
+                                        "when": {
+                                            "$ref": "#/definitions/stepWhen"
                                         }
                                     },
                                     "additionalProperties": false
@@ -1339,12 +1348,7 @@
                                     "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: 'Saving Cache')"
                                 },
                                 "when": {
-                                    "enum": [
-                                        "always",
-                                        "on_success",
-                                        "on_fail"
-                                    ],
-                                    "markdownDescription": "Specify when to enable or disable the step. Takes the following values: `always`, `on_success`, `on_fail` (default: `on_success`)"
+                                    "$ref": "#/definitions/stepWhen"
                                 }
                             },
                             "additionalProperties": false
@@ -1365,6 +1369,9 @@
                                         "name": {
                                             "type": "string",
                                             "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: 'Restoring Cache')"
+                                        },
+                                        "when": {
+                                            "$ref": "#/definitions/stepWhen"
                                         }
                                     },
                                     "additionalProperties": false
@@ -1385,6 +1392,9 @@
                                         "name": {
                                             "type": "string",
                                             "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: 'Restoring Cache')"
+                                        },
+                                        "when": {
+                                            "$ref": "#/definitions/stepWhen"
                                         }
                                     },
                                     "additionalProperties": false
@@ -1409,6 +1419,9 @@
                                 "name": {
                                     "type": "string",
                                     "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                },
+                                "when": {
+                                    "$ref": "#/definitions/stepWhen"
                                 }
                             },
                             "additionalProperties": false
@@ -1427,6 +1440,9 @@
                                 "name": {
                                     "type": "string",
                                     "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                },
+                                "when": {
+                                    "$ref": "#/definitions/stepWhen"
                                 }
                             },
                             "additionalProperties": false
@@ -1453,6 +1469,9 @@
                                 "name": {
                                     "type": "string",
                                     "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                },
+                                "when": {
+                                    "$ref": "#/definitions/stepWhen"
                                 }
                             },
                             "additionalProperties": false
@@ -1471,6 +1490,9 @@
                                 "name": {
                                     "type": "string",
                                     "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                },
+                                "when": {
+                                    "$ref": "#/definitions/stepWhen"
                                 }
                             },
                             "additionalProperties": false
@@ -1493,6 +1515,9 @@
                                                 "type": "string"
                                             },
                                             "markdownDescription": "List of fingerprints corresponding to the keys to be added"
+                                        },
+                                        "when": {
+                                            "$ref": "#/definitions/stepWhen"
                                         }
                                     },
                                     "additionalProperties": false
@@ -1865,7 +1890,9 @@
                                             "windows.gpu.nvidia.medium",
                                             "m4pro.medium",
                                             "m4pro.large",
+                                            "small.gen2",
                                             "medium.gen2",
+                                            "medium+.gen2",
                                             "large.gen2",
                                             "xlarge.gen2",
                                             "2xlarge.gen2",

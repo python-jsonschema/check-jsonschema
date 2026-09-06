@@ -195,8 +195,8 @@
         },
         "commit_verification": {
           "type": "string",
-          "description": "Verify the checked-out commit is on the expected branch; strict fails the job on a definitive mismatch, warn only logs",
-          "enum": ["strict", "warn"]
+          "description": "Verify the checked-out commit is on the expected branch; strict fails the job on a definitive mismatch, warn only logs (Agent v3 only), and off disables verification (Agent v4 only)",
+          "enum": ["strict", "warn", "off"]
         },
         "flags": {
           "type": "object",
