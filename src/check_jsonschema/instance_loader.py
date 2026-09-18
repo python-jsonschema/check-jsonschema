@@ -3,8 +3,6 @@ from __future__ import annotations
 import io
 import typing as t
 
-from check_jsonschema.cli.param_types import CustomLazyFile
-
 from .parsers import ParseError, ParserSet
 from .transforms import Transform
 
@@ -12,7 +10,7 @@ from .transforms import Transform
 class InstanceLoader:
     def __init__(
         self,
-        files: t.Sequence[t.IO[bytes] | CustomLazyFile],
+        files: t.Sequence[t.BinaryIO],
         default_filetype: str = "json",
         force_filetype: str | None = None,
         data_transform: Transform | None = None,
@@ -41,14 +39,9 @@ class InstanceLoader:
                 raise ValueError(f"File {file} has no name attribute")
 
             try:
-                if isinstance(file, CustomLazyFile):
-                    stream: t.IO[bytes] = t.cast(t.IO[bytes], file.open())
-                else:
-                    stream = file
-
                 try:
                     data: t.Any = self._parsers.parse_data_with_path(
-                        stream, name, self._default_filetype, self._force_filetype
+                        file, name, self._default_filetype, self._force_filetype
                     )
                 except ParseError as err:
                     data = err
