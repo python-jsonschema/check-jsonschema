@@ -33,15 +33,15 @@ repos:
   hooks:
     - id: flake8
       additional_dependencies:
-        - 'flake8-bugbear==25.11.29'
+        - 'flake8-bugbear==26.9.9'
         - 'flake8-typing-as-t==1.1.0'
         - 'flake8-comprehensions==3.17.0'
 - repo: https://github.com/sirosen/slyp
-  rev: 0.9.0
+  rev: 0.10.3
   hooks:
     - id: slyp
 - repo: https://github.com/PyCQA/isort
-  rev: 9.0.0b5
+  rev: 9.0.1
   hooks:
     - id: isort
 - repo: https://github.com/asottile/pyupgrade
