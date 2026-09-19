@@ -1375,6 +1375,7 @@
             }
           ],
           "default": null,
+          "description": "Mergify can impersonate a GitHub user to edit a pull request. If no `bot_account` is set, Mergify will edit the pull request itself.",
           "title": "Bot Account"
         },
         "draft": {
@@ -1892,7 +1893,7 @@
         },
         "queue_controls_comment": {
           "default": true,
-          "description": "When enabled, Mergify renders task-list checkboxes in the Merge Queue status comment so developers can queue or requeue a pull request by clicking a box instead of typing `@mergifyio queue`.",
+          "description": "When enabled, Mergify renders task-list checkboxes a developer can tick instead of typing `@mergifyio queue`. The two controls live in different comments.\n- `Queue this pull request`: a comment of its own, posted before the pull request is queued.\n- `Requeue this pull request`: part of the Merge Queue status comment, after the pull request has left the queue, unless the queue merged it.\n",
           "title": "Queue Controls Comment",
           "type": "boolean"
         }
@@ -2626,7 +2627,8 @@
                 "GITHUB_STACKED_PULL_REQUEST_MERGE_UNSUPPORTED",
                 "BATCH_SCOPES_CHANGED",
                 "BATCH_AHEAD_BRANCH_EDITED",
-                "CHECKS_INTERRUPTED"
+                "CHECKS_INTERRUPTED",
+                "GITHUB_WORKFLOWS_PERMISSION_MISSING"
               ],
               "type": "string"
             },
@@ -2767,6 +2769,9 @@
             },
             {
               "description": "A required check was cancelled before producing a result, so the queue conditions cannot be satisfied. The check says nothing about the pull request; requeueing runs it again."
+            },
+            {
+              "description": "GitHub refused to write the pull request's changes under `.github/workflows/` because Mergify lacks the `workflows` permission."
             }
           ],
           "x-mergify-has-data-type": true,
@@ -3234,7 +3239,7 @@
           ]
         },
         "deployment-success": {
-          "description": "The list of deployments that successfully passed for the pull request.",
+          "description": "The list of environments successfully deployed for the pull request. A deployment published by a GitHub App is also matched by its qualified `@<github-app-slug>/<environment>` form.",
           "items": {
             "type": "string"
           },
@@ -3260,7 +3265,7 @@
           ]
         },
         "deployment-failure": {
-          "description": "The list of deployments that failed for the pull request.",
+          "description": "The list of environments whose deployment failed for the pull request. A deployment published by a GitHub App is also matched by its qualified `@<github-app-slug>/<environment>` form.",
           "items": {
             "type": "string"
           },
@@ -4157,7 +4162,7 @@
         },
         "branch_protection_injection_mode": {
           "default": "queue",
-          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n\nTo skip injection for a specific ruleset, see [bypass actors and injection](https://docs.mergify.com/merge-queue/github-rulesets/#bypass-actors-and-injection).",
+          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n- `none` will not inject them at all, and requires a `merge_bot_account` able to satisfy the protections itself.",
           "enum": [
             "queue",
             "merge",
@@ -4200,7 +4205,7 @@
             }
           ],
           "default": "auto",
-          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Defaults to `auto`, which lets Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin); `auto` applies no timeout until enough history has been gathered. Set to `null` to disable the checks timeout entirely.",
+          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Defaults to `auto`, which lets Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin). Runs identified as retry reruns or bisection runs are excluded from the calibration; runs whose provenance predates this tracking are kept for compatibility. `auto` applies no timeout until enough history has been gathered. Set to `null` to disable the checks timeout entirely.",
           "title": "Checks Timeout"
         },
         "max_checks_retries": {
@@ -4254,8 +4259,12 @@
           "type": "string"
         },
         "allow_queue_branch_edit": {
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`allow_queue_branch_edit` is deprecated and will be removed; remove it from your configuration. Once it is gone, an edited batch branch dequeues the pull requests it carries and reports the edit as a failure, which is what Mergify does today for a queue that leaves it unset. Move the work now done on a batch branch onto the pull requests themselves. It is removed after 2026-12-31.",
+            "deprecated_summary_saas_mode": "`allow_queue_branch_edit` is deprecated and will be removed; remove it from your configuration. Once it is gone, an edited batch branch dequeues the pull requests it carries and reports the edit as a failure, which is what Mergify does today for a queue that leaves it unset. Move the work now done on a batch branch onto the pull requests themselves. It is removed after 2026-12-31."
+          },
           "default": false,
-          "description": "When creating a branch for a queue, if the commits of this branch are edited by an entity external to Mergify, Mergify dequeues all pull requests embarked in the branch and report the issue as a failure. If set to `true`, Mergify will allow such modifications and trust the content of the branch. Make sure only Mergify and your external application are allowed to edit these branches.\n\nThis option requires `merge_method` to be `merge-batch` or `fast-forward`. Those two merge the batch branch itself, so a commit pushed to it is part of what lands on the base branch; `merge`, `squash` and `rebase` merge each pull request at its own head, which never includes the edit.\n\nEnabling it therefore means the merged content is the batch branch, including commits that were never reviewed as part of any pull request. That is the contract of this option: it exists for batch-level work (a conflict resolution, a migration reorder, a lockfile regeneration) that belongs to no single pull request.\n\nNote also that under these two merge methods Mergify does not merge the pull requests one by one: GitHub marks each embarked pull request as merged only when its head commit is reachable from the new base branch tip, so a pull request whose head no longer matches what was embarked is not shown as merged even though its content landed.",
+          "description": "Deprecated: this option is being removed after 2026-12-31, and there is no replacement. Move the work now done on a batch branch onto the pull requests themselves. Once the option is gone, an edited batch branch dequeues the pull requests it carries and reports the edit as a failure, which is the behaviour you get today by leaving this unset.\n\nWhen creating a branch for a queue, if the commits of this branch are edited by an entity external to Mergify, Mergify dequeues all pull requests embarked in the branch and report the issue as a failure. If set to `true`, Mergify will allow such modifications and trust the content of the branch. Make sure only Mergify and your external application are allowed to edit these branches.\n\nThis option requires `merge_method` to be `merge-batch` or `fast-forward`. Those two merge the batch branch itself, so a commit pushed to it is part of what lands on the base branch; `merge`, `squash` and `rebase` merge each pull request at its own head, which never includes the edit.\n\nEnabling it therefore means the merged content is the batch branch, including commits that were never reviewed as part of any pull request. That is the contract of this option: it exists for batch-level work (a conflict resolution, a migration reorder, a lockfile regeneration) that belongs to no single pull request.\n\nNote also that under these two merge methods Mergify does not merge the pull requests one by one: GitHub marks each embarked pull request as merged only when its head commit is reachable from the new base branch tip, so a pull request whose head no longer matches what was embarked is not shown as merged even though its content landed.",
           "title": "Allow Queue Branch Edit",
           "type": "boolean"
         },
@@ -4293,9 +4302,13 @@
           "title": "Merge Method"
         },
         "autosquash": {
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration.",
+            "deprecated_summary_saas_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration."
+          },
           "default": false,
           "deprecated": true,
-          "description": "This option is relevant only if you do in place checks and if you use the `rebase` option of the update_method. It will automatically squash your commits beginning by `squash!`, `fixup!` or `amend!`, just like the option with the same name when doing a `git rebase`.",
+          "description": "Deprecated: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. The option is still accepted so configurations that set it keep validating; remove it from your configuration.",
           "title": "Autosquash",
           "type": "boolean"
         },
@@ -4320,7 +4333,7 @@
             }
           ],
           "default": null,
-          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase`.",
+          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch. When the queue\n  runs its checks in place, a pull request coming from a fork cannot be rebased\n  on behalf of an `update_bot_account` and is refused -- see that option for\n  the remedy. Without an\n  `update_bot_account`, the rebase goes through GitHub's API as Mergify, which\n  works on a fork -- except for one that changes GitHub Actions workflows or\n  was opened by another App's bot, which GitHub lets Mergify queue in place\n  only *with* an `update_bot_account`, or one that changes more files than\n  GitHub lists, which Mergify cannot rule out as a workflow change. Such a\n  queue has to run its checks on a draft pull request instead.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase`.",
           "title": "Update Method"
         },
         "commit_message_template": {
@@ -4397,7 +4410,7 @@
             }
           ],
           "default": null,
-          "description": "For certain actions, such as rebasing branches, Mergify has to impersonate a GitHub user. You can specify the account to use with this option. If no `update_bot_account` is set, Mergify uses the pull request author instead. The user account **must** have already been logged in Mergify dashboard once. This option overrides the value defined in the queue rules section of the configuration.",
+          "description": "For certain actions, such as rebasing branches, Mergify has to impersonate a GitHub user. You can specify the account to use with this option. With no `update_bot_account`, the update goes through GitHub's API as Mergify and impersonates nobody. The user account **must** have already been logged in Mergify dashboard once. This option overrides the value defined in the queue rules section of the configuration.\n\n**Warning:** With `update_method: rebase` and checks run in place, a pull request coming from a fork cannot be rebased on behalf of this account: GitHub refuses an OAuth token on its rebase API for a fork, so it would mean impersonating the account to force-push the contributor's branch. Those pull requests are refused when they are queued. Unset this option to rebase them through GitHub's API as Mergify instead -- except for a fork pull request that changes GitHub Actions workflows or was opened by another App's bot, which GitHub lets Mergify queue in place only *with* an `update_bot_account`, or that changes more files than GitHub lists, which Mergify cannot rule out as a workflow change; such a queue has to run its checks on a draft pull request. Or set `update_method: merge` on a queue that does not merge with `fast-forward`: such a queue lands by moving the base branch onto this one, so a merge commit is what it exists to keep off it, and it has to run its checks on a draft pull request instead.",
           "title": "Update Bot Account"
         },
         "name": {
@@ -4425,7 +4438,7 @@
         },
         "branch_protection_injection_mode": {
           "default": "queue",
-          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n\nTo skip injection for a specific ruleset, see [bypass actors and injection](https://docs.mergify.com/merge-queue/github-rulesets/#bypass-actors-and-injection).",
+          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n- `none` will not inject them at all, and requires a `merge_bot_account` able to satisfy the protections itself.",
           "enum": [
             "queue",
             "merge",
@@ -4468,7 +4481,7 @@
             }
           ],
           "default": "auto",
-          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Defaults to `auto`, which lets Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin); `auto` applies no timeout until enough history has been gathered. Set to `null` to disable the checks timeout entirely.",
+          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds. Defaults to `auto`, which lets Mergify compute the timeout from the recent CI runtime of this queue (the 95th-percentile runtime with a safety margin). Runs identified as retry reruns or bisection runs are excluded from the calibration; runs whose provenance predates this tracking are kept for compatibility. `auto` applies no timeout until enough history has been gathered. Set to `null` to disable the checks timeout entirely.",
           "title": "Checks Timeout"
         },
         "max_checks_retries": {
@@ -4522,8 +4535,12 @@
           "type": "string"
         },
         "allow_queue_branch_edit": {
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`allow_queue_branch_edit` is deprecated and will be removed; remove it from your configuration. Once it is gone, an edited batch branch dequeues the pull requests it carries and reports the edit as a failure, which is what Mergify does today for a queue that leaves it unset. Move the work now done on a batch branch onto the pull requests themselves. It is removed after 2026-12-31.",
+            "deprecated_summary_saas_mode": "`allow_queue_branch_edit` is deprecated and will be removed; remove it from your configuration. Once it is gone, an edited batch branch dequeues the pull requests it carries and reports the edit as a failure, which is what Mergify does today for a queue that leaves it unset. Move the work now done on a batch branch onto the pull requests themselves. It is removed after 2026-12-31."
+          },
           "default": false,
-          "description": "When creating a branch for a queue, if the commits of this branch are edited by an entity external to Mergify, Mergify dequeues all pull requests embarked in the branch and report the issue as a failure. If set to `true`, Mergify will allow such modifications and trust the content of the branch. Make sure only Mergify and your external application are allowed to edit these branches.\n\nThis option requires `merge_method` to be `merge-batch` or `fast-forward`. Those two merge the batch branch itself, so a commit pushed to it is part of what lands on the base branch; `merge`, `squash` and `rebase` merge each pull request at its own head, which never includes the edit.\n\nEnabling it therefore means the merged content is the batch branch, including commits that were never reviewed as part of any pull request. That is the contract of this option: it exists for batch-level work (a conflict resolution, a migration reorder, a lockfile regeneration) that belongs to no single pull request.\n\nNote also that under these two merge methods Mergify does not merge the pull requests one by one: GitHub marks each embarked pull request as merged only when its head commit is reachable from the new base branch tip, so a pull request whose head no longer matches what was embarked is not shown as merged even though its content landed.",
+          "description": "Deprecated: this option is being removed after 2026-12-31, and there is no replacement. Move the work now done on a batch branch onto the pull requests themselves. Once the option is gone, an edited batch branch dequeues the pull requests it carries and reports the edit as a failure, which is the behaviour you get today by leaving this unset.\n\nWhen creating a branch for a queue, if the commits of this branch are edited by an entity external to Mergify, Mergify dequeues all pull requests embarked in the branch and report the issue as a failure. If set to `true`, Mergify will allow such modifications and trust the content of the branch. Make sure only Mergify and your external application are allowed to edit these branches.\n\nThis option requires `merge_method` to be `merge-batch` or `fast-forward`. Those two merge the batch branch itself, so a commit pushed to it is part of what lands on the base branch; `merge`, `squash` and `rebase` merge each pull request at its own head, which never includes the edit.\n\nEnabling it therefore means the merged content is the batch branch, including commits that were never reviewed as part of any pull request. That is the contract of this option: it exists for batch-level work (a conflict resolution, a migration reorder, a lockfile regeneration) that belongs to no single pull request.\n\nNote also that under these two merge methods Mergify does not merge the pull requests one by one: GitHub marks each embarked pull request as merged only when its head commit is reachable from the new base branch tip, so a pull request whose head no longer matches what was embarked is not shown as merged even though its content landed.",
           "title": "Allow Queue Branch Edit",
           "type": "boolean"
         },
@@ -4561,9 +4578,13 @@
           "title": "Merge Method"
         },
         "autosquash": {
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration.",
+            "deprecated_summary_saas_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration."
+          },
           "default": false,
           "deprecated": true,
-          "description": "This option is relevant only if you do in place checks and if you use the `rebase` option of the update_method. It will automatically squash your commits beginning by `squash!`, `fixup!` or `amend!`, just like the option with the same name when doing a `git rebase`.",
+          "description": "Deprecated: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. The option is still accepted so configurations that set it keep validating; remove it from your configuration.",
           "title": "Autosquash",
           "type": "boolean"
         },
@@ -4588,7 +4609,7 @@
             }
           ],
           "default": null,
-          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase`.",
+          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch. When the queue\n  runs its checks in place, a pull request coming from a fork cannot be rebased\n  on behalf of an `update_bot_account` and is refused -- see that option for\n  the remedy. Without an\n  `update_bot_account`, the rebase goes through GitHub's API as Mergify, which\n  works on a fork -- except for one that changes GitHub Actions workflows or\n  was opened by another App's bot, which GitHub lets Mergify queue in place\n  only *with* an `update_bot_account`, or one that changes more files than\n  GitHub lists, which Mergify cannot rule out as a workflow change. Such a\n  queue has to run its checks on a draft pull request instead.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase`.",
           "title": "Update Method"
         },
         "commit_message_template": {
@@ -4665,7 +4686,7 @@
             }
           ],
           "default": null,
-          "description": "For certain actions, such as rebasing branches, Mergify has to impersonate a GitHub user. You can specify the account to use with this option. If no `update_bot_account` is set, Mergify uses the pull request author instead. The user account **must** have already been logged in Mergify dashboard once. This option overrides the value defined in the queue rules section of the configuration.",
+          "description": "For certain actions, such as rebasing branches, Mergify has to impersonate a GitHub user. You can specify the account to use with this option. With no `update_bot_account`, the update goes through GitHub's API as Mergify and impersonates nobody. The user account **must** have already been logged in Mergify dashboard once. This option overrides the value defined in the queue rules section of the configuration.\n\n**Warning:** With `update_method: rebase` and checks run in place, a pull request coming from a fork cannot be rebased on behalf of this account: GitHub refuses an OAuth token on its rebase API for a fork, so it would mean impersonating the account to force-push the contributor's branch. Those pull requests are refused when they are queued. Unset this option to rebase them through GitHub's API as Mergify instead -- except for a fork pull request that changes GitHub Actions workflows or was opened by another App's bot, which GitHub lets Mergify queue in place only *with* an `update_bot_account`, or that changes more files than GitHub lists, which Mergify cannot rule out as a workflow change; such a queue has to run its checks on a draft pull request. Or set `update_method: merge` on a queue that does not merge with `fast-forward`: such a queue lands by moving the base branch onto this one, so a merge commit is what it exists to keep off it, and it has to run its checks on a draft pull request instead.",
           "title": "Update Bot Account"
         }
       },
@@ -4702,13 +4723,17 @@
             }
           ],
           "default": null,
-          "description": "To rebase, Mergify needs to impersonate a GitHub user. You can specify the account to use with this option. If no `bot_account` is set, Mergify picks the pull request author. The user account must have already been logged in Mergify dashboard once.\n\n**Warning:** Due to security on GitHub side, rebase cannot be performed on pull requests created by bot accounts without explicitly setting the `bot_account` impersonation option.",
+          "description": "To rebase, Mergify needs to impersonate a GitHub user. You can specify the account to use with this option. If no `bot_account` is set, Mergify picks the pull request author, or the user who sent the `@mergifyio rebase` command. The user account must have already been logged in Mergify dashboard once.\n\n**Warning:** Because of GitHub's security restrictions, Mergify cannot impersonate an account owned by another GitHub App. A rebase therefore fails whenever the account it falls back to is a bot, either because the pull request was opened by one or because one sent the command, unless `bot_account` names a user account.\n\n**Warning:** A pull request coming from a fork cannot be rebased, whether or not this option is set: rebasing one means impersonating a GitHub user to force-push the contributor's branch. Use the `update` action or the `@mergifyio update` command on those -- except where Mergify cannot write the head branch at all, such as a deleted fork, where `update` is refused too and the check run says what is wrong.",
           "title": "Bot Account"
         },
         "autosquash": {
+          "configuration_deprecated_attribute": {
+            "deprecated_summary_ghes_mode": "`autosquash` has been removed and this option is now ignored: the `rebase` action no longer squashes commits beginning with `squash!`, `fixup!` or `amend!`. Remove it from your configuration.",
+            "deprecated_summary_saas_mode": "`autosquash` has been removed and this option is now ignored: the `rebase` action no longer squashes commits beginning with `squash!`, `fixup!` or `amend!`. Remove it from your configuration."
+          },
           "default": false,
           "deprecated": true,
-          "description": "When set to `true`, commits starting with `fixup!`, `squash!` and `amend!` are squashed during the rebase.",
+          "description": "Deprecated: the `rebase` action no longer squashes commits beginning with `squash!`, `fixup!` or `amend!`. The option is still accepted so configurations that set it keep validating; remove it from your configuration.",
           "title": "Autosquash",
           "type": "boolean"
         }
@@ -4762,7 +4787,7 @@
             }
           ],
           "default": null,
-          "description": "Pick random users and teams from the provided lists. When `random_count` is specified, `users` and `teams` can be a dictionary where the key is the login and the value is the weight to use. Weight must be between 1 and 15 included.",
+          "description": "Pick random users and teams from the provided lists. When `random_count` is specified, `users` and `teams` can be a dictionary where the key is the login and the value is the weight to use. Weight must be between 1 and 65535 included.",
           "title": "Random Count"
         },
         "users": {
@@ -5069,7 +5094,7 @@
             }
           ],
           "default": null,
-          "description": "Mergify can impersonate a GitHub user to squash a pull request. If no `bot_account` is set, Mergify will squash the pull request itself",
+          "description": "Mergify can impersonate a GitHub user to squash a pull request. If no `bot_account` is set, Mergify picks the pull request author, or the user who sent the `@mergifyio squash` command. The user account must have already been logged in Mergify dashboard once.\n\n**Warning:** Because of GitHub's security restrictions, Mergify cannot impersonate an account owned by another GitHub App. A squash therefore fails whenever the account it falls back to is a bot, either because the pull request was opened by one or because one sent the command, unless `bot_account` names a user account.",
           "title": "Bot Account"
         },
         "commit_message": {

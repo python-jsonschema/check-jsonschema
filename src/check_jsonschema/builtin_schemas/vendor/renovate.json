@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 44.30.3 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 44.103.2 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "44.30.3",
+  "x-renovate-version": "44.103.2",
   "allowComments": true,
   "type": "object",
   "definitions": {
@@ -86,6 +86,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -124,6 +139,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -168,6 +198,77 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "managerFilePatterns": {
+                "$ref": "#/definitions/managerFilePatterns"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "apm": {
+      "description": "Configuration object for the apm manager\nSee also: https://docs.renovatebot.com/configuration-options/#apm",
+      "markdownDescription": "Configuration object for the apm manager\n\nSee also: [apm](https://docs.renovatebot.com/configuration-options/#apm)",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "/(^|/)apm\\.ya?ml$/"
+        ]
+      },
+      "$ref": "#",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A custom description for this configuration object"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -204,6 +305,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -260,6 +376,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -413,6 +544,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -474,6 +620,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -513,6 +674,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -559,6 +735,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -597,6 +788,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -640,6 +846,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -696,6 +917,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -737,6 +973,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -775,6 +1026,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -861,6 +1127,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -901,6 +1182,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -968,6 +1264,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "bumpType": {
                 "$ref": "#/definitions/bumpType"
               },
@@ -1025,6 +1336,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -1064,6 +1390,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -1109,6 +1450,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -1147,6 +1503,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -1192,6 +1563,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -1229,6 +1615,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -1275,6 +1676,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -1336,6 +1752,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -1375,6 +1806,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -1502,6 +1948,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -1554,6 +2015,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -1601,6 +2077,10 @@
       },
       "additionalProperties": false,
       "properties": {
+        "apm": {
+          "type": "string",
+          "description": "A constraint for the `apm` Containerbase tool"
+        },
         "bazelisk": {
           "type": "string",
           "description": "A constraint for the `bazelisk` Containerbase tool"
@@ -1925,6 +2405,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -1963,6 +2458,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -2005,6 +2515,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -2043,6 +2568,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -2088,6 +2628,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "defaultRegistryUrlTemplate": {
                 "$ref": "#/definitions/defaultRegistryUrlTemplate"
               },
@@ -2123,6 +2678,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -2276,6 +2846,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -2401,6 +2986,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -2457,6 +3057,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -2475,7 +3090,8 @@
       "default": {
         "managerFilePatterns": [
           "/^.devcontainer/devcontainer.json$/",
-          "/^.devcontainer.json$/"
+          "/^.devcontainer.json$/",
+          "/^.devcontainer/[^/]+/devcontainer.json$/"
         ]
       },
       "$ref": "#",
@@ -2496,6 +3112,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -2537,6 +3168,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -2584,6 +3230,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -2623,6 +3284,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -2670,6 +3346,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -2864,6 +3555,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -2902,6 +3608,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -2980,6 +3701,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3020,6 +3756,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -3084,6 +3835,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3122,6 +3888,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -3166,6 +3947,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3202,6 +3998,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -3244,6 +4055,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -3300,6 +4126,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3349,6 +4190,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3388,6 +4244,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -3476,6 +4347,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3527,6 +4413,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3567,6 +4468,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -3616,6 +4532,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3652,6 +4583,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -3700,6 +4646,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3745,6 +4706,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3783,6 +4759,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -3828,6 +4819,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -3860,6 +4866,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -3965,6 +4986,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -4101,6 +5137,11 @@
       "default": {},
       "additionalProperties": false,
       "properties": {
+        "apm": {
+          "type": "object",
+          "description": "Install the `apm` Containerbase tool",
+          "additionalProperties": false
+        },
         "bazelisk": {
           "type": "object",
           "description": "Install the `bazelisk` Containerbase tool",
@@ -4380,6 +5421,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -4428,6 +5484,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -4493,6 +5564,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -4529,6 +5615,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -4571,6 +5672,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -4621,6 +5737,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -4675,6 +5806,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               }
@@ -4704,6 +5850,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -4741,6 +5902,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -5109,6 +6285,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -5148,6 +6339,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -5210,6 +6416,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -5255,6 +6476,12 @@
       ],
       "default": "timestamp-required"
     },
+    "minimumReleaseAgeBuffer": {
+      "description": "Extra time added to `minimumReleaseAge` before an update is considered stable.\nSee also: https://docs.renovatebot.com/configuration-options/#minimumreleaseagebuffer",
+      "markdownDescription": "Extra time added to `minimumReleaseAge` before an update is considered stable.\n\nSee also: [minimumReleaseAgeBuffer](https://docs.renovatebot.com/configuration-options/#minimumreleaseagebuffer)",
+      "type": "string",
+      "default": "30 minutes"
+    },
     "minor": {
       "description": "Configuration to apply when an update type is `minor`.\nSee also: https://docs.renovatebot.com/configuration-options/#minor",
       "markdownDescription": "Configuration to apply when an update type is `minor`.\n\nSee also: [minor](https://docs.renovatebot.com/configuration-options/#minor)",
@@ -5278,6 +6505,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -5316,6 +6558,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -5366,6 +6623,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -5404,6 +6676,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -5479,6 +6766,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -5523,6 +6825,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -5574,6 +6891,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -5646,6 +6978,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -5689,6 +7036,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -5725,6 +7087,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -5769,6 +7146,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -5795,6 +7187,21 @@
       "description": "Override the depName value.\nSee also: https://docs.renovatebot.com/configuration-options/#packagerulesoverridedepname",
       "markdownDescription": "Override the depName value.\n\nSee also: [overrideDepName](https://docs.renovatebot.com/configuration-options/#packagerulesoverridedepname)",
       "type": "string"
+    },
+    "overrideDescription": {
+      "description": "Description which replaces the descriptions of any presets which this config extends.\nSee also: https://docs.renovatebot.com/configuration-options/#overridedescription",
+      "markdownDescription": "Description which replaces the descriptions of any presets which this config extends.\n\nSee also: [overrideDescription](https://docs.renovatebot.com/configuration-options/#overridedescription)",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
     },
     "overridePackageName": {
       "description": "Override the packageName value.\nSee also: https://docs.renovatebot.com/configuration-options/#packagerulesoverridepackagename",
@@ -5827,6 +7234,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -5957,6 +7379,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               }
@@ -5992,6 +7429,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6031,6 +7483,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6080,6 +7547,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               }
@@ -6119,6 +7601,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6169,6 +7666,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -6207,6 +7719,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6251,6 +7778,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -6289,6 +7831,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6331,6 +7888,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6389,6 +7961,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6462,6 +8049,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6653,6 +8255,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -6697,6 +8314,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6753,6 +8385,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -6791,6 +8438,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -6837,6 +8499,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -6880,6 +8557,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -6912,8 +8604,8 @@
       "type": "boolean"
     },
     "rebaseLabel": {
-      "description": "Label to request a rebase from Renovate bot.\nSee also: https://docs.renovatebot.com/configuration-options/#rebaselabel",
-      "markdownDescription": "Label to request a rebase from Renovate bot.\n\nSee also: [rebaseLabel](https://docs.renovatebot.com/configuration-options/#rebaselabel)",
+      "description": "Label to request a rebase from Renovate.\nSee also: https://docs.renovatebot.com/configuration-options/#rebaselabel",
+      "markdownDescription": "Label to request a rebase from Renovate.\n\nSee also: [rebaseLabel](https://docs.renovatebot.com/configuration-options/#rebaselabel)",
       "type": "string",
       "default": "rebase"
     },
@@ -7019,6 +8711,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7060,6 +8767,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -7161,6 +8883,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               }
@@ -7206,6 +8943,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7248,6 +9000,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7287,6 +9054,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -7335,6 +9117,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7373,6 +9170,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -7483,6 +9295,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7536,6 +9363,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -7638,6 +9480,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7681,6 +9538,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7717,6 +9589,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -7764,6 +9651,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7807,6 +9709,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7846,6 +9763,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -7892,6 +9824,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -7932,6 +9879,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -7982,6 +9944,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -8042,6 +10019,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -8083,6 +10075,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -8121,6 +10128,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -8205,6 +10227,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -8244,6 +10281,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -8351,7 +10403,8 @@
         "commitMessageSuffix": "[SECURITY]",
         "branchTopic": "{{{datasource}}}-{{{depNameSanitized}}}-vulnerability",
         "prCreation": "immediate",
-        "vulnerabilityFixStrategy": "lowest"
+        "vulnerabilityFixStrategy": "lowest",
+        "prConcurrentLimit": 0
       },
       "$ref": "#",
       "items": {
@@ -8371,6 +10424,21 @@
                   {
                     "type": "string",
                     "description": "A custom description for this configuration object"
+                  }
+                ]
+              },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
                   }
                 ]
               },
@@ -8425,6 +10493,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -8472,6 +10555,21 @@
                   }
                 ]
               },
+              "overrideDescription": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Description which replaces the descriptions of any presets which this config extends"
+                    }
+                  },
+                  {
+                    "type": "string",
+                    "description": "Description which replaces the descriptions of any presets which this config extends"
+                  }
+                ]
+              },
               "enabled": {
                 "$ref": "#/definitions/enabled"
               },
@@ -8505,6 +10603,9 @@
     },
     "ant": {
       "$ref": "#/definitions/ant"
+    },
+    "apm": {
+      "$ref": "#/definitions/apm"
     },
     "argocd": {
       "$ref": "#/definitions/argocd"
@@ -9025,6 +11126,9 @@
     "minimumReleaseAgeBehaviour": {
       "$ref": "#/definitions/minimumReleaseAgeBehaviour"
     },
+    "minimumReleaseAgeBuffer": {
+      "$ref": "#/definitions/minimumReleaseAgeBuffer"
+    },
     "minor": {
       "$ref": "#/definitions/minor"
     },
@@ -9072,6 +11176,9 @@
     },
     "osvVulnerabilityAlerts": {
       "$ref": "#/definitions/osvVulnerabilityAlerts"
+    },
+    "overrideDescription": {
+      "$ref": "#/definitions/overrideDescription"
     },
     "packageRules": {
       "$ref": "#/definitions/packageRules"
@@ -9421,6 +11528,11 @@
       },
       {
         "required": [
+          "internalHostAccess"
+        ]
+      },
+      {
+        "required": [
           "useCloudMetadataServices"
         ]
       },
@@ -9671,6 +11783,11 @@
       },
       {
         "required": [
+          "inheritConfigTrusted"
+        ]
+      },
+      {
+        "required": [
           "requireConfig"
         ]
       },
@@ -9811,12 +11928,22 @@
       },
       {
         "required": [
+          "exitCodeForErrors"
+        ]
+      },
+      {
+        "required": [
           "processEnv"
         ]
       },
       {
         "required": [
           "bbUseDevelopmentBranch"
+        ]
+      },
+      {
+        "required": [
+          "allowInternal"
         ]
       },
       {
