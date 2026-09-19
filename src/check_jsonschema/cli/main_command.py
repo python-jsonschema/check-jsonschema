@@ -21,7 +21,7 @@ from ..schema_loader import (
     SchemaLoaderBase,
 )
 from ..transforms import TRANSFORM_LIBRARY
-from .param_types import CommaDelimitedList, LazyBinaryReadFile, ValidatorClassName
+from .param_types import BinaryFileInputParam, CommaDelimitedList, ValidatorClassName
 from .parse_result import ParseResult, SchemaLoadingMode
 
 BUILTIN_SCHEMA_NAMES = [f"vendor.{k}" for k in SCHEMA_CATALOG.keys()] + [
@@ -119,11 +119,13 @@ The '--disable-formats' flag supports the following formats:
         "Instead of validating the instances against a schema, treat each file as a "
         "schema and validate them under their matching metaschemas."
     ),
+    default=False,
 )
 @click.option(
     "--no-cache",
     is_flag=True,
     help="Disable schema caching. Always download remote schemas.",
+    default=False,
 )
 @click.option(
     "--cache-filename", help="Deprecated. This option no longer has any effect."
@@ -191,6 +193,7 @@ The '--disable-formats' flag supports the following formats:
         "'--validator-class'"
     ),
     is_flag=True,
+    default=False,
 )
 @click.option(
     "--validator-class",
@@ -232,9 +235,7 @@ The '--disable-formats' flag supports the following formats:
     help="Reduce output verbosity",
     count=True,
 )
-@click.argument(
-    "instancefiles", required=True, nargs=-1, type=LazyBinaryReadFile("rb", lazy=True)
-)
+@click.argument("instancefiles", required=True, nargs=-1, type=BinaryFileInputParam())
 def main(
     *,
     schemafile: str | None,
@@ -255,7 +256,7 @@ def main(
     output_format: t.Literal["text", "json"],
     verbose: int,
     quiet: int,
-    instancefiles: tuple[t.IO[bytes], ...],
+    instancefiles: tuple[t.BinaryIO, ...],
 ) -> None:
     args = ParseResult()
 

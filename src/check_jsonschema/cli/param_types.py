@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import functools
 import importlib
-import os
 import re
-import stat
 import typing as t
 
 import click
 import jsonschema
-from click._compat import open_stream
+from click.shell_completion import CompletionItem
+
+from check_jsonschema.file_wrapper import BinaryFileInput
 
 C = t.TypeVar("C", bound=t.Callable[..., t.Any])
 
@@ -123,48 +123,20 @@ class ValidatorClassName(click.ParamType):
         return t.cast(t.Type[jsonschema.protocols.Validator], result)
 
 
-class CustomLazyFile(click.utils.LazyFile):
-    def __init__(
-        self,
-        filename: str | os.PathLike[str],
-        mode: str = "r",
-        encoding: str | None = None,
-        errors: str | None = "strict",
-        atomic: bool = False,
-    ) -> None:
-        self.name: str = os.fspath(filename)
-        self.mode = mode
-        self.encoding = encoding
-        self.errors = errors
-        self.atomic = atomic
-        self._f: t.IO[t.Any] | None
-        self.should_close: bool
+class BinaryFileInputParam(click.ParamType[t.BinaryIO]):
+    def shell_complete(
+        self, ctx: click.Context, param: click.Parameter, incomplete: str
+    ) -> list[CompletionItem]:
+        return [CompletionItem(incomplete, type="file")]
 
-        if self.name == "-":
-            self._f, self.should_close = open_stream(filename, mode, encoding, errors)
-        else:
-            if "r" in mode and not stat.S_ISFIFO(os.stat(filename).st_mode):
-                # Open and close the file in case we're opening it for
-                # reading so that we can catch at least some errors in
-                # some cases early.
-                open(filename, mode).close()
-            self._f = None
-            self.should_close = True
-
-
-class LazyBinaryReadFile(click.File):
     def convert(
-        self,
-        value: str | os.PathLike[str] | t.IO[t.Any],
-        param: click.Parameter | None,
-        ctx: click.Context | None,
-    ) -> t.IO[bytes]:
-        if hasattr(value, "read") or hasattr(value, "write"):
-            return t.cast(t.IO[bytes], value)
-
-        value_: str | os.PathLike[str] = t.cast("str | os.PathLike[str]", value)
-
-        lf = CustomLazyFile(value_, mode="rb")
+        self, value: str, param: click.Parameter | None, ctx: click.Context | None
+    ) -> t.BinaryIO:
+        file = BinaryFileInput(value)
         if ctx is not None:
-            ctx.call_on_close(lf.close_intelligently)
-        return t.cast(t.IO[bytes], lf)
+            ctx.call_on_close(file.close)
+        file.check_can_open()
+        # type checkers won't recognize a BinaryFileInput as a BinaryIO unless we do a
+        # lot of extra work, because they don't follow that it uses `__getattr__` to
+        # proxy everything to the underlying stream
+        return file  # type: ignore[return-value]
