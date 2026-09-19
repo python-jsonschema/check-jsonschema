@@ -13,6 +13,7 @@ Features:
 - `close()` does nothing on stdin
 """
 
+import io
 import os
 import stat
 import sys
@@ -43,11 +44,10 @@ class BinaryFileInput:
             # Open and close the file in case we're opening it for
             # reading so that we can catch at least some errors in
             # some cases early.
-            self._open_handle.close()
-            self._stream = None
+            self.open()
+            self.close()
 
-    @property
-    def _open_handle(self) -> t.BinaryIO:
+    def open(self) -> t.BinaryIO:
         if self._stream is None:
             self._stream = open(self.name, "rb")
         return self._stream
@@ -60,7 +60,7 @@ class BinaryFileInput:
             self._stream = None
 
     def __getattr__(self, name: str) -> t.Any:
-        return getattr(self._open_handle, name)
+        return getattr(self.open(), name)
 
     def __repr__(self) -> str:
         return "BinaryFileInput(filename={self.filename!r})"
@@ -77,4 +77,8 @@ class BinaryFileInput:
         self.close()
 
     def __iter__(self) -> t.Iterator[bytes]:
-        return iter(self._open_handle)
+        return iter(self.open())
+
+
+# register as an IOBase implementation, since pyjson5 relies on an isinstance() check
+io.IOBase.register(BinaryFileInput)
