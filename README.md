@@ -4,6 +4,7 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/python-jsonschema/check-jsonschema/main.svg)](https://results.pre-commit.ci/latest/github/python-jsonschema/check-jsonschema/main)
 [![readthedocs documentation](https://readthedocs.org/projects/check-jsonschema/badge/?version=stable&style=flat)](https://check-jsonschema.readthedocs.io/en/stable)
 
+[![check-jsonschema logo](https://github.com/python-jsonschema/check-jsonschema/raw/main/docs/_static/logo.png)](https://check-jsonschema.readthedocs.io/en/stable/)
 
 # check-jsonschema
 
