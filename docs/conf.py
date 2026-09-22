@@ -18,6 +18,8 @@ exclude_patterns = ["_build"]
 
 # HTML theme options
 html_theme = "furo"
+html_logo = "_static/logo.png"
+html_static_path = ["_static"]
 pygments_style = "friendly"
 pygments_dark_style = "monokai"  # this is a furo-specific option
 html_theme_options = {

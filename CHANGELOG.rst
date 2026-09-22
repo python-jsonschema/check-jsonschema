@@ -13,6 +13,8 @@ Unreleased
 - Update vendored schemas: bitbucket-pipelines, buildkite, changie, circle-ci,
   compose-spec, dependabot, github-actions, github-workflows, gitlab-ci, mergify,
   renovate, taskfile, travis, woodpecker-ci (2026-09-20)
+- ``check-jsonschema`` now has a logo. Thanks to
+  `Mylah Birdie <https://www.instagram.com/mylahbirdie>`__!
 
 0.38.0
 ------
