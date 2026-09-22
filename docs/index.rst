@@ -12,6 +12,9 @@ The source code is hosted in `a GitHub repo
 features are tracked in the associated `issue tracker
 <https://github.com/python-jsonschema/check-jsonschema/issues/>`_.
 
+Our lovely logo was made by the talented
+`Mylah Birdie <https://www.instagram.com/mylahbirdie>`__!
+
 .. toctree::
     :maxdepth: 2
     :caption: Contents:

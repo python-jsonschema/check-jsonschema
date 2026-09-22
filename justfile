@@ -1,6 +1,10 @@
 version := `uvx mddj read version`
 push_remote := `git rev-parse --abbrev-ref @{push} | cut -d '/' -f1`
 
+serve-docs:
+    uvx --with 'tox-uv' tox r -e docs
+    python -m http.server 8000 -d docs/_build/dirhtml/
+
 lint:
     pre-commit run -a
     tox run -e mypy
