@@ -119,13 +119,11 @@ The '--disable-formats' flag supports the following formats:
         "Instead of validating the instances against a schema, treat each file as a "
         "schema and validate them under their matching metaschemas."
     ),
-    default=False,
 )
 @click.option(
     "--no-cache",
     is_flag=True,
     help="Disable schema caching. Always download remote schemas.",
-    default=False,
 )
 @click.option(
     "--cache-filename", help="Deprecated. This option no longer has any effect."
@@ -193,7 +191,6 @@ The '--disable-formats' flag supports the following formats:
         "'--validator-class'"
     ),
     is_flag=True,
-    default=False,
 )
 @click.option(
     "--validator-class",
