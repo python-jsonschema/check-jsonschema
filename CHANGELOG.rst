@@ -10,6 +10,11 @@ Unreleased
 
 .. vendor-insert-here
 
+0.38.2
+------
+
+- Update the version of ``click`` declared as a dependency
+
 0.38.1
 ------
 
