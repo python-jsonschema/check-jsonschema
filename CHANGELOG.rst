@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: circle-ci, mergify, renovate (2026-09-27)
+
 0.38.2
 ------
 
