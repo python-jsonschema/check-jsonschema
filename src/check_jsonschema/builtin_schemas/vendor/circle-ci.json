@@ -10,6 +10,24 @@
             ],
             "markdownDescription": "Specify when to enable or disable the step. Takes the following values: `always`, `on_success`, `on_fail` (default: `on_success`)"
         },
+        "stringOrList": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "expression": {
+            "type": "string",
+            "pattern": "<<.*>>",
+            "markdownDescription": "An expression such as `<< parameters.name >>`, filled in when the config is compiled"
+        },
         "jobInvocation": {
             "oneOf": [
                 {
@@ -51,6 +69,57 @@
                             "plan_name": {
                                 "type": "string",
                                 "markdownDescription": "Required plan name for release jobs."
+                            },
+                            "validation": {
+                                "markdownDescription": "Turns on the release validation engine, which gates the release on signals from your monitoring tool and triggers your rollback pipeline when a release fails.",
+                                "properties": {
+                                    "enabled": {
+                                        "markdownDescription": "Turns on release validation for this release job (required)."
+                                    },
+                                    "evaluation_time": {
+                                        "default": "20m",
+                                        "markdownDescription": "How long the engine waits for validation signals before treating the release as successful, for example `30m` (default: `20m`)."
+                                    },
+                                    "auto_rollback_on_failure": {
+                                        "markdownDescription": "When `true`, the engine triggers your rollback pipeline if validation fails during the evaluation window."
+                                    },
+                                    "webhooks": {
+                                        "markdownDescription": "Webhook validation checks, each one named signal from a monitoring provider. When omitted, a catch-all check accepts any signal.",
+                                        "items": {
+                                            "properties": {
+                                                "name": {
+                                                    "markdownDescription": "Identifier for this check. Your monitoring tool must send a matching `signal_name` (required)."
+                                                },
+                                                "provider": {
+                                                    "anyOf": [
+                                                        {
+                                                            "enum": [
+                                                                "datadog",
+                                                                "prometheus",
+                                                                "grafana",
+                                                                "alertmanager",
+                                                                "custom"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "string"
+                                                        }
+                                                    ],
+                                                    "markdownDescription": "One of `datadog`, `prometheus`, `grafana`, `alertmanager` or `custom` (required)."
+                                                },
+                                                "data_points": {
+                                                    "markdownDescription": "Maps fields in the incoming webhook payload to the values CircleCI matches on. Provider defaults apply to any key you omit."
+                                                },
+                                                "fail_when": {
+                                                    "markdownDescription": "Expression that decides when a webhook event counts as a failure. Provider defaults apply when you omit it."
+                                                },
+                                                "max_failures": {
+                                                    "markdownDescription": "Number of matching failures before this check fails."
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         },
                         "additionalProperties": true
@@ -75,12 +144,31 @@
                                 "key"
                             ],
                             "properties": {
+                                "type": {
+                                    "enum": [
+                                        "lock",
+                                        "unlock"
+                                    ]
+                                },
                                 "key": {
-                                    "type": "string",
-                                    "markdownDescription": "Required key for lock/unlock jobs."
+                                    "markdownDescription": "Required key for lock/unlock jobs. At most 512 characters: letters, digits, `.`, `:`, `/`, `_` and `-`.",
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 512,
+                                            "pattern": "^[A-Za-z\\d.:/_-]*$"
+                                        },
+                                        {
+                                            "$ref": "#/definitions/expression"
+                                        }
+                                    ]
+                                },
+                                "parameters": {
+                                    "$ref": "#/definitions/jobParameters"
                                 }
                             },
-                            "additionalProperties": true
+                            "additionalProperties": false
                         },
                         "else": {
                             "if": {
@@ -127,6 +215,7 @@
                                     "markdownDescription": "Validation: The job must adhere to the structure of a build job.",
                                     "properties": {
                                         "description": {
+                                            "markdownDescription": "A description of the job.",
                                             "type": "string"
                                         },
                                         "type": {
@@ -134,26 +223,19 @@
                                             "markdownDescription": "The job type. If not specified, defaults to build."
                                         },
                                         "parallelism": {
-                                            "markdownDescription": "A integer or a parameter evaluating to a integer",
+                                            "markdownDescription": "An integer, or an expression that evaluates to one",
                                             "anyOf": [
                                                 {
-                                                    "oneOf": [
-                                                        {
-                                                            "type": "string",
-                                                            "pattern": " *<< *parameters.([^ ]+) *>> *"
-                                                        },
-                                                        {
-                                                            "type": "string",
-                                                            "pattern": " *<< *pipeline.parameters.([^ ]+) *>> *"
-                                                        }
-                                                    ]
+                                                    "type": "integer",
+                                                    "minimum": 1
                                                 },
                                                 {
-                                                    "type": "integer"
+                                                    "$ref": "#/definitions/expression"
                                                 }
                                             ]
                                         },
                                         "macos": {
+                                            "markdownDescription": "Options for the [macOS executor](https://circleci.com/docs/configuration-reference#macos)",
                                             "type": "object",
                                             "properties": {
                                                 "xcode": {
@@ -166,7 +248,26 @@
                                                     "type": "string"
                                                 },
                                                 "shell": {
-                                                    "type": "string"
+                                                    "oneOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "code_signing": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "pattern": "^[A-Za-z0-9-]+$",
+                                                        "maxLength": 50
+                                                    },
+                                                    "markdownDescription": "Names of the code signing bundles the job may install with the `install_signing_bundle` step"
                                                 }
                                             },
                                             "required": [
@@ -175,9 +276,10 @@
                                             "additionalProperties": false
                                         },
                                         "resource_class": {
-                                            "type": "string"
+                                            "$ref": "#/definitions/resourceClass"
                                         },
                                         "docker": {
+                                            "markdownDescription": "Options for the [docker executor](https://circleci.com/docs/configuration-reference#docker)",
                                             "type": "array",
                                             "minItems": 1,
                                             "items": {
@@ -280,6 +382,27 @@
                                                             }
                                                         ]
                                                     },
+                                                    "gcp_auth": {
+                                                        "type": "object",
+                                                        "markdownDescription": "Authenticate to Google Artifact Registry with OIDC",
+                                                        "properties": {
+                                                            "oidc_service_account": {
+                                                                "type": "string"
+                                                            },
+                                                            "workload_identity_pool": {
+                                                                "type": "string"
+                                                            },
+                                                            "workload_identity_provider": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "oidc_service_account",
+                                                            "workload_identity_pool",
+                                                            "workload_identity_provider"
+                                                        ],
+                                                        "additionalProperties": false
+                                                    },
                                                     "auth": {
                                                         "type": "object",
                                                         "properties": {
@@ -304,6 +427,7 @@
                                             }
                                         },
                                         "steps": {
+                                            "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#steps\n\nThe steps the job runs, in order.",
                                             "type": "array",
                                             "items": {
                                                 "$ref": "#/definitions/step"
@@ -319,13 +443,20 @@
                                             "properties": {
                                                 "caches": {
                                                     "type": "string",
-                                                    "pattern": "^([1-9]|1[0-5])d$"
+                                                    "pattern": "^([1-9]|[12][0-9]|30)d$"
                                                 }
                                             },
                                             "additionalProperties": false
                                         },
                                         "circleci_ip_ranges": {
-                                            "type": "boolean",
+                                            "anyOf": [
+                                                {
+                                                    "type": "boolean"
+                                                },
+                                                {
+                                                    "$ref": "#/definitions/expression"
+                                                }
+                                            ],
                                             "markdownDescription": "Enable running jobs with a set of well-defined IP address ranges."
                                         },
                                         "machine": {
@@ -374,27 +505,32 @@
                                                         },
                                                         "docker_layer_caching": {
                                                             "markdownDescription": "Set to `true` to enable [Docker Layer Caching](https://circleci.com/docs/docker-layer-caching). Note: If you haven't already, you must open a support ticket to have a CircleCI Sales representative contact you about enabling this feature on your account for an additional fee.",
-                                                            "anyOf": [
-                                                                {
-                                                                    "type": "string",
-                                                                    "pattern": " *<< *parameters.([^ ]+) *>> *"
-                                                                },
-                                                                {
-                                                                    "type": "boolean"
-                                                                },
-                                                                {
-                                                                    "type": "number"
-                                                                },
-                                                                {
-                                                                    "type": "string"
-                                                                }
-                                                            ]
+                                                            "type": "boolean"
                                                         },
                                                         "resource_class": {
                                                             "type": "string"
                                                         },
                                                         "shell": {
-                                                            "type": "string"
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "code_signing": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "pattern": "^[A-Za-z0-9-]+$",
+                                                                "maxLength": 50
+                                                            },
+                                                            "markdownDescription": "Names of the code signing bundles the job may install with the `install_signing_bundle` step"
                                                         }
                                                     },
                                                     "additionalProperties": false
@@ -402,6 +538,7 @@
                                             ]
                                         },
                                         "environment": {
+                                            "markdownDescription": "A map of environment variable names and values, for every step of the job.",
                                             "oneOf": [
                                                 {
                                                     "markdownDescription": "A map of environment variable names and values.",
@@ -432,6 +569,7 @@
                                             ]
                                         },
                                         "executor": {
+                                            "markdownDescription": "https://circleci.com/docs/reference/reusing-config/#executor\n\nThe executor to run the job in, defined in the top-level `executors` map or by an orb.",
                                             "oneOf": [
                                                 {
                                                     "type": "string",
@@ -454,6 +592,7 @@
                                             ]
                                         },
                                         "shell": {
+                                            "markdownDescription": "Shell to use for execution command in all steps. Can be overridden by shell in each step (default: See [Default Shell Options](https://circleci.com/docs/configuration-reference#default-shell-options)",
                                             "oneOf": [
                                                 {
                                                     "type": "string"
@@ -467,62 +606,7 @@
                                             ]
                                         },
                                         "parameters": {
-                                            "markdownDescription": "https://circleci.com/docs/reusing-config#using-the-parameters-declaration\n\nA map of parameter keys.",
-                                            "type": "object",
-                                            "additionalProperties": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "type": {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "boolean",
-                                                            "string",
-                                                            "steps",
-                                                            "enum",
-                                                            "executor",
-                                                            "integer",
-                                                            "env_var_name"
-                                                        ],
-                                                        "markdownDescription": "The parameter type. See [Parameter Types](https://circleci.com/docs/reusing-config#parameter-syntax) for details:\n- `boolean`: A boolean parameter\n- `string`: A string parameter  \n- `integer`: An integer parameter\n- `enum`: An enum parameter (list of allowed string values)\n- `executor`: An executor parameter (allows job to choose executor)\n- `steps`: A steps parameter (allows mixing predefined and user-defined steps)\n- `env_var_name`: An environment variable name parameter (must match POSIX_NAME regexp)"
-                                                    },
-                                                    "default": {
-                                                        "oneOf": [
-                                                            {
-                                                                "type": "string"
-                                                            },
-                                                            {
-                                                                "type": "boolean"
-                                                            },
-                                                            {
-                                                                "type": "integer"
-                                                            },
-                                                            {
-                                                                "type": "array",
-                                                                "items": {
-                                                                    "$ref": "#/definitions/step"
-                                                                }
-                                                            }
-                                                        ]
-                                                    },
-                                                    "description": {
-                                                        "type": "string",
-                                                        "markdownDescription": "A description of the parameter"
-                                                    },
-                                                    "enum": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "minItems": 1,
-                                                        "markdownDescription": "List of allowed values for an `enum` type parameter"
-                                                    }
-                                                },
-                                                "additionalProperties": false,
-                                                "required": [
-                                                    "type"
-                                                ]
-                                            },
-                                            "minProperties": 1
+                                            "$ref": "#/definitions/jobParameters"
                                         }
                                     },
                                     "required": [
@@ -700,7 +784,26 @@
                                                         "type": "string"
                                                     },
                                                     "shell": {
-                                                        "type": "string"
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "code_signing": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string",
+                                                            "pattern": "^[A-Za-z0-9-]+$",
+                                                            "maxLength": 50
+                                                        },
+                                                        "markdownDescription": "Names of the code signing bundles the job may install with the `install_signing_bundle` step"
                                                     }
                                                 },
                                                 "required": [
@@ -709,7 +812,7 @@
                                                 "additionalProperties": false
                                             },
                                             "resource_class": {
-                                                "type": "string"
+                                                "$ref": "#/definitions/resourceClass"
                                             },
                                             "docker": {
                                                 "type": "array",
@@ -814,6 +917,27 @@
                                                                 }
                                                             ]
                                                         },
+                                                        "gcp_auth": {
+                                                            "type": "object",
+                                                            "markdownDescription": "Authenticate to Google Artifact Registry with OIDC",
+                                                            "properties": {
+                                                                "oidc_service_account": {
+                                                                    "type": "string"
+                                                                },
+                                                                "workload_identity_pool": {
+                                                                    "type": "string"
+                                                                },
+                                                                "workload_identity_provider": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "oidc_service_account",
+                                                                "workload_identity_pool",
+                                                                "workload_identity_provider"
+                                                            ],
+                                                            "additionalProperties": false
+                                                        },
                                                         "auth": {
                                                             "type": "object",
                                                             "properties": {
@@ -887,27 +1011,32 @@
                                                             },
                                                             "docker_layer_caching": {
                                                                 "markdownDescription": "Set to `true` to enable [Docker Layer Caching](https://circleci.com/docs/docker-layer-caching). Note: If you haven't already, you must open a support ticket to have a CircleCI Sales representative contact you about enabling this feature on your account for an additional fee.",
-                                                                "anyOf": [
-                                                                    {
-                                                                        "type": "string",
-                                                                        "pattern": " *<< *parameters.([^ ]+) *>> *"
-                                                                    },
-                                                                    {
-                                                                        "type": "boolean"
-                                                                    },
-                                                                    {
-                                                                        "type": "number"
-                                                                    },
-                                                                    {
-                                                                        "type": "string"
-                                                                    }
-                                                                ]
+                                                                "type": "boolean"
                                                             },
                                                             "resource_class": {
                                                                 "type": "string"
                                                             },
                                                             "shell": {
-                                                                "type": "string"
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "string"
+                                                                    },
+                                                                    {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "code_signing": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string",
+                                                                    "pattern": "^[A-Za-z0-9-]+$",
+                                                                    "maxLength": 50
+                                                                },
+                                                                "markdownDescription": "Names of the code signing bundles the job may install with the `install_signing_bundle` step"
                                                             }
                                                         },
                                                         "additionalProperties": false
@@ -1198,8 +1327,18 @@
                                             "markdownDescription": "In which directory to run this step (default: `working_directory` of the job)"
                                         },
                                         "no_output_timeout": {
-                                            "type": "string",
-                                            "pattern": "\\d+(\\.\\d+)?[mhs]",
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "pattern": "\\d+(\\.\\d+)?[mhs]"
+                                                },
+                                                {
+                                                    "type": "integer"
+                                                },
+                                                {
+                                                    "$ref": "#/definitions/expression"
+                                                }
+                                            ],
                                             "default": "10m",
                                             "markdownDescription": "Elapsed time the command can run without output. The string is a decimal with unit suffix, such as \"20m\", \"1.25h\", \"5s\" (default: 10 minutes)"
                                         },
@@ -1207,15 +1346,231 @@
                                             "$ref": "#/definitions/stepWhen"
                                         },
                                         "max_auto_reruns": {
-                                            "type": "integer",
-                                            "minimum": 1,
-                                            "maximum": 5,
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer",
+                                                    "minimum": 1,
+                                                    "maximum": 5
+                                                },
+                                                {
+                                                    "$ref": "#/definitions/expression"
+                                                }
+                                            ],
                                             "markdownDescription": "Maximum number of automatic reruns for this step"
                                         },
                                         "auto_rerun_delay": {
-                                            "type": "string",
-                                            "pattern": "^(10|[1-9])m|([1-9][0-9]*)s$",
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "pattern": "^((10|[1-9])m|([1-9][0-9]*)s)$"
+                                                },
+                                                {
+                                                    "$ref": "#/definitions/expression"
+                                                }
+                                            ],
                                             "markdownDescription": "Delay before automatic rerun of this step"
+                                        },
+                                        "teardown": {
+                                            "type": "array",
+                                            "markdownDescription": "Steps to run at the end of the job, in reverse order, whether or not it succeeded: `run`, `save_cache`, `persist_to_workspace`, `store_artifacts` and `store_test_results`.",
+                                            "items": {
+                                                "type": "object",
+                                                "minProperties": 1,
+                                                "maxProperties": 1,
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "run": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "required": [
+                                                                    "command"
+                                                                ],
+                                                                "properties": {
+                                                                    "command": {
+                                                                        "type": "string",
+                                                                        "markdownDescription": "Command to run via the shell"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: full `command`)"
+                                                                    },
+                                                                    "when": {
+                                                                        "$ref": "#/definitions/stepWhen"
+                                                                    },
+                                                                    "background": {
+                                                                        "enum": [
+                                                                            false
+                                                                        ],
+                                                                        "markdownDescription": "A teardown step can't run in the background: it would be cancelled as soon as it started."
+                                                                    },
+                                                                    "max_auto_reruns": {
+                                                                        "anyOf": [
+                                                                            {
+                                                                                "type": "integer",
+                                                                                "minimum": 1,
+                                                                                "maximum": 5
+                                                                            },
+                                                                            {
+                                                                                "$ref": "#/definitions/expression"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "auto_rerun_delay": {
+                                                                        "anyOf": [
+                                                                            {
+                                                                                "type": "string",
+                                                                                "pattern": "^((10|[1-9])m|([1-9][0-9]*)s)$"
+                                                                            },
+                                                                            {
+                                                                                "$ref": "#/definitions/expression"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                "not": {
+                                                                    "required": [
+                                                                        "teardown"
+                                                                    ]
+                                                                },
+                                                                "if": {
+                                                                    "required": [
+                                                                        "auto_rerun_delay"
+                                                                    ]
+                                                                },
+                                                                "then": {
+                                                                    "required": [
+                                                                        "max_auto_reruns"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "save_cache": {
+                                                        "markdownDescription": "https://circleci.com/docs/configuration-reference#save_cache\n\nGenerates and stores a cache of a file or directory of files such as dependencies or source code in our object storage. Later jobs can restore this cache using the `restore_cache` step.",
+                                                        "type": "object",
+                                                        "required": [
+                                                            "paths",
+                                                            "key"
+                                                        ],
+                                                        "properties": {
+                                                            "paths": {
+                                                                "$ref": "#/definitions/stringOrList",
+                                                                "markdownDescription": "List of directories which should be added to the cache"
+                                                            },
+                                                            "key": {
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "markdownDescription": "Unique identifier for this cache"
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "markdownDescription": "Title of the step to be shown in the CircleCI UI (default: 'Saving Cache')"
+                                                            },
+                                                            "when": {
+                                                                "$ref": "#/definitions/stepWhen"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
+                                                    },
+                                                    "persist_to_workspace": {
+                                                        "markdownDescription": "https://circleci.com/docs/configuration-reference#persist_to_workspace\n\nSpecial step used to persist a temporary file to be used by another job in the workflow",
+                                                        "type": "object",
+                                                        "required": [
+                                                            "root"
+                                                        ],
+                                                        "oneOf": [
+                                                            {
+                                                                "required": [
+                                                                    "paths"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "required": [
+                                                                    "path"
+                                                                ]
+                                                            }
+                                                        ],
+                                                        "properties": {
+                                                            "root": {
+                                                                "type": "string",
+                                                                "markdownDescription": "Either an absolute path or a path relative to `working_directory`"
+                                                            },
+                                                            "paths": {
+                                                                "$ref": "#/definitions/stringOrList",
+                                                                "markdownDescription": "Glob identifying file(s), or a non-glob path to a directory to add to the shared workspace. Interpreted as relative to the workspace root. Must not be the workspace root itself."
+                                                            },
+                                                            "path": {
+                                                                "type": "string",
+                                                                "markdownDescription": "A single glob or path to add to the shared workspace, instead of `paths`"
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                                            },
+                                                            "when": {
+                                                                "$ref": "#/definitions/stepWhen"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
+                                                    },
+                                                    "store_artifacts": {
+                                                        "markdownDescription": "https://circleci.com/docs/configuration-reference#store_artifacts\n\nStep to store artifacts (for example logs, binaries, etc) to be available in the web app or through the API.",
+                                                        "type": "object",
+                                                        "required": [
+                                                            "path"
+                                                        ],
+                                                        "properties": {
+                                                            "path": {
+                                                                "type": "string",
+                                                                "markdownDescription": "Directory in the primary container to save as job artifacts"
+                                                            },
+                                                            "destination": {
+                                                                "type": "string",
+                                                                "markdownDescription": "Prefix added to the artifact paths in the artifacts API (default: the directory of the file specified in `path`)"
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                                            },
+                                                            "when": {
+                                                                "$ref": "#/definitions/stepWhen"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
+                                                    },
+                                                    "store_test_results": {
+                                                        "markdownDescription": "https://circleci.com/docs/configuration-reference#storetestresults\n\nSpecial step used to upload test results so they display in builds' Test Summary section and can be used for timing analysis. To also see test result as build artifacts, please use the `store_artifacts` step.",
+                                                        "type": "object",
+                                                        "required": [
+                                                            "path"
+                                                        ],
+                                                        "properties": {
+                                                            "path": {
+                                                                "type": "string",
+                                                                "markdownDescription": "Path (absolute, or relative to your `working_directory`) to directory containing subdirectories of JUnit XML or Cucumber JSON test metadata files"
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "markdownDescription": "Title of the step to be shown in the CircleCI UI"
+                                                            },
+                                                            "when": {
+                                                                "$ref": "#/definitions/stepWhen"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pwd": {
+                                            "type": "string"
+                                        },
+                                        "path": {
+                                            "type": "string"
                                         }
                                     },
                                     "required": [
@@ -1233,9 +1588,14 @@
                                         "required": [
                                             "max_auto_reruns"
                                         ]
-                                    }
+                                    },
+                                    "additionalProperties": false
                                 }
                             ]
+                        },
+                        "deploy": {
+                            "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#deploy-deprecated\n\n**Deprecated.** Replace it with `run`, which takes the same options.",
+                            "$ref": "#/definitions/step/oneOf/1/properties/run"
                         },
                         "checkout": {
                             "markdownDescription": "https://circleci.com/docs/configuration-reference#checkout\n\nSpecial step used to check out source code to the configured `path` (defaults to the `working_directory`). The reason this is a special step is because it is more of a helper function designed to make checking out code easy for you. If you require doing git over HTTPS you should not use this step as it configures git to checkout over ssh.",
@@ -1292,23 +1652,18 @@
                                             "default": false,
                                             "markdownDescription": "When `docker_layer_caching` is set to `true`, CircleCI will try to reuse Docker Images (layers) built during a previous job or workflow (Paid feature)"
                                         },
+                                        "prefer_same_region": {
+                                            "type": "boolean",
+                                            "default": false,
+                                            "markdownDescription": "Set this to `true` to pull images from the same region as the VM where possible. If the pull fails, CircleCI falls back to the image's original region"
+                                        },
                                         "version": {
-                                            "markdownDescription": "If your build requires a specific docker image, you can set it as an image attribute",
+                                            "markdownDescription": "The Docker version to use, such as `docker29`, `edge` or `previous`, or `default`. The versions offered depend on the job's resource class.",
                                             "anyOf": [
                                                 {
                                                     "type": "string",
                                                     "enum": [
-                                                        "20.10.24",
-                                                        "20.10.23",
-                                                        "20.10.18",
-                                                        "20.10.17",
-                                                        "20.10.14",
-                                                        "20.10.12",
-                                                        "20.10.11",
-                                                        "20.10.7",
-                                                        "20.10.6",
-                                                        "20.10.2",
-                                                        "19.03.13"
+                                                        "default"
                                                     ]
                                                 },
                                                 {
@@ -1318,6 +1673,10 @@
                                         },
                                         "when": {
                                             "$ref": "#/definitions/stepWhen"
+                                        },
+                                        "resource_class": {
+                                            "type": "string",
+                                            "markdownDescription": "Not a `setup_remote_docker` option. It is accepted, and ignored."
                                         }
                                     },
                                     "additionalProperties": false
@@ -1333,14 +1692,12 @@
                             ],
                             "properties": {
                                 "paths": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    },
+                                    "$ref": "#/definitions/stringOrList",
                                     "markdownDescription": "List of directories which should be added to the cache"
                                 },
                                 "key": {
                                     "type": "string",
+                                    "minLength": 1,
                                     "markdownDescription": "Unique identifier for this cache"
                                 },
                                 "name": {
@@ -1383,10 +1740,7 @@
                                     ],
                                     "properties": {
                                         "keys": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
+                                            "$ref": "#/definitions/stringOrList",
                                             "markdownDescription": "List of cache keys to lookup for a cache to restore. Only first existing key will be restored."
                                         },
                                         "name": {
@@ -1451,8 +1805,19 @@
                             "markdownDescription": "https://circleci.com/docs/configuration-reference#persist_to_workspace\n\nSpecial step used to persist a temporary file to be used by another job in the workflow",
                             "type": "object",
                             "required": [
-                                "root",
-                                "paths"
+                                "root"
+                            ],
+                            "oneOf": [
+                                {
+                                    "required": [
+                                        "paths"
+                                    ]
+                                },
+                                {
+                                    "required": [
+                                        "path"
+                                    ]
+                                }
                             ],
                             "properties": {
                                 "root": {
@@ -1460,11 +1825,12 @@
                                     "markdownDescription": "Either an absolute path or a path relative to `working_directory`"
                                 },
                                 "paths": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    },
+                                    "$ref": "#/definitions/stringOrList",
                                     "markdownDescription": "Glob identifying file(s), or a non-glob path to a directory to add to the shared workspace. Interpreted as relative to the workspace root. Must not be the workspace root itself."
+                                },
+                                "path": {
+                                    "type": "string",
+                                    "markdownDescription": "A single glob or path to add to the shared workspace, instead of `paths`"
                                 },
                                 "name": {
                                     "type": "string",
@@ -1510,10 +1876,7 @@
                                     "type": "object",
                                     "properties": {
                                         "fingerprints": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
+                                            "$ref": "#/definitions/stringOrList",
                                             "markdownDescription": "List of fingerprints corresponding to the keys to be added"
                                         },
                                         "when": {
@@ -1523,6 +1886,41 @@
                                     "additionalProperties": false
                                 }
                             ]
+                        },
+                        "install_signing_bundle": {
+                            "markdownDescription": "Installs the code signing bundles named in the executor's `code_signing` list. macOS and machine executors only.",
+                            "type": [
+                                "object",
+                                "null"
+                            ]
+                        },
+                        "with_tool_cache": {
+                            "markdownDescription": "Runs `steps` with a cache kept for `tool` (beta).",
+                            "type": "object",
+                            "required": [
+                                "tool",
+                                "steps"
+                            ],
+                            "properties": {
+                                "tool": {
+                                    "enum": [
+                                        "gradle",
+                                        "bazel",
+                                        "turborepo",
+                                        "xcode"
+                                    ],
+                                    "markdownDescription": "The tool whose cache is kept"
+                                },
+                                "steps": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "items": {
+                                        "$ref": "#/definitions/step"
+                                    },
+                                    "markdownDescription": "The steps to run with the cache"
+                                }
+                            },
+                            "additionalProperties": false
                         }
                     },
                     "additionalProperties": {
@@ -1552,18 +1950,8 @@
                                     "markdownDescription": "A logical condition that must evaluate to true for the steps to run"
                                 },
                                 "steps": {
-                                    "oneOf": [
-                                        {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/step"
-                                            }
-                                        },
-                                        {
-                                            "$ref": "#/definitions/step"
-                                        }
-                                    ],
-                                    "markdownDescription": "A list of steps to be performed when the condition is true"
+                                    "markdownDescription": "A list of steps to be performed when the condition is true",
+                                    "$ref": "#/definitions/step"
                                 }
                             }
                         },
@@ -1580,22 +1968,19 @@
                                     "markdownDescription": "A logical condition that must evaluate to false for the steps to run"
                                 },
                                 "steps": {
-                                    "oneOf": [
-                                        {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/step"
-                                            }
-                                        },
-                                        {
-                                            "$ref": "#/definitions/step"
-                                        }
-                                    ],
-                                    "markdownDescription": "A list of steps to be performed when the condition is false"
+                                    "markdownDescription": "A list of steps to be performed when the condition is false",
+                                    "$ref": "#/definitions/step"
                                 }
                             }
                         }
                     }
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/step"
+                    },
+                    "markdownDescription": "A list of steps, such as one an anchor holds, which is flattened into the list it's in."
                 }
             ]
         },
@@ -1611,6 +1996,12 @@
                     "additionalProperties": {
                         "type": "object",
                         "properties": {
+                            "name": {
+                                "type": "string",
+                                "minLength": 1,
+                                "pattern": ".*[^ ].*$",
+                                "markdownDescription": "The name of this job in the workflow, in place of the job's own. Needed to invoke the same job more than once. In a matrix, `<< matrix.x >>` in it is filled in for each member."
+                            },
                             "requires": {
                                 "type": "array",
                                 "markdownDescription": "Jobs are run in parallel by default, so you must explicitly require any dependencies by their job name.",
@@ -1746,10 +2137,15 @@
                                                 },
                                                 "additionalProperties": false
                                             }
-                                        }
+                                        },
+                                        "additionalProperties": false
                                     },
                                     {
-                                        "type": "string"
+                                        "type": "string",
+                                        "not": {
+                                            "pattern": "<<.*>>"
+                                        },
+                                        "markdownDescription": "An expression deciding whether the job runs. It refers to pipeline values without `<< >>`, as in `pipeline.git.branch == \"main\"`."
                                     }
                                 ]
                             },
@@ -1771,22 +2167,44 @@
                                 "type": "string"
                             },
                             "pre-steps": {
-                                "steps": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/step"
-                                    },
-                                    "minItems": 1
-                                }
+                                "type": "array",
+                                "items": {
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/definitions/step"
+                                        },
+                                        {
+                                            "description": "The compiler doesn't check these steps' shape, and compiles a step given no arguments.",
+                                            "type": "object",
+                                            "minProperties": 1,
+                                            "maxProperties": 1,
+                                            "additionalProperties": {
+                                                "type": "null"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "markdownDescription": "Steps to run before the job's own steps."
                             },
                             "post-steps": {
-                                "steps": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/step"
-                                    },
-                                    "minItems": 1
-                                }
+                                "type": "array",
+                                "items": {
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/definitions/step"
+                                        },
+                                        {
+                                            "description": "The compiler doesn't check these steps' shape, and compiles a step given no arguments.",
+                                            "type": "object",
+                                            "minProperties": 1,
+                                            "maxProperties": 1,
+                                            "additionalProperties": {
+                                                "type": "null"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "markdownDescription": "Steps to run after the job's own steps."
                             },
                             "matrix": {
                                 "type": "object",
@@ -1815,7 +2233,9 @@
                             "serial-group": {
                                 "markdownDescription": "`serial-group` allows a group of jobs to run in series, rather than concurrently, across an organization. Serial groups control the orchestration of jobs across an organization, not just within projects and pipelines.\nSee <https://circleci.com/docs/reference/configuration-reference/#serial-group> for more details.",
                                 "type": "string",
-                                "minLength": 1
+                                "minLength": 1,
+                                "maxLength": 512,
+                                "pattern": ".*[^ ].*$"
                             },
                             "override-with": {
                                 "type": "string"
@@ -1824,6 +2244,123 @@
                     }
                 }
             ]
+        },
+        "jobParameters": {
+            "markdownDescription": "https://circleci.com/docs/reusing-config#using-the-parameters-declaration\n\nA map of parameter keys.",
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "boolean",
+                            "string",
+                            "steps",
+                            "enum",
+                            "executor",
+                            "integer",
+                            "env_var_name"
+                        ],
+                        "markdownDescription": "The parameter type. See [Parameter Types](https://circleci.com/docs/reusing-config#parameter-syntax) for details:\n- `boolean`: A boolean parameter\n- `string`: A string parameter  \n- `integer`: An integer parameter\n- `enum`: An enum parameter (list of allowed string values)\n- `executor`: An executor parameter (allows job to choose executor)\n- `steps`: A steps parameter (allows mixing predefined and user-defined steps)\n- `env_var_name`: An environment variable name parameter (must match POSIX_NAME regexp)"
+                    },
+                    "default": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/step"
+                                }
+                            }
+                        ]
+                    },
+                    "description": {
+                        "type": "string",
+                        "markdownDescription": "A description of the parameter"
+                    },
+                    "enum": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1,
+                        "markdownDescription": "List of allowed values for an `enum` type parameter"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "type"
+                ]
+            },
+            "minProperties": 1
+        },
+        "resourceClass": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "default": "medium",
+                    "enum": [
+                        "small",
+                        "medium",
+                        "medium+",
+                        "large",
+                        "xlarge",
+                        "2xlarge",
+                        "2xlarge+",
+                        "small.gen2",
+                        "medium.gen2",
+                        "medium+.gen2",
+                        "large.gen2",
+                        "xlarge.gen2",
+                        "2xlarge.gen2",
+                        "2xlarge+.gen2",
+                        "medium.gen3",
+                        "large.gen3",
+                        "xlarge.gen3",
+                        "2xlarge.gen3",
+                        "2xlarge+.gen3",
+                        "arm.medium",
+                        "arm.large",
+                        "arm.xlarge",
+                        "arm.2xlarge",
+                        "arm.medium.gen2",
+                        "arm.large.gen2",
+                        "arm.xlarge.gen2",
+                        "arm.2xlarge.gen2",
+                        "gpu.nvidia.small.gen2",
+                        "gpu.nvidia.small.multi",
+                        "gpu.nvidia.medium",
+                        "gpu.nvidia.medium.multi",
+                        "gpu.nvidia.large",
+                        "windows.medium",
+                        "windows.large",
+                        "windows.xlarge",
+                        "windows.2xlarge",
+                        "windows.medium.gen2",
+                        "windows.large.gen2",
+                        "windows.xlarge.gen2",
+                        "windows.2xlarge.gen2",
+                        "windows.2xlarge+.gen2",
+                        "windows.gpu.nvidia.medium",
+                        "m4pro.medium",
+                        "m4pro.large"
+                    ]
+                },
+                {
+                    "title": "Any other resource class, a self-hosted runner, or a parameter",
+                    "type": "string"
+                }
+            ],
+            "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#resourceclass\n\nResource class for the job. Can be either a predefined resource class (e.g., `medium`, `large`) or a self-hosted runner in the format `<namespace>/<runner-name>`."
         }
     },
     "type": "object",
@@ -1860,7 +2397,26 @@
                                         "type": "string"
                                     },
                                     "shell": {
-                                        "type": "string"
+                                        "oneOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "code_signing": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "pattern": "^[A-Za-z0-9-]+$",
+                                            "maxLength": 50
+                                        },
+                                        "markdownDescription": "Names of the code signing bundles the job may install with the `install_signing_bundle` step"
                                     }
                                 },
                                 "required": [
@@ -1869,43 +2425,7 @@
                                 "additionalProperties": false
                             },
                             "resource_class": {
-                                "oneOf": [
-                                    {
-                                        "type": "string",
-                                        "default": "medium",
-                                        "enum": [
-                                            "small",
-                                            "medium",
-                                            "medium+",
-                                            "large",
-                                            "xlarge",
-                                            "2xlarge",
-                                            "2xlarge+",
-                                            "arm.medium",
-                                            "arm.large",
-                                            "arm.xlarge",
-                                            "arm.2xlarge",
-                                            "gpu.nvidia.small",
-                                            "gpu.nvidia.medium",
-                                            "windows.gpu.nvidia.medium",
-                                            "m4pro.medium",
-                                            "m4pro.large",
-                                            "small.gen2",
-                                            "medium.gen2",
-                                            "medium+.gen2",
-                                            "large.gen2",
-                                            "xlarge.gen2",
-                                            "2xlarge.gen2",
-                                            "2xlarge+.gen2"
-                                        ]
-                                    },
-                                    {
-                                        "title": "Self-hosted runner",
-                                        "type": "string",
-                                        "pattern": "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$"
-                                    }
-                                ],
-                                "markdownDescription": "https://circleci.com/docs/reference/configuration-reference/#resourceclass\n\nResource class for the job. Can be either a predefined resource class (e.g., `medium`, `large`) or a self-hosted runner in the format `<namespace>/<runner-name>`."
+                                "$ref": "#/definitions/resourceClass"
                             },
                             "docker": {
                                 "type": "array",
@@ -2017,6 +2537,27 @@
                                             ],
                                             "markdownDescription": "Authentication for AWS EC2 Container Registry (ECR). You can use the access/secret keys or OIDC."
                                         },
+                                        "gcp_auth": {
+                                            "type": "object",
+                                            "markdownDescription": "Authenticate to Google Artifact Registry with OIDC",
+                                            "properties": {
+                                                "oidc_service_account": {
+                                                    "type": "string"
+                                                },
+                                                "workload_identity_pool": {
+                                                    "type": "string"
+                                                },
+                                                "workload_identity_provider": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "oidc_service_account",
+                                                "workload_identity_pool",
+                                                "workload_identity_provider"
+                                            ],
+                                            "additionalProperties": false
+                                        },
                                         "auth": {
                                             "type": "object",
                                             "properties": {
@@ -2093,27 +2634,32 @@
                                             },
                                             "docker_layer_caching": {
                                                 "markdownDescription": "Set to `true` to enable [Docker Layer Caching](https://circleci.com/docs/docker-layer-caching). Note: If you haven't already, you must open a support ticket to have a CircleCI Sales representative contact you about enabling this feature on your account for an additional fee.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "string",
-                                                        "pattern": " *<< *parameters.([^ ]+) *>> *"
-                                                    },
-                                                    {
-                                                        "type": "boolean"
-                                                    },
-                                                    {
-                                                        "type": "number"
-                                                    },
-                                                    {
-                                                        "type": "string"
-                                                    }
-                                                ]
+                                                "type": "boolean"
                                             },
                                             "resource_class": {
                                                 "type": "string"
                                             },
                                             "shell": {
-                                                "type": "string"
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "code_signing": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string",
+                                                    "pattern": "^[A-Za-z0-9-]+$",
+                                                    "maxLength": 50
+                                                },
+                                                "markdownDescription": "Names of the code signing bundles the job may install with the `install_signing_bundle` step"
                                             }
                                         },
                                         "additionalProperties": false
@@ -2274,12 +2820,12 @@
                         "branches"
                     ],
                     "additionalProperties": false
+                },
+                "observability": {
+                    "type": "object"
                 }
             },
-            "additionalProperties": false,
-            "required": [
-                "notify"
-            ]
+            "additionalProperties": false
         },
         "workflows": {
             "type": "object",
@@ -2361,9 +2907,16 @@
                         "markdownDescription": "Specifies which triggers will cause this workflow to be executed. Default behavior is to trigger the workflow when pushing to a branch."
                     },
                     "max_auto_reruns": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 5,
+                        "anyOf": [
+                            {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 5
+                            },
+                            {
+                                "$ref": "#/definitions/expression"
+                            }
+                        ],
                         "markdownDescription": "The maximum number of times a workflow will be automatically rerun if it fails"
                     },
                     "when": {
@@ -2419,7 +2972,7 @@
             "type": "object",
             "propertyNames": {
                 "type": "string",
-                "pattern": "^[A-Za-z][A-Za-z\\s\\d_-]*$"
+                "pattern": ".+"
             },
             "additionalProperties": {
                 "type": "object",
@@ -2435,8 +2988,7 @@
                             "$ref": "#/definitions/workflowJobInvocation"
                         }
                     }
-                },
-                "additionalProperties": false
+                }
             }
         },
         "orbs": {
@@ -2446,15 +2998,15 @@
             ],
             "markdownDescription": "https://circleci.com/docs/configuration-reference#orbs-requires-version-21\n\nOrbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.",
             "additionalProperties": {
-                "markdownDescription": "An orb reference can be specified in multiple ways:\n\n**String with semantic version:**\n- `namespace/orb-name@1.2.3` - specific version\n- `namespace/orb-name@1.2` - latest patch version of 1.2.x\n- `namespace/orb-name@1` - latest minor and patch of 1.x.x\n- `namespace/orb-name@volatile` - most recent release\n- `namespace/orb-name@dev:branch-name` - development version\n\n**String with parameter substitution:**\n- `namespace/orb-name@<<parameters.version>>`\n- `namespace/orb-name@<<pipeline.parameters.version>>`\n\n**Inline orb object:** Define jobs, commands, and executors directly in this configuration.\n\n**URL orb:** A HTTPS URL to a YAML file containing the orb definition, for example in a GitHub repository.\n\nSee [Orb Concepts](https://circleci.com/docs/orbs/author/orb-concepts/#semantic-versioning) and [Creating Inline Orbs](https://circleci.com/docs/reference/reusing-config/#writing-inline-orbs) for more details.",
+                "markdownDescription": "An orb reference can be specified in multiple ways:\n\n**String with semantic version:**\n- `namespace/orb-name@1.2.3` - specific version\n- `namespace/orb-name@1.2` - latest patch version of 1.2.x\n- `namespace/orb-name@1` - latest minor and patch of 1.x.x\n- `namespace/orb-name@volatile` - most recent release\n- `namespace/orb-name@dev:branch-name` - development version\n\n**String with parameter substitution:**\n- `namespace/orb-name@<<parameters.version>>`\n- `namespace/orb-name@<<pipeline.parameters.version>>`\n- `namespace/orb-name@dev:<<pipeline.git.revision>>` - development version of the commit being built\n\n**Inline orb object:** Define jobs, commands, and executors directly in this configuration.\n\n**URL orb:** A HTTPS URL to a YAML file containing the orb definition, for example in a GitHub repository.\n\nSee [Orb Concepts](https://circleci.com/docs/orbs/author/orb-concepts/#semantic-versioning) and [Creating Inline Orbs](https://circleci.com/docs/reference/reusing-config/#writing-inline-orbs) for more details.",
                 "oneOf": [
                     {
                         "type": "string",
-                        "pattern": "^[a-z][a-z0-9_-]+/[a-z][a-z0-9_-]+@(dev:[\\.a-z0-9_-]+|\\d+|\\d+\\.\\d+|\\d+\\.\\d+\\.\\d+|volatile)$"
+                        "pattern": "^[a-z][a-z0-9_-]*/[a-z][a-z0-9_-]*@(dev:[^\\s\\p{Cc}]+|\\d+|\\d+\\.\\d+|\\d+\\.\\d+\\.\\d+|volatile)$"
                     },
                     {
                         "type": "string",
-                        "pattern": "^[a-z][a-z0-9_-]+/[a-z][a-z0-9_-]+@ *<<.+>> *$"
+                        "pattern": "^[a-z][a-z0-9_-]*/[a-z][a-z0-9_-]*@ *(dev:)?<<.+>> *$"
                     },
                     {
                         "type": "string",
@@ -2592,7 +3144,26 @@
                                                             "type": "string"
                                                         },
                                                         "shell": {
-                                                            "type": "string"
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "code_signing": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "pattern": "^[A-Za-z0-9-]+$",
+                                                                "maxLength": 50
+                                                            },
+                                                            "markdownDescription": "Names of the code signing bundles the job may install with the `install_signing_bundle` step"
                                                         }
                                                     },
                                                     "required": [
@@ -2601,7 +3172,7 @@
                                                     "additionalProperties": false
                                                 },
                                                 "resource_class": {
-                                                    "type": "string"
+                                                    "$ref": "#/definitions/resourceClass"
                                                 },
                                                 "docker": {
                                                     "type": "array",
@@ -2706,6 +3277,27 @@
                                                                     }
                                                                 ]
                                                             },
+                                                            "gcp_auth": {
+                                                                "type": "object",
+                                                                "markdownDescription": "Authenticate to Google Artifact Registry with OIDC",
+                                                                "properties": {
+                                                                    "oidc_service_account": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "workload_identity_pool": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "workload_identity_provider": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "oidc_service_account",
+                                                                    "workload_identity_pool",
+                                                                    "workload_identity_provider"
+                                                                ],
+                                                                "additionalProperties": false
+                                                            },
                                                             "auth": {
                                                                 "type": "object",
                                                                 "properties": {
@@ -2779,27 +3371,32 @@
                                                                 },
                                                                 "docker_layer_caching": {
                                                                     "markdownDescription": "Set to `true` to enable [Docker Layer Caching](https://circleci.com/docs/docker-layer-caching). Note: If you haven't already, you must open a support ticket to have a CircleCI Sales representative contact you about enabling this feature on your account for an additional fee.",
-                                                                    "anyOf": [
-                                                                        {
-                                                                            "type": "string",
-                                                                            "pattern": " *<< *parameters.([^ ]+) *>> *"
-                                                                        },
-                                                                        {
-                                                                            "type": "boolean"
-                                                                        },
-                                                                        {
-                                                                            "type": "number"
-                                                                        },
-                                                                        {
-                                                                            "type": "string"
-                                                                        }
-                                                                    ]
+                                                                    "type": "boolean"
                                                                 },
                                                                 "resource_class": {
                                                                     "type": "string"
                                                                 },
                                                                 "shell": {
-                                                                    "type": "string"
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "type": "string"
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "items": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "code_signing": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "string",
+                                                                        "pattern": "^[A-Za-z0-9-]+$",
+                                                                        "maxLength": 50
+                                                                    },
+                                                                    "markdownDescription": "Names of the code signing bundles the job may install with the `install_signing_bundle` step"
                                                                 }
                                                             },
                                                             "additionalProperties": false
@@ -3054,6 +3651,16 @@
                 2.1
             ],
             "markdownDescription": "The version field is intended to be used in order to issue warnings for deprecation or breaking changes."
+        },
+        "setup": {
+            "type": "boolean",
+            "markdownDescription": "https://circleci.com/docs/dynamic-config\n\nMakes this a setup config: its workflow computes the config to continue the pipeline with, using the continuation orb or API."
+        },
+        "functions": {
+            "markdownDescription": "Names the functions this config's steps can run, each as `host.tld/org/name@vX.Y.Z`. A step then runs one as `name` or `name/command`, with its flags under `with`.",
+            "additionalProperties": {
+                "markdownDescription": "A function, as `host.tld/org/name@vX.Y.Z`, for example `github.com/circleci-functions/setup-go@v0.5.1`"
+            }
         },
         "parameters": {
             "type": [

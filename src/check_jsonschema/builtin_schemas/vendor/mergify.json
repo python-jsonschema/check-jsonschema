@@ -1050,6 +1050,38 @@
       "title": "CommitMessageFormatModel",
       "type": "object"
     },
+    "ConflictResolverModel": {
+      "additionalProperties": false,
+      "properties": {
+        "paths": {
+          "description": "Glob patterns of the files this resolver applies to, matched against the path from the repository root exactly like `scopes` file patterns. `*` does not cross a `/`, so `*.md` matches only Markdown files at the root, and `docs/*.md` only those directly in `docs/` -- unlike `.gitattributes`, where a pattern with no `/` matches at any depth. `**` matches any number of directories, and `{a,b}` either alternative.",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Paths",
+          "type": "array"
+        },
+        "strategy": {
+          "description": "How to merge a matching file when two pull requests of the same batch both change it. The names follow git's merge drivers. `ours` is always what the batch already holds, the base branch plus the pull requests queued ahead, and never the incoming pull request:\n\n- `union`: keep both sides' conflicting lines, ours first. For append-only files such as a changelog.\n- `ours`: keep our whole file and discard the incoming pull request's change to it, even where the two changes did not conflict.\n- `theirs`: take the incoming pull request's whole file and discard ours, even where the two changes did not conflict.\n- `prefer-ours`: merge normally, and keep our side only on the lines that conflict.\n- `prefer-theirs`: merge normally, and keep the incoming pull request's side only on the lines that conflict.\n\nA conflict on any other file still removes the pull request from the batch.",
+          "enum": [
+            "union",
+            "ours",
+            "theirs",
+            "prefer-ours",
+            "prefer-theirs"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        }
+      },
+      "required": [
+        "paths",
+        "strategy"
+      ],
+      "title": "ConflictResolverModel",
+      "type": "object"
+    },
     "CopyActionModel": {
       "additionalProperties": false,
       "properties": {
@@ -4254,7 +4286,7 @@
         },
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
-          "description": "Prefix for the merge queue branch name. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
+          "description": "Prefix for the merge queue branch name. It must start valid git branch names, and cannot start with `refs/`, which GitHub refuses. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
           "title": "Queue Branch Prefix",
           "type": "string"
         },
@@ -4267,6 +4299,14 @@
           "description": "Deprecated: this option is being removed after 2026-12-31, and there is no replacement. Move the work now done on a batch branch onto the pull requests themselves. Once the option is gone, an edited batch branch dequeues the pull requests it carries and reports the edit as a failure, which is the behaviour you get today by leaving this unset.\n\nWhen creating a branch for a queue, if the commits of this branch are edited by an entity external to Mergify, Mergify dequeues all pull requests embarked in the branch and report the issue as a failure. If set to `true`, Mergify will allow such modifications and trust the content of the branch. Make sure only Mergify and your external application are allowed to edit these branches.\n\nThis option requires `merge_method` to be `merge-batch` or `fast-forward`. Those two merge the batch branch itself, so a commit pushed to it is part of what lands on the base branch; `merge`, `squash` and `rebase` merge each pull request at its own head, which never includes the edit.\n\nEnabling it therefore means the merged content is the batch branch, including commits that were never reviewed as part of any pull request. That is the contract of this option: it exists for batch-level work (a conflict resolution, a migration reorder, a lockfile regeneration) that belongs to no single pull request.\n\nNote also that under these two merge methods Mergify does not merge the pull requests one by one: GitHub marks each embarked pull request as merged only when its head commit is reachable from the new base branch tip, so a pull request whose head no longer matches what was embarked is not shown as merged even though its content landed.",
           "title": "Allow Queue Branch Edit",
           "type": "boolean"
+        },
+        "conflict_resolvers": {
+          "description": "Resolve conflicts on the files you name while Mergify builds a batch, instead of removing the pull request that conflicts from it. When several entries match a file, the last one wins.\n\nOnly takes effect when the batch branch Mergify built is what lands: `merge_method` set to `merge-batch` or `fast-forward`, or `queue_branch_merge_method` set to `fast-forward`. Otherwise `merge`, `squash` and `rebase` merge each pull request on its own, so a resolution made while building the batch would never land.",
+          "items": {
+            "$ref": "#/$defs/ConflictResolverModel"
+          },
+          "title": "Conflict Resolvers",
+          "type": "array"
         },
         "batch_max_failure_resolution_attempts": {
           "anyOf": [
@@ -4300,17 +4340,6 @@
           "default": null,
           "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration.\n\nAdditionally, `merge-batch` merges the draft pull request prepared by the merge queue using a merge commit. This requires `batch_size > 1`.",
           "title": "Merge Method"
-        },
-        "autosquash": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration.",
-            "deprecated_summary_saas_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration."
-          },
-          "default": false,
-          "deprecated": true,
-          "description": "Deprecated: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. The option is still accepted so configurations that set it keep validating; remove it from your configuration.",
-          "title": "Autosquash",
-          "type": "boolean"
         },
         "autoqueue": {
           "default": false,
@@ -4530,7 +4559,7 @@
         },
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
-          "description": "Prefix for the merge queue branch name. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
+          "description": "Prefix for the merge queue branch name. It must start valid git branch names, and cannot start with `refs/`, which GitHub refuses. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
           "title": "Queue Branch Prefix",
           "type": "string"
         },
@@ -4543,6 +4572,14 @@
           "description": "Deprecated: this option is being removed after 2026-12-31, and there is no replacement. Move the work now done on a batch branch onto the pull requests themselves. Once the option is gone, an edited batch branch dequeues the pull requests it carries and reports the edit as a failure, which is the behaviour you get today by leaving this unset.\n\nWhen creating a branch for a queue, if the commits of this branch are edited by an entity external to Mergify, Mergify dequeues all pull requests embarked in the branch and report the issue as a failure. If set to `true`, Mergify will allow such modifications and trust the content of the branch. Make sure only Mergify and your external application are allowed to edit these branches.\n\nThis option requires `merge_method` to be `merge-batch` or `fast-forward`. Those two merge the batch branch itself, so a commit pushed to it is part of what lands on the base branch; `merge`, `squash` and `rebase` merge each pull request at its own head, which never includes the edit.\n\nEnabling it therefore means the merged content is the batch branch, including commits that were never reviewed as part of any pull request. That is the contract of this option: it exists for batch-level work (a conflict resolution, a migration reorder, a lockfile regeneration) that belongs to no single pull request.\n\nNote also that under these two merge methods Mergify does not merge the pull requests one by one: GitHub marks each embarked pull request as merged only when its head commit is reachable from the new base branch tip, so a pull request whose head no longer matches what was embarked is not shown as merged even though its content landed.",
           "title": "Allow Queue Branch Edit",
           "type": "boolean"
+        },
+        "conflict_resolvers": {
+          "description": "Resolve conflicts on the files you name while Mergify builds a batch, instead of removing the pull request that conflicts from it. When several entries match a file, the last one wins.\n\nOnly takes effect when the batch branch Mergify built is what lands: `merge_method` set to `merge-batch` or `fast-forward`, or `queue_branch_merge_method` set to `fast-forward`. Otherwise `merge`, `squash` and `rebase` merge each pull request on its own, so a resolution made while building the batch would never land.",
+          "items": {
+            "$ref": "#/$defs/ConflictResolverModel"
+          },
+          "title": "Conflict Resolvers",
+          "type": "array"
         },
         "batch_max_failure_resolution_attempts": {
           "anyOf": [
@@ -4576,17 +4613,6 @@
           "default": null,
           "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration.\n\nAdditionally, `merge-batch` merges the draft pull request prepared by the merge queue using a merge commit. This requires `batch_size > 1`.",
           "title": "Merge Method"
-        },
-        "autosquash": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration.",
-            "deprecated_summary_saas_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration."
-          },
-          "default": false,
-          "deprecated": true,
-          "description": "Deprecated: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. The option is still accepted so configurations that set it keep validating; remove it from your configuration.",
-          "title": "Autosquash",
-          "type": "boolean"
         },
         "autoqueue": {
           "default": false,
@@ -4725,17 +4751,6 @@
           "default": null,
           "description": "To rebase, Mergify needs to impersonate a GitHub user. You can specify the account to use with this option. If no `bot_account` is set, Mergify picks the pull request author, or the user who sent the `@mergifyio rebase` command. The user account must have already been logged in Mergify dashboard once.\n\n**Warning:** Because of GitHub's security restrictions, Mergify cannot impersonate an account owned by another GitHub App. A rebase therefore fails whenever the account it falls back to is a bot, either because the pull request was opened by one or because one sent the command, unless `bot_account` names a user account.\n\n**Warning:** A pull request coming from a fork cannot be rebased, whether or not this option is set: rebasing one means impersonating a GitHub user to force-push the contributor's branch. Use the `update` action or the `@mergifyio update` command on those -- except where Mergify cannot write the head branch at all, such as a deleted fork, where `update` is refused too and the check run says what is wrong.",
           "title": "Bot Account"
-        },
-        "autosquash": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "`autosquash` has been removed and this option is now ignored: the `rebase` action no longer squashes commits beginning with `squash!`, `fixup!` or `amend!`. Remove it from your configuration.",
-            "deprecated_summary_saas_mode": "`autosquash` has been removed and this option is now ignored: the `rebase` action no longer squashes commits beginning with `squash!`, `fixup!` or `amend!`. Remove it from your configuration."
-          },
-          "default": false,
-          "deprecated": true,
-          "description": "Deprecated: the `rebase` action no longer squashes commits beginning with `squash!`, `fixup!` or `amend!`. The option is still accepted so configurations that set it keep validating; remove it from your configuration.",
-          "title": "Autosquash",
-          "type": "boolean"
         }
       },
       "title": "RebaseActionModel",
@@ -4962,6 +4977,37 @@
     },
     "Scopes": {
       "additionalProperties": false,
+      "else": {
+        "properties": {
+          "capacities": {
+            "propertyNames": {
+              "anyOf": [
+                {
+                  "minLength": 2,
+                  "pattern": "^[A-Za-z0-9_-]+$",
+                  "type": "string"
+                },
+                {
+                  "pattern": "[\\*\\?\\[\\{]"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "if": {
+        "properties": {
+          "source": {
+            "required": [
+              "manual"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
       "properties": {
         "source": {
           "anyOf": [
@@ -5000,17 +5046,14 @@
           "type": "string"
         },
         "capacities": {
-          "description": "How many speculative checks each scope may run at the same time, as a map of scope name to capacity. Works for any `source` (file globs or the manual scopes API just decide membership; capacity is declared here). A scope listed here runs against its own independent budget; a PR in several capped scopes consumes one slot from each. PRs whose scopes are all absent from this map share the repo-wide `merge_queue.max_parallel_checks` pool, unless `default_capacity` gives every scope a budget. Strict branch protection still forces an effective capacity of 1.",
-          "patternProperties": {
-            "^[A-Za-z0-9_-]+$": {
-              "maximum": 128,
-              "minimum": 1,
-              "type": "integer"
-            }
+          "additionalProperties": {
+            "maximum": 128,
+            "minimum": 1,
+            "type": "integer"
           },
+          "description": "How many speculative checks each scope may run at the same time, as a map of scope name to capacity. Works for any `source` (file globs or the manual scopes API just decide membership; capacity is declared here). With a `manual` source a key may be any scope name the scopes API accepts, such as `//lib/core` or `@acme/web`; with any other source a key that is not a pattern must be a valid scope name. A key containing `*`, `?`, `[` or `{` is a glob pattern with the syntax of `files` filters, such as `@acme/*` or `//lib/**`: `*` and `?` stay within one `/`-separated segment and only a whole `**` segment crosses them, so `//lib/**` matches the packages below `//lib` but not `//lib` itself. In YAML, quote any key starting with `@`, `*`, `?`, `[` or `{`. A pattern gives every scope it matches its own budget, not one budget shared by all of them. A key equal to a scope's name wins over any pattern; when several patterns match a scope, the smallest capacity applies; `default_capacity` only covers scopes no key matches. A PR in several capped scopes consumes one slot from each. PRs whose scopes match no key share the repo-wide `merge_queue.max_parallel_checks` pool, unless `default_capacity` gives every scope a budget. Strict branch protection still forces an effective capacity of 1.",
           "propertyNames": {
-            "minLength": 2,
-            "pattern": "^[A-Za-z0-9_-]+$"
+            "maxLength": 1024
           },
           "title": "Capacities",
           "type": "object"
@@ -5027,7 +5070,7 @@
             }
           ],
           "default": null,
-          "description": "How many speculative checks a scope without an explicit `capacities` entry may run at the same time. Applies to every scope observed on queued pull requests, so dynamic scope sets (e.g. sent by a monorepo build tool through the manual scopes API) get a per-scope budget without enumerating names; an explicit `capacities` entry still wins for its scope. `merge_queue.max_parallel_checks` remains the global ceiling on the total. When unset, scopes without a `capacities` entry are unlimited, and pull requests with no scopes always draw from the repo-wide pool. Strict branch protection still forces an effective capacity of 1.",
+          "description": "How many speculative checks a scope that no `capacities` key matches may run at the same time. Applies to every scope observed on queued pull requests, so dynamic scope sets (e.g. sent by a monorepo build tool through the manual scopes API) get a per-scope budget without enumerating names; a matching `capacities` key or pattern still wins for its scope. `merge_queue.max_parallel_checks` remains the global ceiling on the total. When unset, scopes no `capacities` key matches are unlimited, and pull requests with no scopes always draw from the repo-wide pool. Strict branch protection still forces an effective capacity of 1.",
           "title": "Default Capacity"
         }
       },
@@ -5099,7 +5142,7 @@
         },
         "commit_message": {
           "default": "all-commits",
-          "description": "Defines what commit message to use for the squashed commit if no commit message is defined in the pull request body.\nPossible values are:\n\n- `all-commits` to use the same format as GitHub squashed merge commit.\n- `first-commit` to use the message of the first commit of the pull request.\n- `title+body` means to use the title and body from the pull request itself as the commit message. The pull request number will be added to end of the title.",
+          "description": "Defines the default commit message to use for the squashed commit.\nPossible values are:\n\n- `all-commits` to use the same format as GitHub squashed merge commit.\n- `first-commit` to use the message of the first commit of the pull request.\n- `title+body` means to use the title and body from the pull request itself as the commit message. The pull request number will be added to end of the title.",
           "enum": [
             "all-commits",
             "first-commit",
