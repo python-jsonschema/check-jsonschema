@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 44.103.6 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 44.132.5 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "44.103.6",
+  "x-renovate-version": "44.132.5",
   "allowComments": true,
   "type": "object",
   "definitions": {
@@ -6087,6 +6087,11 @@
       "markdownDescription": "A domain name, host name or base URL to match against.\n\nSee also: [matchHost](https://docs.renovatebot.com/configuration-options/#hostrulesmatchhost)",
       "type": "string"
     },
+    "matchIsBreaking": {
+      "description": "Matches only if the update is considered breaking (e.g. major, or minor for 0.x in ecosystems like Cargo) when `true`, or non-breaking when `false`. Valid only within a `packageRules` object.\nSee also: https://docs.renovatebot.com/configuration-options/#packagerulesmatchisbreaking",
+      "markdownDescription": "Matches only if the update is considered breaking (e.g. major, or minor for 0.x in ecosystems like Cargo) when `true`, or non-breaking when `false`. Valid only within a `packageRules` object.\n\nSee also: [matchIsBreaking](https://docs.renovatebot.com/configuration-options/#packagerulesmatchisbreaking)",
+      "type": "boolean"
+    },
     "matchJsonata": {
       "description": "A JSONata expression to match against the full config object. Valid only within a `packageRules` object.\nSee also: https://docs.renovatebot.com/configuration-options/#packagerulesmatchjsonata",
       "markdownDescription": "A JSONata expression to match against the full config object. Valid only within a `packageRules` object.\n\nSee also: [matchJsonata](https://docs.renovatebot.com/configuration-options/#packagerulesmatchjsonata)",
@@ -7293,6 +7298,9 @@
               },
               "matchFileNames": {
                 "$ref": "#/definitions/matchFileNames"
+              },
+              "matchIsBreaking": {
+                "$ref": "#/definitions/matchIsBreaking"
               },
               "matchJsonata": {
                 "$ref": "#/definitions/matchJsonata"
@@ -10343,6 +10351,7 @@
             "github-actions",
             "glasskube",
             "go-mod-directive",
+            "gomod",
             "gradle",
             "hashicorp",
             "helm",
@@ -11843,7 +11852,7 @@
       },
       {
         "required": [
-          "allowCustomCrateRegistries"
+          "allowCustomCrateGitRegistries"
         ]
       },
       {
