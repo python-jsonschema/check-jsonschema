@@ -346,7 +346,7 @@
           "type": "array"
         },
         "regexes": {
-          "description": "The list of regexes to find branches the pull request should be copied to.",
+          "description": "The list of regexes to find branches the pull request should be copied to. They are matched against the repository's branches, of which Mergify reads at most 1000: in a repository with more than 1000 branches, the action fails.",
           "items": {
             "format": "regex",
             "type": "string"
@@ -1050,6 +1050,402 @@
       "title": "CommitMessageFormatModel",
       "type": "object"
     },
+    "ConflictResolverModel": {
+      "additionalProperties": false,
+      "properties": {
+        "paths": {
+          "description": "Glob patterns of the files this resolver applies to, matched against the path from the repository root exactly like `scopes` file patterns. `*` does not cross a `/`, so `*.md` matches only Markdown files at the root, and `docs/*.md` only those directly in `docs/` -- unlike `.gitattributes`, where a pattern with no `/` matches at any depth. `**` matches any number of directories, and `{a,b}` either alternative. Patterns, unlike a `package-manager` entry's `directories`, which are literal.",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Paths",
+          "type": "array"
+        },
+        "strategy": {
+          "description": "How to merge a matching file when two pull requests of the same batch both change it. `union`, `ours` and `theirs` are git's names, and `ours` is always what the batch already holds, the base branch plus the pull requests queued ahead, and never the incoming pull request:\n\n- `union`: Keep both sides' lines where they conflict, the batch's first.\n- `ours`: Keep the batch's whole file and discard the incoming pull request's change to it, even where the two did not conflict.\n- `theirs`: Take the incoming pull request's whole file and discard the batch's, even where the two did not conflict.\n- `prefer-ours`: Merge normally, and keep the batch's side only on the lines that conflict -- its whole file when both sides added the file.\n- `prefer-theirs`: Merge normally, and keep the incoming pull request's side only on the lines that conflict -- its whole file when both sides added the file.\n- `json`: Merge a JSON file by its structure rather than by line, so changes to different keys or array elements merge even on adjacent lines, and neither side's change is discarded. Two different values for the same key, a change to a key the other side deleted, a key both sides added differently, two insertions at the same place in an array, or two changes to the same array element, even to different fields of it, are a conflict even where git's line merge would have been clean. Where git's line merge is clean and gives the same result, that text is used as is; otherwise the incoming pull request's changes are written into the batch's text as it wrote them, the rest keeps the batch's formatting and key order, and a change written in a style the batch's file does not use is a conflict. A file that is not valid JSON is merged by line as usual.\n- `pnpm`: Merge a `pnpm-lock.yaml` (lockfile version 9) entry by entry, so two pull requests updating two different dependencies merge even where their entries sit side by side, including when both moved peers of the same package. The same dependency updated to two versions, a package updated on one side while the other moved its peers, a dependency one side removed and the other updated, or a merged file whose entries refer to a package version it no longer has, are a conflict, even where git's line merge would have been clean. The `package.json` beside it usually conflicts too: a `package-manager: npm` entry resolves both. A file that is not a version 9 lockfile is merged by line as usual.\n- `uv`: Merge a `uv.lock` and the `pyproject.toml` beside it entry by entry, so two pull requests updating two different dependencies merge in both files even on adjacent lines. A conflict, even where git's line merge would have been clean: the same dependency updated to two versions; a `uv.lock` package one side updated and the other changed, or one side changed while depending on a package the other side updated, since the lockfile records no version constraint to check the two against; and a merged `uv.lock` naming a package it no longer has, or holding one nothing uses. A file written in a shape uv does not write, such as a multi-line string, is merged by line as usual.\n- `rails-schema`: Merge a Rails `db/schema.rb` by line. When two pull requests that each add a migration both change its version line (`ActiveRecord::Schema[8.1].define(version: ...)`), keep the later version: what `rails db:migrate` writes once both migrations are applied. Any other conflict in the file, version lines written by two different Rails versions, or a version older than the one the file had before either change, is a conflict as usual.\n- `yarn`: Merge a `yarn.lock`, from yarn 1 or from yarn 2 and later, entry by entry, so two pull requests updating two different dependencies merge even where their entries sit side by side. The same dependency updated to two versions, a dependency one side removed and the other updated, the two sides holding different `__metadata`, or a merged file referring to a package version it no longer has, or holding one nothing uses, are a conflict, even where git's line merge would have been clean. The `package.json` beside it usually conflicts too: a `package-manager: npm` entry resolves both. A file in neither yarn format is merged by line as usual.\n- `typescript`: Merge a TypeScript file (`.ts`, `.tsx`, `.mts`, `.cts`, `.d.ts`) or a JavaScript file (`.js`, `.jsx`, `.mjs`, `.cjs`) by its syntax tree where git's line merge conflicts, so two pull requests adding different imports, functions, members, object keys, tests or JSX elements at the same place keep both: the batch's first, or in the order the file keeps them sorted in. The same declaration, statement or value changed two ways, a change to something the other side deleted, something one side moved and the other deleted or moved elsewhere, the same name added twice, statements added at the same place (in a function body, or a file's own, such as an `exports.name = ...` or a `require` call), declarations added at the same place that run code where they stand (a variable, a field or an object key whose value calls code, a decorated class), tests of a serial suite, two enum members given the same value, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, is larger than 2 MiB, or is minified JavaScript (more than 110 characters a line on average) is merged by line as usual.\n- `rails-structure`: Merge the `schema_migrations` list Rails writes at the end of a `db/structure.sql`, so two pull requests that each add a migration merge even though both add a row at the same end of the list: it is written back with the migrations either side added and without those either side removed, sorted as Rails sorts it. The rest of the file is merged by line as usual, so the same table changed by both pull requests is still a conflict, and so are both sides re-sorting the list in opposite orders and a list left with no migration. A file without exactly one such list, as any other SQL file, is merged by line as usual.\n- `rust`: Merge a Rust file (`.rs`) by its syntax tree where git's line merge conflicts, so two pull requests adding different imports, items, methods, fields, enum variants, match arms or derives at the same place keep both: the batch's first, with imports and modules in rustfmt's order and layout. The same item or expression changed two ways, a change to something the other side deleted, the same name added twice, a macro both sides changed, items added at the same place whose order matters (a `macro_rules!`, a field of a `#[repr]` struct, a match arm with a guard), a match that would miss an enum variant the other side added, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, or is larger than 2 MiB, is merged by line as usual.\n- `python`: Merge a Python file (`.py`, `.pyi`) by its syntax tree where git's line merge conflicts, so two pull requests adding different imports, functions, tests, methods, string dictionary keys or keyword arguments at the same place keep both: the batch's first, and imports in the order isort and ruff write them. Each keeps its own decorators, docstring, comments and indentation. A function both pull requests changed, statements or class fields added at the same place, definitions or values whose decorators (other than a test's own marks, fixtures and patches), defaults, annotations, operators or subscripts can run code, classes with a base that could register them, imports added to a section the file keeps in no known order, a change to something the other side deleted, the same name added twice, a name one side removed that the other still uses, a block one side re-indented, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, or is larger than 2 MiB, is merged by line as usual.\n- `yaml`: Merge a YAML file (`.yml`, `.yaml`) by its structure where git's line merge conflicts, so two pull requests adding different keys to a mapping keep both, the batch's first or in the order the mapping keeps its keys sorted in, and two adding items at the end of a sequence (a job's steps, a list of hosts) keep both, the batch's first, as do two changing different items of one (the action pinned on each of two neighbouring steps). Each side's text is kept as it wrote it, comments included. The same key or item changed two ways, a change to something the other side deleted, the same key added twice, items added at the same place anywhere but the end of a sequence, an item both append among different ones, a document added, removed or replaced, an anchor one side changed while the other changed what refers to it, or a result that does not read back as both sides' changes are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, is larger than 2 MiB, has more than 32,767 lines (16,383 with Windows line endings) or a longer line, or uses a list or an alias as a key is merged by line as usual. In Mergify's own configuration file, a rule of `pull_request_rules`, `queue_rules`, `priority_rules` or `merge_protections` is known by its `name`; two rules or entries added at the same place, its end included, are a conflict in `pull_request_rules`, `queue_rules`, `priority_rules` and `conflict_resolvers`, whose order Mergify reads; and two conditions added at the same place keep both.\n- `cargo`: Merge a `Cargo.lock` (lockfile version 3 or 4) and the `Cargo.toml` beside it entry by entry, so two pull requests updating or adding two different crates merge in both files even on adjacent lines, and two adding a crate to a workspace's `members` keep both. A conflict, even where git's line merge would have been clean: the same crate updated to two versions or changed two ways; a `Cargo.lock` package one side changed while depending on a crate the other side removed or moved to a lower version, since the lockfile records no version constraint to check the two against; the two sides holding different lockfile versions; and a merged `Cargo.lock` that is not what Cargo writes, naming a package it no longer has, holding one nothing uses, or two versions of a crate Cargo would resolve to one. A file written in a shape Cargo does not write, such as a multi-line string, or an older lockfile version, is merged by line as usual.\n- `npm`: Merge a `package-lock.json` or an `npm-shrinkwrap.json` (lockfile version 2 or 3) entry by entry, so two pull requests updating or adding two different dependencies merge even where their entries sit side by side. A conflict, even where git's line merge would have been clean: the same package changed two ways; a package one side changed and the other removed; the two sides holding different lockfile versions; and a merged file in which a dependency would resolve to a version outside its range that no side resolved it to, or in which npm would mark a package development-only, optional or unused otherwise than the side it comes from does. The `package.json` beside it usually conflicts too: a `package-manager: npm` entry resolves both. A version 1 lockfile, or a file laid out otherwise than npm writes it, is merged by line as usual.\n- `go`: Merge a Go file (`.go`) by its syntax tree where git's line merge conflicts, so two pull requests adding different imports, functions, methods, types, struct fields, interface methods, constants, map keys or rows at the end of a test table at the same place keep both: the batch's first, with imports in gofmt's order and the lines laid out as gofmt aligns them. The same declaration or value changed two ways, a function or a test table row both pull requests changed, a change to something the other side deleted, the same name declared twice, two constants given the same value, declarations added at the same place whose order matters (an `init` function, an `iota` constant, a variable or key whose value calls code, a field of a struct with a padding field), table rows added at the same place anywhere but the end, an import left unused or a package left without its import, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, or is larger than 2 MiB, is merged by line as usual.\n- `gomod`: Merge a `go.mod` and the `go.sum` beside it entry by entry, so two pull requests updating or adding two different modules merge in both files even on adjacent lines. A conflict, even where git's line merge would have been clean: the same module updated to two versions or changed two ways, in either file. Neither file records why a module is required, so a module one pull request removed is removed even where the other pull request's change needs it, including on lines git's line merge would have conflicted on, and Go then refuses to build until `go mod tidy` puts it back. A `go.mod` with a quoted string or a directive Go does not know is merged by line as usual.\n- `sbt`: Merge an sbt build file (`build.sbt`, `project/*.sbt`, `project/*.scala`, `project/build.properties`) by line as git does, except that a change rewriting only versions never conflicts with the lines around it: two pull requests bumping dependencies on adjacent lines, or one bumping a dependency beside a line the other adds or removes, merge, each version taken from the pull request that changed it. A version is a double-quoted string that reads as one, or the value of `project/build.properties`' `sbt.version`. The same version changed two ways, and lines both pull requests changed otherwise, such as two dependencies added at one place or one appended to a `Seq(...)` whose last element the other bumped, are a conflict as usual. A merge git completes is left as git wrote it.\n- `terraform`: Merge a `.terraform.lock.hcl`, from Terraform or OpenTofu, provider by provider, so two pull requests updating or adding two different providers merge even on adjacent lines, and so do two pull requests locking one provider version for two platforms. A conflict, even where git's line merge would have been clean: the same provider changed by both to two versions or under two sets of constraints. The lock file does not record why a provider is required, so a provider one pull request removed is removed even where the other pull request's change needs it, including on lines git's line merge would have conflicted on, and `terraform init` then puts it back. A lock file either pull request wrote in a layout Terraform does not write, such as with a `module` block or a list on one line, is merged by line as usual.\n- `nix`: Merge a `flake.lock` (lockfile version 7) input by input, so two pull requests updating or adding two different inputs merge, even where an input one adds makes Nix rename the nodes the other updated. A conflict, even where git's line merge would have been clean: the same input locked two ways, or locked by one side and removed by the other; a merged `flake.lock` with a `follows` leading to no input or a node nothing uses; and a merge base not written as Nix writes one under two sides that are. Either side not written as Nix writes one, or in an older lockfile version, is merged by line as usual. The `flake.nix` beside it is not read.\n- `ruby`: Merge a Ruby file (`.rb`, `.rake`, `.gemspec`, `.ru`, `.rbi`, a `Gemfile` or a `Rakefile`) by its syntax tree where git's line merge conflicts, so two pull requests adding different methods, attributes, constants, classes, requires, tests, `let` helpers, gem specification dependencies or hash keys at the same place keep both: the batch's first, with requires kept in the order the file sorts them. The same definition or value changed two ways, a method or a block of code both pull requests changed, a change to something the other side deleted, the same name defined twice, constants written together changed differently (a version's `TINY` on one side and `PRE` on the other), statements and class-body calls added at the same place whose order matters (`include`, `has_many`, `validates`, a hook, a Gemfile's `gem`), a method one pull request deleted that the other one's change still calls, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, or is larger than 2 MiB, is merged by line as usual.\n\nA conflict on any other file still removes the pull request from the batch.",
+          "enum": [
+            "union",
+            "ours",
+            "theirs",
+            "prefer-ours",
+            "prefer-theirs",
+            "json",
+            "pnpm",
+            "uv",
+            "rails-schema",
+            "yarn",
+            "typescript",
+            "rails-structure",
+            "rust",
+            "python",
+            "yaml",
+            "cargo",
+            "npm",
+            "go",
+            "gomod",
+            "sbt",
+            "terraform",
+            "nix",
+            "ruby"
+          ],
+          "title": "Strategy",
+          "type": "string",
+          "x-mergify-enum": [
+            {
+              "description": "Keep both sides' lines where they conflict, the batch's first.",
+              "facts": {
+                "discards": null,
+                "kind": "git-builtin",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": true,
+                "suits": [
+                  "append-only"
+                ]
+              }
+            },
+            {
+              "description": "Keep the batch's whole file and discard the incoming pull request's change to it, even where the two did not conflict.",
+              "facts": {
+                "discards": {
+                  "scope": "whole-file",
+                  "side": "theirs"
+                },
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": true,
+                "resolves_clashes": true,
+                "suits": []
+              }
+            },
+            {
+              "description": "Take the incoming pull request's whole file and discard the batch's, even where the two did not conflict.",
+              "facts": {
+                "discards": {
+                  "scope": "whole-file",
+                  "side": "ours"
+                },
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": true,
+                "resolves_clashes": true,
+                "suits": []
+              }
+            },
+            {
+              "description": "Merge normally, and keep the batch's side only on the lines that conflict -- its whole file when both sides added the file.",
+              "facts": {
+                "discards": {
+                  "scope": "conflicting-lines",
+                  "side": "theirs"
+                },
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": true,
+                "suits": []
+              }
+            },
+            {
+              "description": "Merge normally, and keep the incoming pull request's side only on the lines that conflict -- its whole file when both sides added the file.",
+              "facts": {
+                "discards": {
+                  "scope": "conflicting-lines",
+                  "side": "ours"
+                },
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": true,
+                "suits": []
+              }
+            },
+            {
+              "description": "Merge a JSON file by its structure rather than by line, so changes to different keys or array elements merge even on adjacent lines, and neither side's change is discarded. Two different values for the same key, a change to a key the other side deleted, a key both sides added differently, two insertions at the same place in an array, or two changes to the same array element, even to different fields of it, are a conflict even where git's line merge would have been clean. Where git's line merge is clean and gives the same result, that text is used as is; otherwise the incoming pull request's changes are written into the batch's text as it wrote them, the rest keeps the batch's formatting and key order, and a change written in a style the batch's file does not use is a conflict. A file that is not valid JSON is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "json"
+                ]
+              }
+            },
+            {
+              "description": "Merge a `pnpm-lock.yaml` (lockfile version 9) entry by entry, so two pull requests updating two different dependencies merge even where their entries sit side by side, including when both moved peers of the same package. The same dependency updated to two versions, a package updated on one side while the other moved its peers, a dependency one side removed and the other updated, or a merged file whose entries refer to a package version it no longer has, are a conflict, even where git's line merge would have been clean. The `package.json` beside it usually conflicts too: a `package-manager: npm` entry resolves both. A file that is not a version 9 lockfile is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "pnpm-lockfile"
+                ]
+              }
+            },
+            {
+              "description": "Merge a `uv.lock` and the `pyproject.toml` beside it entry by entry, so two pull requests updating two different dependencies merge in both files even on adjacent lines. A conflict, even where git's line merge would have been clean: the same dependency updated to two versions; a `uv.lock` package one side updated and the other changed, or one side changed while depending on a package the other side updated, since the lockfile records no version constraint to check the two against; and a merged `uv.lock` naming a package it no longer has, or holding one nothing uses. A file written in a shape uv does not write, such as a multi-line string, is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "uv-lockfile",
+                  "pyproject"
+                ]
+              }
+            },
+            {
+              "description": "Merge a Rails `db/schema.rb` by line. When two pull requests that each add a migration both change its version line (`ActiveRecord::Schema[8.1].define(version: ...)`), keep the later version: what `rails db:migrate` writes once both migrations are applied. Any other conflict in the file, version lines written by two different Rails versions, or a version older than the one the file had before either change, is a conflict as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "rails-schema"
+                ]
+              }
+            },
+            {
+              "description": "Merge a `yarn.lock`, from yarn 1 or from yarn 2 and later, entry by entry, so two pull requests updating two different dependencies merge even where their entries sit side by side. The same dependency updated to two versions, a dependency one side removed and the other updated, the two sides holding different `__metadata`, or a merged file referring to a package version it no longer has, or holding one nothing uses, are a conflict, even where git's line merge would have been clean. The `package.json` beside it usually conflicts too: a `package-manager: npm` entry resolves both. A file in neither yarn format is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "yarn-lockfile"
+                ]
+              }
+            },
+            {
+              "description": "Merge a TypeScript file (`.ts`, `.tsx`, `.mts`, `.cts`, `.d.ts`) or a JavaScript file (`.js`, `.jsx`, `.mjs`, `.cjs`) by its syntax tree where git's line merge conflicts, so two pull requests adding different imports, functions, members, object keys, tests or JSX elements at the same place keep both: the batch's first, or in the order the file keeps them sorted in. The same declaration, statement or value changed two ways, a change to something the other side deleted, something one side moved and the other deleted or moved elsewhere, the same name added twice, statements added at the same place (in a function body, or a file's own, such as an `exports.name = ...` or a `require` call), declarations added at the same place that run code where they stand (a variable, a field or an object key whose value calls code, a decorated class), tests of a serial suite, two enum members given the same value, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, is larger than 2 MiB, or is minified JavaScript (more than 110 characters a line on average) is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "typescript",
+                  "javascript"
+                ]
+              }
+            },
+            {
+              "description": "Merge the `schema_migrations` list Rails writes at the end of a `db/structure.sql`, so two pull requests that each add a migration merge even though both add a row at the same end of the list: it is written back with the migrations either side added and without those either side removed, sorted as Rails sorts it. The rest of the file is merged by line as usual, so the same table changed by both pull requests is still a conflict, and so are both sides re-sorting the list in opposite orders and a list left with no migration. A file without exactly one such list, as any other SQL file, is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "rails-structure-sql"
+                ]
+              }
+            },
+            {
+              "description": "Merge a Rust file (`.rs`) by its syntax tree where git's line merge conflicts, so two pull requests adding different imports, items, methods, fields, enum variants, match arms or derives at the same place keep both: the batch's first, with imports and modules in rustfmt's order and layout. The same item or expression changed two ways, a change to something the other side deleted, the same name added twice, a macro both sides changed, items added at the same place whose order matters (a `macro_rules!`, a field of a `#[repr]` struct, a match arm with a guard), a match that would miss an enum variant the other side added, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, or is larger than 2 MiB, is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "rust"
+                ]
+              }
+            },
+            {
+              "description": "Merge a Python file (`.py`, `.pyi`) by its syntax tree where git's line merge conflicts, so two pull requests adding different imports, functions, tests, methods, string dictionary keys or keyword arguments at the same place keep both: the batch's first, and imports in the order isort and ruff write them. Each keeps its own decorators, docstring, comments and indentation. A function both pull requests changed, statements or class fields added at the same place, definitions or values whose decorators (other than a test's own marks, fixtures and patches), defaults, annotations, operators or subscripts can run code, classes with a base that could register them, imports added to a section the file keeps in no known order, a change to something the other side deleted, the same name added twice, a name one side removed that the other still uses, a block one side re-indented, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, or is larger than 2 MiB, is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "python"
+                ]
+              }
+            },
+            {
+              "description": "Merge a YAML file (`.yml`, `.yaml`) by its structure where git's line merge conflicts, so two pull requests adding different keys to a mapping keep both, the batch's first or in the order the mapping keeps its keys sorted in, and two adding items at the end of a sequence (a job's steps, a list of hosts) keep both, the batch's first, as do two changing different items of one (the action pinned on each of two neighbouring steps). Each side's text is kept as it wrote it, comments included. The same key or item changed two ways, a change to something the other side deleted, the same key added twice, items added at the same place anywhere but the end of a sequence, an item both append among different ones, a document added, removed or replaced, an anchor one side changed while the other changed what refers to it, or a result that does not read back as both sides' changes are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, is larger than 2 MiB, has more than 32,767 lines (16,383 with Windows line endings) or a longer line, or uses a list or an alias as a key is merged by line as usual. In Mergify's own configuration file, a rule of `pull_request_rules`, `queue_rules`, `priority_rules` or `merge_protections` is known by its `name`; two rules or entries added at the same place, its end included, are a conflict in `pull_request_rules`, `queue_rules`, `priority_rules` and `conflict_resolvers`, whose order Mergify reads; and two conditions added at the same place keep both.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "yaml"
+                ]
+              }
+            },
+            {
+              "description": "Merge a `Cargo.lock` (lockfile version 3 or 4) and the `Cargo.toml` beside it entry by entry, so two pull requests updating or adding two different crates merge in both files even on adjacent lines, and two adding a crate to a workspace's `members` keep both. A conflict, even where git's line merge would have been clean: the same crate updated to two versions or changed two ways; a `Cargo.lock` package one side changed while depending on a crate the other side removed or moved to a lower version, since the lockfile records no version constraint to check the two against; the two sides holding different lockfile versions; and a merged `Cargo.lock` that is not what Cargo writes, naming a package it no longer has, holding one nothing uses, or two versions of a crate Cargo would resolve to one. A file written in a shape Cargo does not write, such as a multi-line string, or an older lockfile version, is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "cargo-lockfile",
+                  "cargo-manifest"
+                ]
+              }
+            },
+            {
+              "description": "Merge a `package-lock.json` or an `npm-shrinkwrap.json` (lockfile version 2 or 3) entry by entry, so two pull requests updating or adding two different dependencies merge even where their entries sit side by side. A conflict, even where git's line merge would have been clean: the same package changed two ways; a package one side changed and the other removed; the two sides holding different lockfile versions; and a merged file in which a dependency would resolve to a version outside its range that no side resolved it to, or in which npm would mark a package development-only, optional or unused otherwise than the side it comes from does. The `package.json` beside it usually conflicts too: a `package-manager: npm` entry resolves both. A version 1 lockfile, or a file laid out otherwise than npm writes it, is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "npm-lockfile"
+                ]
+              }
+            },
+            {
+              "description": "Merge a Go file (`.go`) by its syntax tree where git's line merge conflicts, so two pull requests adding different imports, functions, methods, types, struct fields, interface methods, constants, map keys or rows at the end of a test table at the same place keep both: the batch's first, with imports in gofmt's order and the lines laid out as gofmt aligns them. The same declaration or value changed two ways, a function or a test table row both pull requests changed, a change to something the other side deleted, the same name declared twice, two constants given the same value, declarations added at the same place whose order matters (an `init` function, an `iota` constant, a variable or key whose value calls code, a field of a struct with a padding field), table rows added at the same place anywhere but the end, an import left unused or a package left without its import, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, or is larger than 2 MiB, is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "go"
+                ]
+              }
+            },
+            {
+              "description": "Merge a `go.mod` and the `go.sum` beside it entry by entry, so two pull requests updating or adding two different modules merge in both files even on adjacent lines. A conflict, even where git's line merge would have been clean: the same module updated to two versions or changed two ways, in either file. Neither file records why a module is required, so a module one pull request removed is removed even where the other pull request's change needs it, including on lines git's line merge would have conflicted on, and Go then refuses to build until `go mod tidy` puts it back. A `go.mod` with a quoted string or a directive Go does not know is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "gomod-manifest",
+                  "gomod-checksums"
+                ]
+              }
+            },
+            {
+              "description": "Merge an sbt build file (`build.sbt`, `project/*.sbt`, `project/*.scala`, `project/build.properties`) by line as git does, except that a change rewriting only versions never conflicts with the lines around it: two pull requests bumping dependencies on adjacent lines, or one bumping a dependency beside a line the other adds or removes, merge, each version taken from the pull request that changed it. A version is a double-quoted string that reads as one, or the value of `project/build.properties`' `sbt.version`. The same version changed two ways, and lines both pull requests changed otherwise, such as two dependencies added at one place or one appended to a `Seq(...)` whose last element the other bumped, are a conflict as usual. A merge git completes is left as git wrote it.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "sbt-build"
+                ]
+              }
+            },
+            {
+              "description": "Merge a `.terraform.lock.hcl`, from Terraform or OpenTofu, provider by provider, so two pull requests updating or adding two different providers merge even on adjacent lines, and so do two pull requests locking one provider version for two platforms. A conflict, even where git's line merge would have been clean: the same provider changed by both to two versions or under two sets of constraints. The lock file does not record why a provider is required, so a provider one pull request removed is removed even where the other pull request's change needs it, including on lines git's line merge would have conflicted on, and `terraform init` then puts it back. A lock file either pull request wrote in a layout Terraform does not write, such as with a `module` block or a list on one line, is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "terraform-lockfile"
+                ]
+              }
+            },
+            {
+              "description": "Merge a `flake.lock` (lockfile version 7) input by input, so two pull requests updating or adding two different inputs merge, even where an input one adds makes Nix rename the nodes the other updated. A conflict, even where git's line merge would have been clean: the same input locked two ways, or locked by one side and removed by the other; a merged `flake.lock` with a `follows` leading to no input or a node nothing uses; and a merge base not written as Nix writes one under two sides that are. Either side not written as Nix writes one, or in an older lockfile version, is merged by line as usual. The `flake.nix` beside it is not read.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "nix-lockfile"
+                ]
+              }
+            },
+            {
+              "description": "Merge a Ruby file (`.rb`, `.rake`, `.gemspec`, `.ru`, `.rbi`, a `Gemfile` or a `Rakefile`) by its syntax tree where git's line merge conflicts, so two pull requests adding different methods, attributes, constants, classes, requires, tests, `let` helpers, gem specification dependencies or hash keys at the same place keep both: the batch's first, with requires kept in the order the file sorts them. The same definition or value changed two ways, a method or a block of code both pull requests changed, a change to something the other side deleted, the same name defined twice, constants written together changed differently (a version's `TINY` on one side and `PRE` on the other), statements and class-body calls added at the same place whose order matters (`include`, `has_many`, `validates`, a hook, a Gemfile's `gem`), a method one pull request deleted that the other one's change still calls, or a result that does not parse are a conflict as usual. A merge git completes is left as git wrote it, and a file that does not parse, or is larger than 2 MiB, is merged by line as usual.",
+              "facts": {
+                "discards": null,
+                "kind": "driver",
+                "options": {},
+                "resolves_binary": false,
+                "resolves_clashes": false,
+                "suits": [
+                  "ruby"
+                ]
+              }
+            }
+          ],
+          "x-mergify-facts-vocabulary": {
+            "discards": {
+              "ours": {
+                "conflicting-lines": "Discards the batch's side on the lines that conflict.",
+                "whole-file": "Discards the batch's change to the file, even where the two did not conflict."
+              },
+              "theirs": {
+                "conflicting-lines": "Discards the incoming pull request's side on the lines that conflict.",
+                "whole-file": "Discards the incoming pull request's change to the file, even where the two did not conflict."
+              }
+            },
+            "suits": {
+              "append-only": "append-only files, such as a changelog",
+              "cargo-lockfile": "Cargo lockfiles (`Cargo.lock`)",
+              "cargo-manifest": "Cargo manifests (`Cargo.toml`)",
+              "go": "Go files",
+              "gomod-checksums": "Go checksum files (`go.sum`)",
+              "gomod-manifest": "Go module files (`go.mod`)",
+              "javascript": "JavaScript files",
+              "json": "JSON files, such as a `package.json`",
+              "nix-lockfile": "Nix flake lockfiles (`flake.lock`)",
+              "npm-lockfile": "npm lockfiles (`package-lock.json`, `npm-shrinkwrap.json`)",
+              "pnpm-lockfile": "pnpm lockfiles (`pnpm-lock.yaml`)",
+              "pyproject": "`pyproject.toml` files",
+              "python": "Python files",
+              "rails-schema": "Rails schema files (`db/schema.rb`)",
+              "rails-structure-sql": "Rails structure files (`db/structure.sql`)",
+              "ruby": "Ruby files",
+              "rust": "Rust files",
+              "sbt-build": "sbt build files (`build.sbt`, `project/*.sbt`, `project/*.scala`, `project/build.properties`)",
+              "terraform-lockfile": "Terraform and OpenTofu lock files (`.terraform.lock.hcl`)",
+              "typescript": "TypeScript files",
+              "uv-lockfile": "uv lockfiles (`uv.lock`)",
+              "yaml": "YAML files",
+              "yarn-lockfile": "yarn lockfiles (`yarn.lock`)"
+            }
+          }
+        }
+      },
+      "required": [
+        "paths",
+        "strategy"
+      ],
+      "title": "ConflictResolverModel",
+      "type": "object"
+    },
     "CopyActionModel": {
       "additionalProperties": false,
       "properties": {
@@ -1085,7 +1481,7 @@
           "type": "array"
         },
         "regexes": {
-          "description": "The list of regexes to find branches the pull request should be copied to.",
+          "description": "The list of regexes to find branches the pull request should be copied to. They are matched against the repository's branches, of which Mergify reads at most 1000: in a repository with more than 1000 branches, the action fails.",
           "items": {
             "format": "regex",
             "type": "string"
@@ -1578,6 +1974,44 @@
       "title": "LabelActionModel",
       "type": "object"
     },
+    "LanguageResolverModel": {
+      "additionalProperties": false,
+      "properties": {
+        "language": {
+          "description": "The language whose files to resolve, leaving Mergify to pick which files those are and how each merges, at any depth below each of the `directories` unless said otherwise. `typescript` resolves `*.{ts,tsx,mts,cts}` with the `typescript` strategy. `javascript` resolves `*.{js,jsx,mjs,cjs}` with the `typescript` strategy. `rust` resolves `*.rs` with the `rust` strategy. `python` resolves `*.{py,pyi}` with the `python` strategy. `yaml` resolves `*.{yml,yaml}` with the `yaml` strategy. `go` resolves `*.go` with the `go` strategy. `ruby` resolves `*.{rb,rake,gemspec,ru,rbi}`, `Gemfile`, `Rakefile` with the `ruby` strategy, `db/schema.rb` with the `rails-schema` strategy. `github-actions` resolves `.github/workflows/*.{yml,yaml}`, `action.{yml,yaml}` with the `yaml` strategy. `mergify` resolves `.mergify.yml`, `.mergify.yaml`, `.mergify/config.yml`, `.mergify/config.yaml`, `.github/mergify.yml`, `.github/mergify.yaml` at the repository root, with the `yaml` strategy. The last entry matching a file wins, so a `package-manager` entry keeps its `pnpm-lock.yaml` from a `yaml` one by coming after it.",
+          "enum": [
+            "typescript",
+            "javascript",
+            "rust",
+            "python",
+            "yaml",
+            "go",
+            "ruby",
+            "github-actions",
+            "mergify"
+          ],
+          "title": "Language",
+          "type": "string"
+        },
+        "directories": {
+          "default": [
+            "/"
+          ],
+          "description": "The directories whose files to resolve, at any depth, from the repository root and starting with `/`: `/` for the whole repository, which is what an entry naming none resolves. Literal paths, unlike the glob patterns of `paths`. `mergify` resolves files at the repository root only, and takes none.",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Directories",
+          "type": "array"
+        }
+      },
+      "required": [
+        "language"
+      ],
+      "title": "LanguageResolverModel",
+      "type": "object"
+    },
     "ListOfRuleConditions": {
       "anyOf": [
         {
@@ -1780,13 +2214,6 @@
           "title": "Post Comment",
           "type": "boolean"
         },
-        "auto_merge": {
-          "default": false,
-          "deprecated": true,
-          "description": "Automatically merge or queue PRs when all merge protection conditions pass. Deprecated: use auto_merge_conditions.",
-          "title": "Auto Merge",
-          "type": "boolean"
-        },
         "auto_merge_conditions": {
           "anyOf": [
             {
@@ -1878,7 +2305,10 @@
           "default": false,
           "description": "Allow PRs to merge even if their own speculative check fails, as long as a later downstream check including them passes and schedule conditions are valid.",
           "title": "Skip Intermediate Results",
-          "type": "boolean"
+          "type": "boolean",
+          "x-mergify-refused-in-modes": [
+            "isolated"
+          ]
         },
         "status_comments": {
           "default": "all",
@@ -1936,6 +2366,41 @@
         "or"
       ],
       "title": "OrCondition",
+      "type": "object"
+    },
+    "PackageManagerResolverModel": {
+      "additionalProperties": false,
+      "properties": {
+        "package-manager": {
+          "description": "The package manager whose manifest and lockfile to resolve, by the name Dependabot gives it, leaving Mergify to pick how each file merges: a `package-lock.json`, a `pnpm-lock.yaml`, a `yarn.lock`, a `uv.lock`, a `Cargo.lock`, a `go.sum` or a `.terraform.lock.hcl` merges dependency by dependency, as does the manifest beside it where one is named below, and a dependency the two pull requests changed differently still conflicts. `npm` covers npm, pnpm and yarn alike, and resolves a `package-lock.json` or an `npm-shrinkwrap.json` (lockfile version 2 or 3), a `pnpm-lock.yaml`, or a `yarn.lock` from any yarn version. `uv` resolves a `pyproject.toml` and its `uv.lock`. `cargo` resolves a `Cargo.toml` and its `Cargo.lock`: list a workspace's root, and each crate whose own `Cargo.toml` two pull requests may both change. `gomod` resolves a `go.mod` and its `go.sum`: list each module's directory. `sbt` resolves a `build.sbt` and the `project/*.sbt`, `project/*.scala` and `project/build.properties` beside it by line, where a change rewriting only versions no longer conflicts with the lines around it: list the build's root, and each subproject whose own `build.sbt` two pull requests may both change. `terraform` and `opentofu` resolve the `.terraform.lock.hcl` of each listed directory, the root module's, and not the `.tf` files declaring its providers. `nix` resolves a `flake.lock` input by input: its `flake.nix` merges as usual.",
+          "enum": [
+            "npm",
+            "uv",
+            "cargo",
+            "gomod",
+            "sbt",
+            "terraform",
+            "opentofu",
+            "nix"
+          ],
+          "title": "Package-Manager",
+          "type": "string"
+        },
+        "directories": {
+          "description": "The directories holding the manifest and its lockfile, from the repository root and starting with `/`: `/` for the root itself. Literal paths, unlike the glob patterns of `paths`.",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Directories",
+          "type": "array"
+        }
+      },
+      "required": [
+        "package-manager",
+        "directories"
+      ],
+      "title": "PackageManagerResolverModel",
       "type": "object"
     },
     "PostCheckActionModel": {
@@ -2240,7 +2705,7 @@
         "number": {
           "description": "The pull request number.",
           "maximum": 9223372036854775807,
-          "minimum": 0,
+          "minimum": 1,
           "title": "Number",
           "type": "integer",
           "x-allowed-operators": [
@@ -2628,7 +3093,9 @@
                 "BATCH_SCOPES_CHANGED",
                 "BATCH_AHEAD_BRANCH_EDITED",
                 "CHECKS_INTERRUPTED",
-                "GITHUB_WORKFLOWS_PERMISSION_MISSING"
+                "GITHUB_WORKFLOWS_PERMISSION_MISSING",
+                "BATCH_REBUILT",
+                "BATCH_AHEAD_REBUILT"
               ],
               "type": "string"
             },
@@ -2772,6 +3239,12 @@
             },
             {
               "description": "GitHub refused to write the pull request's changes under `.github/workflows/` because Mergify lacks the `workflows` permission."
+            },
+            {
+              "description": "The pull request's batch was torn down to be rebuilt, for example after a conflict deferred it. It stays in the queue."
+            },
+            {
+              "description": "A batch ahead in the queue was torn down to be rebuilt, so this pull request's speculative checks are restarted. It stays in the queue."
             }
           ],
           "x-mergify-has-data-type": true,
@@ -3860,9 +4333,6 @@
           "x-modifiers": [
             {
               "type": "negate"
-            },
-            {
-              "type": "length"
             }
           ]
         },
@@ -4254,7 +4724,7 @@
         },
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
-          "description": "Prefix for the merge queue branch name. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
+          "description": "Prefix for the merge queue branch name. It must start valid git branch names, and cannot start with `refs/`, which GitHub refuses. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
           "title": "Queue Branch Prefix",
           "type": "string"
         },
@@ -4300,17 +4770,6 @@
           "default": null,
           "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration.\n\nAdditionally, `merge-batch` merges the draft pull request prepared by the merge queue using a merge commit. This requires `batch_size > 1`.",
           "title": "Merge Method"
-        },
-        "autosquash": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration.",
-            "deprecated_summary_saas_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration."
-          },
-          "default": false,
-          "deprecated": true,
-          "description": "Deprecated: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. The option is still accepted so configurations that set it keep validating; remove it from your configuration.",
-          "title": "Autosquash",
-          "type": "boolean"
         },
         "autoqueue": {
           "default": false,
@@ -4530,7 +4989,7 @@
         },
         "queue_branch_prefix": {
           "default": "mergify/merge-queue/",
-          "description": "Prefix for the merge queue branch name. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
+          "description": "Prefix for the merge queue branch name. It must start valid git branch names, and cannot start with `refs/`, which GitHub refuses. Branches under this prefix are eligible for automatic [queue branch cleanup](https://docs.mergify.com/merge-queue/lifecycle#queue-branch-cleanup).",
           "title": "Queue Branch Prefix",
           "type": "string"
         },
@@ -4576,17 +5035,6 @@
           "default": null,
           "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration.\n\nAdditionally, `merge-batch` merges the draft pull request prepared by the merge queue using a merge commit. This requires `batch_size > 1`.",
           "title": "Merge Method"
-        },
-        "autosquash": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration.",
-            "deprecated_summary_saas_mode": "`autosquash` has been removed and this option is now ignored: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. Remove it from your configuration."
-          },
-          "default": false,
-          "deprecated": true,
-          "description": "Deprecated: the merge queue no longer squashes commits beginning with `squash!`, `fixup!` or `amend!` when it updates a pull request in place. The option is still accepted so configurations that set it keep validating; remove it from your configuration.",
-          "title": "Autosquash",
-          "type": "boolean"
         },
         "autoqueue": {
           "default": false,
@@ -4725,17 +5173,6 @@
           "default": null,
           "description": "To rebase, Mergify needs to impersonate a GitHub user. You can specify the account to use with this option. If no `bot_account` is set, Mergify picks the pull request author, or the user who sent the `@mergifyio rebase` command. The user account must have already been logged in Mergify dashboard once.\n\n**Warning:** Because of GitHub's security restrictions, Mergify cannot impersonate an account owned by another GitHub App. A rebase therefore fails whenever the account it falls back to is a bot, either because the pull request was opened by one or because one sent the command, unless `bot_account` names a user account.\n\n**Warning:** A pull request coming from a fork cannot be rebased, whether or not this option is set: rebasing one means impersonating a GitHub user to force-push the contributor's branch. Use the `update` action or the `@mergifyio update` command on those -- except where Mergify cannot write the head branch at all, such as a deleted fork, where `update` is refused too and the check run says what is wrong.",
           "title": "Bot Account"
-        },
-        "autosquash": {
-          "configuration_deprecated_attribute": {
-            "deprecated_summary_ghes_mode": "`autosquash` has been removed and this option is now ignored: the `rebase` action no longer squashes commits beginning with `squash!`, `fixup!` or `amend!`. Remove it from your configuration.",
-            "deprecated_summary_saas_mode": "`autosquash` has been removed and this option is now ignored: the `rebase` action no longer squashes commits beginning with `squash!`, `fixup!` or `amend!`. Remove it from your configuration."
-          },
-          "default": false,
-          "deprecated": true,
-          "description": "Deprecated: the `rebase` action no longer squashes commits beginning with `squash!`, `fixup!` or `amend!`. The option is still accepted so configurations that set it keep validating; remove it from your configuration.",
-          "title": "Autosquash",
-          "type": "boolean"
         }
       },
       "title": "RebaseActionModel",
@@ -4962,6 +5399,37 @@
     },
     "Scopes": {
       "additionalProperties": false,
+      "else": {
+        "properties": {
+          "capacities": {
+            "propertyNames": {
+              "anyOf": [
+                {
+                  "minLength": 2,
+                  "pattern": "^[A-Za-z0-9_-]+$",
+                  "type": "string"
+                },
+                {
+                  "pattern": "[\\*\\?\\[\\{]"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "if": {
+        "properties": {
+          "source": {
+            "required": [
+              "manual"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
       "properties": {
         "source": {
           "anyOf": [
@@ -5000,17 +5468,14 @@
           "type": "string"
         },
         "capacities": {
-          "description": "How many speculative checks each scope may run at the same time, as a map of scope name to capacity. Works for any `source` (file globs or the manual scopes API just decide membership; capacity is declared here). A scope listed here runs against its own independent budget; a PR in several capped scopes consumes one slot from each. PRs whose scopes are all absent from this map share the repo-wide `merge_queue.max_parallel_checks` pool, unless `default_capacity` gives every scope a budget. Strict branch protection still forces an effective capacity of 1.",
-          "patternProperties": {
-            "^[A-Za-z0-9_-]+$": {
-              "maximum": 128,
-              "minimum": 1,
-              "type": "integer"
-            }
+          "additionalProperties": {
+            "maximum": 128,
+            "minimum": 1,
+            "type": "integer"
           },
+          "description": "How many speculative checks each scope may run at the same time, as a map of scope name to capacity. Works for any `source` (file globs or the manual scopes API just decide membership; capacity is declared here). With a `manual` source a key may be any scope name the scopes API accepts, such as `//lib/core` or `@acme/web`; with any other source a key that is not a pattern must be a valid scope name. A key containing `*`, `?`, `[` or `{` is a glob pattern with the syntax of `files` filters, such as `@acme/*` or `//lib/**`: `*` and `?` stay within one `/`-separated segment and only a whole `**` segment crosses them, so `//lib/**` matches the packages below `//lib` but not `//lib` itself. In YAML, quote any key starting with `@`, `*`, `?`, `[` or `{`. A pattern gives every scope it matches its own budget, not one budget shared by all of them. A key equal to a scope's name wins over any pattern; when several patterns match a scope, the smallest capacity applies; `default_capacity` only covers scopes no key matches. A PR in several capped scopes consumes one slot from each. PRs whose scopes match no key share the repo-wide `merge_queue.max_parallel_checks` pool, unless `default_capacity` gives every scope a budget. Strict branch protection still forces an effective capacity of 1.",
           "propertyNames": {
-            "minLength": 2,
-            "pattern": "^[A-Za-z0-9_-]+$"
+            "maxLength": 1024
           },
           "title": "Capacities",
           "type": "object"
@@ -5027,7 +5492,7 @@
             }
           ],
           "default": null,
-          "description": "How many speculative checks a scope without an explicit `capacities` entry may run at the same time. Applies to every scope observed on queued pull requests, so dynamic scope sets (e.g. sent by a monorepo build tool through the manual scopes API) get a per-scope budget without enumerating names; an explicit `capacities` entry still wins for its scope. `merge_queue.max_parallel_checks` remains the global ceiling on the total. When unset, scopes without a `capacities` entry are unlimited, and pull requests with no scopes always draw from the repo-wide pool. Strict branch protection still forces an effective capacity of 1.",
+          "description": "How many speculative checks a scope that no `capacities` key matches may run at the same time. Applies to every scope observed on queued pull requests, so dynamic scope sets (e.g. sent by a monorepo build tool through the manual scopes API) get a per-scope budget without enumerating names; a matching `capacities` key or pattern still wins for its scope. `merge_queue.max_parallel_checks` remains the global ceiling on the total. When unset, scopes no `capacities` key matches are unlimited, and pull requests with no scopes always draw from the repo-wide pool. Strict branch protection still forces an effective capacity of 1.",
           "title": "Default Capacity"
         }
       },
@@ -5099,7 +5564,7 @@
         },
         "commit_message": {
           "default": "all-commits",
-          "description": "Defines what commit message to use for the squashed commit if no commit message is defined in the pull request body.\nPossible values are:\n\n- `all-commits` to use the same format as GitHub squashed merge commit.\n- `first-commit` to use the message of the first commit of the pull request.\n- `title+body` means to use the title and body from the pull request itself as the commit message. The pull request number will be added to end of the title.",
+          "description": "Defines the default commit message to use for the squashed commit.\nPossible values are:\n\n- `all-commits` to use the same format as GitHub squashed merge commit.\n- `first-commit` to use the message of the first commit of the pull request.\n- `title+body` means to use the title and body from the pull request itself as the commit message. The pull request number will be added to end of the title.",
           "enum": [
             "all-commits",
             "first-commit",
@@ -5197,6 +5662,24 @@
     },
     "merge_protections_settings": {
       "$ref": "#/$defs/MergeProtections"
+    },
+    "conflict_resolvers": {
+      "description": "Resolve conflicts on the files you name while Mergify builds a batch, instead of removing the pull request that conflicts from it. An entry names its files in one of three ways:\n\n- `paths`, with the `strategy` to merge them with.\n- A `package-manager`, with the `directories` holding its manifest and lockfile, for which Mergify picks how each file merges: two pull requests updating two different dependencies then merge into one batch.\n- A `language`, for which Mergify picks the files and how they merge, in the whole repository or below its `directories`.\n\nWhen several entries match a file, the last one in the list wins, whichever way each names it. A Mergify configuration file an entry merged must still load as one, or it is a conflict.\n\nDeclared once for the repository, it takes effect in each queue rule whose batch branch is what lands: `merge_method` set to `merge-batch` or `fast-forward`, or `queue_branch_merge_method` set to `fast-forward`. A queue rule merging with `merge`, `squash` or `rebase` merges each pull request on its own, so a resolution made while building the batch would never land: there, a conflicting pull request is removed from the batch as usual.",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ConflictResolverModel"
+          },
+          {
+            "$ref": "#/$defs/PackageManagerResolverModel"
+          },
+          {
+            "$ref": "#/$defs/LanguageResolverModel"
+          }
+        ]
+      },
+      "title": "Conflict Resolvers",
+      "type": "array"
     }
   },
   "$schema": "https://json-schema.org/draft/2020-12/schema",
