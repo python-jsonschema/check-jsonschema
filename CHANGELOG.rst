@@ -8,6 +8,9 @@ CHANGELOG
 Unreleased
 ----------
 
+- Add the ``check-github-funding`` hook and vendored GitHub Funding schema.
+  (:issue:`725`)
+
 .. vendor-insert-here
 
 0.38.2
