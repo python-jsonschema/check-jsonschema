@@ -17,6 +17,9 @@ Remote files are automatically downloaded and cached if possible.
 
 `check-jsonschema` can be installed and run as a CLI tool, or via pre-commit.
 
+YAML inputs use YAML 1.2 by default. An explicit `%YAML 1.1` directive selects
+YAML 1.1 parsing, including its boolean and numeric conventions.
+
 ### Example pre-commit config
 
 The following configuration uses `check-jsonschema` to validate Github Workflow

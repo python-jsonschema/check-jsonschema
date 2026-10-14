@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Honor explicit YAML 1.1 directives by preferring the version-aware pure Python
+  parser for those documents. (:issue:`574`)
+
 0.38.2
 ------
 

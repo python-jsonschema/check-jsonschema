@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import codecs
+import io
+import re
 import typing as t
 import warnings
 
@@ -51,6 +54,31 @@ def _normalize(data: t.Any) -> t.Any:
 _data_sentinel = object()
 
 
+def _has_yaml_11_directive(data: bytes) -> bool:
+    """Look for an explicit YAML 1.1 directive in the document preamble."""
+    encoding = (
+        "utf-16"
+        if data.startswith((codecs.BOM_UTF16_LE, codecs.BOM_UTF16_BE))
+        else "utf-8-sig"
+    )
+    try:
+        with io.TextIOWrapper(io.BytesIO(data), encoding=encoding) as stream:
+            for line in stream:
+                if not line.strip() or line.lstrip().startswith("#"):
+                    continue
+                if not line.startswith("%"):
+                    break
+                directive = line.split("#", 1)[0].split()
+                if directive[0] == "%YAML":
+                    return len(directive) == 2 and bool(
+                        re.fullmatch(r"0*1\.0*1", directive[1])
+                    )
+    except UnicodeError:
+        # Let the YAML implementation report invalid input encodings.
+        pass
+    return False
+
+
 def impl2loader(
     primary: ruamel.yaml.YAML, *fallbacks: ruamel.yaml.YAML
 ) -> t.Callable[[t.IO[bytes]], t.Any]:
@@ -58,9 +86,13 @@ def impl2loader(
         stream_bytes = stream.read()
         lasterr: ruamel.yaml.YAMLError | None = None
         data: t.Any = _data_sentinel
+        implementations = [primary] + list(fallbacks)
+        if _has_yaml_11_directive(stream_bytes):
+            # The C parser can accept YAML 1.1 while applying YAML 1.2 rules.
+            implementations.sort(key=lambda impl: not impl.pure)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", ruamel.yaml.error.ReusedAnchorWarning)
-            for impl in [primary] + list(fallbacks):
+            for impl in implementations:
                 try:
                     data = impl.load(stream_bytes)
                 except ruamel.yaml.YAMLError as e:
