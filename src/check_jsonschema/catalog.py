@@ -35,6 +35,11 @@ CUSTOM_SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
 }
 CUSTOM_SCHEMA_NAMES = list(CUSTOM_SCHEMA_CATALOG)
 
+# Reference-only schemas are vendored, but do not define standalone hooks.
+INTERNAL_SCHEMA_CATALOG: dict[str, dict[str, str]] = {
+    "base": {"url": "https://www.schemastore.org/base.json"},
+}
+
 # Known configs. The SchemaCatalog lists known schema URLs with their names.
 # kept in alphabetical order by name
 #

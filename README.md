@@ -13,6 +13,9 @@ The schema may be specified as a local or remote (HTTP or HTTPS) file.
 
 Remote files are automatically downloaded and cached if possible.
 
+Vendored builtin schemas include SchemaStore's shared `base.json` definitions,
+so references to those definitions can be resolved without network access.
+
 ## Usage
 
 `check-jsonschema` can be installed and run as a CLI tool, or via pre-commit.

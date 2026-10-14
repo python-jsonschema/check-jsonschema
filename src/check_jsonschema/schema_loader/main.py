@@ -7,9 +7,10 @@ import urllib.error
 import urllib.parse
 
 import jsonschema
-from referencing import Registry
+from referencing import Registry, Resource
 
 from ..builtin_schemas import get_builtin_schema
+from ..catalog import CUSTOM_SCHEMA_NAMES, INTERNAL_SCHEMA_CATALOG
 from ..formats import FormatOptions, format_checker_for_regex_impl, make_format_checker
 from ..parsers import ParserSet
 from ..regex_variants import RegexImplementation
@@ -145,6 +146,13 @@ class SchemaLoader(SchemaLoaderBase):
     ) -> jsonschema.protocols.Validator:
         return self._get_validator(format_opts, regex_impl, fill_defaults)
 
+    def _get_reference_registry(
+        self, retrieval_uri: str | None, schema: dict[str, t.Any]
+    ) -> Registry:
+        return make_reference_registry(
+            self._parsers, retrieval_uri, schema, self.disable_cache
+        )
+
     @functools.lru_cache
     def _get_validator(
         self,
@@ -161,9 +169,7 @@ class SchemaLoader(SchemaLoaderBase):
 
         # reference resolution
         # with support for YAML, TOML, and other formats from the parsers
-        reference_registry = make_reference_registry(
-            self._parsers, retrieval_uri, schema, self.disable_cache
-        )
+        reference_registry = self._get_reference_registry(retrieval_uri, schema)
 
         if self.validator_class is None:
             # get the correct validator class and check the schema under its metaschema
@@ -245,6 +251,21 @@ class BuiltinSchemaLoader(SchemaLoader):
         self.schema_name = schema_name
         self.base_uri = base_uri
         self._parsers = ParserSet()
+        self._is_vendored = not (
+            schema_name.startswith("custom.") or schema_name in CUSTOM_SCHEMA_NAMES
+        )
+
+    def _get_reference_registry(
+        self, retrieval_uri: str | None, schema: dict[str, t.Any]
+    ) -> Registry:
+        registry = super()._get_reference_registry(retrieval_uri, schema)
+        if self._is_vendored:
+            for name, config in INTERNAL_SCHEMA_CATALOG.items():
+                resource = Resource.from_contents(get_builtin_schema(f"vendor.{name}"))
+                for uri in (config["url"], resource.id()):
+                    if uri is not None and uri not in registry:
+                        registry = registry.with_resource(uri, resource)
+        return registry
 
     def get_schema_retrieval_uri(self) -> str | None:
         return None

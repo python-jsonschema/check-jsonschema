@@ -8,6 +8,9 @@ CHANGELOG
 Unreleased
 ----------
 
+- Bundle SchemaStore's shared ``base.json`` definitions for offline reference
+  resolution by vendored schemas. (:issue:`655`)
+
 .. vendor-insert-here
 
 0.38.2
