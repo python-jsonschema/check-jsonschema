@@ -1,10 +1,10 @@
-[![pypi version](https://img.shields.io/pypi/v/check-jsonschema.svg)](https://pypi.org/project/check-jsonschema/)
-[![supported pythons](https://img.shields.io/pypi/pyversions/check-jsonschema.svg)](https://pypi.org/project/check-jsonschema/)
+[![pypi version](https://img.shields.io/pypi/v/check-jsonschema.svg)][pypi]
+[![supported pythons](https://img.shields.io/pypi/pyversions/check-jsonschema.svg)][pypi]
 [![build](https://github.com/python-jsonschema/check-jsonschema/actions/workflows/build.yaml/badge.svg)](https://github.com/python-jsonschema/check-jsonschema/actions/workflows/build.yaml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/python-jsonschema/check-jsonschema/main.svg)](https://results.pre-commit.ci/latest/github/python-jsonschema/check-jsonschema/main)
-[![readthedocs documentation](https://readthedocs.org/projects/check-jsonschema/badge/?version=stable&style=flat)](https://check-jsonschema.readthedocs.io/en/stable)
+[![readthedocs documentation](https://readthedocs.org/projects/check-jsonschema/badge/?version=stable&style=flat)][docs]
 
-[![check-jsonschema logo](https://github.com/python-jsonschema/check-jsonschema/raw/main/docs/_static/logo.png)](https://check-jsonschema.readthedocs.io/en/stable/)
+[![check-jsonschema logo](https://github.com/python-jsonschema/check-jsonschema/raw/main/docs/_static/logo.png)][docs]
 
 # check-jsonschema
 
@@ -44,6 +44,16 @@ Then run, as in
 
     check-jsonschema --schemafile schema.json instance.json
 
-## Documentation
+## Project Information
 
-Full documentation can be found at https://check-jsonschema.readthedocs.io/
+- [Documentation][docs]
+- [Changelog][changelog]
+- [Contributing][contrib]
+- [Source][repo]
+- [PyPI][pypi]
+
+[docs]: https://check-jsonschema.readthedocs.io/
+[changelog]: https://check-jsonschema.readthedocs.io/en/stable/changelog.html
+[contrib]: https://github.com/python-jsonschema/check-jsonschema/blob/main/.github/CONTRIBUTING.md
+[repo]: https://github.com/python-jsonschema/check-jsonschema/
+[pypi]: https://pypi.org/project/check-jsonschema/
