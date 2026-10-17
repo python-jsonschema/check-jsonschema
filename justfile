@@ -1,3 +1,4 @@
+set lazy
 version := `uvx mddj read version`
 push_remote := `git rev-parse --abbrev-ref @{push} | cut -d '/' -f1`
 
