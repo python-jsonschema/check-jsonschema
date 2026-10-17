@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=61.2"]
-build-backend = "setuptools.build_meta"
+requires = ["flit-core>=3.12.0"]
+build-backend = "flit_core.buildapi"
 
 [dependency-groups]
 dev = [
@@ -55,12 +55,22 @@ Homepage = "https://github.com/python-jsonschema/check-jsonschema"
 [project.scripts]
 check-jsonschema = "check_jsonschema:main"
 
-[tool.setuptools]
-include-package-data = true
-
-[tool.setuptools.packages.find]
-where = ["src"]
-namespaces = false
+[tool.flit.sdist]
+include = [
+    "CHANGELOG.rst",
+    ".github/CONTRIBUTING.md",
+    ".github/AI_POLICY.md.md",
+    "tests/**/*",
+    # needed as a data file for the tests (several tests check integrity
+    # against this file)
+    ".pre-commit-hooks.yaml",
+    ".flake8",
+    ".coveragerc",
+    "justfile",
+    "tox.ini",
+    "toxfile.py",
+]
+exclude = ["**/*/.*", "**/*.egg-info", "**/__pycache__", "scripts/*"]
 
 [tool.check-sdist]
 git-only = ["RELEASING.md", ".gitignore", "docs/*"]
