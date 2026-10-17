@@ -90,7 +90,7 @@ def create_retrieve_callable(
 
 class ResourceCache:
     def __init__(self) -> None:
-        self._cache: t.Dict[str, referencing.Resource[Schema]] = {}
+        self._cache: dict[str, referencing.Resource[Schema]] = {}
 
     def __setitem__(self, uri: str, data: t.Any) -> referencing.Resource[Schema]:
         resource = referencing.Resource.from_contents(

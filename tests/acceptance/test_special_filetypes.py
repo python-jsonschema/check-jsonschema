@@ -1,7 +1,6 @@
 import multiprocessing
 import os
 import platform
-import sys
 
 import pytest
 import responses
