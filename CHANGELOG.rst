@@ -10,6 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
+- Update vendored schemas: buildkite, circle-ci, citation-file-format, gitlab-ci,
+  meltano, mergify, renovate, snapcraft (2026-10-17)
 - Added support for Python 3.15 .
 - Removed support for Python 3.10 .
 
