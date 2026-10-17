@@ -120,7 +120,7 @@ class ValidatorClassName(click.ParamType):
         if not isinstance(result, type):
             self.fail(f"'{classname}' in '{pkg}' is not a class", param, ctx)
 
-        return t.cast(t.Type[jsonschema.protocols.Validator], result)
+        return result  # type: ignore[return-value]
 
 
 class BinaryFileInputParam(click.ParamType[t.BinaryIO]):

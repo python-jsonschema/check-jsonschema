@@ -1,7 +1,6 @@
 import multiprocessing
 import os
 import platform
-import sys
 
 import pytest
 import responses
@@ -10,7 +9,6 @@ import responses
 @pytest.mark.skipif(
     platform.system() != "Linux", reason="test requires /proc/self/ mechanism"
 )
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="test uses os.memfd_create")
 def test_schema_and_instance_in_memfds(run_line_simple):
     """
     create memory file descriptors and write schema and instance data into those

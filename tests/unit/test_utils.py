@@ -1,6 +1,5 @@
 import os
 import platform
-import sys
 
 import pytest
 
@@ -10,7 +9,6 @@ from check_jsonschema.utils import filename2path
 @pytest.mark.skipif(
     not (platform.system() == "Linux"), reason="test requires /proc/self/ mechanism"
 )
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="test uses os.memfd_create")
 @pytest.mark.parametrize("use_pid_in_path", (True, False))
 def test_filename2path_on_memfd(use_pid_in_path):
     """
