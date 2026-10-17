@@ -2,6 +2,10 @@
 
 Interested in contributing to `check-jsonschema`? That's great!
 
+> [!IMPORTANT]
+>
+> If you use LLMs / generative AI, please read our [_AI Policy_][aipolicy].
+
 ## Questions, Feature Requests, Bug Reports, and Feedback...
 
 …should be reported the [Issue Tracker](https://github.com/python-jsonschema/check-jsonschema/issues)_
@@ -55,3 +59,5 @@ vendored schema copies, run
 
 All of the features of `check-jsonschema` should be documented in the readme
 and changelog. If you notice missing documentation, that's a bug!
+
+[aipolicy]: https://github.com/python-jsonschema/check-jsonschema/blob/main/.github/AI_POLICY.md
