@@ -1,13 +1,8 @@
 from __future__ import annotations
 
 import datetime
-import sys
+import tomllib
 import typing as t
-
-if sys.version_info < (3, 11):
-    import tomli as toml_implementation
-else:
-    import tomllib as toml_implementation
 
 
 def _normalize(data: t.Any) -> t.Any:
@@ -47,9 +42,9 @@ def _normalize(data: t.Any) -> t.Any:
         return data
 
 
-ParseError: type[Exception] = toml_implementation.TOMLDecodeError
+ParseError: type[Exception] = tomllib.TOMLDecodeError
 
 
 def load(stream: t.IO[bytes]) -> t.Any:
-    data = toml_implementation.load(stream)
+    data = tomllib.load(stream)
     return _normalize(data)
