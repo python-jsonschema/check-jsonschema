@@ -20,11 +20,6 @@ import sys
 import types
 import typing as t
 
-if sys.version_info >= (3, 11):
-    from typing import Self
-else:
-    from typing_extensions import Self
-
 
 class BinaryFileInput:
     def __init__(self, name: str) -> None:
@@ -65,7 +60,7 @@ class BinaryFileInput:
     def __repr__(self) -> str:
         return "BinaryFileInput(filename={self.filename!r})"
 
-    def __enter__(self) -> Self:
+    def __enter__(self) -> t.Self:
         return self
 
     def __exit__(

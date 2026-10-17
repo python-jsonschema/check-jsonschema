@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+- Added support for Python 3.15 .
+- Removed support for Python 3.10 .
+
 0.38.2
 ------
 
