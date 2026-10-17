@@ -14,6 +14,7 @@ Unreleased
   meltano, mergify, renovate, snapcraft (2026-10-17)
 - Added support for Python 3.15 .
 - Removed support for Python 3.10 .
+- The build backend has been updated from setuptools to flit.
 
 0.38.2
 ------
