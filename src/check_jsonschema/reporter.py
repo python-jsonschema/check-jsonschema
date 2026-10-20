@@ -157,7 +157,7 @@ class JsonReporter(Reporter):
     def _dump_error_map(
         self,
         error_map: dict[str, list[jsonschema.ValidationError]],
-    ) -> t.Iterator[dict]:
+    ) -> t.Iterator[dict[str, t.Any]]:
         for filename, errors in error_map.items():
             for err in errors:
                 item = {
@@ -190,7 +190,7 @@ class JsonReporter(Reporter):
     def _dump_parse_errors(
         self,
         error_map: dict[str, list[ParseError]],
-    ) -> t.Iterator[dict]:
+    ) -> t.Iterator[dict[str, str]]:
         for filename, errors in error_map.items():
             for err in errors:
                 yield {
