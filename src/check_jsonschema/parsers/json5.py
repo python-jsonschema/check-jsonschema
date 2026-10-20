@@ -8,7 +8,7 @@ try:
     import pyjson5
 
     ParseError: type[Exception] = pyjson5.Json5DecoderException
-    _load: t.Callable | None = pyjson5.load
+    _load: t.Callable[[t.IO[bytes]], t.Any] | None = pyjson5.load
 except ImportError:
     # if pyjson5 was not available, try to import 'json5', the pure-python implementation
     try:
@@ -25,7 +25,7 @@ except ImportError:
 ENABLED = _load is not None
 
 if _load is not None:
-    _load_concrete: t.Callable = _load
+    _load_concrete: t.Callable[[t.IO[bytes]], t.Any] = _load
 
     def load(stream: t.IO[bytes]) -> t.Any:
         return _load_concrete(stream)
