@@ -80,6 +80,7 @@ profile = "black"
 
 [tool.mypy]
 # strict = true  # TODO: enable
+disallow_any_generics = true
 disallow_untyped_defs = true
 ignore_missing_imports = true
 warn_unreachable = true
