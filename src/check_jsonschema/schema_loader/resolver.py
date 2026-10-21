@@ -12,7 +12,10 @@ from ..utils import filename2path
 
 
 def make_reference_registry(
-    parsers: ParserSet, retrieval_uri: str | None, schema: dict, disable_cache: bool
+    parsers: ParserSet,
+    retrieval_uri: str | None,
+    schema: dict[str, t.Any],
+    disable_cache: bool,
 ) -> referencing.Registry:
     id_attribute_: t.Any = schema.get("$id")
     if isinstance(id_attribute_, str):

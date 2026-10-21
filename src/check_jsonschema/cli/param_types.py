@@ -24,7 +24,7 @@ def _shim_click_8_2_get_metavar(func: C) -> C:
     return wrapper  # type: ignore[return-value]
 
 
-class CommaDelimitedList(click.ParamType):
+class CommaDelimitedList(click.ParamType[list[str]]):
     name = "comma_delimited"
 
     def __init__(
@@ -46,7 +46,8 @@ class CommaDelimitedList(click.ParamType):
     def convert(
         self, value: str, param: click.Parameter | None, ctx: click.Context | None
     ) -> list[str]:
-        value = super().convert(value, param, ctx)
+        # ignore assignment error (super().convert() returns `str`, not `list[str]`)
+        value = super().convert(value, param, ctx)  # type: ignore[assignment]
 
         # if `--foo` is a comma delimited list and someone passes
         # `--foo ""`, take that as `foo=[]` rather than foo=[""]
@@ -67,7 +68,7 @@ class CommaDelimitedList(click.ParamType):
         return resolved
 
 
-class ValidatorClassName(click.ParamType):
+class ValidatorClassName(click.ParamType[type[jsonschema.protocols.Validator]]):
     name = "validator"
 
     def convert(
@@ -89,7 +90,8 @@ class ValidatorClassName(click.ParamType):
         As a result, only one import is needed, rather than iterative imports over the
         list of names.
         """
-        value = super().convert(value, param, ctx)
+        # ignore type error: super().convert() returns str, not a validator class
+        value = super().convert(value, param, ctx)  # type: ignore[assignment]
         pattern = re.compile(
             r"^(?P<pkg>(?!\d)(\w+)(\.(?!\d)(\w+))*):"
             r"(?P<cls>(?!\d)(\w+)(\.(?!\d)(\w+))*)$"

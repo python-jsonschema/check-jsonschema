@@ -52,7 +52,7 @@ def traverse_data(data: t.Any) -> t.Any:
     return data
 
 
-def traverse_list(data: list) -> list:
+def traverse_list(data: list[t.Any]) -> list[t.Any]:
     ret = []
     for item in data:
         # is the current item a single-value dict with an expression as its key?
@@ -77,7 +77,7 @@ def traverse_list(data: list) -> list:
     return ret
 
 
-def traverse_dict(data: dict) -> dict:
+def traverse_dict(data: dict[t.Any, t.Any]) -> dict[t.Any, t.Any]:
     newdata = {}
     for key, value in data.items():
         newvalue = traverse_data(value)
@@ -122,7 +122,9 @@ def traverse_dict(data: dict) -> dict:
     return newdata
 
 
-def azure_main(data: dict | list) -> dict | list:
+def azure_main(
+    data: dict[t.Any, t.Any] | list[t.Any],
+) -> dict[t.Any, t.Any] | list[t.Any]:
     if isinstance(data, list):
         raise AzurePipelinesDataError(
             "this transform requires that the data be an object, got list"
