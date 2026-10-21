@@ -12,6 +12,7 @@ Unreleased
 
 - Update vendored schemas: buildkite, circle-ci, citation-file-format, gitlab-ci,
   meltano, mergify, renovate, snapcraft (2026-10-18)
+- Add a ``check-github-funding`` pre-commit hook. (:issue:`725`)
 - Added support for Python 3.15 .
 - Removed support for Python 3.10 .
 - The build backend has been updated from setuptools to flit.

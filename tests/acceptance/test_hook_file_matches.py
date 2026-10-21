@@ -164,6 +164,18 @@ _HOOKID_PATH_MAP = {
             ".github/DISCUSSION_TEMPLATE/not-a-discussion.txt",
         ),
     },
+    "check-github-funding": {
+        "good": (
+            ".github/FUNDING.yml",
+            ".github/FUNDING.yaml",
+        ),
+        "bad": (
+            ".github/funding.yml",
+            ".github/funding.yaml",
+            "FUNDING.yml",
+            ".github/FUNDING.txt",
+        ),
+    },
     "check-github-issue-config": {
         "good": (".github/ISSUE_TEMPLATE/config.yml",),
         "bad": (

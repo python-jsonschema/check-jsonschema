@@ -204,6 +204,16 @@ SCHEMA_CATALOG: dict[str, dict[str, t.Any]] = {
             "types": "yaml",
         },
     },
+    "github-funding": {
+        "url": "https://www.schemastore.org/github-funding.json",
+        "hook_config": {
+            "name": "Validate GitHub funding",
+            "files": [
+                r"^\.github/FUNDING\.ya?ml$",
+            ],
+            "types": "yaml",
+        },
+    },
     "github-issue-config": {
         "url": "https://www.schemastore.org/github-issue-config.json",
         "hook_config": {

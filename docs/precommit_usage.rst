@@ -239,6 +239,20 @@ Validate GitHub discussion against the schema provided by SchemaStore
         - id: check-github-discussion
 
 
+``check-github-funding``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validate GitHub funding against the schema provided by SchemaStore
+
+.. code-block:: yaml
+    :caption: example config
+
+    - repo: https://github.com/python-jsonschema/check-jsonschema
+      rev: 0.38.2
+      hooks:
+        - id: check-github-funding
+
+
 ``check-github-issue-config``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
