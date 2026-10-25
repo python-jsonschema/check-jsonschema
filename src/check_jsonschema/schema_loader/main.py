@@ -75,6 +75,7 @@ class SchemaLoaderBase:
 class SchemaLoader(SchemaLoaderBase):
     validator_class: type[jsonschema.protocols.Validator] | None = None
     disable_cache: bool = True
+    validate_schema: t.ClassVar[bool] = True
 
     def __init__(
         self,
@@ -169,7 +170,8 @@ class SchemaLoader(SchemaLoaderBase):
             # get the correct validator class and check the schema under its metaschema
             validator_cls = jsonschema.validators.validator_for(schema)
 
-            _check_schema(validator_cls, schema, regex_impl=regex_impl)
+            if self.validate_schema:
+                _check_schema(validator_cls, schema, regex_impl=regex_impl)
         else:
             # for a user-provided validator class, don't check_schema
             # on the grounds that it might *not* be valid but the user wants to use
@@ -241,6 +243,10 @@ def _dialect_of_schema(schema: dict[str, t.Any] | bool) -> str | None:
 
 
 class BuiltinSchemaLoader(SchemaLoader):
+    # disable schema validation for builtin schemas
+    # they are already checked under the metaschema checker when they are updated/added
+    validate_schema: t.ClassVar[bool] = False
+
     def __init__(self, schema_name: str, *, base_uri: str | None = None) -> None:
         self.schema_name = schema_name
         self.base_uri = base_uri

@@ -15,6 +15,8 @@ Unreleased
 - Added support for Python 3.15 .
 - Removed support for Python 3.10 .
 - The build backend has been updated from setuptools to flit.
+- When running with a builtin schema, ``check-jsonschema`` will now skip
+  the metaschema check as an optimization.
 
 0.38.2
 ------
