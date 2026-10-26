@@ -10,6 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
+0.39.0
+------
+
 - Update vendored schemas: bitbucket-pipelines, buildkite, circle-ci,
   citation-file-format, compose-spec, dependabot, gitlab-ci, meltano, mergify, renovate,
   snapcraft, woodpecker-ci (2026-10-25)
