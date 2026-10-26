@@ -7,7 +7,7 @@ jobs:
   run-tox-env:
     strategy:
       matrix:
-        toxenv: [mypy, twine-check, check-sdist]
+        toxenv: [mypy, twine-check, check-sdist, check-precommit-configs]
         py: ["3.x"]
         include:
           - toxenv: py-mindeps
