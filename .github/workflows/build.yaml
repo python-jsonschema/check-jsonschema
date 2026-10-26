@@ -17,48 +17,48 @@ jobs:
     timeout-minutes: 5
     name: "'${{ matrix.toxenv }}' on py${{ matrix.py }}"
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - parallel:
+        - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+          with:
+            persist-credentials: false
+        - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+          with:
+            python-version: "${{ matrix.py }}"
+        - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
-      - name: get date for caching
-        run: /bin/date -u "+%U" > cachedate.txt
-        shell: bash
-
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with:
-          python-version: "${{ matrix.py }}"
-          cache: "pip"
-          cache-dependency-path: |
-            .github/workflows/build.yaml
-            pyproject.toml
-            tox.ini
-            cachedate.txt
-
-      - run: python -m pip install tox tox-uv
-
-      - run: python -m tox run -e "${{ matrix.toxenv }}"
+      - run: uv tool install 'tox' --with 'tox-uv'
+      - run: tox run -e "${{ matrix.toxenv }}"
 
   # run tests after building an sdist and unpacking it
   test-sdist:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with:
-          python-version: "3.x"
-      - name: install requirements
-        run: python -m pip install build tox tox-uv
+      - parallel:
+        - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+          with:
+            persist-credentials: false
+        - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+          with:
+            python-version: "3.x"
+        - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+
+      - parallel:
+        - run: uv tool install 'tox' --with 'tox-uv'
+        - run: uv tool install 'build'
+        - run: uv tool install 'mddj'
+
       - name: build and unpack sdist
         run: |
-          python -m build --sdist
-          version="$(grep '^version' pyproject.toml | head -n1 | cut -d'"' -f2)"
+          pyproject-build --sdist
+          version="$(mddj read version)"
           cd dist
           tar -xzf "check_jsonschema-${version}.tar.gz"
       - name: test
         run: |
-          version="$(grep '^version' pyproject.toml | head -n1 | cut -d'"' -f2)"
+          version="$(mddj read version)"
           cd "dist/check_jsonschema-${version}"
-          python -m tox run -m ci
+          tox run -m ci
 
   ci-test-matrix:
     strategy:
@@ -69,39 +69,21 @@ jobs:
     runs-on: "${{ matrix.os }}-latest"
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - parallel:
+        - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+          with:
+            persist-credentials: false
+        - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+          with:
+            python-version: "${{ matrix.py }}"
+        - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
-      - name: get date for caching
-        run: /bin/date -u "+%U" > cachedate.txt
-        shell: bash
-
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        id: setup-python
-        with:
-          python-version: ${{ matrix.py }}
-          cache: "pip"
-          cache-dependency-path: |
-            .github/workflows/build.yaml
-            pyproject.toml
-            tox.ini
-            cachedate.txt
-
-      - run: python -m pip install tox tox-uv
-
-      - name: cache tox virtualenvs
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .tox
-          key: >
-            tox
-            os=${{ runner.os }}
-            python=${{ steps.setup-python.outputs.python-version }}
-            hash=${{ hashFiles('.github/workflows/build.yaml', 'pyproject.toml', 'tox.ini', 'cachedate.txt') }}
+      - run: uv tool install 'tox' --with 'tox-uv'
 
       - name: test
         run: |
-          python -m tox run -m ci -- --junitxml pytest.{envname}.xml
-          python -m tox run -e cov_combine,cov_report
+          tox run -m ci -- --junitxml pytest.{envname}.xml
+          tox run -e cov_combine,cov_report
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -114,14 +96,16 @@ jobs:
     timeout-minutes: 5
     name: "Collate results to check for skipped tests"
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with:
-          python-version: "3.x"
-      # download everything
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          path: artifacts/
+      - parallel:
+        - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+          with:
+            persist-credentials: false
+        - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+          with:
+            python-version: "3.x"
+        - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+          with:
+            path: artifacts/
       # collate and report
       - run: python ./scripts/aggregate-pytest-reports.py artifacts/*/pytest.*.xml
 
@@ -133,24 +117,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - parallel:
+        - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+          with:
+            persist-credentials: false
+        - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+          with:
+            python-version: "${{ matrix.py }}"
+        - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
-      - name: get date for caching
-        run: /bin/date -u "+%U" > cachedate.txt
-        shell: bash
-
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        id: setup-python
-        with:
-          python-version: "3.x"
-          cache: "pip"
-          cache-dependency-path: |
-            .github/workflows/build.yaml
-            pyproject.toml
-            tox.ini
-            cachedate.txt
-
-      - run: python -m pip install tox tox-uv
+      - run: uv tool install 'tox' --with 'tox-uv'
 
       - name: regenerate hook config
         run: tox run -e generate-hooks-config
@@ -163,21 +139,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: get date for caching
-        run: /bin/date -u "+%U" > cachedate.txt
-        shell: bash
-
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with:
-          python-version: "3.x"
-          cache: "pip"
-          cache-dependency-path: |
-            .github/workflows/build.yaml
-            pyproject.toml
-            tox.ini
-            cachedate.txt
+      - parallel:
+        - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+          with:
+            persist-credentials: false
+        - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+          with:
+            python-version: "3.x"
 
       - name: install from source
         run: python -m pip install .
