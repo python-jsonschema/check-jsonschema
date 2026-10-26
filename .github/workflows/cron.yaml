@@ -11,24 +11,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-    - uses: actions/checkout@v7
-    - uses: actions/setup-python@v7
-      with:
-        python-version: '3.x'
+      - parallel:
+        - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+          with:
+            persist-credentials: false
+        - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+          with:
+            python-version: "3.x"
+        - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
-    - name: install tox, uv, and just
-      run: python -m pip install 'tox' 'tox-uv' 'uv' 'rust-just'
+      - parallel:
+        - run: uv tool install 'tox' --with 'tox-uv'
+        - run: uv tool install 'rust-just'
 
-    - name: vendor-schemas
-      run: just vendor-schemas
+      - name: vendor-schemas
+        run: just vendor-schemas
 
-    # this action seems to have significant usage, so it should be stable
-    # can always re-implement with `git status --porcelain`, etc. if necessary
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v8
-      with:
-        title: 'Update vendored schemas'
-        commit-message: '[vendor-schemas] automated update'
-        branch: vendor-schemas-auto
-        reviewers: sirosen
-        body: ''
+      # this action seems to have significant usage, so it should be stable
+      # can always re-implement with `git status --porcelain`, etc. if necessary
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          title: 'Update vendored schemas'
+          commit-message: '[vendor-schemas] automated update'
+          branch: vendor-schemas-auto
+          reviewers: sirosen
+          body: ''
