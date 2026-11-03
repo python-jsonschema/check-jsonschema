@@ -59,7 +59,7 @@ check-jsonschema = "check_jsonschema:main"
 include = [
     "CHANGELOG.rst",
     ".github/CONTRIBUTING.md",
-    ".github/AI_POLICY.md.md",
+    ".github/AI_POLICY.md",
     "tests/**/*",
     # needed as a data file for the tests (several tests check integrity
     # against this file)
@@ -68,7 +68,6 @@ include = [
     ".coveragerc",
     "justfile",
     "tox.ini",
-    "toxfile.py",
 ]
 exclude = ["**/*/.*", "**/*.egg-info", "**/__pycache__", "scripts/*"]
 
