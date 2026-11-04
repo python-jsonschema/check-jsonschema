@@ -25,12 +25,16 @@ def main():
                 nodename = f"{classname.replace('.', '/')}.py::{name}"
                 if skip_node is not None:
                     if "skipped" not in tests_by_name[nodename]:
+                        print(f"found first skip of {nodename} in {filename}")
                         tests_by_name[nodename]["skipped"] = True
                 else:
+                    print(f"found first run of {nodename} in {filename}")
                     tests_by_name[nodename]["skipped"] = False
             else:
                 if skip_node is not None:
                     skipped_module_counts[name] += 1
+
+    print("-- tally results")
 
     skipped_modules = {
         modname
