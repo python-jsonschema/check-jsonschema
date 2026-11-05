@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 44.181.5 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 44.199.0 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "44.181.5",
+  "x-renovate-version": "44.199.0",
   "allowComments": true,
   "type": "object",
   "definitions": {
@@ -8276,6 +8276,7 @@
             "major",
             "minor",
             "patch",
+            "prerelease",
             "sync"
           ]
         },
@@ -13802,6 +13803,10 @@
         "npm": {
           "type": "string",
           "description": "A constraint for the `npm` Containerbase tool"
+        },
+        "paket": {
+          "type": "string",
+          "description": "A constraint for the `paket` Containerbase tool"
         },
         "pdm": {
           "type": "string",
@@ -19919,6 +19924,7 @@
           "nvm",
           "ocb",
           "osgi",
+          "paket",
           "pep621",
           "pep723",
           "pip-compile",
@@ -35907,6 +35913,7 @@
                   "nvm",
                   "ocb",
                   "osgi",
+                  "paket",
                   "pep621",
                   "pep723",
                   "pip-compile",
@@ -36039,6 +36046,7 @@
                 "nvm",
                 "ocb",
                 "osgi",
+                "paket",
                 "pep621",
                 "pep723",
                 "pip-compile",
@@ -43444,6 +43452,478 @@
           }
         ]
       }
+    },
+    "paket": {
+      "description": "Configuration object for the paket manager\nSee also: https://docs.renovatebot.com/configuration-options/#paket",
+      "markdownDescription": "Configuration object for the paket manager\n\nSee also: [paket](https://docs.renovatebot.com/configuration-options/#paket)",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "/(^|/)paket\\.dependencies$/"
+        ],
+        "versioning": "paket"
+      },
+      "$ref": "#",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "abandonmentThreshold": {
+              "$ref": "#/definitions/abandonmentThreshold"
+            },
+            "addLabels": {
+              "$ref": "#/definitions/addLabels"
+            },
+            "additionalBranchPrefix": {
+              "$ref": "#/definitions/additionalBranchPrefix"
+            },
+            "additionalReviewers": {
+              "$ref": "#/definitions/additionalReviewers"
+            },
+            "assignAutomerge": {
+              "$ref": "#/definitions/assignAutomerge"
+            },
+            "assignees": {
+              "$ref": "#/definitions/assignees"
+            },
+            "assigneesFromCodeOwners": {
+              "$ref": "#/definitions/assigneesFromCodeOwners"
+            },
+            "assigneesSampleSize": {
+              "$ref": "#/definitions/assigneesSampleSize"
+            },
+            "autoApprove": {
+              "$ref": "#/definitions/autoApprove"
+            },
+            "autoReplaceGlobalMatch": {
+              "$ref": "#/definitions/autoReplaceGlobalMatch"
+            },
+            "automerge": {
+              "$ref": "#/definitions/automerge"
+            },
+            "automergeComment": {
+              "$ref": "#/definitions/automergeComment"
+            },
+            "automergeSchedule": {
+              "$ref": "#/definitions/automergeSchedule"
+            },
+            "automergeStrategy": {
+              "$ref": "#/definitions/automergeStrategy"
+            },
+            "automergeType": {
+              "$ref": "#/definitions/automergeType"
+            },
+            "azureWorkItemId": {
+              "$ref": "#/definitions/azureWorkItemId"
+            },
+            "bbAutoResolvePrTasks": {
+              "$ref": "#/definitions/bbAutoResolvePrTasks"
+            },
+            "bbUseDefaultReviewers": {
+              "$ref": "#/definitions/bbUseDefaultReviewers"
+            },
+            "branchConcurrentLimit": {
+              "$ref": "#/definitions/branchConcurrentLimit"
+            },
+            "branchName": {
+              "$ref": "#/definitions/branchName"
+            },
+            "branchNameStrict": {
+              "$ref": "#/definitions/branchNameStrict"
+            },
+            "branchPrefix": {
+              "$ref": "#/definitions/branchPrefix"
+            },
+            "branchPrefixOld": {
+              "$ref": "#/definitions/branchPrefixOld"
+            },
+            "branchTopic": {
+              "$ref": "#/definitions/branchTopic"
+            },
+            "bumpVersion": {
+              "$ref": "#/definitions/bumpVersion"
+            },
+            "bumpVersions": {
+              "$ref": "#/definitions/bumpVersions"
+            },
+            "commitBody": {
+              "$ref": "#/definitions/commitBody"
+            },
+            "commitBodyTable": {
+              "$ref": "#/definitions/commitBodyTable"
+            },
+            "commitHourlyLimit": {
+              "$ref": "#/definitions/commitHourlyLimit"
+            },
+            "commitMessage": {
+              "$ref": "#/definitions/commitMessage"
+            },
+            "commitMessageAction": {
+              "$ref": "#/definitions/commitMessageAction"
+            },
+            "commitMessageExtra": {
+              "$ref": "#/definitions/commitMessageExtra"
+            },
+            "commitMessageLowerCase": {
+              "$ref": "#/definitions/commitMessageLowerCase"
+            },
+            "commitMessagePrefix": {
+              "$ref": "#/definitions/commitMessagePrefix"
+            },
+            "commitMessageSuffix": {
+              "$ref": "#/definitions/commitMessageSuffix"
+            },
+            "commitMessageTopic": {
+              "$ref": "#/definitions/commitMessageTopic"
+            },
+            "commitTrailers": {
+              "$ref": "#/definitions/commitTrailers"
+            },
+            "composerIgnorePlatformReqs": {
+              "$ref": "#/definitions/composerIgnorePlatformReqs"
+            },
+            "constraints": {
+              "$ref": "#/definitions/constraints"
+            },
+            "constraintsFiltering": {
+              "$ref": "#/definitions/constraintsFiltering"
+            },
+            "constraintsVersioning": {
+              "$ref": "#/definitions/constraintsVersioning"
+            },
+            "customDatasources": {
+              "$ref": "#/definitions/customDatasources"
+            },
+            "defaultRegistryUrls": {
+              "$ref": "#/definitions/defaultRegistryUrls"
+            },
+            "dependencyDashboardApproval": {
+              "$ref": "#/definitions/dependencyDashboardApproval"
+            },
+            "dependencyDashboardCategory": {
+              "$ref": "#/definitions/dependencyDashboardCategory"
+            },
+            "description": {
+              "$ref": "#/definitions/description"
+            },
+            "digest": {
+              "$ref": "#/definitions/digest"
+            },
+            "draftPR": {
+              "$ref": "#/definitions/draftPR"
+            },
+            "enabled": {
+              "$ref": "#/definitions/enabled"
+            },
+            "encrypted": {
+              "$ref": "#/definitions/encrypted"
+            },
+            "excludeCommitPaths": {
+              "$ref": "#/definitions/excludeCommitPaths"
+            },
+            "expandCodeOwnersGroups": {
+              "$ref": "#/definitions/expandCodeOwnersGroups"
+            },
+            "extends": {
+              "$ref": "#/definitions/extends"
+            },
+            "extractVersion": {
+              "$ref": "#/definitions/extractVersion"
+            },
+            "filterUnavailableUsers": {
+              "$ref": "#/definitions/filterUnavailableUsers"
+            },
+            "followTag": {
+              "$ref": "#/definitions/followTag"
+            },
+            "forkModeDisallowMaintainerEdits": {
+              "$ref": "#/definitions/forkModeDisallowMaintainerEdits"
+            },
+            "gitLabIgnoreApprovals": {
+              "$ref": "#/definitions/gitLabIgnoreApprovals"
+            },
+            "goGetDirs": {
+              "$ref": "#/definitions/goGetDirs"
+            },
+            "group": {
+              "$ref": "#/definitions/group"
+            },
+            "groupName": {
+              "$ref": "#/definitions/groupName"
+            },
+            "groupSingleUpdates": {
+              "$ref": "#/definitions/groupSingleUpdates"
+            },
+            "groupSlug": {
+              "$ref": "#/definitions/groupSlug"
+            },
+            "hashedBranchLength": {
+              "$ref": "#/definitions/hashedBranchLength"
+            },
+            "ignoreDeprecated": {
+              "$ref": "#/definitions/ignoreDeprecated"
+            },
+            "ignoreDeps": {
+              "$ref": "#/definitions/ignoreDeps"
+            },
+            "ignorePaths": {
+              "$ref": "#/definitions/ignorePaths"
+            },
+            "ignorePlugins": {
+              "$ref": "#/definitions/ignorePlugins"
+            },
+            "ignorePresets": {
+              "$ref": "#/definitions/ignorePresets"
+            },
+            "ignoreReviewers": {
+              "$ref": "#/definitions/ignoreReviewers"
+            },
+            "ignoreScripts": {
+              "$ref": "#/definitions/ignoreScripts"
+            },
+            "ignoreTests": {
+              "$ref": "#/definitions/ignoreTests"
+            },
+            "ignoreUnstable": {
+              "$ref": "#/definitions/ignoreUnstable"
+            },
+            "includePaths": {
+              "$ref": "#/definitions/includePaths"
+            },
+            "internalChecksAsSuccess": {
+              "$ref": "#/definitions/internalChecksAsSuccess"
+            },
+            "internalChecksFilter": {
+              "$ref": "#/definitions/internalChecksFilter"
+            },
+            "keepUpdatedLabel": {
+              "$ref": "#/definitions/keepUpdatedLabel"
+            },
+            "labels": {
+              "$ref": "#/definitions/labels"
+            },
+            "lockFileMaintenance": {
+              "$ref": "#/definitions/lockFileMaintenance"
+            },
+            "major": {
+              "$ref": "#/definitions/major"
+            },
+            "managerFilePatterns": {
+              "$ref": "#/definitions/managerFilePatterns"
+            },
+            "maxMajorIncrement": {
+              "$ref": "#/definitions/maxMajorIncrement"
+            },
+            "milestone": {
+              "$ref": "#/definitions/milestone"
+            },
+            "minimumGroupSize": {
+              "$ref": "#/definitions/minimumGroupSize"
+            },
+            "minimumReleaseAge": {
+              "$ref": "#/definitions/minimumReleaseAge"
+            },
+            "minimumReleaseAgeBehaviour": {
+              "$ref": "#/definitions/minimumReleaseAgeBehaviour"
+            },
+            "minimumReleaseAgeBuffer": {
+              "$ref": "#/definitions/minimumReleaseAgeBuffer"
+            },
+            "minor": {
+              "$ref": "#/definitions/minor"
+            },
+            "mode": {
+              "$ref": "#/definitions/mode"
+            },
+            "npmrc": {
+              "$ref": "#/definitions/npmrc"
+            },
+            "npmrcMerge": {
+              "$ref": "#/definitions/npmrcMerge"
+            },
+            "overrideDescription": {
+              "$ref": "#/definitions/overrideDescription"
+            },
+            "packageRules": {
+              "$ref": "#/definitions/packageRules"
+            },
+            "patch": {
+              "$ref": "#/definitions/patch"
+            },
+            "pin": {
+              "$ref": "#/definitions/pin"
+            },
+            "pinDigest": {
+              "$ref": "#/definitions/pinDigest"
+            },
+            "pinDigests": {
+              "$ref": "#/definitions/pinDigests"
+            },
+            "platformAutomerge": {
+              "$ref": "#/definitions/platformAutomerge"
+            },
+            "platformCommit": {
+              "$ref": "#/definitions/platformCommit"
+            },
+            "postUpdateOptions": {
+              "$ref": "#/definitions/postUpdateOptions"
+            },
+            "postUpgradeTasks": {
+              "$ref": "#/definitions/postUpgradeTasks"
+            },
+            "prBodyColumns": {
+              "$ref": "#/definitions/prBodyColumns"
+            },
+            "prBodyDefinitions": {
+              "$ref": "#/definitions/prBodyDefinitions"
+            },
+            "prBodyHeadingDefinitions": {
+              "$ref": "#/definitions/prBodyHeadingDefinitions"
+            },
+            "prBodyNotes": {
+              "$ref": "#/definitions/prBodyNotes"
+            },
+            "prBodyTemplate": {
+              "$ref": "#/definitions/prBodyTemplate"
+            },
+            "prConcurrentLimit": {
+              "$ref": "#/definitions/prConcurrentLimit"
+            },
+            "prCreation": {
+              "$ref": "#/definitions/prCreation"
+            },
+            "prFooter": {
+              "$ref": "#/definitions/prFooter"
+            },
+            "prHeader": {
+              "$ref": "#/definitions/prHeader"
+            },
+            "prHourlyLimit": {
+              "$ref": "#/definitions/prHourlyLimit"
+            },
+            "prNotPendingHours": {
+              "$ref": "#/definitions/prNotPendingHours"
+            },
+            "prTitle": {
+              "$ref": "#/definitions/prTitle"
+            },
+            "prTitleStrict": {
+              "$ref": "#/definitions/prTitleStrict"
+            },
+            "pruneBranchAfterAutomerge": {
+              "$ref": "#/definitions/pruneBranchAfterAutomerge"
+            },
+            "rangeStrategy": {
+              "$ref": "#/definitions/rangeStrategy"
+            },
+            "rebaseLabel": {
+              "$ref": "#/definitions/rebaseLabel"
+            },
+            "rebaseWhen": {
+              "$ref": "#/definitions/rebaseWhen"
+            },
+            "recreateWhen": {
+              "$ref": "#/definitions/recreateWhen"
+            },
+            "registryAliases": {
+              "$ref": "#/definitions/registryAliases"
+            },
+            "registryUrls": {
+              "$ref": "#/definitions/registryUrls"
+            },
+            "replacement": {
+              "$ref": "#/definitions/replacement"
+            },
+            "replacementApproach": {
+              "$ref": "#/definitions/replacementApproach"
+            },
+            "respectLatest": {
+              "$ref": "#/definitions/respectLatest"
+            },
+            "reviewers": {
+              "$ref": "#/definitions/reviewers"
+            },
+            "reviewersFromCodeOwners": {
+              "$ref": "#/definitions/reviewersFromCodeOwners"
+            },
+            "reviewersSampleSize": {
+              "$ref": "#/definitions/reviewersSampleSize"
+            },
+            "rollback": {
+              "$ref": "#/definitions/rollback"
+            },
+            "rollbackPrs": {
+              "$ref": "#/definitions/rollbackPrs"
+            },
+            "schedule": {
+              "$ref": "#/definitions/schedule"
+            },
+            "semanticCommitScope": {
+              "$ref": "#/definitions/semanticCommitScope"
+            },
+            "semanticCommitType": {
+              "$ref": "#/definitions/semanticCommitType"
+            },
+            "semanticCommits": {
+              "$ref": "#/definitions/semanticCommits"
+            },
+            "separateMajorMinor": {
+              "$ref": "#/definitions/separateMajorMinor"
+            },
+            "separateMinorPatch": {
+              "$ref": "#/definitions/separateMinorPatch"
+            },
+            "separateMultipleMajor": {
+              "$ref": "#/definitions/separateMultipleMajor"
+            },
+            "separateMultipleMinor": {
+              "$ref": "#/definitions/separateMultipleMinor"
+            },
+            "skipArtifactsUpdate": {
+              "$ref": "#/definitions/skipArtifactsUpdate"
+            },
+            "skipInstalls": {
+              "$ref": "#/definitions/skipInstalls"
+            },
+            "statusCheckNames": {
+              "$ref": "#/definitions/statusCheckNames"
+            },
+            "statusCheckWhen": {
+              "$ref": "#/definitions/statusCheckWhen"
+            },
+            "stopUpdatingLabel": {
+              "$ref": "#/definitions/stopUpdatingLabel"
+            },
+            "suppressNotifications": {
+              "$ref": "#/definitions/suppressNotifications"
+            },
+            "timezone": {
+              "$ref": "#/definitions/timezone"
+            },
+            "toolSettings": {
+              "$ref": "#/definitions/toolSettings"
+            },
+            "updateInternalDeps": {
+              "$ref": "#/definitions/updateInternalDeps"
+            },
+            "updateNotScheduled": {
+              "$ref": "#/definitions/updateNotScheduled"
+            },
+            "updatePinnedDependencies": {
+              "$ref": "#/definitions/updatePinnedDependencies"
+            },
+            "userStrings": {
+              "$ref": "#/definitions/userStrings"
+            },
+            "versionCompatibility": {
+              "$ref": "#/definitions/versionCompatibility"
+            },
+            "versioning": {
+              "$ref": "#/definitions/versioning"
+            }
+          }
+        }
+      ]
     },
     "patch": {
       "description": "Configuration to apply when an update type is `patch`.\nSee also: https://docs.renovatebot.com/configuration-options/#patch",
@@ -65056,6 +65536,9 @@
     },
     "packageRules": {
       "$ref": "#/definitions/packageRules"
+    },
+    "paket": {
+      "$ref": "#/definitions/paket"
     },
     "patch": {
       "$ref": "#/definitions/patch"
