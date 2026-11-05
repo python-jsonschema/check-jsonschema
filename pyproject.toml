@@ -12,7 +12,7 @@ dev = [
     "responses==0.26.3",
 ]
 docs = [
-    "sphinx<9",
+    "sphinx<10",
     "sphinx-issues<7",
     "furo==2025.12.19",
 ]
