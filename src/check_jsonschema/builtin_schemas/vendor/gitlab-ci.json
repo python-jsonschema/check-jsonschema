@@ -1649,7 +1649,7 @@
             "type": "array",
             "minItems": 1,
             "items": {
-              "type": "string"
+              "$ref": "#/definitions/rules/items"
             }
           }
         ]
@@ -2962,6 +2962,11 @@
         "resource_group": {
           "type": "string",
           "description": "Limit job concurrency. Can be used to ensure that the Runner will not run certain jobs simultaneously."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 128,
+          "markdownDescription": "A short description of the purpose of the job. Maximum 128 characters. [Learn More](https://docs.gitlab.com/ci/yaml/#description)."
         },
         "trigger": {
           "markdownDescription": "Trigger allows you to define downstream pipeline trigger. When a job created from trigger definition is started by GitLab, a downstream pipeline gets created. [Learn More](https://docs.gitlab.com/ci/yaml/#trigger).",

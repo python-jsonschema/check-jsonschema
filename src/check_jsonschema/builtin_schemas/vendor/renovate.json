@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 44.199.0 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 44.222.4 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "44.199.0",
+  "x-renovate-version": "44.222.4",
   "allowComments": true,
   "type": "object",
   "definitions": {
@@ -57,8 +57,8 @@
       "type": "string"
     },
     "ansible": {
-      "description": "Configuration object for the ansible manager\nSee also: https://docs.renovatebot.com/configuration-options/#ansible",
-      "markdownDescription": "Configuration object for the ansible manager\n\nSee also: [ansible](https://docs.renovatebot.com/configuration-options/#ansible)",
+      "description": "Configuration object for the Ansible manager\nSee also: https://docs.renovatebot.com/modules/manager/ansible/",
+      "markdownDescription": "Configuration object for the Ansible manager\n\nSee also: [ansible](https://docs.renovatebot.com/modules/manager/ansible/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -528,8 +528,8 @@
       ]
     },
     "ansible-galaxy": {
-      "description": "Configuration object for the ansible-galaxy manager\nSee also: https://docs.renovatebot.com/configuration-options/#ansible-galaxy",
-      "markdownDescription": "Configuration object for the ansible-galaxy manager\n\nSee also: [ansible-galaxy](https://docs.renovatebot.com/configuration-options/#ansible-galaxy)",
+      "description": "Configuration object for the Ansible Galaxy manager\nSee also: https://docs.renovatebot.com/modules/manager/ansible-galaxy/",
+      "markdownDescription": "Configuration object for the Ansible Galaxy manager\n\nSee also: [ansible-galaxy](https://docs.renovatebot.com/modules/manager/ansible-galaxy/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -999,8 +999,8 @@
       ]
     },
     "ant": {
-      "description": "Configuration object for the ant manager\nSee also: https://docs.renovatebot.com/configuration-options/#ant",
-      "markdownDescription": "Configuration object for the ant manager\n\nSee also: [ant](https://docs.renovatebot.com/configuration-options/#ant)",
+      "description": "Configuration object for the Apache Ant manager\nSee also: https://docs.renovatebot.com/modules/manager/ant/",
+      "markdownDescription": "Configuration object for the Apache Ant manager\n\nSee also: [ant](https://docs.renovatebot.com/modules/manager/ant/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1470,8 +1470,8 @@
       ]
     },
     "apm": {
-      "description": "Configuration object for the apm manager\nSee also: https://docs.renovatebot.com/configuration-options/#apm",
-      "markdownDescription": "Configuration object for the apm manager\n\nSee also: [apm](https://docs.renovatebot.com/configuration-options/#apm)",
+      "description": "Configuration object for the APM manager\nSee also: https://docs.renovatebot.com/modules/manager/apm/",
+      "markdownDescription": "Configuration object for the APM manager\n\nSee also: [apm](https://docs.renovatebot.com/modules/manager/apm/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -1941,8 +1941,8 @@
       ]
     },
     "argocd": {
-      "description": "Configuration object for the argocd manager\nSee also: https://docs.renovatebot.com/configuration-options/#argocd",
-      "markdownDescription": "Configuration object for the argocd manager\n\nSee also: [argocd](https://docs.renovatebot.com/configuration-options/#argocd)",
+      "description": "Configuration object for the Argo CD manager\nSee also: https://docs.renovatebot.com/modules/manager/argocd/",
+      "markdownDescription": "Configuration object for the Argo CD manager\n\nSee also: [argocd](https://docs.renovatebot.com/modules/manager/argocd/)",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -2425,8 +2425,8 @@
       "default": null
     },
     "asdf": {
-      "description": "Configuration object for the asdf manager\nSee also: https://docs.renovatebot.com/configuration-options/#asdf",
-      "markdownDescription": "Configuration object for the asdf manager\n\nSee also: [asdf](https://docs.renovatebot.com/configuration-options/#asdf)",
+      "description": "Configuration object for the asdf manager\nSee also: https://docs.renovatebot.com/modules/manager/asdf/",
+      "markdownDescription": "Configuration object for the asdf manager\n\nSee also: [asdf](https://docs.renovatebot.com/modules/manager/asdf/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3003,8 +3003,8 @@
       "default": "pr"
     },
     "azure-pipelines": {
-      "description": "Configuration object for the azure-pipelines manager\nSee also: https://docs.renovatebot.com/configuration-options/#azure-pipelines",
-      "markdownDescription": "Configuration object for the azure-pipelines manager\n\nSee also: [azure-pipelines](https://docs.renovatebot.com/configuration-options/#azure-pipelines)",
+      "description": "Configuration object for the Azure Pipelines manager\nSee also: https://docs.renovatebot.com/modules/manager/azure-pipelines/",
+      "markdownDescription": "Configuration object for the Azure Pipelines manager\n\nSee also: [azure-pipelines](https://docs.renovatebot.com/modules/manager/azure-pipelines/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3496,8 +3496,8 @@
       }
     },
     "batect": {
-      "description": "Configuration object for the batect manager\nSee also: https://docs.renovatebot.com/configuration-options/#batect",
-      "markdownDescription": "Configuration object for the batect manager\n\nSee also: [batect](https://docs.renovatebot.com/configuration-options/#batect)",
+      "description": "Configuration object for the Batect manager\nSee also: https://docs.renovatebot.com/modules/manager/batect/",
+      "markdownDescription": "Configuration object for the Batect manager\n\nSee also: [batect](https://docs.renovatebot.com/modules/manager/batect/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -3967,8 +3967,8 @@
       ]
     },
     "batect-wrapper": {
-      "description": "Configuration object for the batect-wrapper manager\nSee also: https://docs.renovatebot.com/configuration-options/#batect-wrapper",
-      "markdownDescription": "Configuration object for the batect-wrapper manager\n\nSee also: [batect-wrapper](https://docs.renovatebot.com/configuration-options/#batect-wrapper)",
+      "description": "Configuration object for the Batect Wrapper manager\nSee also: https://docs.renovatebot.com/modules/manager/batect-wrapper/",
+      "markdownDescription": "Configuration object for the Batect Wrapper manager\n\nSee also: [batect-wrapper](https://docs.renovatebot.com/modules/manager/batect-wrapper/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4439,8 +4439,8 @@
       ]
     },
     "bazel": {
-      "description": "Configuration object for the bazel manager\nSee also: https://docs.renovatebot.com/configuration-options/#bazel",
-      "markdownDescription": "Configuration object for the bazel manager\n\nSee also: [bazel](https://docs.renovatebot.com/configuration-options/#bazel)",
+      "description": "Configuration object for the Bazel manager\nSee also: https://docs.renovatebot.com/modules/manager/bazel/",
+      "markdownDescription": "Configuration object for the Bazel manager\n\nSee also: [bazel](https://docs.renovatebot.com/modules/manager/bazel/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -4912,8 +4912,8 @@
       ]
     },
     "bazel-module": {
-      "description": "Configuration object for the bazel-module manager\nSee also: https://docs.renovatebot.com/configuration-options/#bazel-module",
-      "markdownDescription": "Configuration object for the bazel-module manager\n\nSee also: [bazel-module](https://docs.renovatebot.com/configuration-options/#bazel-module)",
+      "description": "Configuration object for the Bazel Module manager\nSee also: https://docs.renovatebot.com/modules/manager/bazel-module/",
+      "markdownDescription": "Configuration object for the Bazel Module manager\n\nSee also: [bazel-module](https://docs.renovatebot.com/modules/manager/bazel-module/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -5383,8 +5383,8 @@
       ]
     },
     "bazelisk": {
-      "description": "Configuration object for the bazelisk manager\nSee also: https://docs.renovatebot.com/configuration-options/#bazelisk",
-      "markdownDescription": "Configuration object for the bazelisk manager\n\nSee also: [bazelisk](https://docs.renovatebot.com/configuration-options/#bazelisk)",
+      "description": "Configuration object for the Bazelisk manager\nSee also: https://docs.renovatebot.com/modules/manager/bazelisk/",
+      "markdownDescription": "Configuration object for the Bazelisk manager\n\nSee also: [bazelisk](https://docs.renovatebot.com/modules/manager/bazelisk/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -5868,8 +5868,8 @@
       "default": true
     },
     "bicep": {
-      "description": "Configuration object for the bicep manager\nSee also: https://docs.renovatebot.com/configuration-options/#bicep",
-      "markdownDescription": "Configuration object for the bicep manager\n\nSee also: [bicep](https://docs.renovatebot.com/configuration-options/#bicep)",
+      "description": "Configuration object for the Bicep manager\nSee also: https://docs.renovatebot.com/modules/manager/bicep/",
+      "markdownDescription": "Configuration object for the Bicep manager\n\nSee also: [bicep](https://docs.renovatebot.com/modules/manager/bicep/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6339,8 +6339,8 @@
       ]
     },
     "bitbucket-pipelines": {
-      "description": "Configuration object for the bitbucket-pipelines manager\nSee also: https://docs.renovatebot.com/configuration-options/#bitbucket-pipelines",
-      "markdownDescription": "Configuration object for the bitbucket-pipelines manager\n\nSee also: [bitbucket-pipelines](https://docs.renovatebot.com/configuration-options/#bitbucket-pipelines)",
+      "description": "Configuration object for the Bitbucket Pipelines manager\nSee also: https://docs.renovatebot.com/modules/manager/bitbucket-pipelines/",
+      "markdownDescription": "Configuration object for the Bitbucket Pipelines manager\n\nSee also: [bitbucket-pipelines](https://docs.renovatebot.com/modules/manager/bitbucket-pipelines/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -6810,8 +6810,8 @@
       ]
     },
     "bitrise": {
-      "description": "Configuration object for the bitrise manager\nSee also: https://docs.renovatebot.com/configuration-options/#bitrise",
-      "markdownDescription": "Configuration object for the bitrise manager\n\nSee also: [bitrise](https://docs.renovatebot.com/configuration-options/#bitrise)",
+      "description": "Configuration object for the Bitrise manager\nSee also: https://docs.renovatebot.com/modules/manager/bitrise/",
+      "markdownDescription": "Configuration object for the Bitrise manager\n\nSee also: [bitrise](https://docs.renovatebot.com/modules/manager/bitrise/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7320,8 +7320,8 @@
       "default": "{{{depNameSanitized}}}-{{{newMajor}}}{{#if separateMinorPatch}}{{#if isPatch}}.{{{newMinor}}}{{/if}}{{/if}}{{#if separateMultipleMinor}}{{#if isMinor}}.{{{newMinor}}}{{/if}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}"
     },
     "buildkite": {
-      "description": "Configuration object for the buildkite manager\nSee also: https://docs.renovatebot.com/configuration-options/#buildkite",
-      "markdownDescription": "Configuration object for the buildkite manager\n\nSee also: [buildkite](https://docs.renovatebot.com/configuration-options/#buildkite)",
+      "description": "Configuration object for the Buildkite manager\nSee also: https://docs.renovatebot.com/modules/manager/buildkite/",
+      "markdownDescription": "Configuration object for the Buildkite manager\n\nSee also: [buildkite](https://docs.renovatebot.com/modules/manager/buildkite/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -7794,8 +7794,8 @@
       ]
     },
     "buildpacks": {
-      "description": "Configuration object for the buildpacks manager\nSee also: https://docs.renovatebot.com/configuration-options/#buildpacks",
-      "markdownDescription": "Configuration object for the buildpacks manager\n\nSee also: [buildpacks](https://docs.renovatebot.com/configuration-options/#buildpacks)",
+      "description": "Configuration object for the Buildpacks manager\nSee also: https://docs.renovatebot.com/modules/manager/buildpacks/",
+      "markdownDescription": "Configuration object for the Buildpacks manager\n\nSee also: [buildpacks](https://docs.renovatebot.com/modules/manager/buildpacks/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "buildpack {{depName}}",
@@ -8340,8 +8340,8 @@
       "default": []
     },
     "bun": {
-      "description": "Configuration object for the bun manager\nSee also: https://docs.renovatebot.com/configuration-options/#bun",
-      "markdownDescription": "Configuration object for the bun manager\n\nSee also: [bun](https://docs.renovatebot.com/configuration-options/#bun)",
+      "description": "Configuration object for the Bun manager\nSee also: https://docs.renovatebot.com/modules/manager/bun/",
+      "markdownDescription": "Configuration object for the Bun manager\n\nSee also: [bun](https://docs.renovatebot.com/modules/manager/bun/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -8354,7 +8354,7 @@
           }
         },
         "prBodyDefinitions": {
-          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` → {{else}}{{#if currentValue}}`{{{currentValue}}}` → {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
+          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` → {{else}}{{#if currentValue}}`{{{currentValue}}}` → {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if packageName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' packageName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
         }
       },
       "$ref": "#",
@@ -8820,8 +8820,8 @@
       ]
     },
     "bun-version": {
-      "description": "Configuration object for the bun-version manager\nSee also: https://docs.renovatebot.com/configuration-options/#bun-version",
-      "markdownDescription": "Configuration object for the bun-version manager\n\nSee also: [bun-version](https://docs.renovatebot.com/configuration-options/#bun-version)",
+      "description": "Configuration object for the Bun Version manager\nSee also: https://docs.renovatebot.com/modules/manager/bun-version/",
+      "markdownDescription": "Configuration object for the Bun Version manager\n\nSee also: [bun-version](https://docs.renovatebot.com/modules/manager/bun-version/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -9292,8 +9292,8 @@
       ]
     },
     "bundler": {
-      "description": "Configuration object for the bundler manager\nSee also: https://docs.renovatebot.com/configuration-options/#bundler",
-      "markdownDescription": "Configuration object for the bundler manager\n\nSee also: [bundler](https://docs.renovatebot.com/configuration-options/#bundler)",
+      "description": "Configuration object for the Bundler manager\nSee also: https://docs.renovatebot.com/modules/manager/bundler/",
+      "markdownDescription": "Configuration object for the Bundler manager\n\nSee also: [bundler](https://docs.renovatebot.com/modules/manager/bundler/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -9764,8 +9764,8 @@
       ]
     },
     "cake": {
-      "description": "Configuration object for the cake manager\nSee also: https://docs.renovatebot.com/configuration-options/#cake",
-      "markdownDescription": "Configuration object for the cake manager\n\nSee also: [cake](https://docs.renovatebot.com/configuration-options/#cake)",
+      "description": "Configuration object for the Cake manager\nSee also: https://docs.renovatebot.com/modules/manager/cake/",
+      "markdownDescription": "Configuration object for the Cake manager\n\nSee also: [cake](https://docs.renovatebot.com/modules/manager/cake/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -10235,8 +10235,8 @@
       ]
     },
     "cargo": {
-      "description": "Configuration object for the cargo manager\nSee also: https://docs.renovatebot.com/configuration-options/#cargo",
-      "markdownDescription": "Configuration object for the cargo manager\n\nSee also: [cargo](https://docs.renovatebot.com/configuration-options/#cargo)",
+      "description": "Configuration object for the Cargo manager\nSee also: https://docs.renovatebot.com/modules/manager/cargo/",
+      "markdownDescription": "Configuration object for the Cargo manager\n\nSee also: [cargo](https://docs.renovatebot.com/modules/manager/cargo/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "Rust crate {{depName}}",
@@ -10707,8 +10707,8 @@
       ]
     },
     "cdnurl": {
-      "description": "Configuration object for the cdnurl manager\nSee also: https://docs.renovatebot.com/configuration-options/#cdnurl",
-      "markdownDescription": "Configuration object for the cdnurl manager\n\nSee also: [cdnurl](https://docs.renovatebot.com/configuration-options/#cdnurl)",
+      "description": "Configuration object for the CDN URL manager\nSee also: https://docs.renovatebot.com/modules/manager/cdnurl/",
+      "markdownDescription": "Configuration object for the CDN URL manager\n\nSee also: [cdnurl](https://docs.renovatebot.com/modules/manager/cdnurl/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [],
@@ -11182,8 +11182,8 @@
       "type": "string"
     },
     "circleci": {
-      "description": "Configuration object for the circleci manager\nSee also: https://docs.renovatebot.com/configuration-options/#circleci",
-      "markdownDescription": "Configuration object for the circleci manager\n\nSee also: [circleci](https://docs.renovatebot.com/configuration-options/#circleci)",
+      "description": "Configuration object for the CircleCI manager\nSee also: https://docs.renovatebot.com/modules/manager/circleci/",
+      "markdownDescription": "Configuration object for the CircleCI manager\n\nSee also: [circleci](https://docs.renovatebot.com/modules/manager/circleci/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -11670,8 +11670,8 @@
       ]
     },
     "cloudbuild": {
-      "description": "Configuration object for the cloudbuild manager\nSee also: https://docs.renovatebot.com/configuration-options/#cloudbuild",
-      "markdownDescription": "Configuration object for the cloudbuild manager\n\nSee also: [cloudbuild](https://docs.renovatebot.com/configuration-options/#cloudbuild)",
+      "description": "Configuration object for the Cloud Build manager\nSee also: https://docs.renovatebot.com/modules/manager/cloudbuild/",
+      "markdownDescription": "Configuration object for the Cloud Build manager\n\nSee also: [cloudbuild](https://docs.renovatebot.com/modules/manager/cloudbuild/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -12141,8 +12141,8 @@
       ]
     },
     "cocoapods": {
-      "description": "Configuration object for the cocoapods manager\nSee also: https://docs.renovatebot.com/configuration-options/#cocoapods",
-      "markdownDescription": "Configuration object for the cocoapods manager\n\nSee also: [cocoapods](https://docs.renovatebot.com/configuration-options/#cocoapods)",
+      "description": "Configuration object for the CocoaPods manager\nSee also: https://docs.renovatebot.com/modules/manager/cocoapods/",
+      "markdownDescription": "Configuration object for the CocoaPods manager\n\nSee also: [cocoapods](https://docs.renovatebot.com/modules/manager/cocoapods/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -12695,8 +12695,8 @@
       "default": null
     },
     "composer": {
-      "description": "Configuration object for the composer manager\nSee also: https://docs.renovatebot.com/configuration-options/#composer",
-      "markdownDescription": "Configuration object for the composer manager\n\nSee also: [composer](https://docs.renovatebot.com/configuration-options/#composer)",
+      "description": "Configuration object for the Composer manager\nSee also: https://docs.renovatebot.com/modules/manager/composer/",
+      "markdownDescription": "Configuration object for the Composer manager\n\nSee also: [composer](https://docs.renovatebot.com/modules/manager/composer/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -13176,8 +13176,8 @@
       "default": []
     },
     "conan": {
-      "description": "Configuration object for the conan manager\nSee also: https://docs.renovatebot.com/configuration-options/#conan",
-      "markdownDescription": "Configuration object for the conan manager\n\nSee also: [conan](https://docs.renovatebot.com/configuration-options/#conan)",
+      "description": "Configuration object for the Conan manager\nSee also: https://docs.renovatebot.com/modules/manager/conan/",
+      "markdownDescription": "Configuration object for the Conan manager\n\nSee also: [conan](https://docs.renovatebot.com/modules/manager/conan/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -13680,7 +13680,7 @@
       "markdownDescription": "Configuration object to define language or manager version constraints.\n\nSee also: [constraints](https://docs.renovatebot.com/configuration-options/#constraints)",
       "type": "object",
       "default": {
-        "ghActionsLock": "v0.4.0"
+        "ghActionsLock": "v0.4.1"
       },
       "additionalProperties": false,
       "properties": {
@@ -13982,8 +13982,8 @@
       }
     },
     "copier": {
-      "description": "Configuration object for the copier manager\nSee also: https://docs.renovatebot.com/configuration-options/#copier",
-      "markdownDescription": "Configuration object for the copier manager\n\nSee also: [copier](https://docs.renovatebot.com/configuration-options/#copier)",
+      "description": "Configuration object for the Copier manager\nSee also: https://docs.renovatebot.com/modules/manager/copier/",
+      "markdownDescription": "Configuration object for the Copier manager\n\nSee also: [copier](https://docs.renovatebot.com/modules/manager/copier/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -14454,8 +14454,8 @@
       ]
     },
     "cpanfile": {
-      "description": "Configuration object for the cpanfile manager\nSee also: https://docs.renovatebot.com/configuration-options/#cpanfile",
-      "markdownDescription": "Configuration object for the cpanfile manager\n\nSee also: [cpanfile](https://docs.renovatebot.com/configuration-options/#cpanfile)",
+      "description": "Configuration object for the cpanfile manager\nSee also: https://docs.renovatebot.com/modules/manager/cpanfile/",
+      "markdownDescription": "Configuration object for the cpanfile manager\n\nSee also: [cpanfile](https://docs.renovatebot.com/modules/manager/cpanfile/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -14925,8 +14925,8 @@
       ]
     },
     "crossplane": {
-      "description": "Configuration object for the crossplane manager\nSee also: https://docs.renovatebot.com/configuration-options/#crossplane",
-      "markdownDescription": "Configuration object for the crossplane manager\n\nSee also: [crossplane](https://docs.renovatebot.com/configuration-options/#crossplane)",
+      "description": "Configuration object for the Crossplane manager\nSee also: https://docs.renovatebot.com/modules/manager/crossplane/",
+      "markdownDescription": "Configuration object for the Crossplane manager\n\nSee also: [crossplane](https://docs.renovatebot.com/modules/manager/crossplane/)",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -15394,8 +15394,8 @@
       ]
     },
     "crow": {
-      "description": "Configuration object for the crow manager\nSee also: https://docs.renovatebot.com/configuration-options/#crow",
-      "markdownDescription": "Configuration object for the crow manager\n\nSee also: [crow](https://docs.renovatebot.com/configuration-options/#crow)",
+      "description": "Configuration object for the Crow manager\nSee also: https://docs.renovatebot.com/modules/manager/crow/",
+      "markdownDescription": "Configuration object for the Crow manager\n\nSee also: [crow](https://docs.renovatebot.com/modules/manager/crow/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -16046,8 +16046,8 @@
       "default": null
     },
     "deno": {
-      "description": "Configuration object for the deno manager\nSee also: https://docs.renovatebot.com/configuration-options/#deno",
-      "markdownDescription": "Configuration object for the deno manager\n\nSee also: [deno](https://docs.renovatebot.com/configuration-options/#deno)",
+      "description": "Configuration object for the Deno manager\nSee also: https://docs.renovatebot.com/modules/manager/deno/",
+      "markdownDescription": "Configuration object for the Deno manager\n\nSee also: [deno](https://docs.renovatebot.com/modules/manager/deno/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -16609,8 +16609,8 @@
       "default": "Dependency Dashboard"
     },
     "deps-edn": {
-      "description": "Configuration object for the deps-edn manager\nSee also: https://docs.renovatebot.com/configuration-options/#deps-edn",
-      "markdownDescription": "Configuration object for the deps-edn manager\n\nSee also: [deps-edn](https://docs.renovatebot.com/configuration-options/#deps-edn)",
+      "description": "Configuration object for the deps.edn manager\nSee also: https://docs.renovatebot.com/modules/manager/deps-edn/",
+      "markdownDescription": "Configuration object for the deps.edn manager\n\nSee also: [deps-edn](https://docs.renovatebot.com/modules/manager/deps-edn/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -17096,8 +17096,8 @@
       ]
     },
     "devbox": {
-      "description": "Configuration object for the devbox manager\nSee also: https://docs.renovatebot.com/configuration-options/#devbox",
-      "markdownDescription": "Configuration object for the devbox manager\n\nSee also: [devbox](https://docs.renovatebot.com/configuration-options/#devbox)",
+      "description": "Configuration object for the Devbox manager\nSee also: https://docs.renovatebot.com/modules/manager/devbox/",
+      "markdownDescription": "Configuration object for the Devbox manager\n\nSee also: [devbox](https://docs.renovatebot.com/modules/manager/devbox/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -17567,8 +17567,8 @@
       ]
     },
     "devcontainer": {
-      "description": "Configuration object for the devcontainer manager\nSee also: https://docs.renovatebot.com/configuration-options/#devcontainer",
-      "markdownDescription": "Configuration object for the devcontainer manager\n\nSee also: [devcontainer](https://docs.renovatebot.com/configuration-options/#devcontainer)",
+      "description": "Configuration object for the Devcontainer manager\nSee also: https://docs.renovatebot.com/modules/manager/devcontainer/",
+      "markdownDescription": "Configuration object for the Devcontainer manager\n\nSee also: [devcontainer](https://docs.renovatebot.com/modules/manager/devcontainer/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -18406,8 +18406,8 @@
       "default": false
     },
     "docker-compose": {
-      "description": "Configuration object for the docker-compose manager\nSee also: https://docs.renovatebot.com/configuration-options/#docker-compose",
-      "markdownDescription": "Configuration object for the docker-compose manager\n\nSee also: [docker-compose](https://docs.renovatebot.com/configuration-options/#docker-compose)",
+      "description": "Configuration object for the Docker Compose manager\nSee also: https://docs.renovatebot.com/modules/manager/docker-compose/",
+      "markdownDescription": "Configuration object for the Docker Compose manager\n\nSee also: [docker-compose](https://docs.renovatebot.com/modules/manager/docker-compose/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -18877,8 +18877,8 @@
       ]
     },
     "dockerfile": {
-      "description": "Configuration object for the dockerfile manager\nSee also: https://docs.renovatebot.com/configuration-options/#dockerfile",
-      "markdownDescription": "Configuration object for the dockerfile manager\n\nSee also: [dockerfile](https://docs.renovatebot.com/configuration-options/#dockerfile)",
+      "description": "Configuration object for the Dockerfile manager\nSee also: https://docs.renovatebot.com/modules/manager/dockerfile/",
+      "markdownDescription": "Configuration object for the Dockerfile manager\n\nSee also: [dockerfile](https://docs.renovatebot.com/modules/manager/dockerfile/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -19355,8 +19355,8 @@
       "default": false
     },
     "droneci": {
-      "description": "Configuration object for the droneci manager\nSee also: https://docs.renovatebot.com/configuration-options/#droneci",
-      "markdownDescription": "Configuration object for the droneci manager\n\nSee also: [droneci](https://docs.renovatebot.com/configuration-options/#droneci)",
+      "description": "Configuration object for the Droneci manager\nSee also: https://docs.renovatebot.com/modules/manager/droneci/",
+      "markdownDescription": "Configuration object for the Droneci manager\n\nSee also: [droneci](https://docs.renovatebot.com/modules/manager/droneci/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -19907,6 +19907,7 @@
           "html",
           "jenkins",
           "jsonnet-bundler",
+          "julia",
           "kotlin-script",
           "kubernetes",
           "kustomize",
@@ -20122,8 +20123,8 @@
       "default": false
     },
     "fleet": {
-      "description": "Configuration object for the fleet manager\nSee also: https://docs.renovatebot.com/configuration-options/#fleet",
-      "markdownDescription": "Configuration object for the fleet manager\n\nSee also: [fleet](https://docs.renovatebot.com/configuration-options/#fleet)",
+      "description": "Configuration object for the Rancher Fleet manager\nSee also: https://docs.renovatebot.com/modules/manager/fleet/",
+      "markdownDescription": "Configuration object for the Rancher Fleet manager\n\nSee also: [fleet](https://docs.renovatebot.com/modules/manager/fleet/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -20593,8 +20594,8 @@
       ]
     },
     "flux": {
-      "description": "Configuration object for the flux manager\nSee also: https://docs.renovatebot.com/configuration-options/#flux",
-      "markdownDescription": "Configuration object for the flux manager\n\nSee also: [flux](https://docs.renovatebot.com/configuration-options/#flux)",
+      "description": "Configuration object for the Flux manager\nSee also: https://docs.renovatebot.com/modules/manager/flux/",
+      "markdownDescription": "Configuration object for the Flux manager\n\nSee also: [flux](https://docs.renovatebot.com/modules/manager/flux/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -21099,8 +21100,8 @@
       "default": "json"
     },
     "fvm": {
-      "description": "Configuration object for the fvm manager\nSee also: https://docs.renovatebot.com/configuration-options/#fvm",
-      "markdownDescription": "Configuration object for the fvm manager\n\nSee also: [fvm](https://docs.renovatebot.com/configuration-options/#fvm)",
+      "description": "Configuration object for the FVM manager\nSee also: https://docs.renovatebot.com/modules/manager/fvm/",
+      "markdownDescription": "Configuration object for the FVM manager\n\nSee also: [fvm](https://docs.renovatebot.com/modules/manager/fvm/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -21572,8 +21573,8 @@
       ]
     },
     "git-submodules": {
-      "description": "Configuration object for the git-submodules manager\nSee also: https://docs.renovatebot.com/configuration-options/#git-submodules",
-      "markdownDescription": "Configuration object for the git-submodules manager\n\nSee also: [git-submodules](https://docs.renovatebot.com/configuration-options/#git-submodules)",
+      "description": "Configuration object for the Git Submodules manager\nSee also: https://docs.renovatebot.com/modules/manager/git-submodules/",
+      "markdownDescription": "Configuration object for the Git Submodules manager\n\nSee also: [git-submodules](https://docs.renovatebot.com/modules/manager/git-submodules/)",
       "type": "object",
       "default": {
         "enabled": false,
@@ -22064,8 +22065,8 @@
       "default": false
     },
     "github-actions": {
-      "description": "Configuration object for the github-actions manager\nSee also: https://docs.renovatebot.com/configuration-options/#github-actions",
-      "markdownDescription": "Configuration object for the github-actions manager\n\nSee also: [github-actions](https://docs.renovatebot.com/configuration-options/#github-actions)",
+      "description": "Configuration object for the GitHub Actions manager\nSee also: https://docs.renovatebot.com/modules/manager/github-actions/",
+      "markdownDescription": "Configuration object for the GitHub Actions manager\n\nSee also: [github-actions](https://docs.renovatebot.com/modules/manager/github-actions/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -22536,8 +22537,8 @@
       ]
     },
     "gitlabci": {
-      "description": "Configuration object for the gitlabci manager\nSee also: https://docs.renovatebot.com/configuration-options/#gitlabci",
-      "markdownDescription": "Configuration object for the gitlabci manager\n\nSee also: [gitlabci](https://docs.renovatebot.com/configuration-options/#gitlabci)",
+      "description": "Configuration object for the GitLab CI/CD manager\nSee also: https://docs.renovatebot.com/modules/manager/gitlabci/",
+      "markdownDescription": "Configuration object for the GitLab CI/CD manager\n\nSee also: [gitlabci](https://docs.renovatebot.com/modules/manager/gitlabci/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -23007,8 +23008,8 @@
       ]
     },
     "gitlabci-include": {
-      "description": "Configuration object for the gitlabci-include manager\nSee also: https://docs.renovatebot.com/configuration-options/#gitlabci-include",
-      "markdownDescription": "Configuration object for the gitlabci-include manager\n\nSee also: [gitlabci-include](https://docs.renovatebot.com/configuration-options/#gitlabci-include)",
+      "description": "Configuration object for the GitLab CI/CD include manager\nSee also: https://docs.renovatebot.com/modules/manager/gitlabci-include/",
+      "markdownDescription": "Configuration object for the GitLab CI/CD include manager\n\nSee also: [gitlabci-include](https://docs.renovatebot.com/modules/manager/gitlabci-include/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -23478,8 +23479,8 @@
       ]
     },
     "glasskube": {
-      "description": "Configuration object for the glasskube manager\nSee also: https://docs.renovatebot.com/configuration-options/#glasskube",
-      "markdownDescription": "Configuration object for the glasskube manager\n\nSee also: [glasskube](https://docs.renovatebot.com/configuration-options/#glasskube)",
+      "description": "Configuration object for the Glasskube manager\nSee also: https://docs.renovatebot.com/modules/manager/glasskube/",
+      "markdownDescription": "Configuration object for the Glasskube manager\n\nSee also: [glasskube](https://docs.renovatebot.com/modules/manager/glasskube/)",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -23947,8 +23948,8 @@
       ]
     },
     "gleam": {
-      "description": "Configuration object for the gleam manager\nSee also: https://docs.renovatebot.com/configuration-options/#gleam",
-      "markdownDescription": "Configuration object for the gleam manager\n\nSee also: [gleam](https://docs.renovatebot.com/configuration-options/#gleam)",
+      "description": "Configuration object for the Gleam manager\nSee also: https://docs.renovatebot.com/modules/manager/gleam/",
+      "markdownDescription": "Configuration object for the Gleam manager\n\nSee also: [gleam](https://docs.renovatebot.com/modules/manager/gleam/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -24430,8 +24431,8 @@
       ]
     },
     "gomod": {
-      "description": "Configuration object for the gomod manager\nSee also: https://docs.renovatebot.com/configuration-options/#gomod",
-      "markdownDescription": "Configuration object for the gomod manager\n\nSee also: [gomod](https://docs.renovatebot.com/configuration-options/#gomod)",
+      "description": "Configuration object for the Go Modules manager\nSee also: https://docs.renovatebot.com/modules/manager/gomod/",
+      "markdownDescription": "Configuration object for the Go Modules manager\n\nSee also: [gomod](https://docs.renovatebot.com/modules/manager/gomod/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -24902,8 +24903,8 @@
       ]
     },
     "gradle": {
-      "description": "Configuration object for the gradle manager\nSee also: https://docs.renovatebot.com/configuration-options/#gradle",
-      "markdownDescription": "Configuration object for the gradle manager\n\nSee also: [gradle](https://docs.renovatebot.com/configuration-options/#gradle)",
+      "description": "Configuration object for the Gradle manager\nSee also: https://docs.renovatebot.com/modules/manager/gradle/",
+      "markdownDescription": "Configuration object for the Gradle manager\n\nSee also: [gradle](https://docs.renovatebot.com/modules/manager/gradle/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -25381,8 +25382,8 @@
       ]
     },
     "gradle-wrapper": {
-      "description": "Configuration object for the gradle-wrapper manager\nSee also: https://docs.renovatebot.com/configuration-options/#gradle-wrapper",
-      "markdownDescription": "Configuration object for the gradle-wrapper manager\n\nSee also: [gradle-wrapper](https://docs.renovatebot.com/configuration-options/#gradle-wrapper)",
+      "description": "Configuration object for the Gradle Wrapper manager\nSee also: https://docs.renovatebot.com/modules/manager/gradle-wrapper/",
+      "markdownDescription": "Configuration object for the Gradle Wrapper manager\n\nSee also: [gradle-wrapper](https://docs.renovatebot.com/modules/manager/gradle-wrapper/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -26227,8 +26228,8 @@
       "default": null
     },
     "haskell-cabal": {
-      "description": "Configuration object for the haskell-cabal manager\nSee also: https://docs.renovatebot.com/configuration-options/#haskell-cabal",
-      "markdownDescription": "Configuration object for the haskell-cabal manager\n\nSee also: [haskell-cabal](https://docs.renovatebot.com/configuration-options/#haskell-cabal)",
+      "description": "Configuration object for the Haskell Cabal manager\nSee also: https://docs.renovatebot.com/modules/manager/haskell-cabal/",
+      "markdownDescription": "Configuration object for the Haskell Cabal manager\n\nSee also: [haskell-cabal](https://docs.renovatebot.com/modules/manager/haskell-cabal/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -26707,8 +26708,8 @@
       }
     },
     "helm-requirements": {
-      "description": "Configuration object for the helm-requirements manager\nSee also: https://docs.renovatebot.com/configuration-options/#helm-requirements",
-      "markdownDescription": "Configuration object for the helm-requirements manager\n\nSee also: [helm-requirements](https://docs.renovatebot.com/configuration-options/#helm-requirements)",
+      "description": "Configuration object for the Helm v2 Chart Dependencies manager\nSee also: https://docs.renovatebot.com/modules/manager/helm-requirements/",
+      "markdownDescription": "Configuration object for the Helm v2 Chart Dependencies manager\n\nSee also: [helm-requirements](https://docs.renovatebot.com/modules/manager/helm-requirements/)",
       "type": "object",
       "default": {
         "registryAliases": {
@@ -27182,8 +27183,8 @@
       ]
     },
     "helm-values": {
-      "description": "Configuration object for the helm-values manager\nSee also: https://docs.renovatebot.com/configuration-options/#helm-values",
-      "markdownDescription": "Configuration object for the helm-values manager\n\nSee also: [helm-values](https://docs.renovatebot.com/configuration-options/#helm-values)",
+      "description": "Configuration object for the Helm Values manager\nSee also: https://docs.renovatebot.com/modules/manager/helm-values/",
+      "markdownDescription": "Configuration object for the Helm Values manager\n\nSee also: [helm-values](https://docs.renovatebot.com/modules/manager/helm-values/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "helm values {{depName}}",
@@ -27655,8 +27656,8 @@
       ]
     },
     "helmfile": {
-      "description": "Configuration object for the helmfile manager\nSee also: https://docs.renovatebot.com/configuration-options/#helmfile",
-      "markdownDescription": "Configuration object for the helmfile manager\n\nSee also: [helmfile](https://docs.renovatebot.com/configuration-options/#helmfile)",
+      "description": "Configuration object for the Helmfile manager\nSee also: https://docs.renovatebot.com/modules/manager/helmfile/",
+      "markdownDescription": "Configuration object for the Helmfile manager\n\nSee also: [helmfile](https://docs.renovatebot.com/modules/manager/helmfile/)",
       "type": "object",
       "default": {
         "registryAliases": {
@@ -28131,8 +28132,8 @@
       ]
     },
     "helmsman": {
-      "description": "Configuration object for the helmsman manager\nSee also: https://docs.renovatebot.com/configuration-options/#helmsman",
-      "markdownDescription": "Configuration object for the helmsman manager\n\nSee also: [helmsman](https://docs.renovatebot.com/configuration-options/#helmsman)",
+      "description": "Configuration object for the Helmsman manager\nSee also: https://docs.renovatebot.com/modules/manager/helmsman/",
+      "markdownDescription": "Configuration object for the Helmsman manager\n\nSee also: [helmsman](https://docs.renovatebot.com/modules/manager/helmsman/)",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -28600,8 +28601,8 @@
       ]
     },
     "helmv3": {
-      "description": "Configuration object for the helmv3 manager\nSee also: https://docs.renovatebot.com/configuration-options/#helmv3",
-      "markdownDescription": "Configuration object for the helmv3 manager\n\nSee also: [helmv3](https://docs.renovatebot.com/configuration-options/#helmv3)",
+      "description": "Configuration object for the Helm v3 manager\nSee also: https://docs.renovatebot.com/modules/manager/helmv3/",
+      "markdownDescription": "Configuration object for the Helm v3 manager\n\nSee also: [helmv3](https://docs.renovatebot.com/modules/manager/helmv3/)",
       "type": "object",
       "default": {
         "registryAliases": {
@@ -29075,8 +29076,8 @@
       ]
     },
     "hermit": {
-      "description": "Configuration object for the hermit manager\nSee also: https://docs.renovatebot.com/configuration-options/#hermit",
-      "markdownDescription": "Configuration object for the hermit manager\n\nSee also: [hermit](https://docs.renovatebot.com/configuration-options/#hermit)",
+      "description": "Configuration object for the Hermit manager\nSee also: https://docs.renovatebot.com/modules/manager/hermit/",
+      "markdownDescription": "Configuration object for the Hermit manager\n\nSee also: [hermit](https://docs.renovatebot.com/modules/manager/hermit/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -29550,8 +29551,8 @@
       ]
     },
     "homeassistant-manifest": {
-      "description": "Configuration object for the homeassistant-manifest manager\nSee also: https://docs.renovatebot.com/configuration-options/#homeassistant-manifest",
-      "markdownDescription": "Configuration object for the homeassistant-manifest manager\n\nSee also: [homeassistant-manifest](https://docs.renovatebot.com/configuration-options/#homeassistant-manifest)",
+      "description": "Configuration object for the Home Assistant Manifest manager\nSee also: https://docs.renovatebot.com/modules/manager/homeassistant-manifest/",
+      "markdownDescription": "Configuration object for the Home Assistant Manifest manager\n\nSee also: [homeassistant-manifest](https://docs.renovatebot.com/modules/manager/homeassistant-manifest/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -30021,8 +30022,8 @@
       ]
     },
     "homebrew": {
-      "description": "Configuration object for the homebrew manager\nSee also: https://docs.renovatebot.com/configuration-options/#homebrew",
-      "markdownDescription": "Configuration object for the homebrew manager\n\nSee also: [homebrew](https://docs.renovatebot.com/configuration-options/#homebrew)",
+      "description": "Configuration object for the Homebrew manager\nSee also: https://docs.renovatebot.com/modules/manager/homebrew/",
+      "markdownDescription": "Configuration object for the Homebrew manager\n\nSee also: [homebrew](https://docs.renovatebot.com/modules/manager/homebrew/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "Homebrew Formula {{depName}}",
@@ -30658,6 +30659,7 @@
             "java-version",
             "jenkins-plugins",
             "jsr",
+            "julia-general-metadata",
             "kubernetes-api",
             "maven",
             "nextcloud",
@@ -30690,8 +30692,8 @@
       ]
     },
     "html": {
-      "description": "Configuration object for the html manager\nSee also: https://docs.renovatebot.com/configuration-options/#html",
-      "markdownDescription": "Configuration object for the html manager\n\nSee also: [html](https://docs.renovatebot.com/configuration-options/#html)",
+      "description": "Configuration object for the HTML manager\nSee also: https://docs.renovatebot.com/modules/manager/html/",
+      "markdownDescription": "Configuration object for the HTML manager\n\nSee also: [html](https://docs.renovatebot.com/modules/manager/html/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -31312,8 +31314,8 @@
       "default": "strict"
     },
     "jenkins": {
-      "description": "Configuration object for the jenkins manager\nSee also: https://docs.renovatebot.com/configuration-options/#jenkins",
-      "markdownDescription": "Configuration object for the jenkins manager\n\nSee also: [jenkins](https://docs.renovatebot.com/configuration-options/#jenkins)",
+      "description": "Configuration object for the Jenkins manager\nSee also: https://docs.renovatebot.com/modules/manager/jenkins/",
+      "markdownDescription": "Configuration object for the Jenkins manager\n\nSee also: [jenkins](https://docs.renovatebot.com/modules/manager/jenkins/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -31783,8 +31785,8 @@
       ]
     },
     "jsonata": {
-      "description": "Configuration object for the jsonata manager\nSee also: https://docs.renovatebot.com/configuration-options/#jsonata",
-      "markdownDescription": "Configuration object for the jsonata manager\n\nSee also: [jsonata](https://docs.renovatebot.com/configuration-options/#jsonata)",
+      "description": "Configuration object for the JSONata manager\nSee also: https://docs.renovatebot.com/modules/manager/jsonata/",
+      "markdownDescription": "Configuration object for the JSONata manager\n\nSee also: [jsonata](https://docs.renovatebot.com/modules/manager/jsonata/)",
       "type": "object",
       "default": {
         "pinDigests": false
@@ -32252,14 +32254,485 @@
       ]
     },
     "jsonnet-bundler": {
-      "description": "Configuration object for the jsonnet-bundler manager\nSee also: https://docs.renovatebot.com/configuration-options/#jsonnet-bundler",
-      "markdownDescription": "Configuration object for the jsonnet-bundler manager\n\nSee also: [jsonnet-bundler](https://docs.renovatebot.com/configuration-options/#jsonnet-bundler)",
+      "description": "Configuration object for the jsonnet-bundler manager\nSee also: https://docs.renovatebot.com/modules/manager/jsonnet-bundler/",
+      "markdownDescription": "Configuration object for the jsonnet-bundler manager\n\nSee also: [jsonnet-bundler](https://docs.renovatebot.com/modules/manager/jsonnet-bundler/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
           "/(^|/)jsonnetfile\\.json$/"
         ],
         "datasource": "git-tags"
+      },
+      "$ref": "#",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "abandonmentThreshold": {
+              "$ref": "#/definitions/abandonmentThreshold"
+            },
+            "addLabels": {
+              "$ref": "#/definitions/addLabels"
+            },
+            "additionalBranchPrefix": {
+              "$ref": "#/definitions/additionalBranchPrefix"
+            },
+            "additionalReviewers": {
+              "$ref": "#/definitions/additionalReviewers"
+            },
+            "assignAutomerge": {
+              "$ref": "#/definitions/assignAutomerge"
+            },
+            "assignees": {
+              "$ref": "#/definitions/assignees"
+            },
+            "assigneesFromCodeOwners": {
+              "$ref": "#/definitions/assigneesFromCodeOwners"
+            },
+            "assigneesSampleSize": {
+              "$ref": "#/definitions/assigneesSampleSize"
+            },
+            "autoApprove": {
+              "$ref": "#/definitions/autoApprove"
+            },
+            "autoReplaceGlobalMatch": {
+              "$ref": "#/definitions/autoReplaceGlobalMatch"
+            },
+            "automerge": {
+              "$ref": "#/definitions/automerge"
+            },
+            "automergeComment": {
+              "$ref": "#/definitions/automergeComment"
+            },
+            "automergeSchedule": {
+              "$ref": "#/definitions/automergeSchedule"
+            },
+            "automergeStrategy": {
+              "$ref": "#/definitions/automergeStrategy"
+            },
+            "automergeType": {
+              "$ref": "#/definitions/automergeType"
+            },
+            "azureWorkItemId": {
+              "$ref": "#/definitions/azureWorkItemId"
+            },
+            "bbAutoResolvePrTasks": {
+              "$ref": "#/definitions/bbAutoResolvePrTasks"
+            },
+            "bbUseDefaultReviewers": {
+              "$ref": "#/definitions/bbUseDefaultReviewers"
+            },
+            "branchConcurrentLimit": {
+              "$ref": "#/definitions/branchConcurrentLimit"
+            },
+            "branchName": {
+              "$ref": "#/definitions/branchName"
+            },
+            "branchNameStrict": {
+              "$ref": "#/definitions/branchNameStrict"
+            },
+            "branchPrefix": {
+              "$ref": "#/definitions/branchPrefix"
+            },
+            "branchPrefixOld": {
+              "$ref": "#/definitions/branchPrefixOld"
+            },
+            "branchTopic": {
+              "$ref": "#/definitions/branchTopic"
+            },
+            "bumpVersion": {
+              "$ref": "#/definitions/bumpVersion"
+            },
+            "bumpVersions": {
+              "$ref": "#/definitions/bumpVersions"
+            },
+            "commitBody": {
+              "$ref": "#/definitions/commitBody"
+            },
+            "commitBodyTable": {
+              "$ref": "#/definitions/commitBodyTable"
+            },
+            "commitHourlyLimit": {
+              "$ref": "#/definitions/commitHourlyLimit"
+            },
+            "commitMessage": {
+              "$ref": "#/definitions/commitMessage"
+            },
+            "commitMessageAction": {
+              "$ref": "#/definitions/commitMessageAction"
+            },
+            "commitMessageExtra": {
+              "$ref": "#/definitions/commitMessageExtra"
+            },
+            "commitMessageLowerCase": {
+              "$ref": "#/definitions/commitMessageLowerCase"
+            },
+            "commitMessagePrefix": {
+              "$ref": "#/definitions/commitMessagePrefix"
+            },
+            "commitMessageSuffix": {
+              "$ref": "#/definitions/commitMessageSuffix"
+            },
+            "commitMessageTopic": {
+              "$ref": "#/definitions/commitMessageTopic"
+            },
+            "commitTrailers": {
+              "$ref": "#/definitions/commitTrailers"
+            },
+            "composerIgnorePlatformReqs": {
+              "$ref": "#/definitions/composerIgnorePlatformReqs"
+            },
+            "constraints": {
+              "$ref": "#/definitions/constraints"
+            },
+            "constraintsFiltering": {
+              "$ref": "#/definitions/constraintsFiltering"
+            },
+            "constraintsVersioning": {
+              "$ref": "#/definitions/constraintsVersioning"
+            },
+            "customDatasources": {
+              "$ref": "#/definitions/customDatasources"
+            },
+            "defaultRegistryUrls": {
+              "$ref": "#/definitions/defaultRegistryUrls"
+            },
+            "dependencyDashboardApproval": {
+              "$ref": "#/definitions/dependencyDashboardApproval"
+            },
+            "dependencyDashboardCategory": {
+              "$ref": "#/definitions/dependencyDashboardCategory"
+            },
+            "description": {
+              "$ref": "#/definitions/description"
+            },
+            "digest": {
+              "$ref": "#/definitions/digest"
+            },
+            "draftPR": {
+              "$ref": "#/definitions/draftPR"
+            },
+            "enabled": {
+              "$ref": "#/definitions/enabled"
+            },
+            "encrypted": {
+              "$ref": "#/definitions/encrypted"
+            },
+            "excludeCommitPaths": {
+              "$ref": "#/definitions/excludeCommitPaths"
+            },
+            "expandCodeOwnersGroups": {
+              "$ref": "#/definitions/expandCodeOwnersGroups"
+            },
+            "extends": {
+              "$ref": "#/definitions/extends"
+            },
+            "extractVersion": {
+              "$ref": "#/definitions/extractVersion"
+            },
+            "filterUnavailableUsers": {
+              "$ref": "#/definitions/filterUnavailableUsers"
+            },
+            "followTag": {
+              "$ref": "#/definitions/followTag"
+            },
+            "forkModeDisallowMaintainerEdits": {
+              "$ref": "#/definitions/forkModeDisallowMaintainerEdits"
+            },
+            "gitLabIgnoreApprovals": {
+              "$ref": "#/definitions/gitLabIgnoreApprovals"
+            },
+            "goGetDirs": {
+              "$ref": "#/definitions/goGetDirs"
+            },
+            "group": {
+              "$ref": "#/definitions/group"
+            },
+            "groupName": {
+              "$ref": "#/definitions/groupName"
+            },
+            "groupSingleUpdates": {
+              "$ref": "#/definitions/groupSingleUpdates"
+            },
+            "groupSlug": {
+              "$ref": "#/definitions/groupSlug"
+            },
+            "hashedBranchLength": {
+              "$ref": "#/definitions/hashedBranchLength"
+            },
+            "ignoreDeprecated": {
+              "$ref": "#/definitions/ignoreDeprecated"
+            },
+            "ignoreDeps": {
+              "$ref": "#/definitions/ignoreDeps"
+            },
+            "ignorePaths": {
+              "$ref": "#/definitions/ignorePaths"
+            },
+            "ignorePlugins": {
+              "$ref": "#/definitions/ignorePlugins"
+            },
+            "ignorePresets": {
+              "$ref": "#/definitions/ignorePresets"
+            },
+            "ignoreReviewers": {
+              "$ref": "#/definitions/ignoreReviewers"
+            },
+            "ignoreScripts": {
+              "$ref": "#/definitions/ignoreScripts"
+            },
+            "ignoreTests": {
+              "$ref": "#/definitions/ignoreTests"
+            },
+            "ignoreUnstable": {
+              "$ref": "#/definitions/ignoreUnstable"
+            },
+            "includePaths": {
+              "$ref": "#/definitions/includePaths"
+            },
+            "internalChecksAsSuccess": {
+              "$ref": "#/definitions/internalChecksAsSuccess"
+            },
+            "internalChecksFilter": {
+              "$ref": "#/definitions/internalChecksFilter"
+            },
+            "keepUpdatedLabel": {
+              "$ref": "#/definitions/keepUpdatedLabel"
+            },
+            "labels": {
+              "$ref": "#/definitions/labels"
+            },
+            "lockFileMaintenance": {
+              "$ref": "#/definitions/lockFileMaintenance"
+            },
+            "major": {
+              "$ref": "#/definitions/major"
+            },
+            "managerFilePatterns": {
+              "$ref": "#/definitions/managerFilePatterns"
+            },
+            "maxMajorIncrement": {
+              "$ref": "#/definitions/maxMajorIncrement"
+            },
+            "milestone": {
+              "$ref": "#/definitions/milestone"
+            },
+            "minimumGroupSize": {
+              "$ref": "#/definitions/minimumGroupSize"
+            },
+            "minimumReleaseAge": {
+              "$ref": "#/definitions/minimumReleaseAge"
+            },
+            "minimumReleaseAgeBehaviour": {
+              "$ref": "#/definitions/minimumReleaseAgeBehaviour"
+            },
+            "minimumReleaseAgeBuffer": {
+              "$ref": "#/definitions/minimumReleaseAgeBuffer"
+            },
+            "minor": {
+              "$ref": "#/definitions/minor"
+            },
+            "mode": {
+              "$ref": "#/definitions/mode"
+            },
+            "npmrc": {
+              "$ref": "#/definitions/npmrc"
+            },
+            "npmrcMerge": {
+              "$ref": "#/definitions/npmrcMerge"
+            },
+            "overrideDescription": {
+              "$ref": "#/definitions/overrideDescription"
+            },
+            "packageRules": {
+              "$ref": "#/definitions/packageRules"
+            },
+            "patch": {
+              "$ref": "#/definitions/patch"
+            },
+            "pin": {
+              "$ref": "#/definitions/pin"
+            },
+            "pinDigest": {
+              "$ref": "#/definitions/pinDigest"
+            },
+            "pinDigests": {
+              "$ref": "#/definitions/pinDigests"
+            },
+            "platformAutomerge": {
+              "$ref": "#/definitions/platformAutomerge"
+            },
+            "platformCommit": {
+              "$ref": "#/definitions/platformCommit"
+            },
+            "postUpdateOptions": {
+              "$ref": "#/definitions/postUpdateOptions"
+            },
+            "postUpgradeTasks": {
+              "$ref": "#/definitions/postUpgradeTasks"
+            },
+            "prBodyColumns": {
+              "$ref": "#/definitions/prBodyColumns"
+            },
+            "prBodyDefinitions": {
+              "$ref": "#/definitions/prBodyDefinitions"
+            },
+            "prBodyHeadingDefinitions": {
+              "$ref": "#/definitions/prBodyHeadingDefinitions"
+            },
+            "prBodyNotes": {
+              "$ref": "#/definitions/prBodyNotes"
+            },
+            "prBodyTemplate": {
+              "$ref": "#/definitions/prBodyTemplate"
+            },
+            "prConcurrentLimit": {
+              "$ref": "#/definitions/prConcurrentLimit"
+            },
+            "prCreation": {
+              "$ref": "#/definitions/prCreation"
+            },
+            "prFooter": {
+              "$ref": "#/definitions/prFooter"
+            },
+            "prHeader": {
+              "$ref": "#/definitions/prHeader"
+            },
+            "prHourlyLimit": {
+              "$ref": "#/definitions/prHourlyLimit"
+            },
+            "prNotPendingHours": {
+              "$ref": "#/definitions/prNotPendingHours"
+            },
+            "prTitle": {
+              "$ref": "#/definitions/prTitle"
+            },
+            "prTitleStrict": {
+              "$ref": "#/definitions/prTitleStrict"
+            },
+            "pruneBranchAfterAutomerge": {
+              "$ref": "#/definitions/pruneBranchAfterAutomerge"
+            },
+            "rangeStrategy": {
+              "$ref": "#/definitions/rangeStrategy"
+            },
+            "rebaseLabel": {
+              "$ref": "#/definitions/rebaseLabel"
+            },
+            "rebaseWhen": {
+              "$ref": "#/definitions/rebaseWhen"
+            },
+            "recreateWhen": {
+              "$ref": "#/definitions/recreateWhen"
+            },
+            "registryAliases": {
+              "$ref": "#/definitions/registryAliases"
+            },
+            "registryUrls": {
+              "$ref": "#/definitions/registryUrls"
+            },
+            "replacement": {
+              "$ref": "#/definitions/replacement"
+            },
+            "replacementApproach": {
+              "$ref": "#/definitions/replacementApproach"
+            },
+            "respectLatest": {
+              "$ref": "#/definitions/respectLatest"
+            },
+            "reviewers": {
+              "$ref": "#/definitions/reviewers"
+            },
+            "reviewersFromCodeOwners": {
+              "$ref": "#/definitions/reviewersFromCodeOwners"
+            },
+            "reviewersSampleSize": {
+              "$ref": "#/definitions/reviewersSampleSize"
+            },
+            "rollback": {
+              "$ref": "#/definitions/rollback"
+            },
+            "rollbackPrs": {
+              "$ref": "#/definitions/rollbackPrs"
+            },
+            "schedule": {
+              "$ref": "#/definitions/schedule"
+            },
+            "semanticCommitScope": {
+              "$ref": "#/definitions/semanticCommitScope"
+            },
+            "semanticCommitType": {
+              "$ref": "#/definitions/semanticCommitType"
+            },
+            "semanticCommits": {
+              "$ref": "#/definitions/semanticCommits"
+            },
+            "separateMajorMinor": {
+              "$ref": "#/definitions/separateMajorMinor"
+            },
+            "separateMinorPatch": {
+              "$ref": "#/definitions/separateMinorPatch"
+            },
+            "separateMultipleMajor": {
+              "$ref": "#/definitions/separateMultipleMajor"
+            },
+            "separateMultipleMinor": {
+              "$ref": "#/definitions/separateMultipleMinor"
+            },
+            "skipArtifactsUpdate": {
+              "$ref": "#/definitions/skipArtifactsUpdate"
+            },
+            "skipInstalls": {
+              "$ref": "#/definitions/skipInstalls"
+            },
+            "statusCheckNames": {
+              "$ref": "#/definitions/statusCheckNames"
+            },
+            "statusCheckWhen": {
+              "$ref": "#/definitions/statusCheckWhen"
+            },
+            "stopUpdatingLabel": {
+              "$ref": "#/definitions/stopUpdatingLabel"
+            },
+            "suppressNotifications": {
+              "$ref": "#/definitions/suppressNotifications"
+            },
+            "timezone": {
+              "$ref": "#/definitions/timezone"
+            },
+            "toolSettings": {
+              "$ref": "#/definitions/toolSettings"
+            },
+            "updateInternalDeps": {
+              "$ref": "#/definitions/updateInternalDeps"
+            },
+            "updateNotScheduled": {
+              "$ref": "#/definitions/updateNotScheduled"
+            },
+            "updatePinnedDependencies": {
+              "$ref": "#/definitions/updatePinnedDependencies"
+            },
+            "userStrings": {
+              "$ref": "#/definitions/userStrings"
+            },
+            "versionCompatibility": {
+              "$ref": "#/definitions/versionCompatibility"
+            },
+            "versioning": {
+              "$ref": "#/definitions/versioning"
+            }
+          }
+        }
+      ]
+    },
+    "julia": {
+      "description": "Configuration object for the Julia manager\nSee also: https://docs.renovatebot.com/modules/manager/julia/",
+      "markdownDescription": "Configuration object for the Julia manager\n\nSee also: [julia](https://docs.renovatebot.com/modules/manager/julia/)",
+      "type": "object",
+      "default": {
+        "managerFilePatterns": [
+          "/(^|/)(Julia)?Project\\.toml$/"
+        ]
       },
       "$ref": "#",
       "allOf": [
@@ -32745,8 +33218,8 @@
       "type": "string"
     },
     "kotlin-script": {
-      "description": "Configuration object for the kotlin-script manager\nSee also: https://docs.renovatebot.com/configuration-options/#kotlin-script",
-      "markdownDescription": "Configuration object for the kotlin-script manager\n\nSee also: [kotlin-script](https://docs.renovatebot.com/configuration-options/#kotlin-script)",
+      "description": "Configuration object for the Kotlin Script manager\nSee also: https://docs.renovatebot.com/modules/manager/kotlin-script/",
+      "markdownDescription": "Configuration object for the Kotlin Script manager\n\nSee also: [kotlin-script](https://docs.renovatebot.com/modules/manager/kotlin-script/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -33216,8 +33689,8 @@
       ]
     },
     "kubernetes": {
-      "description": "Configuration object for the kubernetes manager\nSee also: https://docs.renovatebot.com/configuration-options/#kubernetes",
-      "markdownDescription": "Configuration object for the kubernetes manager\n\nSee also: [kubernetes](https://docs.renovatebot.com/configuration-options/#kubernetes)",
+      "description": "Configuration object for the Kubernetes manager\nSee also: https://docs.renovatebot.com/modules/manager/kubernetes/",
+      "markdownDescription": "Configuration object for the Kubernetes manager\n\nSee also: [kubernetes](https://docs.renovatebot.com/modules/manager/kubernetes/)",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -33685,8 +34158,8 @@
       ]
     },
     "kustomize": {
-      "description": "Configuration object for the kustomize manager\nSee also: https://docs.renovatebot.com/configuration-options/#kustomize",
-      "markdownDescription": "Configuration object for the kustomize manager\n\nSee also: [kustomize](https://docs.renovatebot.com/configuration-options/#kustomize)",
+      "description": "Configuration object for the Kustomize manager\nSee also: https://docs.renovatebot.com/modules/manager/kustomize/",
+      "markdownDescription": "Configuration object for the Kustomize manager\n\nSee also: [kustomize](https://docs.renovatebot.com/modules/manager/kustomize/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -34165,8 +34638,8 @@
       }
     },
     "leiningen": {
-      "description": "Configuration object for the leiningen manager\nSee also: https://docs.renovatebot.com/configuration-options/#leiningen",
-      "markdownDescription": "Configuration object for the leiningen manager\n\nSee also: [leiningen](https://docs.renovatebot.com/configuration-options/#leiningen)",
+      "description": "Configuration object for the Leiningen manager\nSee also: https://docs.renovatebot.com/modules/manager/leiningen/",
+      "markdownDescription": "Configuration object for the Leiningen manager\n\nSee also: [leiningen](https://docs.renovatebot.com/modules/manager/leiningen/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -35456,6 +35929,7 @@
                   "iac",
                   "java",
                   "js",
+                  "julia",
                   "kubernetes",
                   "node",
                   "perl",
@@ -35495,6 +35969,7 @@
                 "iac",
                 "java",
                 "js",
+                "julia",
                 "kubernetes",
                 "node",
                 "perl",
@@ -35638,6 +36113,7 @@
                   "java-version",
                   "jenkins-plugins",
                   "jsr",
+                  "julia-general-metadata",
                   "kubernetes-api",
                   "maven",
                   "nextcloud",
@@ -35733,6 +36209,7 @@
                 "java-version",
                 "jenkins-plugins",
                 "jsr",
+                "julia-general-metadata",
                 "kubernetes-api",
                 "maven",
                 "nextcloud",
@@ -35896,6 +36373,7 @@
                   "html",
                   "jenkins",
                   "jsonnet-bundler",
+                  "julia",
                   "kotlin-script",
                   "kubernetes",
                   "kustomize",
@@ -36029,6 +36507,7 @@
                 "html",
                 "jenkins",
                 "jsonnet-bundler",
+                "julia",
                 "kotlin-script",
                 "kubernetes",
                 "kustomize",
@@ -36240,8 +36719,8 @@
       ]
     },
     "maven": {
-      "description": "Configuration object for the maven manager\nSee also: https://docs.renovatebot.com/configuration-options/#maven",
-      "markdownDescription": "Configuration object for the maven manager\n\nSee also: [maven](https://docs.renovatebot.com/configuration-options/#maven)",
+      "description": "Configuration object for the Maven manager\nSee also: https://docs.renovatebot.com/modules/manager/maven/",
+      "markdownDescription": "Configuration object for the Maven manager\n\nSee also: [maven](https://docs.renovatebot.com/modules/manager/maven/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -36714,8 +37193,8 @@
       ]
     },
     "maven-wrapper": {
-      "description": "Configuration object for the maven-wrapper manager\nSee also: https://docs.renovatebot.com/configuration-options/#maven-wrapper",
-      "markdownDescription": "Configuration object for the maven-wrapper manager\n\nSee also: [maven-wrapper](https://docs.renovatebot.com/configuration-options/#maven-wrapper)",
+      "description": "Configuration object for the Maven Wrapper manager\nSee also: https://docs.renovatebot.com/modules/manager/maven-wrapper/",
+      "markdownDescription": "Configuration object for the Maven Wrapper manager\n\nSee also: [maven-wrapper](https://docs.renovatebot.com/modules/manager/maven-wrapper/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -37204,8 +37683,8 @@
       "default": 60
     },
     "meteor": {
-      "description": "Configuration object for the meteor manager\nSee also: https://docs.renovatebot.com/configuration-options/#meteor",
-      "markdownDescription": "Configuration object for the meteor manager\n\nSee also: [meteor](https://docs.renovatebot.com/configuration-options/#meteor)",
+      "description": "Configuration object for the Meteor manager\nSee also: https://docs.renovatebot.com/modules/manager/meteor/",
+      "markdownDescription": "Configuration object for the Meteor manager\n\nSee also: [meteor](https://docs.renovatebot.com/modules/manager/meteor/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -38074,8 +38553,8 @@
       ]
     },
     "mint": {
-      "description": "Configuration object for the mint manager\nSee also: https://docs.renovatebot.com/configuration-options/#mint",
-      "markdownDescription": "Configuration object for the mint manager\n\nSee also: [mint](https://docs.renovatebot.com/configuration-options/#mint)",
+      "description": "Configuration object for the Mint manager\nSee also: https://docs.renovatebot.com/modules/manager/mint/",
+      "markdownDescription": "Configuration object for the Mint manager\n\nSee also: [mint](https://docs.renovatebot.com/modules/manager/mint/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -38545,15 +39024,18 @@
       ]
     },
     "mise": {
-      "description": "Configuration object for the mise manager\nSee also: https://docs.renovatebot.com/configuration-options/#mise",
-      "markdownDescription": "Configuration object for the mise manager\n\nSee also: [mise](https://docs.renovatebot.com/configuration-options/#mise)",
+      "description": "Configuration object for the mise-en-place manager\nSee also: https://docs.renovatebot.com/modules/manager/mise/",
+      "markdownDescription": "Configuration object for the mise-en-place manager\n\nSee also: [mise](https://docs.renovatebot.com/modules/manager/mise/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
-          "**/{,.}mise{,.*}.toml",
-          "**/{,.}mise/config{,.*}.toml",
+          "**/.mise{,.*}.toml",
+          "**/mise{,.*}.toml",
+          "**/mise/config{,.*}.toml",
+          "**/.mise/config{,.*}.toml",
           "**/.config/mise{,.*}.toml",
-          "**/.config/mise/{mise,config}{,.*}.toml",
+          "**/.config/mise/mise{,.*}.toml",
+          "**/.config/mise/config{,.*}.toml",
           "**/.config/mise/conf.d/*.toml",
           "**/.rtx{,.*}.toml"
         ],
@@ -39022,8 +39504,8 @@
       ]
     },
     "mix": {
-      "description": "Configuration object for the mix manager\nSee also: https://docs.renovatebot.com/configuration-options/#mix",
-      "markdownDescription": "Configuration object for the mix manager\n\nSee also: [mix](https://docs.renovatebot.com/configuration-options/#mix)",
+      "description": "Configuration object for the Mix manager\nSee also: https://docs.renovatebot.com/modules/manager/mix/",
+      "markdownDescription": "Configuration object for the Mix manager\n\nSee also: [mix](https://docs.renovatebot.com/modules/manager/mix/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -39521,8 +40003,8 @@
       ]
     },
     "nix": {
-      "description": "Configuration object for the nix manager\nSee also: https://docs.renovatebot.com/configuration-options/#nix",
-      "markdownDescription": "Configuration object for the nix manager\n\nSee also: [nix](https://docs.renovatebot.com/configuration-options/#nix)",
+      "description": "Configuration object for the Nix manager\nSee also: https://docs.renovatebot.com/modules/manager/nix/",
+      "markdownDescription": "Configuration object for the Nix manager\n\nSee also: [nix](https://docs.renovatebot.com/modules/manager/nix/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -40000,8 +40482,8 @@
       "type": "integer"
     },
     "nodenv": {
-      "description": "Configuration object for the nodenv manager\nSee also: https://docs.renovatebot.com/configuration-options/#nodenv",
-      "markdownDescription": "Configuration object for the nodenv manager\n\nSee also: [nodenv](https://docs.renovatebot.com/configuration-options/#nodenv)",
+      "description": "Configuration object for the nodenv manager\nSee also: https://docs.renovatebot.com/modules/manager/nodenv/",
+      "markdownDescription": "Configuration object for the nodenv manager\n\nSee also: [nodenv](https://docs.renovatebot.com/modules/manager/nodenv/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -40472,8 +40954,8 @@
       ]
     },
     "npm": {
-      "description": "Configuration object for the npm manager\nSee also: https://docs.renovatebot.com/configuration-options/#npm",
-      "markdownDescription": "Configuration object for the npm manager\n\nSee also: [npm](https://docs.renovatebot.com/configuration-options/#npm)",
+      "description": "Configuration object for the npm manager\nSee also: https://docs.renovatebot.com/modules/manager/npm/",
+      "markdownDescription": "Configuration object for the npm manager\n\nSee also: [npm](https://docs.renovatebot.com/modules/manager/npm/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -40487,7 +40969,7 @@
           }
         },
         "prBodyDefinitions": {
-          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` → {{else}}{{#if currentValue}}`{{{currentValue}}}` → {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if depName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' depName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
+          "Change": "[{{#if displayFrom}}`{{{displayFrom}}}` → {{else}}{{#if currentValue}}`{{{currentValue}}}` → {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}]({{#if packageName}}https://renovatebot.com/diffs/npm/{{replace '/' '%2f' packageName}}/{{{currentVersion}}}/{{{newVersion}}}{{/if}})"
         }
       },
       "$ref": "#",
@@ -40969,8 +41451,8 @@
       "default": false
     },
     "nuget": {
-      "description": "Configuration object for the nuget manager\nSee also: https://docs.renovatebot.com/configuration-options/#nuget",
-      "markdownDescription": "Configuration object for the nuget manager\n\nSee also: [nuget](https://docs.renovatebot.com/configuration-options/#nuget)",
+      "description": "Configuration object for the NuGet manager\nSee also: https://docs.renovatebot.com/modules/manager/nuget/",
+      "markdownDescription": "Configuration object for the NuGet manager\n\nSee also: [nuget](https://docs.renovatebot.com/modules/manager/nuget/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -41452,8 +41934,8 @@
       ]
     },
     "nvm": {
-      "description": "Configuration object for the nvm manager\nSee also: https://docs.renovatebot.com/configuration-options/#nvm",
-      "markdownDescription": "Configuration object for the nvm manager\n\nSee also: [nvm](https://docs.renovatebot.com/configuration-options/#nvm)",
+      "description": "Configuration object for the nvm manager\nSee also: https://docs.renovatebot.com/modules/manager/nvm/",
+      "markdownDescription": "Configuration object for the nvm manager\n\nSee also: [nvm](https://docs.renovatebot.com/modules/manager/nvm/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -41925,8 +42407,8 @@
       ]
     },
     "ocb": {
-      "description": "Configuration object for the ocb manager\nSee also: https://docs.renovatebot.com/configuration-options/#ocb",
-      "markdownDescription": "Configuration object for the ocb manager\n\nSee also: [ocb](https://docs.renovatebot.com/configuration-options/#ocb)",
+      "description": "Configuration object for the OpenTelemetry Collector Builder (ocb) manager\nSee also: https://docs.renovatebot.com/modules/manager/ocb/",
+      "markdownDescription": "Configuration object for the OpenTelemetry Collector Builder (ocb) manager\n\nSee also: [ocb](https://docs.renovatebot.com/modules/manager/ocb/)",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -42394,8 +42876,8 @@
       ]
     },
     "osgi": {
-      "description": "Configuration object for the osgi manager\nSee also: https://docs.renovatebot.com/configuration-options/#osgi",
-      "markdownDescription": "Configuration object for the osgi manager\n\nSee also: [osgi](https://docs.renovatebot.com/configuration-options/#osgi)",
+      "description": "Configuration object for the OSGi manager\nSee also: https://docs.renovatebot.com/modules/manager/osgi/",
+      "markdownDescription": "Configuration object for the OSGi manager\n\nSee also: [osgi](https://docs.renovatebot.com/modules/manager/osgi/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -43454,8 +43936,8 @@
       }
     },
     "paket": {
-      "description": "Configuration object for the paket manager\nSee also: https://docs.renovatebot.com/configuration-options/#paket",
-      "markdownDescription": "Configuration object for the paket manager\n\nSee also: [paket](https://docs.renovatebot.com/configuration-options/#paket)",
+      "description": "Configuration object for the Paket manager\nSee also: https://docs.renovatebot.com/modules/manager/paket/",
+      "markdownDescription": "Configuration object for the Paket manager\n\nSee also: [paket](https://docs.renovatebot.com/modules/manager/paket/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -44282,8 +44764,8 @@
       ]
     },
     "pep621": {
-      "description": "Configuration object for the pep621 manager\nSee also: https://docs.renovatebot.com/configuration-options/#pep621",
-      "markdownDescription": "Configuration object for the pep621 manager\n\nSee also: [pep621](https://docs.renovatebot.com/configuration-options/#pep621)",
+      "description": "Configuration object for the PEP 621 manager\nSee also: https://docs.renovatebot.com/modules/manager/pep621/",
+      "markdownDescription": "Configuration object for the PEP 621 manager\n\nSee also: [pep621](https://docs.renovatebot.com/modules/manager/pep621/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -44753,8 +45235,8 @@
       ]
     },
     "pep723": {
-      "description": "Configuration object for the pep723 manager\nSee also: https://docs.renovatebot.com/configuration-options/#pep723",
-      "markdownDescription": "Configuration object for the pep723 manager\n\nSee also: [pep723](https://docs.renovatebot.com/configuration-options/#pep723)",
+      "description": "Configuration object for the PEP 723 manager\nSee also: https://docs.renovatebot.com/modules/manager/pep723/",
+      "markdownDescription": "Configuration object for the PEP 723 manager\n\nSee also: [pep723](https://docs.renovatebot.com/modules/manager/pep723/)",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -45957,8 +46439,8 @@
       "default": false
     },
     "pip-compile": {
-      "description": "Configuration object for the pip-compile manager\nSee also: https://docs.renovatebot.com/configuration-options/#pip-compile",
-      "markdownDescription": "Configuration object for the pip-compile manager\n\nSee also: [pip-compile](https://docs.renovatebot.com/configuration-options/#pip-compile)",
+      "description": "Configuration object for the pip-compile manager\nSee also: https://docs.renovatebot.com/modules/manager/pip-compile/",
+      "markdownDescription": "Configuration object for the pip-compile manager\n\nSee also: [pip-compile](https://docs.renovatebot.com/modules/manager/pip-compile/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [],
@@ -46431,8 +46913,8 @@
       ]
     },
     "pip_requirements": {
-      "description": "Configuration object for the pip_requirements manager\nSee also: https://docs.renovatebot.com/configuration-options/#pip_requirements",
-      "markdownDescription": "Configuration object for the pip_requirements manager\n\nSee also: [pip_requirements](https://docs.renovatebot.com/configuration-options/#pip_requirements)",
+      "description": "Configuration object for the pip Requirements manager\nSee also: https://docs.renovatebot.com/modules/manager/pip_requirements/",
+      "markdownDescription": "Configuration object for the pip Requirements manager\n\nSee also: [pip_requirements](https://docs.renovatebot.com/modules/manager/pip_requirements/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -46902,8 +47384,8 @@
       ]
     },
     "pip_setup": {
-      "description": "Configuration object for the pip_setup manager\nSee also: https://docs.renovatebot.com/configuration-options/#pip_setup",
-      "markdownDescription": "Configuration object for the pip_setup manager\n\nSee also: [pip_setup](https://docs.renovatebot.com/configuration-options/#pip_setup)",
+      "description": "Configuration object for the pip setup.py manager\nSee also: https://docs.renovatebot.com/modules/manager/pip_setup/",
+      "markdownDescription": "Configuration object for the pip setup.py manager\n\nSee also: [pip_setup](https://docs.renovatebot.com/modules/manager/pip_setup/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -47373,8 +47855,8 @@
       ]
     },
     "pipenv": {
-      "description": "Configuration object for the pipenv manager\nSee also: https://docs.renovatebot.com/configuration-options/#pipenv",
-      "markdownDescription": "Configuration object for the pipenv manager\n\nSee also: [pipenv](https://docs.renovatebot.com/configuration-options/#pipenv)",
+      "description": "Configuration object for the Pipenv manager\nSee also: https://docs.renovatebot.com/modules/manager/pipenv/",
+      "markdownDescription": "Configuration object for the Pipenv manager\n\nSee also: [pipenv](https://docs.renovatebot.com/modules/manager/pipenv/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -47844,8 +48326,8 @@
       ]
     },
     "pixi": {
-      "description": "Configuration object for the pixi manager\nSee also: https://docs.renovatebot.com/configuration-options/#pixi",
-      "markdownDescription": "Configuration object for the pixi manager\n\nSee also: [pixi](https://docs.renovatebot.com/configuration-options/#pixi)",
+      "description": "Configuration object for the Pixi manager\nSee also: https://docs.renovatebot.com/modules/manager/pixi/",
+      "markdownDescription": "Configuration object for the Pixi manager\n\nSee also: [pixi](https://docs.renovatebot.com/modules/manager/pixi/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -48333,8 +48815,8 @@
       "default": "auto"
     },
     "poetry": {
-      "description": "Configuration object for the poetry manager\nSee also: https://docs.renovatebot.com/configuration-options/#poetry",
-      "markdownDescription": "Configuration object for the poetry manager\n\nSee also: [poetry](https://docs.renovatebot.com/configuration-options/#poetry)",
+      "description": "Configuration object for the Poetry manager\nSee also: https://docs.renovatebot.com/modules/manager/poetry/",
+      "markdownDescription": "Configuration object for the Poetry manager\n\nSee also: [poetry](https://docs.renovatebot.com/modules/manager/poetry/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -48844,47 +49326,48 @@
         "executionMode": "update",
         "installTools": {}
       },
-      "$ref": "#",
+      "additionalProperties": false,
       "allOf": [
         {
           "type": "object",
-          "properties": {
-            "commands": {
-              "$ref": "#/definitions/commands"
-            },
-            "dataFileTemplate": {
-              "$ref": "#/definitions/dataFileTemplate"
-            },
-            "description": {
-              "$ref": "#/definitions/description"
-            },
-            "encrypted": {
-              "$ref": "#/definitions/encrypted"
-            },
-            "executionMode": {
-              "$ref": "#/definitions/executionMode"
-            },
-            "extends": {
-              "$ref": "#/definitions/extends"
-            },
-            "fileFilters": {
-              "$ref": "#/definitions/fileFilters"
-            },
-            "ignorePresets": {
-              "$ref": "#/definitions/ignorePresets"
-            },
-            "installTools": {
-              "$ref": "#/definitions/installTools"
-            },
-            "overrideDescription": {
-              "$ref": "#/definitions/overrideDescription"
-            },
-            "workingDirTemplate": {
-              "$ref": "#/definitions/workingDirTemplate"
-            }
-          }
+          "properties": {}
         }
-      ]
+      ],
+      "properties": {
+        "commands": {
+          "$ref": "#/definitions/commands"
+        },
+        "dataFileTemplate": {
+          "$ref": "#/definitions/dataFileTemplate"
+        },
+        "description": {
+          "$ref": "#/definitions/description"
+        },
+        "encrypted": {
+          "$ref": "#/definitions/encrypted"
+        },
+        "executionMode": {
+          "$ref": "#/definitions/executionMode"
+        },
+        "extends": {
+          "$ref": "#/definitions/extends"
+        },
+        "fileFilters": {
+          "$ref": "#/definitions/fileFilters"
+        },
+        "ignorePresets": {
+          "$ref": "#/definitions/ignorePresets"
+        },
+        "installTools": {
+          "$ref": "#/definitions/installTools"
+        },
+        "overrideDescription": {
+          "$ref": "#/definitions/overrideDescription"
+        },
+        "workingDirTemplate": {
+          "$ref": "#/definitions/workingDirTemplate"
+        }
+      }
     },
     "prBodyColumns": {
       "description": "List of columns to use in PR bodies.\nSee also: https://docs.renovatebot.com/configuration-options/#prbodycolumns",
@@ -49017,8 +49500,8 @@
       "default": false
     },
     "pre-commit": {
-      "description": "Configuration object for the pre-commit manager\nSee also: https://docs.renovatebot.com/configuration-options/#pre-commit",
-      "markdownDescription": "Configuration object for the pre-commit manager\n\nSee also: [pre-commit](https://docs.renovatebot.com/configuration-options/#pre-commit)",
+      "description": "Configuration object for the pre-commit manager\nSee also: https://docs.renovatebot.com/modules/manager/pre-commit/",
+      "markdownDescription": "Configuration object for the pre-commit manager\n\nSee also: [pre-commit](https://docs.renovatebot.com/modules/manager/pre-commit/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "pre-commit hook {{depName}}",
@@ -49499,8 +49982,8 @@
       "default": false
     },
     "proto": {
-      "description": "Configuration object for the proto manager\nSee also: https://docs.renovatebot.com/configuration-options/#proto",
-      "markdownDescription": "Configuration object for the proto manager\n\nSee also: [proto](https://docs.renovatebot.com/configuration-options/#proto)",
+      "description": "Configuration object for the proto manager\nSee also: https://docs.renovatebot.com/modules/manager/proto/",
+      "markdownDescription": "Configuration object for the proto manager\n\nSee also: [proto](https://docs.renovatebot.com/modules/manager/proto/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -49982,8 +50465,8 @@
       "default": true
     },
     "pub": {
-      "description": "Configuration object for the pub manager\nSee also: https://docs.renovatebot.com/configuration-options/#pub",
-      "markdownDescription": "Configuration object for the pub manager\n\nSee also: [pub](https://docs.renovatebot.com/configuration-options/#pub)",
+      "description": "Configuration object for the pub manager\nSee also: https://docs.renovatebot.com/modules/manager/pub/",
+      "markdownDescription": "Configuration object for the pub manager\n\nSee also: [pub](https://docs.renovatebot.com/modules/manager/pub/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -50453,8 +50936,8 @@
       ]
     },
     "puppet": {
-      "description": "Configuration object for the puppet manager\nSee also: https://docs.renovatebot.com/configuration-options/#puppet",
-      "markdownDescription": "Configuration object for the puppet manager\n\nSee also: [puppet](https://docs.renovatebot.com/configuration-options/#puppet)",
+      "description": "Configuration object for the Puppet manager\nSee also: https://docs.renovatebot.com/modules/manager/puppet/",
+      "markdownDescription": "Configuration object for the Puppet manager\n\nSee also: [puppet](https://docs.renovatebot.com/modules/manager/puppet/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -50924,8 +51407,8 @@
       ]
     },
     "pyenv": {
-      "description": "Configuration object for the pyenv manager\nSee also: https://docs.renovatebot.com/configuration-options/#pyenv",
-      "markdownDescription": "Configuration object for the pyenv manager\n\nSee also: [pyenv](https://docs.renovatebot.com/configuration-options/#pyenv)",
+      "description": "Configuration object for the pyenv manager\nSee also: https://docs.renovatebot.com/modules/manager/pyenv/",
+      "markdownDescription": "Configuration object for the pyenv manager\n\nSee also: [pyenv](https://docs.renovatebot.com/modules/manager/pyenv/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -51397,8 +51880,8 @@
       ]
     },
     "quadlet": {
-      "description": "Configuration object for the quadlet manager\nSee also: https://docs.renovatebot.com/configuration-options/#quadlet",
-      "markdownDescription": "Configuration object for the quadlet manager\n\nSee also: [quadlet](https://docs.renovatebot.com/configuration-options/#quadlet)",
+      "description": "Configuration object for the Quadlet manager\nSee also: https://docs.renovatebot.com/modules/manager/quadlet/",
+      "markdownDescription": "Configuration object for the Quadlet manager\n\nSee also: [quadlet](https://docs.renovatebot.com/modules/manager/quadlet/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -51920,8 +52403,8 @@
       "default": "auto"
     },
     "regex": {
-      "description": "Configuration object for the regex manager\nSee also: https://docs.renovatebot.com/configuration-options/#regex",
-      "markdownDescription": "Configuration object for the regex manager\n\nSee also: [regex](https://docs.renovatebot.com/configuration-options/#regex)",
+      "description": "Configuration object for the Regex manager\nSee also: https://docs.renovatebot.com/modules/manager/regex/",
+      "markdownDescription": "Configuration object for the Regex manager\n\nSee also: [regex](https://docs.renovatebot.com/modules/manager/regex/)",
       "type": "object",
       "default": {
         "pinDigests": false
@@ -52415,8 +52898,8 @@
       "default": null
     },
     "renovate-config": {
-      "description": "Configuration object for the renovate-config manager\nSee also: https://docs.renovatebot.com/configuration-options/#renovate-config",
-      "markdownDescription": "Configuration object for the renovate-config manager\n\nSee also: [renovate-config](https://docs.renovatebot.com/configuration-options/#renovate-config)",
+      "description": "Configuration object for the Renovate Config manager\nSee also: https://docs.renovatebot.com/modules/manager/renovate-config/",
+      "markdownDescription": "Configuration object for the Renovate Config manager\n\nSee also: [renovate-config](https://docs.renovatebot.com/modules/manager/renovate-config/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -53687,8 +54170,8 @@
       "default": false
     },
     "ruby-version": {
-      "description": "Configuration object for the ruby-version manager\nSee also: https://docs.renovatebot.com/configuration-options/#ruby-version",
-      "markdownDescription": "Configuration object for the ruby-version manager\n\nSee also: [ruby-version](https://docs.renovatebot.com/configuration-options/#ruby-version)",
+      "description": "Configuration object for the .ruby-version manager\nSee also: https://docs.renovatebot.com/modules/manager/ruby-version/",
+      "markdownDescription": "Configuration object for the .ruby-version manager\n\nSee also: [ruby-version](https://docs.renovatebot.com/modules/manager/ruby-version/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -54159,8 +54642,8 @@
       ]
     },
     "runtime-version": {
-      "description": "Configuration object for the runtime-version manager\nSee also: https://docs.renovatebot.com/configuration-options/#runtime-version",
-      "markdownDescription": "Configuration object for the runtime-version manager\n\nSee also: [runtime-version](https://docs.renovatebot.com/configuration-options/#runtime-version)",
+      "description": "Configuration object for the runtime.txt manager\nSee also: https://docs.renovatebot.com/modules/manager/runtime-version/",
+      "markdownDescription": "Configuration object for the runtime.txt manager\n\nSee also: [runtime-version](https://docs.renovatebot.com/modules/manager/runtime-version/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -54631,8 +55114,8 @@
       ]
     },
     "rust-toolchain": {
-      "description": "Configuration object for the rust-toolchain manager\nSee also: https://docs.renovatebot.com/configuration-options/#rust-toolchain",
-      "markdownDescription": "Configuration object for the rust-toolchain manager\n\nSee also: [rust-toolchain](https://docs.renovatebot.com/configuration-options/#rust-toolchain)",
+      "description": "Configuration object for the Rust Toolchain manager\nSee also: https://docs.renovatebot.com/modules/manager/rust-toolchain/",
+      "markdownDescription": "Configuration object for the Rust Toolchain manager\n\nSee also: [rust-toolchain](https://docs.renovatebot.com/modules/manager/rust-toolchain/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "Rust",
@@ -55103,8 +55586,8 @@
       ]
     },
     "sbt": {
-      "description": "Configuration object for the sbt manager\nSee also: https://docs.renovatebot.com/configuration-options/#sbt",
-      "markdownDescription": "Configuration object for the sbt manager\n\nSee also: [sbt](https://docs.renovatebot.com/configuration-options/#sbt)",
+      "description": "Configuration object for the sbt manager\nSee also: https://docs.renovatebot.com/modules/manager/sbt/",
+      "markdownDescription": "Configuration object for the sbt manager\n\nSee also: [sbt](https://docs.renovatebot.com/modules/manager/sbt/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -55578,8 +56061,8 @@
       ]
     },
     "scalafmt": {
-      "description": "Configuration object for the scalafmt manager\nSee also: https://docs.renovatebot.com/configuration-options/#scalafmt",
-      "markdownDescription": "Configuration object for the scalafmt manager\n\nSee also: [scalafmt](https://docs.renovatebot.com/configuration-options/#scalafmt)",
+      "description": "Configuration object for the Scalafmt manager\nSee also: https://docs.renovatebot.com/modules/manager/scalafmt/",
+      "markdownDescription": "Configuration object for the Scalafmt manager\n\nSee also: [scalafmt](https://docs.renovatebot.com/modules/manager/scalafmt/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -56117,8 +56600,8 @@
       "default": false
     },
     "setup-cfg": {
-      "description": "Configuration object for the setup-cfg manager\nSee also: https://docs.renovatebot.com/configuration-options/#setup-cfg",
-      "markdownDescription": "Configuration object for the setup-cfg manager\n\nSee also: [setup-cfg](https://docs.renovatebot.com/configuration-options/#setup-cfg)",
+      "description": "Configuration object for the Setuptools (setup.cfg) manager\nSee also: https://docs.renovatebot.com/modules/manager/setup-cfg/",
+      "markdownDescription": "Configuration object for the Setuptools (setup.cfg) manager\n\nSee also: [setup-cfg](https://docs.renovatebot.com/modules/manager/setup-cfg/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -56604,8 +57087,8 @@
       "default": null
     },
     "smithy": {
-      "description": "Configuration object for the smithy manager\nSee also: https://docs.renovatebot.com/configuration-options/#smithy",
-      "markdownDescription": "Configuration object for the smithy manager\n\nSee also: [smithy](https://docs.renovatebot.com/configuration-options/#smithy)",
+      "description": "Configuration object for the Smithy manager\nSee also: https://docs.renovatebot.com/modules/manager/smithy/",
+      "markdownDescription": "Configuration object for the Smithy manager\n\nSee also: [smithy](https://docs.renovatebot.com/modules/manager/smithy/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -57195,8 +57678,8 @@
       "default": []
     },
     "sveltos": {
-      "description": "Configuration object for the sveltos manager\nSee also: https://docs.renovatebot.com/configuration-options/#sveltos",
-      "markdownDescription": "Configuration object for the sveltos manager\n\nSee also: [sveltos](https://docs.renovatebot.com/configuration-options/#sveltos)",
+      "description": "Configuration object for the Sveltos manager\nSee also: https://docs.renovatebot.com/modules/manager/sveltos/",
+      "markdownDescription": "Configuration object for the Sveltos manager\n\nSee also: [sveltos](https://docs.renovatebot.com/modules/manager/sveltos/)",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -57664,8 +58147,8 @@
       ]
     },
     "swift": {
-      "description": "Configuration object for the swift manager\nSee also: https://docs.renovatebot.com/configuration-options/#swift",
-      "markdownDescription": "Configuration object for the swift manager\n\nSee also: [swift](https://docs.renovatebot.com/configuration-options/#swift)",
+      "description": "Configuration object for the Swift Package Manager manager\nSee also: https://docs.renovatebot.com/modules/manager/swift/",
+      "markdownDescription": "Configuration object for the Swift Package Manager manager\n\nSee also: [swift](https://docs.renovatebot.com/modules/manager/swift/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -58137,8 +58620,8 @@
       ]
     },
     "tekton": {
-      "description": "Configuration object for the tekton manager\nSee also: https://docs.renovatebot.com/configuration-options/#tekton",
-      "markdownDescription": "Configuration object for the tekton manager\n\nSee also: [tekton](https://docs.renovatebot.com/configuration-options/#tekton)",
+      "description": "Configuration object for the Tekton manager\nSee also: https://docs.renovatebot.com/modules/manager/tekton/",
+      "markdownDescription": "Configuration object for the Tekton manager\n\nSee also: [tekton](https://docs.renovatebot.com/modules/manager/tekton/)",
       "type": "object",
       "default": {
         "managerFilePatterns": []
@@ -58606,8 +59089,8 @@
       ]
     },
     "terraform": {
-      "description": "Configuration object for the terraform manager\nSee also: https://docs.renovatebot.com/configuration-options/#terraform",
-      "markdownDescription": "Configuration object for the terraform manager\n\nSee also: [terraform](https://docs.renovatebot.com/configuration-options/#terraform)",
+      "description": "Configuration object for the Terraform manager\nSee also: https://docs.renovatebot.com/modules/manager/terraform/",
+      "markdownDescription": "Configuration object for the Terraform manager\n\nSee also: [terraform](https://docs.renovatebot.com/modules/manager/terraform/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "Terraform {{depName}}",
@@ -59080,8 +59563,8 @@
       ]
     },
     "terraform-version": {
-      "description": "Configuration object for the terraform-version manager\nSee also: https://docs.renovatebot.com/configuration-options/#terraform-version",
-      "markdownDescription": "Configuration object for the terraform-version manager\n\nSee also: [terraform-version](https://docs.renovatebot.com/configuration-options/#terraform-version)",
+      "description": "Configuration object for the .terraform-version manager\nSee also: https://docs.renovatebot.com/modules/manager/terraform-version/",
+      "markdownDescription": "Configuration object for the .terraform-version manager\n\nSee also: [terraform-version](https://docs.renovatebot.com/modules/manager/terraform-version/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -59553,8 +60036,8 @@
       ]
     },
     "terragrunt": {
-      "description": "Configuration object for the terragrunt manager\nSee also: https://docs.renovatebot.com/configuration-options/#terragrunt",
-      "markdownDescription": "Configuration object for the terragrunt manager\n\nSee also: [terragrunt](https://docs.renovatebot.com/configuration-options/#terragrunt)",
+      "description": "Configuration object for the Terragrunt manager\nSee also: https://docs.renovatebot.com/modules/manager/terragrunt/",
+      "markdownDescription": "Configuration object for the Terragrunt manager\n\nSee also: [terragrunt](https://docs.renovatebot.com/modules/manager/terragrunt/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "Terragrunt dependency {{depName}}",
@@ -60025,8 +60508,8 @@
       ]
     },
     "terragrunt-version": {
-      "description": "Configuration object for the terragrunt-version manager\nSee also: https://docs.renovatebot.com/configuration-options/#terragrunt-version",
-      "markdownDescription": "Configuration object for the terragrunt-version manager\n\nSee also: [terragrunt-version](https://docs.renovatebot.com/configuration-options/#terragrunt-version)",
+      "description": "Configuration object for the .terragrunt-version manager\nSee also: https://docs.renovatebot.com/modules/manager/terragrunt-version/",
+      "markdownDescription": "Configuration object for the .terragrunt-version manager\n\nSee also: [terragrunt-version](https://docs.renovatebot.com/modules/manager/terragrunt-version/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -60498,8 +60981,8 @@
       ]
     },
     "tflint-plugin": {
-      "description": "Configuration object for the tflint-plugin manager\nSee also: https://docs.renovatebot.com/configuration-options/#tflint-plugin",
-      "markdownDescription": "Configuration object for the tflint-plugin manager\n\nSee also: [tflint-plugin](https://docs.renovatebot.com/configuration-options/#tflint-plugin)",
+      "description": "Configuration object for the TFLint Plugins manager\nSee also: https://docs.renovatebot.com/modules/manager/tflint-plugin/",
+      "markdownDescription": "Configuration object for the TFLint Plugins manager\n\nSee also: [tflint-plugin](https://docs.renovatebot.com/modules/manager/tflint-plugin/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "TFLint plugin {{depName}}",
@@ -60988,38 +61471,39 @@
         "jvmMaxMemory": 512,
         "jvmMemory": 512
       },
-      "$ref": "#",
+      "additionalProperties": false,
       "allOf": [
         {
           "type": "object",
-          "properties": {
-            "description": {
-              "$ref": "#/definitions/description"
-            },
-            "encrypted": {
-              "$ref": "#/definitions/encrypted"
-            },
-            "extends": {
-              "$ref": "#/definitions/extends"
-            },
-            "ignorePresets": {
-              "$ref": "#/definitions/ignorePresets"
-            },
-            "jvmMaxMemory": {
-              "$ref": "#/definitions/jvmMaxMemory"
-            },
-            "jvmMemory": {
-              "$ref": "#/definitions/jvmMemory"
-            },
-            "nodeMaxMemory": {
-              "$ref": "#/definitions/nodeMaxMemory"
-            },
-            "overrideDescription": {
-              "$ref": "#/definitions/overrideDescription"
-            }
-          }
+          "properties": {}
         }
-      ]
+      ],
+      "properties": {
+        "description": {
+          "$ref": "#/definitions/description"
+        },
+        "encrypted": {
+          "$ref": "#/definitions/encrypted"
+        },
+        "extends": {
+          "$ref": "#/definitions/extends"
+        },
+        "ignorePresets": {
+          "$ref": "#/definitions/ignorePresets"
+        },
+        "jvmMaxMemory": {
+          "$ref": "#/definitions/jvmMaxMemory"
+        },
+        "jvmMemory": {
+          "$ref": "#/definitions/jvmMemory"
+        },
+        "nodeMaxMemory": {
+          "$ref": "#/definitions/nodeMaxMemory"
+        },
+        "overrideDescription": {
+          "$ref": "#/definitions/overrideDescription"
+        }
+      }
     },
     "transformTemplates": {
       "description": "List of jsonata transformation rules.\nSee also: https://docs.renovatebot.com/configuration-options/#customdatasourcestransformtemplates",
@@ -61031,8 +61515,8 @@
       "default": []
     },
     "travis": {
-      "description": "Configuration object for the travis manager\nSee also: https://docs.renovatebot.com/configuration-options/#travis",
-      "markdownDescription": "Configuration object for the travis manager\n\nSee also: [travis](https://docs.renovatebot.com/configuration-options/#travis)",
+      "description": "Configuration object for the Travis CI manager\nSee also: https://docs.renovatebot.com/modules/manager/travis/",
+      "markdownDescription": "Configuration object for the Travis CI manager\n\nSee also: [travis](https://docs.renovatebot.com/modules/manager/travis/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -61506,8 +61990,8 @@
       ]
     },
     "typst": {
-      "description": "Configuration object for the typst manager\nSee also: https://docs.renovatebot.com/configuration-options/#typst",
-      "markdownDescription": "Configuration object for the typst manager\n\nSee also: [typst](https://docs.renovatebot.com/configuration-options/#typst)",
+      "description": "Configuration object for the Typst package manager\nSee also: https://docs.renovatebot.com/modules/manager/typst/",
+      "markdownDescription": "Configuration object for the Typst package manager\n\nSee also: [typst](https://docs.renovatebot.com/modules/manager/typst/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -61977,8 +62461,8 @@
       ]
     },
     "unity3d": {
-      "description": "Configuration object for the unity3d manager\nSee also: https://docs.renovatebot.com/configuration-options/#unity3d",
-      "markdownDescription": "Configuration object for the unity3d manager\n\nSee also: [unity3d](https://docs.renovatebot.com/configuration-options/#unity3d)",
+      "description": "Configuration object for the Unity3d manager\nSee also: https://docs.renovatebot.com/modules/manager/unity3d/",
+      "markdownDescription": "Configuration object for the Unity3d manager\n\nSee also: [unity3d](https://docs.renovatebot.com/modules/manager/unity3d/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -62471,6 +62955,7 @@
       "type": "string",
       "enum": [
         "merge",
+        "merge-if-present",
         "none"
       ],
       "default": "none"
@@ -62488,8 +62973,8 @@
       }
     },
     "velaci": {
-      "description": "Configuration object for the velaci manager\nSee also: https://docs.renovatebot.com/configuration-options/#velaci",
-      "markdownDescription": "Configuration object for the velaci manager\n\nSee also: [velaci](https://docs.renovatebot.com/configuration-options/#velaci)",
+      "description": "Configuration object for the Vela manager\nSee also: https://docs.renovatebot.com/modules/manager/velaci/",
+      "markdownDescription": "Configuration object for the Vela manager\n\nSee also: [velaci](https://docs.renovatebot.com/modules/manager/velaci/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -62959,8 +63444,8 @@
       ]
     },
     "vendir": {
-      "description": "Configuration object for the vendir manager\nSee also: https://docs.renovatebot.com/configuration-options/#vendir",
-      "markdownDescription": "Configuration object for the vendir manager\n\nSee also: [vendir](https://docs.renovatebot.com/configuration-options/#vendir)",
+      "description": "Configuration object for the vendir manager\nSee also: https://docs.renovatebot.com/modules/manager/vendir/",
+      "markdownDescription": "Configuration object for the vendir manager\n\nSee also: [vendir](https://docs.renovatebot.com/modules/manager/vendir/)",
       "type": "object",
       "default": {
         "commitMessageTopic": "vendir {{depName}}",
@@ -63470,6 +63955,7 @@
             "hermit",
             "hex",
             "ivy",
+            "julia",
             "kubernetes-api",
             "lambda-node",
             "loose",
@@ -63493,11 +63979,13 @@
             "same-major",
             "semver",
             "semver-coerced",
+            "semver-extended",
             "semver-partial",
             "swift",
             "ubuntu",
             "unity3d",
-            "unity3d-packages"
+            "unity3d-packages",
+            "vcpkg"
           ]
         },
         {
@@ -63988,8 +64476,8 @@
       "default": "lowest"
     },
     "woodpecker": {
-      "description": "Configuration object for the woodpecker manager\nSee also: https://docs.renovatebot.com/configuration-options/#woodpecker",
-      "markdownDescription": "Configuration object for the woodpecker manager\n\nSee also: [woodpecker](https://docs.renovatebot.com/configuration-options/#woodpecker)",
+      "description": "Configuration object for the Woodpecker manager\nSee also: https://docs.renovatebot.com/modules/manager/woodpecker/",
+      "markdownDescription": "Configuration object for the Woodpecker manager\n\nSee also: [woodpecker](https://docs.renovatebot.com/modules/manager/woodpecker/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -64464,8 +64952,8 @@
       "type": "string"
     },
     "xcodegen": {
-      "description": "Configuration object for the xcodegen manager\nSee also: https://docs.renovatebot.com/configuration-options/#xcodegen",
-      "markdownDescription": "Configuration object for the xcodegen manager\n\nSee also: [xcodegen](https://docs.renovatebot.com/configuration-options/#xcodegen)",
+      "description": "Configuration object for the XcodeGen manager\nSee also: https://docs.renovatebot.com/modules/manager/xcodegen/",
+      "markdownDescription": "Configuration object for the XcodeGen manager\n\nSee also: [xcodegen](https://docs.renovatebot.com/modules/manager/xcodegen/)",
       "type": "object",
       "default": {
         "managerFilePatterns": [
@@ -65429,6 +65917,9 @@
     "jsonnet-bundler": {
       "$ref": "#/definitions/jsonnet-bundler"
     },
+    "julia": {
+      "$ref": "#/definitions/julia"
+    },
     "keepUpdatedLabel": {
       "$ref": "#/definitions/keepUpdatedLabel"
     },
@@ -66111,6 +66602,11 @@
       {
         "required": [
           "githubTokenWarn"
+        ]
+      },
+      {
+        "required": [
+          "goEnvFromHostRules"
         ]
       },
       {

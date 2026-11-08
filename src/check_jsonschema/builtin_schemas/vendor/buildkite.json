@@ -1238,9 +1238,38 @@
           "$ref": "#/definitions/commandStepCommand"
         },
         "concurrency": {
-          "type": "integer",
-          "description": "The maximum number of jobs created from this step that are allowed to run at the same time. If you use this attribute, you must also define concurrency_group.",
-          "examples": [1]
+          "type": ["integer", "null", "object"],
+          "description": "The maximum number of jobs created from this step that are allowed to run at the same time, or an object configuring the limit, group, method, and cancellation. A positive limit requires a group. An omitted or null limit disables concurrency.",
+          "properties": {
+            "limit": {
+              "type": ["integer", "null"],
+              "description": "The maximum number of jobs allowed to run at the same time. An omitted or null limit disables concurrency."
+            },
+            "group": {
+              "type": ["string", "null"],
+              "description": "A unique name for the concurrency group. Overrides concurrency_group when present, including null; inherits concurrency_group when omitted."
+            },
+            "method": {
+              "type": ["string", "null"],
+              "enum": ["ordered", "eager", null],
+              "description": "Control command order. Overrides concurrency_method when present, including null; inherits concurrency_method when omitted. The default is ordered."
+            },
+            "cancel_in_progress": {
+              "type": "boolean",
+              "default": false,
+              "description": "When true and this job is concurrency-limited, asynchronously cancel blocking command jobs in reverse scheduling order until enough capacity has been requested. Requires a positive limit and a nonempty group, which may be inherited from concurrency_group. Targets do not need to enable this option."
+            }
+          },
+          "additionalProperties": false,
+          "examples": [
+            1,
+            { "limit": 1, "group": "my-pipeline/deploy", "method": "ordered" },
+            {
+              "limit": 1,
+              "group": "my-pipeline/deploy",
+              "cancel_in_progress": true
+            }
+          ]
         },
         "concurrency_group": {
           "type": "string",
@@ -1250,7 +1279,7 @@
         "concurrency_method": {
           "type": "string",
           "enum": ["ordered", "eager"],
-          "description": "Control command order, allowed values are 'ordered' (default) and 'eager'.  If you use this attribute, you must also define concurrency_group and concurrency.",
+          "description": "Control command order, allowed values are 'ordered' (default) and 'eager'. Requires a concurrency limit and group, specified in concurrency or the legacy fields.",
           "examples": ["ordered"]
         },
         "depends_on": {
