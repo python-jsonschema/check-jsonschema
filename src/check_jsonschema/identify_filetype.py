@@ -25,6 +25,7 @@ def path_to_type(path: str | pathlib.Path, *, default_type: str = "json") -> str
         ext = path.rpartition(".")[2]
     else:
         ext = path.suffix.lstrip(".")
+    ext = ext.lower()
 
     if ext in _EXTENSION_MAP:
         return _EXTENSION_MAP[ext]
