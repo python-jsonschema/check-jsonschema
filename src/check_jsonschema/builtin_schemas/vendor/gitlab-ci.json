@@ -68,19 +68,23 @@
       "markdownDescription": "Defining `cache` globally is deprecated. Use [`default`](https://docs.gitlab.com/ci/yaml/#default) instead. [Learn more](https://docs.gitlab.com/ci/yaml/#globally-defined-image-services-cache-before_script-after_script)."
     },
     "!reference": {
-      "$ref": "#/definitions/!reference"
+      "$ref": "#/definitions/!reference",
+      "markdownDescription": "Reuses configuration from other jobs or sections. [Learn More](https://docs.gitlab.com/ci/yaml/yaml_optimization/#reference-tags)."
     },
     "default": {
+      "markdownDescription": "Sets global defaults for some keywords. Each default keyword is copied to every job that doesn't already have it defined. [Learn More](https://docs.gitlab.com/ci/yaml/#default).",
       "type": "object",
       "properties": {
         "after_script": {
-          "$ref": "#/definitions/after_script"
+          "$ref": "#/definitions/after_script",
+          "markdownDescription": "Defines commands that should run after the job scripts. [Learn More](https://docs.gitlab.com/ci/yaml/#after_script)."
         },
         "artifacts": {
           "$ref": "#/definitions/artifacts"
         },
         "before_script": {
-          "$ref": "#/definitions/before_script"
+          "$ref": "#/definitions/before_script",
+          "markdownDescription": "Defines commands that should run before the job scripts. [Learn More](https://docs.gitlab.com/ci/yaml/#before_script)."
         },
         "hooks": {
           "$ref": "#/definitions/hooks"
@@ -113,7 +117,8 @@
           "$ref": "#/definitions/timeout"
         },
         "!reference": {
-          "$ref": "#/definitions/!reference"
+          "$ref": "#/definitions/!reference",
+          "markdownDescription": "Reuses configuration from other jobs or sections. [Learn More](https://docs.gitlab.com/ci/yaml/yaml_optimization/#reference-tags)."
         }
       },
       "additionalProperties": false
@@ -161,6 +166,7 @@
       "markdownDescription": "A special job used to upload static sites to GitLab pages. Requires a `public/` directory with `artifacts.path` pointing to it. [Learn More](https://docs.gitlab.com/ci/yaml/#pages)."
     },
     "workflow": {
+      "markdownDescription": "Controls pipeline behavior. [Learn More](https://docs.gitlab.com/ci/yaml/#workflow).",
       "type": "object",
       "properties": {
         "name": {
@@ -170,6 +176,7 @@
           "$ref": "#/definitions/workflowAutoCancel"
         },
         "rules": {
+          "markdownDescription": "Controls when to run a pipeline. When no rules evaluate to true, the pipeline does not run. [Learn More](https://docs.gitlab.com/ci/yaml/#workflowrules).",
           "type": "array",
           "items": {
             "anyOf": [
@@ -198,6 +205,7 @@
                 "$ref": "#/definitions/rulesVariables"
               },
               "when": {
+                "markdownDescription": "Controls whether the pipeline is created when the rule matches. Can only be `always` or `never`. [Learn More](https://docs.gitlab.com/ci/yaml/#when).",
                 "type": "string",
                 "enum": [
                   "always",
@@ -1649,7 +1657,7 @@
             "type": "array",
             "minItems": 1,
             "items": {
-              "type": "string"
+              "$ref": "#/definitions/rules/items"
             }
           }
         ]
@@ -2962,6 +2970,11 @@
         "resource_group": {
           "type": "string",
           "description": "Limit job concurrency. Can be used to ensure that the Runner will not run certain jobs simultaneously."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 128,
+          "markdownDescription": "A short description of the purpose of the job. Maximum 128 characters. [Learn More](https://docs.gitlab.com/ci/yaml/#description)."
         },
         "trigger": {
           "markdownDescription": "Trigger allows you to define downstream pipeline trigger. When a job created from trigger definition is started by GitLab, a downstream pipeline gets created. [Learn More](https://docs.gitlab.com/ci/yaml/#trigger).",

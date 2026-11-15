@@ -10,7 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: mergify, renovate (2026-11-01)
+- Update vendored schemas: buildkite, circle-ci, github-workflows, gitlab-ci, mergify,
+  renovate (2026-11-15)
 
 0.39.0
 ------
