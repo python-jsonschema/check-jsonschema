@@ -14,6 +14,18 @@ class BoxedContext:
     ref = None
 
 
+def test_missing_instance_file_is_a_usage_error(cli_runner, tmp_path):
+    schema = tmp_path / "schema.json"
+    schema.write_text("{}")
+    missing = tmp_path / "does-not-exist.yaml"
+
+    result = cli_runner.invoke(cli_main, ["--schemafile", str(schema), str(missing)])
+
+    assert result.exit_code == 2
+    assert "cannot be read" in result.output
+    assert "Traceback" not in result.output
+
+
 def touch_files(dirpath, *filenames):
     for fname in filenames:
         (dirpath / fname).touch()
