@@ -137,7 +137,10 @@ class BinaryFileInputParam(click.ParamType[t.BinaryIO]):
         file = BinaryFileInput(value)
         if ctx is not None:
             ctx.call_on_close(file.close)
-        file.check_can_open()
+        try:
+            file.check_can_open()
+        except OSError as err:
+            self.fail(f"Could not open file {value!r}: {err.strerror or err}", param, ctx)
         # type checkers won't recognize a BinaryFileInput as a BinaryIO unless we do a
         # lot of extra work, because they don't follow that it uses `__getattr__` to
         # proxy everything to the underlying stream

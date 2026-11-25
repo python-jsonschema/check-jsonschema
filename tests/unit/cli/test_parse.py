@@ -86,6 +86,16 @@ def test_schemafile_and_instancefile(
     assert tuple(f.name for f in mock_parse_result.instancefiles) == ("foo.json",)
 
 
+def test_missing_instancefile_is_a_usage_error(cli_runner, in_tmp_dir, tmp_path):
+    touch_files(tmp_path, "schema.json")
+    result = cli_runner.invoke(
+        cli_main, ["--schemafile", "schema.json", "does-not-exist.json"]
+    )
+    assert result.exit_code == 2
+    assert "does-not-exist.json" in (result.stderr or "")
+    assert "No such file or directory" in (result.stderr or "")
+
+
 def test_requires_at_least_one_instancefile(cli_runner):
     result = cli_runner.invoke(cli_main, ["--schemafile", "schema.json"])
     assert result.exit_code == 2
