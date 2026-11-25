@@ -63,6 +63,8 @@ class SchemaChecker:
             self._fail("Error: schemafile was not valid\n", e)
         except UnsupportedUrlScheme as e:
             self._fail(f"Error: {e}\n", e)
+        except OSError as e:
+            self._fail("Error: schemafile could not be read", e)
         except Exception as e:
             self._fail("Error: Unexpected Error building schema validator", e)
 

@@ -53,3 +53,23 @@ def test_checker_invalid_schemafile_due_to_bad_regex(run_line, tmp_path, add_arg
     res = run_line(["check-jsonschema", "--schemafile", str(foo), str(bar), *add_args])
     assert res.exit_code == 1
     assert "schemafile was not valid" in res.stderr
+
+
+def test_checker_missing_schemafile(run_line, tmp_path):
+    bar = tmp_path / "bar.json"
+    bar.write_text("{}")
+
+    res = run_line(["check-jsonschema", "--schemafile", str(tmp_path / "nope.json"), str(bar)])
+    assert res.exit_code == 1
+    assert "schemafile could not be read" in res.stderr
+    assert "Unexpected Error" not in res.stderr
+
+
+def test_checker_schemafile_is_a_directory(run_line, tmp_path):
+    bar = tmp_path / "bar.json"
+    bar.write_text("{}")
+
+    res = run_line(["check-jsonschema", "--schemafile", str(tmp_path), str(bar)])
+    assert res.exit_code == 1
+    assert "schemafile could not be read" in res.stderr
+    assert "Unexpected Error" not in res.stderr
