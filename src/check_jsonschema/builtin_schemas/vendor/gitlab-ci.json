@@ -2786,8 +2786,7 @@
                 "url": {
                   "type": "string",
                   "description": "When set, this will expose buttons in various places for the current environment in GitLab, that will take you to the defined URL.",
-                  "format": "uri",
-                  "pattern": "^(https?://.+|\\$[A-Za-z]+)"
+                  "pattern": "^(https?://.+|\\$(\\{[A-Za-z_][A-Za-z0-9_]*\\}|[A-Za-z_][A-Za-z0-9_]*)([^A-Za-z0-9_}\\s]\\S*)?)$"
                 },
                 "on_stop": {
                   "type": "string",
