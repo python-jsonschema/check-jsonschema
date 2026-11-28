@@ -418,6 +418,11 @@
                                                             "password"
                                                         ],
                                                         "additionalProperties": false
+                                                    },
+                                                    "prefer_same_region": {
+                                                        "type": "boolean",
+                                                        "default": false,
+                                                        "markdownDescription": "Set this to `true` to pull this image from a registry mirror in the same region as the job where possible. If the pull fails, CircleCI falls back to the image's original registry"
                                                     }
                                                 },
                                                 "required": [
@@ -953,6 +958,11 @@
                                                                 "password"
                                                             ],
                                                             "additionalProperties": false
+                                                        },
+                                                        "prefer_same_region": {
+                                                            "type": "boolean",
+                                                            "default": false,
+                                                            "markdownDescription": "Set this to `true` to pull this image from a registry mirror in the same region as the job where possible. If the pull fails, CircleCI falls back to the image's original registry"
                                                         }
                                                     },
                                                     "required": [
@@ -2574,6 +2584,11 @@
                                             ],
                                             "additionalProperties": false,
                                             "markdownDescription": "Authentication for registries using standard `docker login` credentials"
+                                        },
+                                        "prefer_same_region": {
+                                            "type": "boolean",
+                                            "default": false,
+                                            "markdownDescription": "Set this to `true` to pull this image from a registry mirror in the same region as the job where possible. If the pull fails, CircleCI falls back to the image's original registry"
                                         }
                                     },
                                     "required": [
@@ -3313,6 +3328,11 @@
                                                                     "password"
                                                                 ],
                                                                 "additionalProperties": false
+                                                            },
+                                                            "prefer_same_region": {
+                                                                "type": "boolean",
+                                                                "default": false,
+                                                                "markdownDescription": "Set this to `true` to pull this image from a registry mirror in the same region as the job where possible. If the pull fails, CircleCI falls back to the image's original registry"
                                                             }
                                                         },
                                                         "required": [

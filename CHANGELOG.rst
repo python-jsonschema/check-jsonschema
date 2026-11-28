@@ -10,7 +10,8 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: mergify, renovate (2026-11-01)
+- Update vendored schemas: buildkite, circle-ci, cloudbuild, codecov, compose-spec,
+  dependabot, github-workflows, gitlab-ci, mergify, renovate, woodpecker-ci (2026-11-22)
 
 0.39.0
 ------
