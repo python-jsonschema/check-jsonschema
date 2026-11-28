@@ -10,8 +10,9 @@ Unreleased
 
 .. vendor-insert-here
 
-- Update vendored schemas: buildkite, circle-ci, cloudbuild, codecov, compose-spec,
-  dependabot, github-workflows, gitlab-ci, mergify, renovate, woodpecker-ci (2026-11-22)
+- Update vendored schemas: bitbucket-pipelines, buildkite, circle-ci, cloudbuild,
+  codecov, compose-spec, dependabot, github-workflows, gitlab-ci, mergify, renovate,
+  woodpecker-ci (2026-11-27)
 
 0.39.0
 ------

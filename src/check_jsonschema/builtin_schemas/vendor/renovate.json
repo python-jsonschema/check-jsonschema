@@ -1,8 +1,8 @@
 {
   "$id": "https://docs.renovatebot.com/renovate-schema.json",
-  "title": "JSON schema for Renovate 44.257.9 config files (https://renovatebot.com/)",
+  "title": "JSON schema for Renovate 45.3.2 config files (https://renovatebot.com/)",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "x-renovate-version": "44.257.9",
+  "x-renovate-version": "45.3.2",
   "allowComments": true,
   "type": "object",
   "definitions": {
@@ -18754,12 +18754,6 @@
         }
       ]
     },
-    "dnsCache": {
-      "description": "Enable got DNS cache.\nSee also: https://docs.renovatebot.com/configuration-options/#hostrulesdnscache",
-      "markdownDescription": "Enable got DNS cache.\n\nSee also: [dnsCache](https://docs.renovatebot.com/configuration-options/#hostrulesdnscache)",
-      "type": "boolean",
-      "default": false
-    },
     "docker-compose": {
       "description": "Configuration object for the Docker Compose manager\nSee also: https://docs.renovatebot.com/modules/manager/docker-compose/",
       "markdownDescription": "Configuration object for the Docker Compose manager\n\nSee also: [docker-compose](https://docs.renovatebot.com/modules/manager/docker-compose/)",
@@ -31588,9 +31582,6 @@
               "description": {
                 "$ref": "#/definitions/description"
               },
-              "dnsCache": {
-                "$ref": "#/definitions/dnsCache"
-              },
               "enableHttp2": {
                 "$ref": "#/definitions/enableHttp2"
               },
@@ -34548,7 +34539,8 @@
     "jvmMaxMemory": {
       "description": "Maximum JVM memory in MB to use for updates that use a Java VM, like the Gradle Wrapper, defaults to 512. Repo configuration for this value will be ignored if it exceeds the global configuration for `toolSettings.jvmMaxMemory`\nSee also: https://docs.renovatebot.com/configuration-options/#toolsettingsjvmmaxmemory",
       "markdownDescription": "Maximum JVM memory in MB to use for updates that use a Java VM, like the Gradle Wrapper, defaults to 512. Repo configuration for this value will be ignored if it exceeds the global configuration for `toolSettings.jvmMaxMemory`\n\nSee also: [jvmMaxMemory](https://docs.renovatebot.com/configuration-options/#toolsettingsjvmmaxmemory)",
-      "type": "integer"
+      "type": "integer",
+      "default": 512
     },
     "jvmMemory": {
       "description": "Initial JVM memory in MB to use for updates that use a Java VM, like the Gradle Wrapper, defaults to `jvmMaxMemory`. Repo configuration for this value will be ignored if it exceeds the global configuration for `toolSettings.jvmMaxMemory`\nSee also: https://docs.renovatebot.com/configuration-options/#toolsettingsjvmmemory",
@@ -50451,6 +50443,12 @@
       ],
       "default": "auto"
     },
+    "pnpmMinimumReleaseAgeExcludeSecurityUpdates": {
+      "description": "Whether security updates add their versions to the `minimumReleaseAgeExclude` setting of the `pnpm-workspace.yaml`. Repo configuration can change this value, unless the global configuration sets it to `false`.\nSee also: https://docs.renovatebot.com/configuration-options/#toolsettingspnpmminimumreleaseageexcludesecurityupdates",
+      "markdownDescription": "Whether security updates add their versions to the `minimumReleaseAgeExclude` setting of the `pnpm-workspace.yaml`. Repo configuration can change this value, unless the global configuration sets it to `false`.\n\nSee also: [pnpmMinimumReleaseAgeExcludeSecurityUpdates](https://docs.renovatebot.com/configuration-options/#toolsettingspnpmminimumreleaseageexcludesecurityupdates)",
+      "type": "boolean",
+      "default": false
+    },
     "poetry": {
       "description": "Configuration object for the Poetry manager\nSee also: https://docs.renovatebot.com/modules/manager/poetry/",
       "markdownDescription": "Configuration object for the Poetry manager\n\nSee also: [poetry](https://docs.renovatebot.com/modules/manager/poetry/)",
@@ -63338,10 +63336,6 @@
       "description": "Tool specific configuration. Global self-hosted configuration takes precedence.\nSee also: https://docs.renovatebot.com/configuration-options/#toolsettings",
       "markdownDescription": "Tool specific configuration. Global self-hosted configuration takes precedence.\n\nSee also: [toolSettings](https://docs.renovatebot.com/configuration-options/#toolsettings)",
       "type": "object",
-      "default": {
-        "jvmMaxMemory": 512,
-        "jvmMemory": 512
-      },
       "additionalProperties": false,
       "allOf": [
         {
@@ -63373,6 +63367,9 @@
         },
         "overrideDescription": {
           "$ref": "#/definitions/overrideDescription"
+        },
+        "pnpmMinimumReleaseAgeExcludeSecurityUpdates": {
+          "$ref": "#/definitions/pnpmMinimumReleaseAgeExcludeSecurityUpdates"
         }
       }
     },
