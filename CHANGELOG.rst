@@ -11,8 +11,9 @@ Unreleased
 .. vendor-insert-here
 
 - Update vendored schemas: bitbucket-pipelines, buildkite, circle-ci, cloudbuild,
-  codecov, compose-spec, dependabot, github-workflows, gitlab-ci, mergify, renovate,
-  woodpecker-ci (2026-11-27)
+  codecov, compose-spec, dependabot, github-funding, github-workflows, gitlab-ci,
+  mergify, renovate, woodpecker-ci (2026-11-27)
+- Added a github-funding schema and pre-commit hook. Thanks :user:`pygarap`! (:issue:`725`)
 
 0.39.0
 ------

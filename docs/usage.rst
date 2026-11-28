@@ -100,6 +100,7 @@ SchemaStore and other sources:
 - ``vendor.drone-ci``
 - ``vendor.github-actions``
 - ``vendor.github-discussion``
+- ``vendor.github-funding``
 - ``vendor.github-issue-config``
 - ``vendor.github-issue-forms``
 - ``vendor.github-workflows``
